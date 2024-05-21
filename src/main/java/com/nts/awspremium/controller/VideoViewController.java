@@ -3657,13 +3657,18 @@ public class VideoViewController {
                     if(checkview==-1){
                         status="Đã hoàn 50%";
                         price_refund=video.getPrice()*0.5F;
+                        video.setViewtotal((int)(video.getVieworder()*0.5));
+                        video.setPrice(price_refund);
+                        video.setCancel(2);
+
                     }else{
                         status="Đã hoàn 100%";
                         price_refund=video.getPrice();
+                        video.setViewtotal(0);
+                        video.setPrice(0F);
+                        video.setCancel(1);
+
                     }
-                    video.setViewtotal(0);
-                    video.setCancel(1);
-                    video.setPrice(0F);
                     if(viewcheck!=-1){
                         video.setViewend(viewcheck);
                     }

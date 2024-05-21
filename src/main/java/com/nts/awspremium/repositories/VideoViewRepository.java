@@ -253,7 +253,7 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Query(value = "select * from videoview where timetotal>(1800*vieworder + 1800*vieworder*(select bonus/100 from setting where id=1))  and viewtotal>(vieworder + vieworder*(select bonus/100 from setting where id=1)) and service in(select service from service where mintime=60 and checktime=1)",nativeQuery = true)
     public List<VideoView> getOrderFullTime60m();
-    @Query(value = "select * from videoview where timetotal>(1800*vieworder + 1800*vieworder*(select bonus/100 from setting where id=1))  and viewtotal>(vieworder + vieworder*(select bonus/100 from setting where id=1)) and service in(select service from service where mintime=30 and checktime=1)",nativeQuery = true)
+    @Query(value = "select * from videoview where timetotal>(1800*vieworder + 1800*vieworder*0.1)  and viewtotal>(vieworder + vieworder*0.1) and service in(select service from service where mintime=30 and checktime=1)",nativeQuery = true)
     public List<VideoView> getOrderFullTime30m();
 
     @Query(value = "select * from videoview where timetotal>(900*vieworder + 900*vieworder*(select bonus/100 from setting where id=1))  and viewtotal>(vieworder + vieworder*(select bonus/100 from setting where id=1)) and service in(select service from service where mintime=15 and checktime=1)",nativeQuery = true)
