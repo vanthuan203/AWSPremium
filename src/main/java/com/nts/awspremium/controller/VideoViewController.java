@@ -424,14 +424,14 @@ public class VideoViewController {
                 JSONObject video = (JSONObject) k.next();
                 JSONObject obj = new JSONObject();
                 JSONObject statistics = (JSONObject) video.get("statistics");
-                videoViewHistoryRepository.updateviewend(Integer.parseInt(statistics.get("viewCount").toString()),System.currentTimeMillis(), video.get("id").toString());
+                videoViewHistoryRepository.updateviewendbuffh(Integer.parseInt(statistics.get("viewCount").toString()),System.currentTimeMillis(), video.get("id").toString());
                 videofale.remove(video.get("id").toString());
             } catch (Exception e) {
                 continue;
             }
 
         }
-        videoViewHistoryRepository.updatetimcheckAllServiceError(videofale);
+        videoViewHistoryRepository.updatetimcheckBuffHError(videofale);
         resp.put("status", "true");
         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }

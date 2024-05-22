@@ -38,9 +38,16 @@ public interface VideoViewHistoryRepository extends JpaRepository<VideoViewHisto
     @Modifying
     @Transactional
     @Query(value = "update videoviewhistory set viewend=?1,timecheckbh=?2 where videoid=?3 and timecheckbh=0 and " +
+            "FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')<DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 1 DAY)\n" +
+            "            and FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 2 DAY)",nativeQuery = true)
+    public Integer updateviewend(Integer viewend,Long timecheckbh, String videoid);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update videoviewhistory set viewend=?1,timecheckbh=?2 where videoid=?3 and timecheckbh=0 and " +
             "FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')<DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 3 DAY)\n" +
             "            and FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 4 DAY)",nativeQuery = true)
-    public Integer updateviewend(Integer viewend,Long timecheckbh, String videoid);
+    public Integer updateviewendbuffh(Integer viewend,Long timecheckbh, String videoid);
 
     @Modifying
     @Transactional
@@ -133,10 +140,18 @@ public interface VideoViewHistoryRepository extends JpaRepository<VideoViewHisto
     @Modifying
     @Transactional
     @Query(value = "update videoviewhistory set timecheck=-1 where videoid in(?1) and \n" +
+            "            FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')<DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 1 DAY)\n" +
+            "            and FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 2 DAY)\n" +
+            "            and service in(select service from service where checktime=0) ",nativeQuery = true)
+    public Integer updatetimcheckAllServiceError(List<String> a);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update videoviewhistory set timecheck=-1 where videoid in(?1) and \n" +
             "            FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')<DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 3 DAY)\n" +
             "            and FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 4 DAY)\n" +
             "            and service in(select service from service where checktime=0) ",nativeQuery = true)
-    public Integer updatetimcheckAllServiceError(List<String> a);
+    public Integer updatetimcheckBuffHError(List<String> a);
 
 
 }
