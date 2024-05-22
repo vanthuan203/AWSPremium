@@ -85,8 +85,8 @@ public interface VideoViewHistoryRepository extends JpaRepository<VideoViewHisto
             "            and service in(select service from service where checktime=1) order by timestart asc limit ?1",nativeQuery = true)
     public List<String> getVideoViewHistoriesCheckViewEndCheckTime(Integer limit);
     @Query(value = "select videoid from videoviewhistory where timestart!=0 and timecheck!=-1 and timecheckbh=0 and cancel=0 and \n" +
-            "            FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')<DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 3 DAY)\n" +
-            "            and FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 4 DAY)\n" +
+            "            FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')<DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 1 DAY)\n" +
+            "            and FROM_UNIXTIME((timestart/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>DATE_SUB(DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 14:0:0'),INTERVAL 2 DAY)\n" +
             "            and service in(select service from service where checktime=0) order by timestart asc limit ?1",nativeQuery = true)
     public List<String> getVideoViewHistoriesCheckViewEndAll(Integer limit);
 
