@@ -1269,7 +1269,7 @@ public class VideoCommentController {
                         int check_done=0;
                         if(comments[j].indexOf("|")>0){
                             String[] cmt_reply=comments[j].split("\\|");
-                            if(!arrCmt.contains(cmt_reply[0].trim())){
+                            if(!arrCmt.contains(cmt_reply[0].trim())&&cmt_reply[0].trim().length()>0){
                                 arrCmt.add(cmt_reply[0].trim());
                                 DataComment dataComment = new DataComment();
                                 dataComment.setOrderid(videoComments.get(i).getOrderid());
@@ -1282,17 +1282,18 @@ public class VideoCommentController {
                             }else{
                                 check_done=1;
                             }
-
-                            DataReplyComment dataReplyComment=new DataReplyComment();
-                            dataReplyComment.setComment_id(dataCommentRepository.getByCommentId(videoComments.get(i).getOrderid(),cmt_reply[0].trim()));
-                            dataReplyComment.setOrderid(videoComments.get(i).getOrderid());
-                            dataReplyComment.setReply(cmt_reply[1].trim());
-                            dataReplyComment.setRunning(-1);
-                            dataReplyComment.setCheck_done(check_done);
-                            dataReplyComment.setTimeget(0L);
-                            dataReplyComment.setUsername("");
-                            dataReplyComment.setVps("");
-                            dataReplyCommentRepository.save(dataReplyComment);
+                            if(cmt_reply[1].trim().length()>0){
+                                DataReplyComment dataReplyComment=new DataReplyComment();
+                                dataReplyComment.setComment_id(dataCommentRepository.getByCommentId(videoComments.get(i).getOrderid(),cmt_reply[0].trim()));
+                                dataReplyComment.setOrderid(videoComments.get(i).getOrderid());
+                                dataReplyComment.setReply(cmt_reply[1].trim());
+                                dataReplyComment.setRunning(-1);
+                                dataReplyComment.setCheck_done(check_done);
+                                dataReplyComment.setTimeget(0L);
+                                dataReplyComment.setUsername("");
+                                dataReplyComment.setVps("");
+                                dataReplyCommentRepository.save(dataReplyComment);
+                            }
                         }else{
                             if(!arrCmt.equals(comments[j].trim())) {
 

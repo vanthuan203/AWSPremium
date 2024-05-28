@@ -690,7 +690,7 @@ public class VideoViewController {
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if(hour>=12&&hour<=14){
+        if(hour>=11&&hour<=13){
             resp.put("status", "fail");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
@@ -700,7 +700,7 @@ public class VideoViewController {
             //Integer CountTheadSetRunningByService=videoViewRepository.getCountThreadSetByCheckTimeVN();
             //Integer CountTheadSetRunningByGeo=videoViewRepository.getSumThreadSetByGeo(service.getGeo());
             //Integer CountTheadVPSByGeo=vpsRepository.getSumThreadsByGeo(service.getGeo());
-            if(hour>15?(CountOrderRunningByService==null?(setting.getMaxorderbuffhvn()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningpm())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningpm()):(CountOrderRunningByService==null?(setting.getMaxorderbuffhvn()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningam())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningam())){
+            if(hour>14?(CountOrderRunningByService==null?(setting.getMaxorderbuffhvn()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningpm())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningpm()):(CountOrderRunningByService==null?(setting.getMaxorderbuffhvn()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningam())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhvn()*service.getMax()*setting.getMaxrunningam())){
                 break;
             }
             Integer limitService=limitServiceRepository.getLimitRunningByServiceAndUser(videoViews.get(i).getUser().trim(),videoViews.get(i).getService());
@@ -768,14 +768,14 @@ public class VideoViewController {
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if(hour>=12&&hour<=14){
+        if(hour>=11&&hour<=13){
             resp.put("status", "fail");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
         for (int i = 0; i < videoViews.size(); i++) {
             Service service = serviceRepository.getInfoService(videoViews.get(i).getService());
             Integer CountOrderRunningByService=videoViewRepository.getCountOrderRunningByCheckTimeUS();
-            if(hour>15?(CountOrderRunningByService==null?(setting.getMaxorderbuffhus()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningpm())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningpm()):(CountOrderRunningByService==null?(setting.getMaxorderbuffhus()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningam())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningam())){
+            if(hour>14?(CountOrderRunningByService==null?(setting.getMaxorderbuffhus()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningpm())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningpm()):(CountOrderRunningByService==null?(setting.getMaxorderbuffhus()==0?true:(videoViews.get(i).getVieworder()>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningam())):(CountOrderRunningByService+videoViews.get(i).getVieworder())>=setting.getMaxorderbuffhus()*service.getMax()*setting.getMaxrunningam())){
                 break;
             }
             Integer limitService=limitServiceRepository.getLimitRunningByServiceAndUser(videoViews.get(i).getUser().trim(),videoViews.get(i).getService());
