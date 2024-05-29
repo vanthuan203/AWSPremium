@@ -1464,7 +1464,8 @@ public class HistoryViewController {
                 //histories.get(0).setVideoid("");
                 //histories.get(0).setVps("");
                 //historyRepository.save(histories.get(0));
-                Integer check_duration = historyViewRepository.checkDurationViewByTimecheck(historieId, (long) (duration));
+                //Integer check_duration = historyViewRepository.checkDurationViewByTimecheck(historieId, (long) (duration));
+                Integer check_duration=1;
                 if (check_duration > 0) {
                     HistoryViewSum historySum = new HistoryViewSum();
                     historySum.setVideoid(videoid.trim());
