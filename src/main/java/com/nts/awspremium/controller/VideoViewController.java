@@ -3629,27 +3629,32 @@ public class VideoViewController {
                     checkBH=videoViewRepository.getCountVideoIdNotPending(video.getVideoid());
                 }
                 Service service = serviceRepository.getServiceNoCheckEnabled(video.getService());
+
                 if((service.getChecktime()==0?(System.currentTimeMillis()- video.getEnddate())/1000/60/60>=8:true) && checkBH==0 && checkview==1 && (service.getChecktime()==0?(videoViewHistoryRepository.CheckOrderViewRefund(video.getOrderid())==1):true) && (service.getChecktime()==1?video.getViewend()>-1:true && video.getCancel()!=1) && (service.getChecktime()==1?(video.getTimecheckbh()>0?video.getViewend()<video.getVieworder()+video.getViewstart():true):true ) ){
-                    OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
-                    Request request1 = null;
-                    List<GoogleAPIKey> keys = googleAPIKeyRepository.getAllByState();
-                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=" + keys.get(0).getKey().trim() + "&fields=items(id,statistics(viewCount))&part=statistics&id=" + video.getVideoid()).get().build();
-                    keys.get(0).setCount(keys.get(0).getCount() + 1L);
-                    googleAPIKeyRepository.save(keys.get(0));
-                    Response response1 = client1.newCall(request1).execute();
-                    String resultJson1 = response1.body().string();
-                    Object obj1 = new JSONParser().parse(resultJson1);
-                    JSONObject jsonObject1 = (JSONObject) obj1;
-                    JSONArray items = (JSONArray) jsonObject1.get("items");
-                    Iterator k = items.iterator();
-                    if (items != null || k.hasNext() != false) {
-                        try {
-                            JSONObject videocheck = (JSONObject) k.next();
-                            JSONObject obj = new JSONObject();
-                            JSONObject statistics = (JSONObject) videocheck.get("statistics");
-                            viewcheck=Integer.parseInt(statistics.get("viewCount").toString());
-                        } catch (Exception e) {
+                    try{
+                        OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+                        Request request1 = null;
+                        List<GoogleAPIKey> keys = googleAPIKeyRepository.getAllByState();
+                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=" + keys.get(0).getKey().trim() + "&fields=items(id,statistics(viewCount))&part=statistics&id=" + video.getVideoid()).get().build();
+                        keys.get(0).setCount(keys.get(0).getCount() + 1L);
+                        googleAPIKeyRepository.save(keys.get(0));
+                        Response response1 = client1.newCall(request1).execute();
+                        String resultJson1 = response1.body().string();
+                        Object obj1 = new JSONParser().parse(resultJson1);
+                        JSONObject jsonObject1 = (JSONObject) obj1;
+                        JSONArray items = (JSONArray) jsonObject1.get("items");
+                        Iterator k = items.iterator();
+                        if (items != null || k.hasNext() != false) {
+                            try {
+                                JSONObject videocheck = (JSONObject) k.next();
+                                JSONObject obj = new JSONObject();
+                                JSONObject statistics = (JSONObject) videocheck.get("statistics");
+                                viewcheck=Integer.parseInt(statistics.get("viewCount").toString());
+                            } catch (Exception e) {
+                            }
                         }
+                    }catch (Exception e){
+                        continue;
                     }
                 }
                 if((((viewcheck!=-1 || checkview<=0) && viewcheck<video.getVieworder()+video.getViewstart())) && ((service.getChecktime()==1?video.getViewend()>-1:true) && video.getCancel()!=1) && checkBH==0){
@@ -3729,6 +3734,12 @@ public class VideoViewController {
             resp.put("videoview", jsonArray);
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            System.out.println(stackTraceElement.getMethodName());
+            System.out.println(stackTraceElement.getLineNumber());
+            System.out.println(stackTraceElement.getClassName());
+            System.out.println(stackTraceElement.getFileName());
+            System.out.println("Error : " + e.getMessage());
             resp.put("status", "fail");
             resp.put("message", e.getMessage());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
