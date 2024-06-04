@@ -1282,7 +1282,7 @@ public class VideoCommentController {
                             }else{
                                 check_done=1;
                             }
-                            if(cmt_reply[1].trim().length()>0){
+                            if(cmt_reply.length>1){
                                 DataReplyComment dataReplyComment=new DataReplyComment();
                                 dataReplyComment.setComment_id(dataCommentRepository.getByCommentId(videoComments.get(i).getOrderid(),cmt_reply[0].trim()));
                                 dataReplyComment.setOrderid(videoComments.get(i).getOrderid());
