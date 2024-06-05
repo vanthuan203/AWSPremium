@@ -69,7 +69,7 @@ public class WebTrafficController {
                 resp.put("webtraffic", "The link is not accessible!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             Service service = serviceRepository.getServiceNoCheckEnabled(webTraffic.getService());
 
             if (service.getType().equals("Special") && webTraffic.getKeywords().trim().length() == 0) {
@@ -424,7 +424,7 @@ public class WebTrafficController {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<String> trafficBuff;
             List<String> traffic24h;
             List<WebTraffic> webTraffics = webTrafficRepository.getAllOrderTraffic();

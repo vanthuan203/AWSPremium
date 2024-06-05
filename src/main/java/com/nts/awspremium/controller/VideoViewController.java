@@ -130,7 +130,7 @@ public class VideoViewController {
                 resp.put("videoview", "Fail check video!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             while (k.hasNext()) {
                 try {
                     JSONObject video = (JSONObject) k.next();
@@ -296,7 +296,7 @@ public class VideoViewController {
                 resp.put("videoview", "Fail check video!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             while (k.hasNext()) {
                 try {
                     JSONObject video = (JSONObject) k.next();
@@ -588,7 +588,7 @@ public class VideoViewController {
         }
         JSONArray jsonArray = new JSONArray();
         Iterator k = items.iterator();
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         while (k.hasNext()) {
             try {
                 JSONObject video = (JSONObject) k.next();
@@ -612,7 +612,7 @@ public class VideoViewController {
     ResponseEntity<String> updateRunningOrder701Cron() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> videoViews = videoViewRepository.getAllOrderPending701();
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -646,7 +646,7 @@ public class VideoViewController {
     ResponseEntity<String> updateRunningOrder703CronOff() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> videoViews = videoViewRepository.getAllOrderPending701();
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -686,7 +686,7 @@ public class VideoViewController {
     public ResponseEntity<String> updateRunningOrderBuffHVN() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> videoViews = videoViewRepository.getAllOrderPendingBuffHVN();
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -764,7 +764,7 @@ public class VideoViewController {
     public ResponseEntity<String> updateRunningOrderBuffHUS() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> videoViews = videoViewRepository.getAllOrderPendingBuffHUS();
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -808,7 +808,7 @@ public class VideoViewController {
             videoViews = videoViewRepository.getAllOrderPending701(vieworder,limit);
         }
 
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         for (int i = 0; i < videoViews.size(); i++) {
             Service service = serviceRepository.getInfoService(videoViews.get(i).getService());
             if(limituser==1){
@@ -997,7 +997,7 @@ public class VideoViewController {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<String> viewBuff;
             List<String> viewBuff24h;
             List<VideoView> videoViewList = videoViewRepository.getAllOrderView();
@@ -1156,7 +1156,7 @@ public class VideoViewController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1360,7 +1360,7 @@ public class VideoViewController {
             int total_refill = 0;
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoCheckBH(autoRefill.getStart() * 24, autoRefill.getEnd() * 24, autoRefill.getLimitorder());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             videoViewHistoryRepository.updatetimchecknomaxid();
             for (int i = 0; i < videoViewHistories.size(); i++) {
@@ -1540,7 +1540,7 @@ public class VideoViewController {
             int total_refill = 0;
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoCheckBH(autoRefill.getStart(), autoRefill.getEnd(), autoRefill.getLimitorder());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             videoViewHistoryRepository.updatetimchecknomaxid();
             for (int i = 0; i < videoViewHistories.size(); i++) {
@@ -1715,7 +1715,7 @@ public class VideoViewController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1879,7 +1879,7 @@ public class VideoViewController {
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByOrderId(orderid);
             if (videoViewHistories.size() == 0) {
@@ -2142,7 +2142,7 @@ public class VideoViewController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -2227,7 +2227,7 @@ public class VideoViewController {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoIdNoMaxOrderId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
             JSONObject obj = new JSONObject();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 resp.put("videoview", "Lịch sử đơn trống!");
@@ -2406,7 +2406,7 @@ public class VideoViewController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -2535,7 +2535,7 @@ public class VideoViewController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoIdNoMaxOrderId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -2650,7 +2650,7 @@ public class VideoViewController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoIdNoMaxOrderIdCancel0(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 resp.put("videoview", "Lịch sử đơn trống!");
@@ -4049,7 +4049,7 @@ public class VideoViewController {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         List<Admin> admins = adminRepository.FindByToken(Authorization.trim());
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         if (Authorization.length() == 0 || admins.size() == 0) {
             resp.put("status", "fail");
             resp.put("message", "Token expired");

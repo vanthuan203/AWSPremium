@@ -174,7 +174,7 @@ public class ApiCmtController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
                 }
-                Setting setting = settingRepository.getReferenceById(1L);
+                Setting setting = settingRepository.getSettingId1();
                 if (videoCommentRepository.getCountOrderByUser(admins.get(0).getUsername().trim()) >= admins.get(0).getMaxorder() || (service.getGeo().equals("vn") && settingRepository.getMaxOrderCmtVN() == 0) ||
                         (service.getGeo().equals("us") && settingRepository.getMaxOrderCmtUS() == 0) || service.getMaxorder() <= videoCommentRepository.getCountOrderByService(data.getService())) {
                     resp.put("error", "System busy try again");

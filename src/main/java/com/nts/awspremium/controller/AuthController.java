@@ -20,6 +20,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -321,25 +322,37 @@ public class AuthController {
 
     @GetMapping(path = "updateRedirectCron",produces = "application/hal+json;charset=utf8")
     public ResponseEntity<String> updateRedirectCron(){
-        Setting setting = settingRepository.getReferenceById(1L);
         JSONObject resp = new JSONObject();
-        if(historyViewRepository.getThreadRunningViewVN()<(videoViewRepository.getCountThreadViewVN()==null?0:videoViewRepository.getCountThreadViewVN())*(setting.getThreadmin()/100F)){
-            settingRepository.updateRedirectVN(settingRepository.getRedirectVN()==0?0:(settingRepository.getRedirectVN()-100));
-        }else{
-            settingRepository.updateRedirectVN(settingRepository.getRedirectVN()>=1000?1000:(settingRepository.getRedirectVN()+100));
+        try{
+            Setting setting = settingRepository.getSettingId1();
+            if(historyViewRepository.getThreadRunningViewVN()<(videoViewRepository.getCountThreadViewVN()==null?0:videoViewRepository.getCountThreadViewVN())*(setting.getThreadmin()/100F)){
+                settingRepository.updateRedirectVN(settingRepository.getRedirectVN()==0?0:(settingRepository.getRedirectVN()-100));
+            }else{
+                settingRepository.updateRedirectVN(settingRepository.getRedirectVN()>=1000?1000:(settingRepository.getRedirectVN()+100));
+            }
+            if(historyViewRepository.getThreadRunningViewUS()<(videoViewRepository.getCountThreadViewUS()==null?0:videoViewRepository.getCountThreadViewUS())*(setting.getThreadmin()/100F)){
+                settingRepository.updateRedirectUS(settingRepository.getRedirectUS()==0?0:(settingRepository.getRedirectUS()-100));
+            }else if(historyViewRepository.getThreadRunningViewUS()>(videoViewRepository.getCountThreadViewUS()==null?0:videoViewRepository.getCountThreadViewUS())){
+                settingRepository.updateRedirectUS(settingRepository.getRedirectUS()>=1000?1000:(settingRepository.getRedirectUS()+100));
+            }
+            int maxrunningVN=videoViewRepository.getMaxRunningBuffHVN()==null?0:videoViewRepository.getMaxRunningBuffHVN();
+            int maxrunningUS=videoViewRepository.getMaxRunningBuffHUS()==null?0:videoViewRepository.getMaxRunningBuffHUS();
+            settingRepository.updateMaxRunningBuffHVN(maxrunningVN<=0?0:maxrunningVN);
+            settingRepository.updateMaxRunningBuffHUS(maxrunningUS<=0?0:maxrunningUS);
+            videoViewRepository.speedup_threads();
+            resp.put("redirect=",true);
+            return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
+        }catch (Exception e){
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            System.out.println(stackTraceElement.getMethodName());
+            System.out.println(stackTraceElement.getLineNumber());
+            System.out.println(stackTraceElement.getClassName());
+            System.out.println(stackTraceElement.getFileName());
+            System.out.println("Error : " + e.getMessage());
+            resp.put("redirect=",false);
+            return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
         }
-        if(historyViewRepository.getThreadRunningViewUS()<(videoViewRepository.getCountThreadViewUS()==null?0:videoViewRepository.getCountThreadViewUS())*(setting.getThreadmin()/100F)){
-            settingRepository.updateRedirectUS(settingRepository.getRedirectUS()==0?0:(settingRepository.getRedirectUS()-100));
-        }else if(historyViewRepository.getThreadRunningViewUS()>(videoViewRepository.getCountThreadViewUS()==null?0:videoViewRepository.getCountThreadViewUS())){
-            settingRepository.updateRedirectUS(settingRepository.getRedirectUS()>=1000?1000:(settingRepository.getRedirectUS()+100));
-        }
-        int maxrunningVN=videoViewRepository.getMaxRunningBuffHVN()==null?0:videoViewRepository.getMaxRunningBuffHVN();
-        int maxrunningUS=videoViewRepository.getMaxRunningBuffHUS()==null?0:videoViewRepository.getMaxRunningBuffHUS();
-        settingRepository.updateMaxRunningBuffHVN(maxrunningVN<=0?0:maxrunningVN);
-        settingRepository.updateMaxRunningBuffHUS(maxrunningUS<=0?0:maxrunningUS);
-        videoViewRepository.speedup_threads();
-        resp.put("redirect=",true);
-        return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
+
     }
 
     @GetMapping(path = "autorefill",produces = "application/hal+json;charset=utf8")

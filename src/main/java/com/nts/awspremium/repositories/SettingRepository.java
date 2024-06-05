@@ -59,4 +59,7 @@ public interface SettingRepository  extends JpaRepository<Setting,Long> {
     public Integer getMaxOrderUS();
     @Query(value = "SELECT * FROM setting where id=1",nativeQuery = true)
     public List<Setting> getSetting();
+
+    @Query(value = "SELECT * FROM setting where id=1 limit 1",nativeQuery = true)
+    public Setting getSettingId1();
 }

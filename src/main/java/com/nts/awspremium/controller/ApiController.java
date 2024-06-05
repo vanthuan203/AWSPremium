@@ -182,7 +182,7 @@ public class ApiController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
                 }
-                Setting setting = settingRepository.getReferenceById(1L);
+                Setting setting = settingRepository.getSettingId1();
                 /*
                 if(service.getLive()==1){
                     if((int)(vpsRepository.getSumThreadLive()*0.8)+10000<=videoViewRepository.getSumThreadLive()+data.getQuantity()){

@@ -184,7 +184,7 @@ public class ApiTikTokController {
                     resp.put("error", "Link is null");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                Setting setting = settingRepository.getReferenceById(1L);
+                Setting setting = settingRepository.getSettingId1();
                 if (service.getType().equals("Special") && data.getList().length() == 0) {
                     resp.put("error", "Keyword is null");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

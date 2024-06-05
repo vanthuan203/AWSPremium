@@ -97,7 +97,7 @@ public class ChannelTikTokController {
                 resp.put("channel_tiktok", "Link is null");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             String tiktok_id= TikTokApi.getTiktokId(channelTiktok.getTiktok_id().trim());
             if (tiktok_id == null) {
                 resp.put("channel_tiktok", "Cant filter tiktok_id from link");
@@ -439,7 +439,7 @@ public class ChannelTikTokController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -643,7 +643,7 @@ public class ChannelTikTokController {
             int total_refill = 0;
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoCheckBH(autoRefill.getStart() * 24, autoRefill.getEnd() * 24, autoRefill.getLimitorder());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             videoViewHistoryRepository.updatetimchecknomaxid();
             for (int i = 0; i < videoViewHistories.size(); i++) {
@@ -823,7 +823,7 @@ public class ChannelTikTokController {
             int total_refill = 0;
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoCheckBH(autoRefill.getStart(), autoRefill.getEnd(), autoRefill.getLimitorder());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             videoViewHistoryRepository.updatetimchecknomaxid();
             for (int i = 0; i < videoViewHistories.size(); i++) {
@@ -998,7 +998,7 @@ public class ChannelTikTokController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1162,7 +1162,7 @@ public class ChannelTikTokController {
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByOrderId(orderid);
             if (videoViewHistories.size() == 0) {
@@ -1391,7 +1391,7 @@ public class ChannelTikTokController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1476,7 +1476,7 @@ public class ChannelTikTokController {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoIdNoMaxOrderId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
             JSONObject obj = new JSONObject();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 resp.put("videoview", "Lịch sử đơn trống!");
@@ -1658,7 +1658,7 @@ public class ChannelTikTokController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1787,7 +1787,7 @@ public class ChannelTikTokController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoIdNoMaxOrderId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1902,7 +1902,7 @@ public class ChannelTikTokController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoIdNoMaxOrderIdCancel0(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 resp.put("videoview", "Lịch sử đơn trống!");
@@ -2746,7 +2746,7 @@ public class ChannelTikTokController {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         List<Admin> admins = adminRepository.FindByToken(Authorization.trim());
-        Setting setting = settingRepository.getReferenceById(1L);
+        Setting setting = settingRepository.getSettingId1();
         if (Authorization.length() == 0 || admins.size() == 0) {
             resp.put("status", "fail");
             resp.put("message", "Token expired");

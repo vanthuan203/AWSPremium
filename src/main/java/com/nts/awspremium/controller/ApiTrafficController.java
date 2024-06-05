@@ -196,7 +196,7 @@ public class ApiTrafficController {
                     resp.put("error", "The link is not accessible!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                Setting setting = settingRepository.getReferenceById(1L);
+                Setting setting = settingRepository.getSettingId1();
                 if (videoViewRepository.getCountOrderByUser(admins.get(0).getUsername().trim()) >= admins.get(0).getMaxorder()) {
                     resp.put("error", "System busy try again");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

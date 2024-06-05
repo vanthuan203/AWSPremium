@@ -411,7 +411,7 @@ public class VideoCommentController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -596,7 +596,7 @@ public class VideoCommentController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -740,7 +740,7 @@ public class VideoCommentController {
         try {
             List<VideoViewHistory> videoViewHistories = videoViewHistoryRepository.getVideoBHByVideoId(videoid.getVideoid().trim());
             JSONArray jsonArray = new JSONArray();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             List<Admin> admins = adminRepository.GetAdminByUser("baohanh01@gmail.com");
             if (videoViewHistories.size() == 0) {
                 long orderid = 0L;
@@ -1214,7 +1214,7 @@ public class VideoCommentController {
         try {
             //historyRepository.updateHistoryByAccount();
             List<VideoComment> videoComments = videoCommentRepository.getOrderThreadNull();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
                 String[] comments = videoComments.get(i).getListcomment().split("\n");
                 for (int j = 0; j < comments.length; j++) {
@@ -1255,7 +1255,7 @@ public class VideoCommentController {
         try {
             //historyRepository.updateHistoryByAccount();
             List<VideoComment> videoComments = videoCommentRepository.getOrderReplyThreadNull();
-            Setting setting = settingRepository.getReferenceById(1L);
+            Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
                 String[] comments = videoComments.get(i).getListcomment().split("\n");
