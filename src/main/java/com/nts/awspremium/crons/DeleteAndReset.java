@@ -34,11 +34,17 @@ public class DeleteAndReset {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(60000);
+                                Thread.sleep(30000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             historyCommentController.delcommentdone();
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            historyCommentController.delthreadcron();
                             try {
                                 Thread.sleep(5000);
                             } catch (InterruptedException e) {
