@@ -299,7 +299,7 @@ public class VpsController {
         }
     }
     @GetMapping(value = "resetBasDailyByCron",produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> resetBasDailyByCron(@RequestParam(defaultValue = "0") Integer limit){
+    public ResponseEntity<String> resetBasDailyByCron(@RequestParam(defaultValue = "0") Integer limit){
         JSONObject resp=new JSONObject();
         try{
             vpsRepository.resetBasDailyByCron(System.currentTimeMillis(),limit);
@@ -330,7 +330,7 @@ public class VpsController {
     }
 
     @GetMapping(value = "resetBasNoCheckByCron",produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> resetBasNoCheckByCron(@RequestParam(defaultValue = "0") Integer limit,@RequestParam(defaultValue = "0") Integer vpsreset){
+    public ResponseEntity<String> resetBasNoCheckByCron(@RequestParam(defaultValue = "0") Integer limit, @RequestParam(defaultValue = "0") Integer vpsreset){
         JSONObject resp=new JSONObject();
         try{
             vpsRepository.resetBasByCron(vpsreset,System.currentTimeMillis(),limit);

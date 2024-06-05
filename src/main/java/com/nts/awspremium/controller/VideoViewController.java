@@ -383,7 +383,7 @@ public class VideoViewController {
     }
 
     @GetMapping(value = "/updateViewEndCheckTimecron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateViewEndCheckTimecron() throws IOException, ParseException {
+    public ResponseEntity<String> updateViewEndCheckTimecron() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<String> listvideo = videoViewHistoryRepository.getVideoViewHistoriesCheckViewEndCheckTime(25);
         if (listvideo.size() == 0) {
@@ -436,7 +436,7 @@ public class VideoViewController {
         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }
     @GetMapping(value = "/updateViewEnddAllServiceCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateViewEnddAllServiceCron() throws IOException, ParseException {
+    public ResponseEntity<String> updateViewEnddAllServiceCron() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         Calendar calendar = Calendar.getInstance(timeZone);
@@ -496,7 +496,7 @@ public class VideoViewController {
     }
 
     @GetMapping(value = "/updateViewTotalAllServiceCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateViewTotalAllServiceCron(@RequestParam(defaultValue = "8") Integer hour) throws IOException, ParseException {
+    public ResponseEntity<String> updateViewTotalAllServiceCron(@RequestParam(defaultValue = "8") Integer hour) throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<String> listvideo = videoViewHistoryRepository.getVideoViewHistoriesCheckViewUpdate(hour,25);
         if (listvideo.size() == 0) {
@@ -550,7 +550,7 @@ public class VideoViewController {
     }
 
     @GetMapping(value = "/updateRunningOrder", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateRunningOrder() throws IOException, ParseException {
+    public ResponseEntity<String> updateRunningOrder() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> listvideo = videoViewRepository.getAllOrderPending();
         if (listvideo.size() == 0) {
@@ -683,7 +683,7 @@ public class VideoViewController {
     }
 
     @GetMapping(value = "/updateRunningOrderBuffHVN", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateRunningOrderBuffHVN() throws IOException, ParseException {
+    public ResponseEntity<String> updateRunningOrderBuffHVN() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> videoViews = videoViewRepository.getAllOrderPendingBuffHVN();
         Setting setting = settingRepository.getReferenceById(1L);
@@ -761,7 +761,7 @@ public class VideoViewController {
     }
 
     @GetMapping(value = "/updateRunningOrderBuffHUS", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateRunningOrderBuffHUS() throws IOException, ParseException {
+    public ResponseEntity<String> updateRunningOrderBuffHUS() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         List<VideoView> videoViews = videoViewRepository.getAllOrderPendingBuffHUS();
         Setting setting = settingRepository.getReferenceById(1L);
@@ -993,7 +993,7 @@ public class VideoViewController {
     }
 
     @GetMapping(path = "updateorderviewcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateorderviewcron() {
+    public ResponseEntity<String> updateorderviewcron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1030,7 +1030,7 @@ public class VideoViewController {
     }
 
     @GetMapping(path = "updateorderbuffhcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateorderbuffhcron() {
+    public ResponseEntity<String> updateorderbuffhcron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1080,7 +1080,7 @@ public class VideoViewController {
     }
 
     @GetMapping(path = "DeleteOrderNotValidCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> DeleteOrderNotValidCron() {
+    public ResponseEntity<String> DeleteOrderNotValidCron() {
         JSONObject resp = new JSONObject();
         try {
             List<VideoView> videoViews=videoViewRepository.getAllOrderCheckCancel();
@@ -3159,7 +3159,7 @@ public class VideoViewController {
 
 
     @GetMapping(path = "updatechanneldonecron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updatechanneldonecron() {
+    public ResponseEntity<String> updatechanneldonecron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -3206,7 +3206,7 @@ public class VideoViewController {
     }
 
     @GetMapping(path = "updateThreadByThreadSet", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateThreadByThreadSet() {
+    public ResponseEntity<String> updateThreadByThreadSet() {
         JSONObject resp = new JSONObject();
         Random ran = new Random();
         try {
@@ -3327,7 +3327,7 @@ public class VideoViewController {
         }
     }
     @GetMapping(path = "updateorderbuffh30mdonecron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateorderbuffh30mdonecron() {
+    public ResponseEntity<String> updateorderbuffh30mdonecron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -4099,4 +4099,5 @@ public class VideoViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }

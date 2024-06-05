@@ -859,7 +859,7 @@ public class ProxySubController {
     }
 
     @GetMapping(value = "/resetproxyLiveByCron", produces = "application/hal_json;charset=utf8")
-    ResponseEntity<String> resetproxyByCron() {
+    public ResponseEntity<String> resetproxyLiveByCron() {
         JSONObject resp = new JSONObject();
         try{
             proxyRepository.ResetProxyThan1h();
@@ -1224,4 +1224,5 @@ public class ProxySubController {
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
         }
     }
+
 }

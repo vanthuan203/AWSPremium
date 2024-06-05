@@ -377,7 +377,7 @@ public class WebTrafficController {
 
 
     @GetMapping(path = "updateTrafficDoneCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateTrafficDoneCron() {
+    public ResponseEntity<String> updateTrafficDoneCron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -420,7 +420,7 @@ public class WebTrafficController {
         }
     }
     @GetMapping(path = "updatTrafficedCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updatTrafficedCron() {
+    public ResponseEntity<String> updatTrafficedCron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {

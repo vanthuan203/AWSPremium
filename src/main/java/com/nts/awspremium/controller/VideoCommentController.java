@@ -345,7 +345,7 @@ public class VideoCommentController {
     }
 
     @GetMapping(path = "updateorderviewcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateorderviewcron() {
+    public ResponseEntity<String> updateorderviewcron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1115,7 +1115,7 @@ public class VideoCommentController {
 
 
     @GetMapping(path = "updatechanneldonecron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updatechanneldonecron() {
+    public ResponseEntity<String> updatechanneldonecron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1161,7 +1161,7 @@ public class VideoCommentController {
     }
 
     @GetMapping(path = "updateVideoReplyDoneCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateVideoReplyDoneCron() {
+    public ResponseEntity<String> updateVideoReplyDoneCron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1208,7 +1208,7 @@ public class VideoCommentController {
 
 
     @GetMapping(path = "updateStateComment", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateStateComment() {
+    public ResponseEntity<String> updateStateComment() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1217,7 +1217,6 @@ public class VideoCommentController {
             Setting setting = settingRepository.getReferenceById(1L);
             for (int i = 0; i < videoComments.size(); i++) {
                 String[] comments = videoComments.get(i).getListcomment().split("\n");
-                System.out.println(comments);
                 for (int j = 0; j < comments.length; j++) {
                     if (comments[j].length() == 0) {
                         continue;
@@ -1250,7 +1249,7 @@ public class VideoCommentController {
     }
 
     @GetMapping(path = "updateStateReply", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateStateReply() {
+    public ResponseEntity<String> updateStateReply() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
@@ -1385,7 +1384,7 @@ public class VideoCommentController {
     }
 
     @GetMapping(path = "DeleteOrderNotValidCron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> DeleteOrderNotValidCron() {
+    public ResponseEntity<String> DeleteOrderNotValidCron() {
         JSONObject resp = new JSONObject();
         try {
             List<OrderCommentRunning> orderRunnings = videoCommentRepository.getOrderCancelThan2h();
@@ -1758,4 +1757,5 @@ public class VideoCommentController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }

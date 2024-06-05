@@ -1560,7 +1560,7 @@ public class HistoryViewController {
     }
 
     @GetMapping(value = "delthreadcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> delthreadcron() {
+    public ResponseEntity<String> delthreadcron() {
         JSONObject resp = new JSONObject();
         try {
             historyViewRepository.resetThreadThan90mcron();
@@ -1576,7 +1576,7 @@ public class HistoryViewController {
     }
 
     @GetMapping(value = "delhistorysumcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> delhistorysumcron() {
+    public ResponseEntity<String> delhistorysumcron() {
         JSONObject resp = new JSONObject();
         try {
             historyViewSumRepository.DelHistorySum();
@@ -1674,4 +1674,5 @@ public class HistoryViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }

@@ -320,7 +320,7 @@ public class AuthController {
     }
 
     @GetMapping(path = "updateRedirectCron",produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateRedirectCron(){
+    public ResponseEntity<String> updateRedirectCron(){
         Setting setting = settingRepository.getReferenceById(1L);
         JSONObject resp = new JSONObject();
         if(historyViewRepository.getThreadRunningViewVN()<(videoViewRepository.getCountThreadViewVN()==null?0:videoViewRepository.getCountThreadViewVN())*(setting.getThreadmin()/100F)){

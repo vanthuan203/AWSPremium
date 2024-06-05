@@ -15,7 +15,7 @@ public interface HistoryCommentSumRepository extends JpaRepository<HistoryCommen
     public Integer checkCommentIdTrue(Long commentid);
 
     @Transactional
-    @Query(value = "DELETE FROM historycommentsum where orderid not in (select orderid from videocomment) limit 500000",nativeQuery = true)
+    @Query(value = "DELETE FROM historycommentsum where orderid not in (select orderid from videocomment) limit 50000",nativeQuery = true)
     public void DelHistorySum();
 
 }

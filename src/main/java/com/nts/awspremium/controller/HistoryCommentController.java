@@ -1383,7 +1383,7 @@ public class HistoryCommentController {
 
 
     @GetMapping(value = "delcommentdone", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> delcommentdone() {
+    public ResponseEntity<String> delcommentdone() {
         JSONObject resp = new JSONObject();
         try {
             dataCommentRepository.deleteCommentDoneByCron();
@@ -1465,6 +1465,20 @@ public class HistoryCommentController {
         try {
             historyViewRepository.deleteAllViewThan24h();
             resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(value = "delhistorysumcron", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> delhistorysumcron() {
+        JSONObject resp = new JSONObject();
+        try {
+            historyCommentSumRepository.DelHistorySum();
+            resp.put("status", "true");
+            resp.put("message", "Delete history thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");

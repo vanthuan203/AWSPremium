@@ -271,7 +271,7 @@ public class HistoryTrafficController {
     }
 
     @GetMapping(value = "delthreadcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> delthreadcron() {
+    public ResponseEntity<String> delthreadcron() {
         JSONObject resp = new JSONObject();
         try {
             historyTrafficRepository.resetThreadThan30mcron();
