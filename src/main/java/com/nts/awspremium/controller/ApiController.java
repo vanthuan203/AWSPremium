@@ -335,8 +335,8 @@ public class ApiController {
                         if(duration_min<service.getMintime()){
                             thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(duration_min)*2)):(int)(data.getQuantity()/2.6);
                         }else{
-                            //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()==1?10:service.getMaxtime())*2)):(int)(data.getQuantity()/2.6);
-                            thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime())*2)):(int)(data.getQuantity()/2.6);
+                            thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()==1?2:service.getMaxtime())*2)):(int)(data.getQuantity()/2.6);
+                            //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime())*2)):(int)(data.getQuantity()/2.6);
                         }
                         if (thread_set <= setting.getMaxthread()){
                             videoViewhnew.setThreadset(thread_set);
