@@ -486,7 +486,7 @@ public class HistoryViewController {
                         resp.put("video_duration", videos.get(0).getDuration());
                     }
                 }
-                if(((Integer.parseInt(resp.get("video_duration").toString())<6||Integer.parseInt(resp.get("video_duration").toString())>20))&&service.getMaxtime()==1){
+                if(((Integer.parseInt(resp.get("video_duration").toString())<6||Integer.parseInt(resp.get("video_duration").toString())>20))&&service.getMintime()==0){
                     resp.put("video_duration",ran.nextInt(14)+6);
                 }
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
