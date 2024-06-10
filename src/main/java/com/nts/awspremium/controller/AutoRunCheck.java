@@ -39,7 +39,7 @@ public class AutoRunCheck {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            orderSpeedTrue.setValue(videoViewRepository.getListOrderSpeedTrueThreadON());
+                            orderSpeedTrue.setValue(videoViewRepository.getListOrderSpeedTrueThreadONTEST());
                         } catch (Exception e) {
                             continue;
                         }
