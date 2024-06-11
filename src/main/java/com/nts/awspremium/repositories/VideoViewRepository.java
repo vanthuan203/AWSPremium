@@ -252,6 +252,9 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     public void updateThreadByThreadSet30m();
     @Query(value = "select * from videoview where viewtotal>(vieworder + vieworder*(select bonus/100 from setting where id=1)) and service in(select service from service where checktime=0 and live=0)",nativeQuery = true)
     public List<VideoView> getOrderFullView();
+    @Query(value = "select * from videoview where viewtotal>(vieworder + vieworder*(CASE WHEN service not in(700,200) THEN (SELECT bonus / 100 FROM setting WHERE id = 1) ELSE 0 END)) and service in(select service from service where checktime=0 and live=0)",nativeQuery = true)
+    public List<VideoView> getOrderFullViewTEST();
+
 
     @Query(value = "select * from videoview where viewtotal>(vieworder + vieworder*(select bonus/100 from setting where id=1)) and service in(select service from service where live=1) and round((UNIX_TIMESTAMP()-timestart/1000)/60)>=(minstart+5)",nativeQuery = true)
     public List<VideoView> getOrderFullLive();

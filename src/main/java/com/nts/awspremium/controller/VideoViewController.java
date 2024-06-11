@@ -3164,7 +3164,7 @@ public class VideoViewController {
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
             //historyRepository.updateHistoryByAccount();
-            List<VideoView> videoBuffh = videoViewRepository.getOrderFullView();
+            List<VideoView> videoBuffh = videoViewRepository.getOrderFullViewTEST();
             for (int i = 0; i < videoBuffh.size(); i++) {
                 Long enddate = System.currentTimeMillis();
 
