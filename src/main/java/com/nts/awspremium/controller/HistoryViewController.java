@@ -699,6 +699,7 @@ public class HistoryViewController {
                             histories.get(0).setChannelid(videos.get(0).getChannelid());
                         }else{
                             histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                             historyViewRepository.save(histories.get(0));
                             resp.put("status", "fail");
                             resp.put("fail", "video");
@@ -725,6 +726,7 @@ public class HistoryViewController {
                         histories.get(0).setChannelid(videos.get(0).getChannelid());
                     }else{
                         histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                         historyViewRepository.save(histories.get(0));
                         resp.put("status", "fail");
                         resp.put("fail", "video");
