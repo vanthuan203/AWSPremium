@@ -689,7 +689,7 @@ public class HistoryViewController {
                         histories.get(0).setOrderid(videos.get(0).getOrderid());
                         histories.get(0).setChannelid(videos.get(0).getChannelid());
                     }else{
-                        videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderSpeedTrue.getValue());
+                        /*videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderSpeedTrue.getValue());
                         if(videos.size()>0){
                             geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
                             histories.get(0).setGeo_rand(geo_rand);
@@ -698,13 +698,15 @@ public class HistoryViewController {
                             histories.get(0).setOrderid(videos.get(0).getOrderid());
                             histories.get(0).setChannelid(videos.get(0).getChannelid());
                         }else{
+
+                         */
                             histories.get(0).setTimeget(System.currentTimeMillis());
                             historyViewRepository.save(histories.get(0));
                             resp.put("status", "fail");
                             resp.put("fail", "video");
                             resp.put("message", "Không còn video để view!");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                        }
+                       // }
                     }
                 }
             } else {
@@ -715,7 +717,7 @@ public class HistoryViewController {
                     histories.get(0).setOrderid(videos.get(0).getOrderid());
                     histories.get(0).setChannelid(videos.get(0).getChannelid());
                 } else {
-                    videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
+                    /*videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
                     if(videos.size()>0){
                         geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
                         histories.get(0).setGeo_rand(geo_rand);
@@ -724,13 +726,15 @@ public class HistoryViewController {
                         histories.get(0).setOrderid(videos.get(0).getOrderid());
                         histories.get(0).setChannelid(videos.get(0).getChannelid());
                     }else{
+
+                     */
                         histories.get(0).setTimeget(System.currentTimeMillis());
                         historyViewRepository.save(histories.get(0));
                         resp.put("status", "fail");
                         resp.put("fail", "video");
                         resp.put("message", "Không còn video để view!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                    }
+                    //}
                 }
             }
             String[] proxy = new String[0];
