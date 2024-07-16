@@ -325,6 +325,13 @@ public class HistoryViewController {
         Random ran = new Random();
         try {
             Thread.sleep(ran.nextInt(1000));
+
+            if(ran.nextInt(100)<60){
+                resp.put("status", "fail");
+                resp.put("message", "Bỏ qua nhiệm vụ");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+
             Long historieId = historyViewRepository.getId(username);
             List<VideoView> videos = null;
             if (historieId == null) {
