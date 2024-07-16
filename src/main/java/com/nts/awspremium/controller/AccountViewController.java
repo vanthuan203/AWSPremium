@@ -192,6 +192,7 @@ public class AccountViewController {
                                     history.setProxy(account.get(0).getProxy());
                                     history.setTypeproxy((account.get(0).getProxy().split(":"))[0]);
                                     history.setRunning(0);
+                                    history.setTask_done(0);
                                     history.setVps(vps);
                                     history.setVideoid("");
                                     history.setOrderid(0L);
@@ -207,6 +208,7 @@ public class AccountViewController {
                                     history.setProxy(account.get(0).getProxy());
                                     history.setTypeproxy((account.get(0).getProxy().split(":"))[0]);
                                     history.setRunning(0);
+                                    history.setTask_done(0);
                                     history.setVps(vps);
                                     history.setVideoid("");
                                     history.setOrderid(0L);
@@ -222,6 +224,7 @@ public class AccountViewController {
                                 histories.get(0).setProxy(account.get(0).getProxy());
                                 histories.get(0).setTypeproxy((account.get(0).getProxy().split(":"))[0]);
                                 histories.get(0).setRunning(0);
+                                histories.get(0).setTask_done(0);
                                 histories.get(0).setVps(vps);
                                 histories.get(0).setVideoid("");
                                 histories.get(0).setOrderid(0L);
@@ -271,6 +274,7 @@ public class AccountViewController {
                                 history.setProxy(accountbyVps.get(0).getProxy());
                                 history.setTypeproxy((accountbyVps.get(0).getProxy().split(":"))[0]);
                                 history.setRunning(0);
+                                history.setTask_done(0);
                                 history.setVps(vps);
                                 history.setVideoid("");
                                 history.setOrderid(0L);
@@ -286,6 +290,7 @@ public class AccountViewController {
                                 history.setProxy(accountbyVps.get(0).getProxy());
                                 history.setTypeproxy((accountbyVps.get(0).getProxy().split(":"))[0]);
                                 history.setRunning(0);
+                                history.setTask_done(0);
                                 history.setVps(vps);
                                 history.setVideoid("");
                                 history.setOrderid(0L);
@@ -300,6 +305,7 @@ public class AccountViewController {
                             histories.get(0).setProxy(accountbyVps.get(0).getProxy());
                             histories.get(0).setTypeproxy((accountbyVps.get(0).getProxy().split(":"))[0]);
                             histories.get(0).setRunning(0);
+                            histories.get(0).setTask_done(0);
                             histories.get(0).setVps(vps);
                             histories.get(0).setVideoid("");
                             histories.get(0).setOrderid(0L);

@@ -1419,7 +1419,7 @@ public class HistoryViewController {
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
-                if (historyViewRepository.getListVideoById(historieId).length() > 1304) {
+                if (historyViewRepository.getListVideoById(historieId).length() > 104) {
                     historyViewRepository.updateListVideoNew(videoid, historieId);
                 } else {
                     historyViewRepository.updateListVideo(videoid, historieId);
@@ -1491,6 +1491,7 @@ public class HistoryViewController {
                         } catch (Exception f) {
                         }
                     }
+                    historyViewRepository.update_Task_Done(username.trim());
                     resp.put("status", "true");
                     resp.put("message", "Update view thành công!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

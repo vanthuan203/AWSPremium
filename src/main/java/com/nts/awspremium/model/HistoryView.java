@@ -21,10 +21,12 @@ public class HistoryView {
     private String videoid;
     private Long orderid;
 
+    private Integer task_done=0;
+
     public HistoryView() {
     }
 
-    public HistoryView(Long id, String username, String listvideo, String proxy, String vps, Integer running, String channelid, Long timeget, String typeproxy, String geo, String geo_rand, String videoid, Long orderid) {
+    public HistoryView(Long id, String username, String listvideo, String proxy, String vps, Integer running, String channelid, Long timeget, String typeproxy, String geo, String geo_rand, String videoid, Long orderid, Integer task_done) {
         this.id = id;
         this.username = username;
         this.listvideo = listvideo;
@@ -38,6 +40,15 @@ public class HistoryView {
         this.geo_rand = geo_rand;
         this.videoid = videoid;
         this.orderid = orderid;
+        this.task_done = task_done;
+    }
+
+    public Integer getTask_done() {
+        return task_done;
+    }
+
+    public void setTask_done(Integer task_done) {
+        this.task_done = task_done;
     }
 
     public Long getOrderid() {

@@ -20,7 +20,7 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
     @Query(value = "SELECT id FROM historyview where username=?1 limit 1",nativeQuery = true)
     public Long getId(String username);
 
-    @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 order by length(listvideo),timeget asc limit 1;",nativeQuery = true)
+    @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 order by task_done,timeget asc limit 1;",nativeQuery = true)
     public Long getAccToViewNoCheckProxy(String vps);
 
     @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 order by timeget asc limit 1;",nativeQuery = true)
@@ -48,6 +48,11 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
     @Transactional
     @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0 where vps=?1",nativeQuery = true)
     public Integer resetThreadViewByVps(String vps);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE historyview SET task_done=task_done+1 where username=?1",nativeQuery = true)
+    public Integer update_Task_Done(String username);
 
 
     @Modifying
