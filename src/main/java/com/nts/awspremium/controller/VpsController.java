@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -39,6 +36,9 @@ public class VpsController {
     private AccountRepository accountRepository;
     @Autowired
     private AccountChangeRepository accountChangeRepository;
+
+    @Autowired
+    private AccountChangeDailyRepository accountChangeDailyRepository;
     @GetMapping(value = "list",produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getlist(@RequestHeader(defaultValue = "") String Authorization){
         JSONObject resp=new JSONObject();
@@ -380,6 +380,89 @@ public class VpsController {
                 accountChangeRepository.save(accountChanges.get(0));
             }
             resp.put("status", check);
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }catch(Exception e){
+            resp.put("status","fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "changer_account",produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> changer_account(){
+        JSONObject resp=new JSONObject();
+        try{
+            TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
+            Calendar calendar = Calendar.getInstance(timeZone);
+            int month =1+ calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            resp.put("status", hour);
+            List<Integer> list_time = Arrays.asList(14,18,22,2,6,10);
+            if(!list_time.contains(hour)){
+                resp.put("status", false);
+            }
+            AccountChangeDaily accountChangeDaily=accountChangeDailyRepository.getReferenceById(1L);
+            if(accountChangeDaily.getTime()!=hour){
+                if(accountRepository.checkCountAccChanger(accountChangeDaily.getName())==0){
+                    resp.put("status", false);
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                if(hour==14){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                }else if(hour==18){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),10000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),5000);
+                }else if(hour==22){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                }else if(hour==2){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),3000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),1000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
+                }else if(hour==6){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),4000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),2000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
+                }else if(hour==10){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),2000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
+                }
+                accountChangeDaily.setTime(hour);
+                accountChangeDailyRepository.save(accountChangeDaily);
+
+            }
+
+
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }catch(Exception e){
             resp.put("status","fail");

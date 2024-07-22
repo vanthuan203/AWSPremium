@@ -59,8 +59,14 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "SELECT id  FROM account where (vps is null or vps='' or vps=' ') and running=0 and live=1 and round((endtrial/1000-UNIX_TIMESTAMP())/60/60/24) >=1 order by rand()  limit 1",nativeQuery = true)
     public Long getAccount();
 
+    @Query(value = "call reset_account()",nativeQuery = true)
+    public void call_Reset_Account();
 
+    @Query(value = "call changer_account(?1,?2,?3)",nativeQuery = true)
+    public void changer_account(String geo,String mail,Integer limit);
 
+    @Query(value = "SELECT count(*) FROM account where geo=?1 ",nativeQuery = true)
+    public Integer checkCountAccChanger(String geo);
 
     @Query(value = "SELECT id  FROM account where (vps is null or vps='' or vps=' ') and running=0 and live=1 and geo=?1 order by rand()  limit 1",nativeQuery = true)
     public Long getAccountView(String geo);
@@ -123,6 +129,9 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Transactional
     @Query(value = "UPDATE account SET timecheck=?1,running=1 where id=?2",nativeQuery = true)
     public Integer updateTimecheckById(Long timecheck,Long id);
+
+
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE account SET vps='',running=0 where vps=?1 and INSTR(?2,username)=0",nativeQuery = true)
