@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -413,13 +414,13 @@ public class VpsController {
                     Thread.sleep(1000);
                     accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),3000);
                 }else if(hour==18){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),10000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),13000);
                     Thread.sleep(1000);
                     accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
                     Thread.sleep(1000);
@@ -427,15 +428,15 @@ public class VpsController {
                 }else if(hour==22){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),3000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),2000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
                 }else if(hour==2){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),3000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),2000);
                     Thread.sleep(1000);
                     accountRepository.changer_account("us",accountChangeDaily.getName(),1000);
                     Thread.sleep(1000);
@@ -443,9 +444,9 @@ public class VpsController {
                 }else if(hour==6){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),4000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),3000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),2000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),1000);
                     Thread.sleep(1000);
                     accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
                 }else if(hour==10){
@@ -453,7 +454,7 @@ public class VpsController {
                     Thread.sleep(1000);
                     accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),2000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
                     Thread.sleep(1000);
                     accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
                 }
@@ -461,10 +462,14 @@ public class VpsController {
                 accountChangeDailyRepository.save(accountChangeDaily);
 
             }
-
-
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }catch(Exception e){
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            System.out.println(stackTraceElement.getMethodName());
+            System.out.println(stackTraceElement.getLineNumber());
+            System.out.println(stackTraceElement.getClassName());
+            System.out.println(stackTraceElement.getFileName());
+            System.out.println("Error : " + e.getMessage());
             resp.put("status","fail");
             resp.put("message", e.getMessage());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);

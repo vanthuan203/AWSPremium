@@ -60,10 +60,10 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     public Long getAccount();
 
     @Query(value = "call reset_account()",nativeQuery = true)
-    public void call_Reset_Account();
+    public Integer call_Reset_Account();
 
     @Query(value = "call changer_account(?1,?2,?3)",nativeQuery = true)
-    public void changer_account(String geo,String mail,Integer limit);
+    public Integer changer_account(String geo,String mail,Integer limit);
 
     @Query(value = "SELECT count(*) FROM account where geo=?1 ",nativeQuery = true)
     public Integer checkCountAccChanger(String geo);
