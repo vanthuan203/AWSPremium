@@ -400,7 +400,7 @@ public class VpsController {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             resp.put("status", hour);
-            List<Integer> list_time = Arrays.asList(12,18,23,4,9);
+            List<Integer> list_time = Arrays.asList(16,18,23,4,9);
             if(!list_time.contains(hour)){
                 resp.put("status", false);
             }
@@ -410,7 +410,7 @@ public class VpsController {
                     resp.put("status", false);
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                if(hour==12){
+                if(hour==14){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
                     accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
@@ -418,14 +418,14 @@ public class VpsController {
                     accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
                     Thread.sleep(1000);
                     accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
-                }else if(hour==18){
+                }else if(hour==16){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),12000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),22000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),12000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),5000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),6000);
                 }else if(hour==23){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);

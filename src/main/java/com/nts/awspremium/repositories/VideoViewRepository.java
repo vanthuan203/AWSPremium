@@ -43,7 +43,7 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Query(value = "select orderid from (select videoview.orderid,count(running) as total,maxthreads,valid,viewtotal,vieworder,speedup,threadset\n" +
             "                              from videoview left join historyview on historyview.orderid=videoview.orderid and running=1\n" +
-            "                                  group by orderid having total<maxthreads or  (((select bonus/100 from setting where id=1)+1)*vieworder-viewtotal>total*2 and threadset*2>total and speedup=1 and valid=1 ) ) as t",nativeQuery = true)
+            "                                  group by orderid having total<maxthreads or  (((select bonus/100 from setting where id=1)+1)*vieworder-viewtotal>total*2 and threadset*3>total and speedup=1 and valid=1 ) ) as t",nativeQuery = true)
     public List<String>  getListOrderSpeedTrueThreadONTEST();
 
     @Query(value = "select orderid from (select videoview.orderid,count(running) as total,maxthreads\n" +
