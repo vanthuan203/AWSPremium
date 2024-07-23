@@ -1,5 +1,6 @@
 package com.nts.awspremium.controller;
 
+import com.nts.awspremium.model.OrderSpeedTimeTrue;
 import com.nts.awspremium.model.OrderSpeedTrue;
 import com.nts.awspremium.model.OrderTrue;
 import com.nts.awspremium.repositories.VideoViewRepository;
@@ -18,6 +19,8 @@ public class AutoRunCheck {
     private OrderTrue orderTrue;
     @Autowired
     private OrderSpeedTrue orderSpeedTrue;
+    @Autowired
+    private OrderSpeedTimeTrue orderSpeedTimeTrue;
     @Autowired
     private Environment env;
     @PostConstruct
@@ -40,6 +43,12 @@ public class AutoRunCheck {
                                 throw new RuntimeException(e);
                             }
                             orderSpeedTrue.setValue(videoViewRepository.getListOrderSpeedTrueThreadONTEST());
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            orderSpeedTimeTrue.setValue(videoViewRepository.getListOrderSpeedTimeTrueThread());
                         } catch (Exception e) {
                             continue;
                         }
