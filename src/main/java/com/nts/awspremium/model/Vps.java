@@ -29,10 +29,13 @@ public class Vps {
     private Integer cmt;
     private Integer proxy;
     private Integer live=0;
+
+    private String device="mobile";
+
     public Vps() {
     }
 
-    public Vps(Integer id, String vps, String urlapi, String token, String vpsoption, Integer state, Integer running, Long timecheck, Integer threads, Integer vpsreset, Integer timereset, Long timeresettool, Integer dayreset, String ipv4, Integer countipv4, String namevps, Integer changefinger, Integer ext, Integer get_account, Integer cmt, Integer proxy, Integer live) {
+    public Vps(Integer id, String vps, String urlapi, String token, String vpsoption, Integer state, Integer running, Long timecheck, Integer threads, Integer vpsreset, Integer timereset, Long timeresettool, Integer dayreset, String ipv4, Integer countipv4, String namevps, Integer changefinger, Integer ext, Integer get_account, Integer cmt, Integer proxy, Integer live, String device) {
         this.id = id;
         this.vps = vps;
         this.urlapi = urlapi;
@@ -55,6 +58,7 @@ public class Vps {
         this.cmt = cmt;
         this.proxy = proxy;
         this.live = live;
+        this.device = device;
     }
 
     public Integer getDayreset() {
@@ -230,5 +234,13 @@ public class Vps {
 
     public void setLive(Integer live) {
         this.live = live;
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
     }
 }

@@ -171,6 +171,7 @@ public class VpsController {
                 resp.put("cmt",vpscheck.get(0).getCmt());
                 resp.put("threads",vpscheck.get(0).getThreads());
                 resp.put("vpsreset",vpscheck.get(0).getVpsreset());
+                resp.put("device",vpscheck.get(0).getDevice());
                 resp.put("get_account",vpscheck.get(0).getGet_account());
                 resp.put("proxy",vpscheck.get(0).getProxy());
                 resp.put("ext",vpscheck.get(0).getExt());
@@ -399,7 +400,7 @@ public class VpsController {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             resp.put("status", hour);
-            List<Integer> list_time = Arrays.asList(14,18,22,2,6,10);
+            List<Integer> list_time = Arrays.asList(12,18,23,4,9);
             if(!list_time.contains(hour)){
                 resp.put("status", false);
             }
@@ -409,54 +410,46 @@ public class VpsController {
                     resp.put("status", false);
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                if(hour==14){
-                    accountRepository.call_Reset_Account();
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),3000);
-                }else if(hour==18){
-                    accountRepository.call_Reset_Account();
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),13000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),5000);
-                }else if(hour==22){
-                    accountRepository.call_Reset_Account();
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),3000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),2000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
-                }else if(hour==2){
-                    accountRepository.call_Reset_Account();
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),2000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),1000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
-                }else if(hour==6){
-                    accountRepository.call_Reset_Account();
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("vn",accountChangeDaily.getName(),3000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("us",accountChangeDaily.getName(),1000);
-                    Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
-                }else if(hour==10){
+                if(hour==12){
                     accountRepository.call_Reset_Account();
                     Thread.sleep(1000);
                     accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
                     Thread.sleep(1000);
                     accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
                     Thread.sleep(1000);
-                    accountRepository.changer_account("kr",accountChangeDaily.getName(),1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                }else if(hour==18){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),12000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),5000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),5000);
+                }else if(hour==23){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),5000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                }else if(hour==4){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),4000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
+                }else if(hour==9){
+                    accountRepository.call_Reset_Account();
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("vn",accountChangeDaily.getName(),4000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("us",accountChangeDaily.getName(),3000);
+                    Thread.sleep(1000);
+                    accountRepository.changer_account("kr",accountChangeDaily.getName(),2000);
                 }
                 accountChangeDaily.setTime(hour);
                 accountChangeDailyRepository.save(accountChangeDaily);
