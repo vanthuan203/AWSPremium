@@ -1603,6 +1603,9 @@ public class VideoCommentController {
                         videoCommentHistoryRepository.save(videoCommentHistory);
                         return "Đủ cmt | " +cmtCount+"/"+(cmtFix+videoCommentHistory.getCommentstart());
                     }
+                    if(cmtThan>cmtFix){
+                        cmtThan=cmtFix;
+                    }
 
                     float price_refund = ((cmtThan) / (float) cmtFix) * videoCommentHistory.getPrice();
                     //float pricebuffed=(videoBuffh.get(0).getViewtotal()/1000F)*service.getRate()*((float)(100-admins.get(0).getDiscount())/100);
