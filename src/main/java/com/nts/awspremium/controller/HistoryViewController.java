@@ -698,6 +698,7 @@ public class HistoryViewController {
                 } else {
                     videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
                     if (videos.size() > 0) {
+                        histories.get(0).setGeo_rand(geo_rand);
                         histories.get(0).setTimeget(System.currentTimeMillis());
                         histories.get(0).setVideoid(videos.get(0).getVideoid());
                         histories.get(0).setOrderid(videos.get(0).getOrderid());
@@ -734,6 +735,7 @@ public class HistoryViewController {
             } else {
                 videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
                 if (videos.size() > 0) {
+                    histories.get(0).setGeo_rand(geo_rand);
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid(videos.get(0).getVideoid());
                     histories.get(0).setOrderid(videos.get(0).getOrderid());
