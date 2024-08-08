@@ -8,7 +8,7 @@ public class Setting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Integer maxorder;
+    private Float maxorder;
     private Integer maxorderbuffhvn;
     private Integer maxorderbuffhus;
     private Float maxrunningam;
@@ -33,7 +33,7 @@ public class Setting {
     private Integer threadmin;
     private Integer randview;
 
-    public Setting(Long id, Integer maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview) {
+    public Setting(Long id, Float maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview) {
         this.id = id;
         this.maxorder = maxorder;
         this.maxorderbuffhvn = maxorderbuffhvn;
@@ -133,11 +133,11 @@ public class Setting {
         this.id = id;
     }
 
-    public Integer getMaxorder() {
+    public Float getMaxorder() {
         return maxorder;
     }
 
-    public void setMaxorder(Integer maxorder) {
+    public void setMaxorder(Float maxorder) {
         this.maxorder = maxorder;
     }
 

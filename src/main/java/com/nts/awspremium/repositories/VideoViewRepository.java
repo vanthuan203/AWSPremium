@@ -43,12 +43,12 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Query(value = "select orderid from (select videoview.orderid,count(running) as total,maxthreads,valid,viewtotal,vieworder,speedup,threadset\n" +
             "                              from videoview left join historyview on historyview.orderid=videoview.orderid and running=1\n" +
-            "                                  group by orderid having total<maxthreads or  (((select bonus/100 from setting where id=1)+1)*vieworder-viewtotal>total*2 and threadset*2>total and speedup=1) ) as t",nativeQuery = true)
+            "                                  group by orderid having total<maxthreads or  (((select bonus/100 from setting where id=1)+1)*vieworder-viewtotal>total*2 and threadset*3>total and speedup=1) ) as t",nativeQuery = true)
     public List<String>  getListOrderSpeedTrueThreadONTEST();
 
     @Query(value = "select orderid from (select videoview.orderid,count(running) as total,maxthreads,valid,viewtotal,vieworder,speedup,threadset,timestart\n" +
             "                                        from videoview left join historyview on historyview.orderid=videoview.orderid and running=1 \n" +
-            "                                            group by orderid having (threadset*3>total and round((UNIX_TIMESTAMP()-timestart/1000)/60)>=120 ) ) as t",nativeQuery = true)
+            "                                            group by orderid having (((select bonus/100 from setting where id=1)+1)*vieworder-viewtotal>total*2  and threadset*3>total and round((UNIX_TIMESTAMP()-timestart/1000)/60)>=90 ) ) as t",nativeQuery = true)
     public List<String>  getListOrderSpeedTimeTrueThread();
 
     @Query(value = "select orderid from (select videoview.orderid,count(running) as total,maxthreads\n" +
@@ -71,6 +71,9 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Query(value = "SELECT sum(threadset) from videoview where timestart>0 and service in(select service from service where geo=?1)",nativeQuery = true)
     public Integer getSumThreadSetByGeo(String geo);
+
+    @Query(value = "SELECT sum(threadset) from videoview where timestart>0",nativeQuery = true)
+    public Integer getSumThread();
 
     @Query(value = "SELECT sum(vieworder) from videoview where user=?1 and service=?2 and maxthreads=-1",nativeQuery = true)
     public Integer getCountOrderByUserAndService(String user,Integer service);

@@ -203,7 +203,7 @@ public class ApiController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                 }
-                if(service.getChecktime()==0&&(videoViewRepository.getSumThreadSetByGeo(service.getGeo())!=null?(videoViewRepository.getSumThreadSetByGeo(service.getGeo())>vpsRepository.getSumThreadsByGeo(service.getGeo())*1):false)){
+                if(service.getChecktime()==0&&(videoViewRepository.getSumThread()!=null?(videoViewRepository.getSumThread()>40000*setting.getMaxorder()):false)){
                     resp.put("error", "System busy try again");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
@@ -331,11 +331,11 @@ public class ApiController {
                         int duration_min=2+(int)(Duration.parse(contentDetails.get("duration").toString()).getSeconds()/60);
                         int thread_set=50;
                         if(duration_min<service.getMintime()){
-                            thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (duration_min) * 1.5)) :(int)(data.getQuantity()/2.6);
-                            //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(duration_min))):(int)(data.getQuantity()/2.6);
+                            //thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (duration_min) * 1.5)) :(int)(data.getQuantity()/2.6);
+                            thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(duration_min))):(int)(data.getQuantity()/2.6);
                         }else{
-                            thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (service.getMaxtime()) * 1.5)) :(int)(data.getQuantity()/2.6);
-                            //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()))):(int)(data.getQuantity()/2.6);
+                            //thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (service.getMaxtime()) * 1.5)) :(int)(data.getQuantity()/2.6);
+                            thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()))):(int)(data.getQuantity()/2.6);
                         }
                         if (thread_set <= setting.getMaxthread()){
                             videoViewhnew.setThreadset(thread_set);
