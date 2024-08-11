@@ -119,6 +119,9 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Query(value = "SELECT * FROM videoview where maxthreads=0 and timestart=0 order by priority desc,insertdate asc limit 25",nativeQuery = true)
     public List<VideoView> getAllOrderPending();
 
+    @Query(value = "SELECT * FROM videoview where maxthreads=-3 and timestart=0 order by priority desc,insertdate asc limit 25",nativeQuery = true)
+    public List<VideoView> getAllOrderPending3();
+
     @Query(value = "SELECT * FROM videoview where maxthreads=-1 and user=?1 and vieworder<=?2 order by priority desc,insertdate asc limit ?3",nativeQuery = true)
     public List<VideoView> getAllOrderPending701(String user,Integer vieworder,Integer limit);
 

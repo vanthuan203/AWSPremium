@@ -203,9 +203,11 @@ public class ApiController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                 }
+                Boolean pending= false;
                 if(service.getChecktime()==0&&(videoViewRepository.getSumThread()!=null?(videoViewRepository.getSumThread()>40000*setting.getMaxorder()):false)){
-                    resp.put("error", "System busy try again");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    pending=true;
+                    //resp.put("error", "System busy try again");
+                    //return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if (videoViewRepository.getCountOrderByUser(admins.get(0).getUsername().trim()) >= admins.get(0).getMaxorder() || (service.getGeo().equals("vn") && settingRepository.getMaxOrderVN() == 0) ||
                         (service.getGeo().equals("us") && settingRepository.getMaxOrderUS() == 0) || service.getMaxorder() <= videoViewRepository.getCountOrderByService(data.getService())) {
@@ -349,8 +351,13 @@ public class ApiController {
                                 videoViewhnew.setMaxthreads(-1);
                                 videoViewhnew.setTimestart(0L);
                             }else {
-                                videoViewhnew.setMaxthreads((int)(thread_set*0.05<1?2:(thread_set*0.05)));
-                                videoViewhnew.setTimestart(System.currentTimeMillis());
+                                if(pending==true){
+                                    videoViewhnew.setMaxthreads(-3);
+                                    videoViewhnew.setTimestart(0L);
+                                }else{
+                                    videoViewhnew.setMaxthreads((int)(thread_set*0.05<1?2:(thread_set*0.05)));
+                                    videoViewhnew.setTimestart(System.currentTimeMillis());
+                                }
                             }
                             videoViewhnew.setMinstart(service.getMaxtime());
                         } else if (snippet.get("liveBroadcastContent").toString().equals("live")&& service.getLive()==1) {

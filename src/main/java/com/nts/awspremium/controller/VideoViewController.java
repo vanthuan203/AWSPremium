@@ -608,6 +608,33 @@ public class VideoViewController {
         resp.put("status", "true");
         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }
+
+
+    @GetMapping(value = "/updateRunningOrderPending", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateRunningOrderPending() throws IOException, ParseException {
+        JSONObject resp = new JSONObject();
+        List<VideoView> listvideo = videoViewRepository.getAllOrderPending3();
+        if (listvideo.size() == 0) {
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+        String s_videoid = "";
+        Setting setting =settingRepository.getSettingId1();
+        for (int i = 0; i < listvideo.size(); i++) {
+            if(videoViewRepository.getSumThread()!=null?(videoViewRepository.getSumThread()>40000*setting.getMaxorder()):false){
+               break;
+            }else{
+                listvideo.get(i).setTimestart(System.currentTimeMillis());
+                listvideo.get(i).setMaxthreads((int)(listvideo.get(i).getThreadset()*0.05<1?2:(listvideo.get(i).getThreadset()*0.05)));
+                videoViewRepository.save(listvideo.get(i));
+            }
+        }
+
+        resp.put("status", "true");
+        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+    }
+
+
     @GetMapping(value = "/updateRunningOrder701Cron", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> updateRunningOrder701Cron() throws IOException, ParseException {
         JSONObject resp = new JSONObject();
@@ -4061,10 +4088,7 @@ public class VideoViewController {
             for (int i = videoidIdArr.length-1;i >=0; i--) {
                 List<VideoView> video = videoViewRepository.getVideoBuffhById(videoidIdArr[i].trim());
                 Service service = serviceRepository.getInfoService(video.get(0).getService());
-                if(videoViewRepository.getCountOrderRunningByService(video.get(0).getService())==null?false:videoViewRepository.getCountOrderRunningByService(video.get(0).getService())>=(service.getGeo().equals("vn")?setting.getMaxorderbuffhvn():setting.getMaxorderbuffhus())*service.getMax()){
-                    break;
-                }
-                video.get(0).setMaxthreads((int)(video.get(0).getThreadset()*0.05));
+                video.get(0).setMaxthreads((int)(video.get(i).getThreadset()*0.05<1?2:(video.get(i).getThreadset()*0.05)));
                 video.get(0).setTimestart(System.currentTimeMillis());
                 videoViewRepository.save(video.get(0));
 
