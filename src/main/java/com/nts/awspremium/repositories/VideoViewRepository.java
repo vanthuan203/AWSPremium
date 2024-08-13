@@ -122,6 +122,9 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Query(value = "SELECT * FROM videoview where maxthreads=-3 and timestart=0 order by priority desc,insertdate asc limit 25",nativeQuery = true)
     public List<VideoView> getAllOrderPending3();
 
+    @Query(value = "SELECT count(*) FROM videoview where maxthreads=-3 and timestart=0",nativeQuery = true)
+    public Integer getCountOrderPending3();
+
     @Query(value = "SELECT * FROM videoview where maxthreads=-1 and user=?1 and vieworder<=?2 order by priority desc,insertdate asc limit ?3",nativeQuery = true)
     public List<VideoView> getAllOrderPending701(String user,Integer vieworder,Integer limit);
 
@@ -219,6 +222,9 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Query(value = "SELECT * from videoview  where videoid=?1 limit 1",nativeQuery = true)
     public List<VideoView> getVideoBuffhById(String videoid);
+
+    @Query(value = "SELECT * from videoview  where videoid=?1 and timestart=0 limit 1",nativeQuery = true)
+    public List<VideoView> get_Video_Pending3(String videoid);
 
     @Query(value = "SELECT cast((((SELECT count(*) from account where running=1 and geo='vn')/(select leveluser from setting limit 1))-\n" +
             "                      IF((SELECT sum(threadset) FROM videoview where service in(select service from service where geo='vn' and checktime=0 and timestart!=0)) is null,0,(SELECT sum(threadset) FROM videoview where service in(select service from service where geo='vn' and checktime=0 and timestart!=0))))/4000 as SIGNED)",nativeQuery = true)

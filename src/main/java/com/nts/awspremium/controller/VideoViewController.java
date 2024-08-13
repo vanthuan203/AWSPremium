@@ -4086,9 +4086,11 @@ public class VideoViewController {
             String[] videoidIdArr = videoid.split(",");
             JSONArray jsonArray = new JSONArray();
             for (int i = videoidIdArr.length-1;i >=0; i--) {
-                List<VideoView> video = videoViewRepository.getVideoBuffhById(videoidIdArr[i].trim());
-                Service service = serviceRepository.getInfoService(video.get(0).getService());
-                video.get(0).setMaxthreads((int)(video.get(i).getThreadset()*0.05<1?2:(video.get(i).getThreadset()*0.05)));
+                List<VideoView> video = videoViewRepository.get_Video_Pending3(videoidIdArr[i].trim());
+                if(video.size()==0){
+                    continue;
+                }
+                video.get(0).setMaxthreads((int)(video.get(0).getThreadset()*0.05<1?2:(video.get(0).getThreadset()*0.05)));
                 video.get(0).setTimestart(System.currentTimeMillis());
                 videoViewRepository.save(video.get(0));
 
@@ -4118,6 +4120,12 @@ public class VideoViewController {
             resp.put("videoview", jsonArray);
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            System.out.println(stackTraceElement.getMethodName());
+            System.out.println(stackTraceElement.getLineNumber());
+            System.out.println(stackTraceElement.getClassName());
+            System.out.println(stackTraceElement.getFileName());
+            System.out.println("Error : " + e.getMessage());
             resp.put("status", "fail");
             resp.put("message", e.getMessage());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);

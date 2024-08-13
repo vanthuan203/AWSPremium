@@ -208,6 +208,8 @@ public class ApiController {
                     pending=true;
                     //resp.put("error", "System busy try again");
                     //return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }else if(videoViewRepository.getCountOrderPending3()>0){
+                    pending=true;
                 }
                 if (videoViewRepository.getCountOrderByUser(admins.get(0).getUsername().trim()) >= admins.get(0).getMaxorder() || (service.getGeo().equals("vn") && settingRepository.getMaxOrderVN() == 0) ||
                         (service.getGeo().equals("us") && settingRepository.getMaxOrderUS() == 0) || service.getMaxorder() <= videoViewRepository.getCountOrderByService(data.getService())) {
