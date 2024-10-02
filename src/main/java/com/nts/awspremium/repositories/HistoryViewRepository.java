@@ -20,6 +20,9 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
     @Query(value = "SELECT id FROM historyview where username=?1 limit 1",nativeQuery = true)
     public Long getId(String username);
 
+    @Query(value = "SELECT * FROM historyview where username=?1 limit 1",nativeQuery = true)
+    public HistoryView getHistoryViewByUsername(String username);
+
     @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 order by task_done,timeget asc limit 1;",nativeQuery = true)
     public Long getAccToViewNoCheckProxy(String vps);
 

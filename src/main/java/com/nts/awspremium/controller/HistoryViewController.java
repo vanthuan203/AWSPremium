@@ -10,12 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -1462,26 +1460,34 @@ public class HistoryViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
         try {
-            Long historieId = historyViewRepository.getId(username);
-            if (historieId == null) {
+            //Long historieId = historyViewRepository.getId(username);
+            HistoryView historyView = historyViewRepository.getHistoryViewByUsername(username.trim());
+            if (historyView == null) {
                 resp.put("status", "fail");
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
+                char target = ',';
+                long count = historyView.getListvideo().trim().chars().filter(ch -> ch == target).count();
+
+                if(count>=5){
+                    int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
+                    OptionalInt position = IntStream.range(0, historyView.getListvideo().trim().length())
+                            .filter(i -> historyView.getListvideo().trim().charAt(i) == target)
+                            .skip(occurrence - 1)
+                            .findFirst();
+                    historyView.setListvideo(historyView.getListvideo().trim().substring(position.getAsInt()+1)+videoid.trim()+",");
+                }else{
+                    historyView.setListvideo(historyView.getListvideo()+videoid.trim()+",");
+                }
+                historyViewRepository.save(historyView);
+
+                /*
                 if (historyViewRepository.getListVideoById(historieId).length() > 34) {
                     historyViewRepository.updateListVideoNew(videoid, historieId);
                 } else {
                     historyViewRepository.updateListVideo(videoid, historieId);
                 }
-                /*
-                List<HistoryView> histories =historyViewRepository.getHistoriesById(historieId);
-                if(histories.get(0).getListvideo().length()==0){
-                    histories.get(0).setListvideo(videoid);
-                }else{
-                    histories.get(0).setListvideo(histories.get(0).getListvideo()+","+videoid);
-                }
-                //histories.get(0).setRunning(1);
-                historyViewRepository.save(histories.get(0));
 
                  */
                 resp.put("status", "true");
