@@ -42,7 +42,7 @@ public class ResetBAS {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            vpsController.resetBasDailyByCron(25);
+                            vpsController.resetBasDailyByCron(50);
                         } catch (Exception e) {
                             continue;
                         }
