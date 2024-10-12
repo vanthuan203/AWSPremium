@@ -32,8 +32,10 @@ public class Setting {
     private Integer redirectus;
     private Integer threadmin;
     private Integer randview;
+    private Float thread_rate=1.5F;
+    ;
 
-    public Setting(Long id, Float maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview) {
+    public Setting(Long id, Float maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview, Float thread_rate) {
         this.id = id;
         this.maxorder = maxorder;
         this.maxorderbuffhvn = maxorderbuffhvn;
@@ -56,6 +58,7 @@ public class Setting {
         this.redirectus = redirectus;
         this.threadmin = threadmin;
         this.randview = randview;
+        this.thread_rate = thread_rate;
     }
 
     public Setting() {
@@ -235,5 +238,13 @@ public class Setting {
 
     public void setRandview(Integer randview) {
         this.randview = randview;
+    }
+
+    public Float getThread_rate() {
+        return thread_rate;
+    }
+
+    public void setThread_rate(Float thread_rate) {
+        this.thread_rate = thread_rate;
     }
 }
