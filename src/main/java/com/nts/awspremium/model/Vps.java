@@ -30,7 +30,7 @@ public class Vps {
     private Integer proxy;
     private Integer live=0;
 
-    private String device="mobile";
+    private String device="pc";
 
     public Vps() {
     }
