@@ -26,28 +26,14 @@ public class AutoRunCheck {
     @PostConstruct
     public void init() throws InterruptedException {
         try{
+            Random rand =new Random();
+            Thread.sleep(rand.nextInt(1000));
                 new Thread(() -> {
                     //Random rand =new Random();
                     while (true) {
                         try {
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
                             orderTrue.setValue(videoViewRepository.getListOrderTrueThreadON());
-                            //System.out.println(orderTrue.getValue());
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
                             orderSpeedTrue.setValue(videoViewRepository.getListOrderSpeedTrueThreadONTEST());
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
                             orderSpeedTimeTrue.setValue(videoViewRepository.getListOrderSpeedTimeTrueThread());
                         } catch (Exception e) {
                             continue;
