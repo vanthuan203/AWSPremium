@@ -334,13 +334,24 @@ public class ApiController {
                         //int thread_set_fix = service.getThread() + ((int) (data.getQuantity() / 1000) - 1) * setting.getLevelthread();
                         int duration_min=2+(int)(Duration.parse(contentDetails.get("duration").toString()).getSeconds()/60);
                         int thread_set=50;
-                        if(duration_min<service.getMintime()){
-                            thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (duration_min) * setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
-                            //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(duration_min))):(int)(data.getQuantity()/2.6);
+                        if(videoViewRepository.getSumThread()!=null?(videoViewRepository.getSumThread()>40000*setting.getMaxorder()/4):false){
+                            if(duration_min<service.getMintime()){
+                                thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (duration_min) * setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
+                                //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(duration_min))):(int)(data.getQuantity()/2.6);
+                            }else{
+                                thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (service.getMaxtime()) * setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
+                                //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()))):(int)(data.getQuantity()/2.6);
+                            }
                         }else{
-                            thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (service.getMaxtime()) * setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
-                            //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()))):(int)(data.getQuantity()/2.6);
+                            if(duration_min<service.getMintime()){
+                                thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (duration_min)  *1.5* setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
+                                //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(duration_min))):(int)(data.getQuantity()/2.6);
+                            }else{
+                                thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (service.getMaxtime()) *1.5* setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
+                                //thread_set= service.getChecktime()==0?(data.getQuantity() / (60/(service.getMaxtime()))):(int)(data.getQuantity()/2.6);
+                            }
                         }
+
                         if (thread_set <= setting.getMaxthread()){
                             videoViewhnew.setThreadset(thread_set);
                         }else{
