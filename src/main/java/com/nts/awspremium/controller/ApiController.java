@@ -332,7 +332,7 @@ public class ApiController {
                         VideoView videoViewhnew = new VideoView();
 
                         //int thread_set_fix = service.getThread() + ((int) (data.getQuantity() / 1000) - 1) * setting.getLevelthread();
-                        int duration_min=2+(int)(Duration.parse(contentDetails.get("duration").toString()).getSeconds()/60);
+                        int duration_min=1+(int)(Duration.parse(contentDetails.get("duration").toString()).getSeconds()/60);
                         int thread_set=50;
                         if(duration_min<service.getMintime()){
                             thread_set= service.getChecktime()==0? (int) (data.getQuantity() / (60 / (duration_min) * setting.getThread_rate())) :(int)(data.getQuantity()/2.6);
