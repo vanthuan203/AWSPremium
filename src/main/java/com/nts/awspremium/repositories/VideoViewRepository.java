@@ -246,26 +246,26 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update videoview set maxthreads=maxthreads+cast(threadset*0.4 as UNSIGNED) where service in (select service from service where maxtime<=2) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
+    @Query(value = "update videoview set maxthreads=if(maxthreads+cast(threadset*0.4 as UNSIGNED)>threadset,threadset,maxthreads+cast(threadset*0.4 as UNSIGNED)) where service in (select service from service where maxtime<=2) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
     public void updateThreadByThreadSet5m();
     @Modifying
     @Transactional
-    @Query(value = "update videoview set maxthreads=maxthreads+cast(threadset*0.16 as UNSIGNED) where service in (select service from service where maxtime=5) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
+    @Query(value = "update videoview set maxthreads=if(maxthreads+cast(threadset*0.16 as UNSIGNED)>threadset,threadset,maxthreads+cast(threadset*0.4 as UNSIGNED)) where service in (select service from service where maxtime=5) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
     public void updateThreadByThreadSet10m();
 
     @Modifying
     @Transactional
-    @Query(value = "update videoview set maxthreads=maxthreads+cast(threadset*0.09 as UNSIGNED) where service in (select service from service where maxtime=10) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
+    @Query(value = "update videoview set maxthreads=if(maxthreads+cast(threadset*0.09 as UNSIGNED)>threadset,threadset,maxthreads+cast(threadset*0.4 as UNSIGNED)) where service in (select service from service where maxtime=10) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
     public void updateThreadByThreadSet15m();
 
     @Modifying
     @Transactional
-    @Query(value = "update videoview set maxthreads=maxthreads+cast(threadset*0.05 as UNSIGNED) where service in (select service from service where maxtime=20) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
+    @Query(value = "update videoview set maxthreads=if(maxthreads+cast(threadset*0.05 as UNSIGNED)>threadset,threadset,maxthreads+cast(threadset*0.4 as UNSIGNED)) where service in (select service from service where maxtime=20) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
     public void updateThreadByThreadSet20m();
 
     @Modifying
     @Transactional
-    @Query(value = "update videoview set maxthreads=maxthreads+cast(threadset*0.09 as UNSIGNED) where service in (select service from service where maxtime>=30) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
+    @Query(value = "update videoview set maxthreads=if(maxthreads+cast(threadset*0.025 as UNSIGNED)>threadset,threadset,maxthreads+cast(threadset*0.4 as UNSIGNED)) where service in (select service from service where maxtime>=30) and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
     public void updateThreadByThreadSet30m();
     @Query(value = "select * from videoview where viewtotal>(vieworder + vieworder*(select bonus/100 from setting where id=1)) and service in(select service from service where checktime=0 and live=0)",nativeQuery = true)
     public List<VideoView> getOrderFullView();
