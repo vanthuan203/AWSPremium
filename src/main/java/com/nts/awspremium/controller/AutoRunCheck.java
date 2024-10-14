@@ -31,7 +31,7 @@ public class AutoRunCheck {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(300);
+                                Thread.sleep(100);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
