@@ -421,7 +421,7 @@ public class HistoryViewController {
                         }
                     }
                 }
-                Thread.sleep(300+ran.nextInt(400));
+                Thread.sleep(100+ran.nextInt(500));
                 if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid("");
