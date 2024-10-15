@@ -32,11 +32,6 @@ public class AutoRunCheck {
                     //Random rand =new Random();
                     while (true) {
                         try {
-                            try {
-                                Thread.sleep(rand.nextInt(150));
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
                             orderTrue.setValue(videoViewRepository.getListOrderTrueThreadON());
                             orderSpeedTrue.setValue(videoViewRepository.getListOrderSpeedTrueThreadONTEST());
                             orderSpeedTimeTrue.setValue(videoViewRepository.getListOrderSpeedTimeTrueThread());
