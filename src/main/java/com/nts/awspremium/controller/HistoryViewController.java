@@ -324,7 +324,16 @@ public class HistoryViewController {
         }
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(500));
+
+            if(orderSpeedTimeTrue.getValue().size()==0 && orderTrue.getValue().size()==0 && orderSpeedTrue.getValue().size()==0){
+                resp.put("status", "fail");
+                resp.put("username", username.trim());
+                resp.put("fail", "video");
+                resp.put("message", "Không còn video để view!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+
+            //Thread.sleep(ran.nextInt(500));
 /*
             if(ran.nextInt(100)<60){
                 resp.put("status", "fail");
@@ -429,7 +438,7 @@ public class HistoryViewController {
                     histories.get(0).setChannelid("");
                     histories.get(0).setRunning(0);
                     historyViewRepository.save(histories.get(0));
-                    resp.put("status", "fail oke");
+                    resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
