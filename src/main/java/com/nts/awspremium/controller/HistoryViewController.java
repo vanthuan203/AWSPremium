@@ -324,7 +324,7 @@ public class HistoryViewController {
         }
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(500));
+            //Thread.sleep(ran.nextInt(500));
 /*
             if(ran.nextInt(100)<60){
                 resp.put("status", "fail");
@@ -421,7 +421,7 @@ public class HistoryViewController {
                         }
                     }
                 }
-                Thread.sleep(200+ran.nextInt(300));
+                Thread.sleep(150+ran.nextInt(250));
                 if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid("");
@@ -676,7 +676,7 @@ public class HistoryViewController {
         }
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(1000));
+            Thread.sleep(ran.nextInt(150));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
             Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
             if (historieId == null) {
