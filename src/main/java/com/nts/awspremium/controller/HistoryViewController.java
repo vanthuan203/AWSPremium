@@ -324,7 +324,7 @@ public class HistoryViewController {
         }
         Random ran = new Random();
         try {
-            //Thread.sleep(ran.nextInt(1000));
+            Thread.sleep(ran.nextInt(500));
 /*
             if(ran.nextInt(100)<60){
                 resp.put("status", "fail");
