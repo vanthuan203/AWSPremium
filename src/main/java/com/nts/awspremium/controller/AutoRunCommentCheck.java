@@ -30,23 +30,13 @@ public class AutoRunCommentCheck {
     @PostConstruct
     public void init() throws InterruptedException {
         try{
+            Random rand =new Random();
+            Thread.sleep(rand.nextInt(1000));
                 new Thread(() -> {
-                    Random rand =new Random();
                     while (true) {
                         try {
                             orderCommentTrue.setValue(videoCommentRepository.getListOrderTrueThreadON());
-                            try {
-                                Thread.sleep(rand.nextInt(150));
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            orderFollowerTrue.setValue(channelTikTokRepository.getListOrderTrueThreadON());
-                            //System.out.println(orderFollowerTrue.getValue());
-                            try {
-                                Thread.sleep(rand.nextInt(150));
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
+                            //orderFollowerTrue.setValue(channelTikTokRepository.getListOrderTrueThreadON());
                         } catch (Exception e) {
                             continue;
                         }
