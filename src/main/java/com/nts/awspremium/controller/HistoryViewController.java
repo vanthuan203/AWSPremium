@@ -676,7 +676,7 @@ public class HistoryViewController {
         }
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(150));
+            Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
             Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
             if (historieId == null) {
