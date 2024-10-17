@@ -30,8 +30,9 @@ public class AutoRunCommentCheck {
     @PostConstruct
     public void init() throws InterruptedException {
         try{
-            Random rand =new Random();
-            Thread.sleep(rand.nextInt(1000));
+            if(Integer.parseInt(env.getProperty("server.port"))!=8000) {
+                Random rand = new Random();
+                Thread.sleep(rand.nextInt(1000));
                 new Thread(() -> {
                     while (true) {
                         try {
@@ -42,6 +43,7 @@ public class AutoRunCommentCheck {
                         }
                     }
                 }).start();
+            }
         }catch (Exception e){
 
         }

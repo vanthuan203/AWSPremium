@@ -30,8 +30,9 @@ public class AutoRunProxyTrue {
     @PostConstruct
     public void init() throws InterruptedException {
         try{
+            if(Integer.parseInt(env.getProperty("server.port"))==8000) {
                 new Thread(() -> {
-                    Random rand =new Random();
+                    Random rand = new Random();
                     while (true) {
                         try {
                             proxyVNTrue.setValue(proxyRepository.getProxyTrue("vn"));
@@ -47,6 +48,7 @@ public class AutoRunProxyTrue {
                         }
                     }
                 }).start();
+            }
         }catch (Exception e){
 
         }
