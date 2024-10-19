@@ -276,6 +276,10 @@ public class ApiController {
                         JSONObject video = (JSONObject) k.next();
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                         JSONObject snippet = (JSONObject) video.get("snippet");
+                        if(contentDetails.get("duration")==null){
+                            resp.put("error", "This video is not eligible for service");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
                         if (videoViewRepository.getCountVideoId(video.get("id").toString().trim()) > 0) {
                             resp.put("error", "This video in process");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -427,7 +431,7 @@ public class ApiController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         //new Video(video.get("videoId").toString(), "channel_id", Duration.parse(video.get("duration").toString()).getSeconds(), video.get("title").toString());
 
-                    } catch (Exception e) {
+                     } catch (Exception e) {
                         resp.put("error", "Cant insert video");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
