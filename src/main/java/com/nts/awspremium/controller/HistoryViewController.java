@@ -1486,8 +1486,8 @@ public class HistoryViewController {
                 char target = ',';
                 long count = historyView.getListvideo().trim().chars().filter(ch -> ch == target).count();
 
-                if(count>=5){
-                    int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
+                if(count>=3){
+                    int occurrence = (int)count-1;  // Lần xuất hiện thứ n cần tìm
                     OptionalInt position = IntStream.range(0, historyView.getListvideo().trim().length())
                             .filter(i -> historyView.getListvideo().trim().charAt(i) == target)
                             .skip(occurrence - 1)
