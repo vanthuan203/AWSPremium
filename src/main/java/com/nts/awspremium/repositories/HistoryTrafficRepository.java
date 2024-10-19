@@ -1,6 +1,7 @@
 package com.nts.awspremium.repositories;
 
 import com.nts.awspremium.model.HistoryTraffic;
+import com.nts.awspremium.model.HistoryView;
 import com.nts.awspremium.model.VpsRunning;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -20,6 +21,9 @@ public interface HistoryTrafficRepository extends JpaRepository<HistoryTraffic,L
     public String getListOrderIdById(Long id);
     @Query(value = "SELECT id FROM historytraffic where username=?1 limit 1",nativeQuery = true)
     public Long getId(String username);
+
+    @Query(value = "SELECT * FROM historytraffic where username=?1 limit 1",nativeQuery = true)
+    public HistoryTraffic getHistoryTrafficByUsername(String username);
 
     @Modifying
     @Transactional

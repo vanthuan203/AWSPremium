@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -47,7 +49,7 @@ public class HistoryTrafficController {
         }
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(3000));
+            Thread.sleep(ran.nextInt(1000));
             Long historieId = historyTrafficRepository.getId(username);
             List<WebTraffic> webTraffics = null;
             if (historieId == null) {
@@ -173,17 +175,26 @@ public class HistoryTrafficController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
         try {
-            Long historieId = historyTrafficRepository.getId(username);
-            if (historieId == null) {
+            HistoryTraffic historyTraffic = historyTrafficRepository.getHistoryTrafficByUsername(username);
+            if (historyTraffic == null) {
                 resp.put("status", "fail");
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
-                if (historyTrafficRepository.getListOrderIdById(historieId).length() > 24) {
-                    historyTrafficRepository.updateListOrderidNew(orderid.toString(), historieId);
-                } else {
-                    historyTrafficRepository.updateListOrderid(orderid.toString(), historieId);
+                char target = ',';
+                long count = historyTraffic.getListorderid().trim().chars().filter(ch -> ch == target).count();
+
+                if(count>=3){
+                    //int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
+                    OptionalInt position = IntStream.range(0, historyTraffic.getListorderid().trim().length())
+                            .filter(i -> historyTraffic.getListorderid().trim().charAt(i) == target)
+                            .skip(count-3)//occurrence-1
+                            .findFirst();
+                    historyTraffic.setListorderid(historyTraffic.getListorderid().trim().substring(position.getAsInt()+1)+orderid.toString().trim()+",");
+                }else{
+                    historyTraffic.setListorderid(historyTraffic.getListorderid()+orderid.toString().trim()+",");
                 }
+                historyTrafficRepository.save(historyTraffic);
                 webTrafficRepository.updateLastCompletedByOrderId(System.currentTimeMillis(),orderid);
                 resp.put("status", "true");
                 resp.put("message", "Update orderid vào history thành công!");
