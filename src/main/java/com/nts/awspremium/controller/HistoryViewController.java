@@ -691,8 +691,16 @@ public class HistoryViewController {
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+
+
             List<VideoView> videos = null;
             List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
+
+            if(histories.get(0).getFinger_id()!=0){
+                fingerprintsPCRepository.update_Running_Finger_PC(histories.get(0).getFinger_id());
+                histories.get(0).setFinger_id(0L);
+            }
+
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
             String geo_rand=histories.get(0).getGeo().trim();
@@ -810,7 +818,7 @@ public class HistoryViewController {
                 }
             }
 
-            String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
+            String stringrand=histories.get(0).getUsername()+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
             String code="";
             for(int i=0;i<50;i++){
                 Integer ranver=ran.nextInt(stringrand.length());
@@ -856,9 +864,9 @@ public class HistoryViewController {
             }
             String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
             Service service = serviceRepository.getInfoService(videos.get(0).getService());
-
             histories.get(0).setTimeget(System.currentTimeMillis());
             histories.get(0).setRunning(1);
+            histories.get(0).setFinger_id(finger_id);
 
             historyViewRepository.save(histories.get(0));
             resp.put("live", service.getLive() == 1 ? "true" : "fail");

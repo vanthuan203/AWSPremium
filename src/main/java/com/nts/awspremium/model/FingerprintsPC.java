@@ -11,14 +11,16 @@ public class FingerprintsPC {
     private Long id;
     private Long get_time=0L;
     private String code="";
+    private Integer running=0;
 
     public FingerprintsPC() {
     }
 
-    public FingerprintsPC(Long id, Long get_time, String code) {
+    public FingerprintsPC(Long id, Long get_time, String code, Integer running) {
         this.id = id;
         this.get_time = get_time;
         this.code = code;
+        this.running = running;
     }
 
     public Long getId() {
@@ -43,5 +45,13 @@ public class FingerprintsPC {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Integer getRunning() {
+        return running;
+    }
+
+    public void setRunning(Integer running) {
+        this.running = running;
     }
 }

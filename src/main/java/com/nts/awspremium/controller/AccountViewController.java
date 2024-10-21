@@ -198,6 +198,7 @@ public class AccountViewController {
                                     history.setOrderid(0L);
                                     history.setChannelid("");
                                     history.setGeo(account.get(0).getGeo());
+                                    history.setFinger_id(0L);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }catch (Exception e){
@@ -214,6 +215,7 @@ public class AccountViewController {
                                     history.setOrderid(0L);
                                     history.setChannelid("");
                                     history.setGeo(account.get(0).getGeo());
+                                    history.setFinger_id(0L);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }
@@ -230,6 +232,7 @@ public class AccountViewController {
                                 histories.get(0).setOrderid(0L);
                                 histories.get(0).setChannelid("");
                                 histories.get(0).setGeo(account.get(0).getGeo());
+                                histories.get(0).setFinger_id(0L);
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
                             }
@@ -283,6 +286,7 @@ public class AccountViewController {
                                 history.setOrderid(0L);
                                 history.setChannelid("");
                                 history.setGeo(accountbyVps.get(0).getGeo());
+                                history.setFinger_id(0L);
                                 history.setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(history);
                             }catch (Exception e){
@@ -299,6 +303,7 @@ public class AccountViewController {
                                 history.setOrderid(0L);
                                 history.setChannelid("");
                                 history.setGeo(accountbyVps.get(0).getGeo());
+                                history.setFinger_id(0L);
                                 history.setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(history);
                             }
@@ -314,6 +319,7 @@ public class AccountViewController {
                             histories.get(0).setOrderid(0L);
                             histories.get(0).setChannelid("");
                             histories.get(0).setGeo(accountbyVps.get(0).getGeo());
+                            histories.get(0).setFinger_id(0L);
                             histories.get(0).setTimeget(System.currentTimeMillis());
                             historyViewRepository.save(histories.get(0));
                         }
