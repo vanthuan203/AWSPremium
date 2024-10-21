@@ -15,6 +15,6 @@ public interface FingerprintsPCRepository extends JpaRepository<FingerprintsPC,L
 
     @Modifying
     @Transactional
-    @Query(value = "update fingerprints_pc set running=0 where id=?1 limit 1",nativeQuery = true)
-    public Integer update_Running_Finger_PC(Long id);
+    @Query(value = "update fingerprints_pc set running=0 where id=?1 and code like ?2 limit 1",nativeQuery = true)
+    public Integer update_Running_Finger_PC(Long id,String username);
 }
