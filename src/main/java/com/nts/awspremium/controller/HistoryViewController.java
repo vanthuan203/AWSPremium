@@ -817,17 +817,28 @@ public class HistoryViewController {
                     }
                 }
             }
-
-            String stringrand=histories.get(0).getUsername()+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
-            String code="";
-            for(int i=0;i<50;i++){
-                Integer ranver=ran.nextInt(stringrand.length());
-                code=code+stringrand.charAt(ranver);
-            }
-            Long finger_id=fingerprintsPCRepository.get_Finger_PC(System.currentTimeMillis(),code);
-            if(finger_id!=null){
-                resp.put("finger_id", finger_id);
-            }else {
+            Long finger_id=0L;
+            try{
+                String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
+                String code="";
+                for(int i=0;i<50;i++){
+                    Integer ranver=ran.nextInt(stringrand.length());
+                    code=code+stringrand.charAt(ranver);
+                }
+                code=histories.get(0).getUsername()+code;
+                finger_id=fingerprintsPCRepository.get_Finger_PC(System.currentTimeMillis(),code);
+                if(finger_id!=null){
+                    resp.put("finger_id", finger_id);
+                }else {
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+            }catch (Exception e){
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                 historyViewRepository.save(histories.get(0));
@@ -836,6 +847,7 @@ public class HistoryViewController {
                 resp.put("message", "Không còn video để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+
 
 
             String[] proxy = new String[0];
