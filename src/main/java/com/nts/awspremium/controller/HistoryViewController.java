@@ -344,7 +344,8 @@ public class HistoryViewController {
             } else {
                 List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
 
-                if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000< 7){
+                if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (5+ran.nextInt(5))){
+                    Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("fail", "video");
@@ -435,7 +436,7 @@ public class HistoryViewController {
                         }
                     }
                 }
-                Thread.sleep(200+ran.nextInt(250));
+                Thread.sleep(150+ran.nextInt(200));
                 if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setTask_time(System.currentTimeMillis());
@@ -699,16 +700,17 @@ public class HistoryViewController {
             resp.put("message", "Vps không chạy view!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
-        if((System.currentTimeMillis()-vps_check.getTask_time())/1000<15){
-            resp.put("status", "fail time");
-            resp.put("fail", "user");
-            resp.put("message", "Không còn user để view!");
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-        }
 
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(1000));
+            if((System.currentTimeMillis()-vps_check.getTask_time())/1000<15){
+                Thread.sleep(ran.nextInt(1000));
+                resp.put("status", "fail");
+                resp.put("fail", "user");
+                resp.put("message", "Không còn user để view!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+            //Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
             Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
             if (historieId == null) {
