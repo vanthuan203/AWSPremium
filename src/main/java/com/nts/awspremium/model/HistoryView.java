@@ -15,6 +15,7 @@ public class HistoryView {
     private Integer running;
     private String channelid;
     private Long timeget;
+    private Long task_time=0L;
     private String typeproxy;
     private String geo;
     private String geo_rand="";
@@ -27,7 +28,7 @@ public class HistoryView {
     public HistoryView() {
     }
 
-    public HistoryView(Long id, String username, String listvideo, String proxy, String vps, Integer running, String channelid, Long timeget, String typeproxy, String geo, String geo_rand, String videoid, Long orderid, Long finger_id, Integer task_done) {
+    public HistoryView(Long id, String username, String listvideo, String proxy, String vps, Integer running, String channelid, Long timeget, Long task_time, String typeproxy, String geo, String geo_rand, String videoid, Long orderid, Long finger_id, Integer task_done) {
         this.id = id;
         this.username = username;
         this.listvideo = listvideo;
@@ -36,6 +37,7 @@ public class HistoryView {
         this.running = running;
         this.channelid = channelid;
         this.timeget = timeget;
+        this.task_time = task_time;
         this.typeproxy = typeproxy;
         this.geo = geo;
         this.geo_rand = geo_rand;
@@ -163,5 +165,13 @@ public class HistoryView {
 
     public void setFinger_id(Long finger_id) {
         this.finger_id = finger_id;
+    }
+
+    public Long getTask_time() {
+        return task_time;
+    }
+
+    public void setTask_time(Long task_time) {
+        this.task_time = task_time;
     }
 }

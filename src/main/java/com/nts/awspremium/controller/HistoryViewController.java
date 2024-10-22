@@ -326,7 +326,7 @@ public class HistoryViewController {
         }
         Random ran = new Random();
         try {
-            Thread.sleep(ran.nextInt(1000));
+            //Thread.sleep(ran.nextInt(1000));
 /*
             if(ran.nextInt(100)<60){
                 resp.put("status", "fail");
@@ -343,6 +343,16 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
             } else {
                 List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
+
+                if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000< 7){
+                    resp.put("status", "fail time");
+                    resp.put("username", histories.get(0).getUsername());
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
+
                 String geo_rand=histories.get(0).getGeo().trim();
                 if(histories.get(0).getGeo_rand()!=null){
                     if(histories.get(0).getGeo_rand().length()!=0){
@@ -389,6 +399,7 @@ public class HistoryViewController {
                                 histories.get(0).setChannelid(videos.get(0).getChannelid());
                             }else{
                                 histories.get(0).setTimeget(System.currentTimeMillis());
+                                histories.get(0).setTask_time(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
                                 resp.put("status", "fail");
                                 resp.put("username", histories.get(0).getUsername());
@@ -414,6 +425,7 @@ public class HistoryViewController {
                             histories.get(0).setChannelid(videos.get(0).getChannelid());
                         }else{
                             histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_time(System.currentTimeMillis());
                             historyViewRepository.save(histories.get(0));
                             resp.put("status", "fail");
                             resp.put("username", histories.get(0).getUsername());
@@ -426,6 +438,7 @@ public class HistoryViewController {
                 Thread.sleep(200+ran.nextInt(250));
                 if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
                     histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_time(System.currentTimeMillis());
                     histories.get(0).setVideoid("");
                     histories.get(0).setOrderid(0L);
                     histories.get(0).setChannelid("");
