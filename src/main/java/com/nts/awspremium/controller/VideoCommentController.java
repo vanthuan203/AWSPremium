@@ -1231,7 +1231,7 @@ public class VideoCommentController {
                     dataCommentRepository.save(dataComment);
                 }
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
-                int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30) - 1)*3;
+                int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 50)<1?0:(int)(videoComments.get(i).getCommentorder() / 50));
                  if (max_thread <= 50) {
                      videoComments.get(i).setMaxthreads(max_thread);
                  } else {
