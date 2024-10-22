@@ -345,7 +345,7 @@ public class HistoryViewController {
                 List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
 
                 if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000< 7){
-                    resp.put("status", "fail time");
+                    resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
