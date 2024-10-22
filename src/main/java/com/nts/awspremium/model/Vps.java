@@ -15,6 +15,7 @@ public class Vps {
     private Integer state;
     private Integer running;
     private Long timecheck;
+    private Long task_time=0L;
     private Integer threads;
     private Integer vpsreset;
     private Integer timereset;
@@ -35,7 +36,7 @@ public class Vps {
     public Vps() {
     }
 
-    public Vps(Integer id, String vps, String urlapi, String token, String vpsoption, Integer state, Integer running, Long timecheck, Integer threads, Integer vpsreset, Integer timereset, Long timeresettool, Integer dayreset, String ipv4, Integer countipv4, String namevps, Integer changefinger, Integer ext, Integer get_account, Integer cmt, Integer proxy, Integer live, String device) {
+    public Vps(Integer id, String vps, String urlapi, String token, String vpsoption, Integer state, Integer running, Long timecheck, Long task_time, Integer threads, Integer vpsreset, Integer timereset, Long timeresettool, Integer dayreset, String ipv4, Integer countipv4, String namevps, Integer changefinger, Integer ext, Integer get_account, Integer cmt, Integer proxy, Integer live, String device) {
         this.id = id;
         this.vps = vps;
         this.urlapi = urlapi;
@@ -44,6 +45,7 @@ public class Vps {
         this.state = state;
         this.running = running;
         this.timecheck = timecheck;
+        this.task_time = task_time;
         this.threads = threads;
         this.vpsreset = vpsreset;
         this.timereset = timereset;
@@ -242,5 +244,13 @@ public class Vps {
 
     public void setDevice(String device) {
         this.device = device;
+    }
+
+    public Long getTask_time() {
+        return task_time;
+    }
+
+    public void setTask_time(Long task_time) {
+        this.task_time = task_time;
     }
 }

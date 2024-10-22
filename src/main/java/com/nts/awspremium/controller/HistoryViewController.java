@@ -675,17 +675,32 @@ public class HistoryViewController {
             resp.put("message", "Vps không để trống");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
-        if(vpsRepository.checkVpsCmtTrue(vps.trim())==0){
+        Vps vps_check=vpsRepository.getVpsByName(vps.trim());
+        if(vps_check==null){
+            resp.put("status", "fail");
+            resp.put("message", "Vps không tồn tại");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+        if(vps_check.getCmt()==0){
             resp.put("status", "fail");
             resp.put("message", "Vps không chạy view!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
+        if((System.currentTimeMillis()-vps_check.getTask_time())/1000<15){
+            resp.put("status", "fail time");
+            resp.put("fail", "user");
+            resp.put("message", "Không còn user để view!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+
         Random ran = new Random();
         try {
             Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
             Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
             if (historieId == null) {
+                vps_check.setTask_time(System.currentTimeMillis());
+                vpsRepository.save(vps_check);
                 resp.put("status", "fail");
                 resp.put("fail", "user");
                 resp.put("message", "Không còn user để view!");
@@ -759,6 +774,10 @@ public class HistoryViewController {
                                     histories.get(0).setTimeget(System.currentTimeMillis());
                                     histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                                     historyViewRepository.save(histories.get(0));
+
+                                    vps_check.setTask_time(System.currentTimeMillis());
+                                    vpsRepository.save(vps_check);
+
                                     resp.put("status", "fail");
                                     resp.put("fail", "video");
                                     resp.put("message", "Không còn video để view!");
@@ -808,6 +827,10 @@ public class HistoryViewController {
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                                 historyViewRepository.save(histories.get(0));
+
+                                vps_check.setTask_time(System.currentTimeMillis());
+                                vpsRepository.save(vps_check);
+
                                 resp.put("status", "fail");
                                 resp.put("fail", "video");
                                 resp.put("message", "Không còn video để view!");
@@ -833,6 +856,10 @@ public class HistoryViewController {
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                     historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
                     resp.put("status", "fail");
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
@@ -842,6 +869,10 @@ public class HistoryViewController {
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                 historyViewRepository.save(histories.get(0));
+
+                vps_check.setTask_time(System.currentTimeMillis());
+                vpsRepository.save(vps_check);
+
                 resp.put("status", "fail");
                 resp.put("fail", "video");
                 resp.put("message", "Không còn video để view!");
@@ -866,6 +897,10 @@ public class HistoryViewController {
                 if(proxy.length==0){
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
                     resp.put("status", "fail");
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
