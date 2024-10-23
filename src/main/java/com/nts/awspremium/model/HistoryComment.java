@@ -13,6 +13,8 @@ public class HistoryComment {
     private String vps;
     private Integer running;
     private Long timeget;
+    @Column(columnDefinition = "bigint default 0")
+    private Long task_time=0L;
     private String geo;
     private String videoid;
     private Long orderid;
@@ -20,13 +22,14 @@ public class HistoryComment {
     public HistoryComment() {
     }
 
-    public HistoryComment(Long id, String username, String listvideo, String vps, Integer running, Long timeget, String geo, String videoid, Long orderid) {
+    public HistoryComment(Long id, String username, String listvideo, String vps, Integer running, Long timeget, Long task_time, String geo, String videoid, Long orderid) {
         this.id = id;
         this.username = username;
         this.listvideo = listvideo;
         this.vps = vps;
         this.running = running;
         this.timeget = timeget;
+        this.task_time = task_time;
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
@@ -102,5 +105,13 @@ public class HistoryComment {
 
     public void setOrderid(Long orderid) {
         this.orderid = orderid;
+    }
+
+    public Long getTask_time() {
+        return task_time;
+    }
+
+    public void setTask_time(Long task_time) {
+        this.task_time = task_time;
     }
 }

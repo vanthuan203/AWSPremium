@@ -14,13 +14,15 @@ public class HistoryTraffic {
     private Integer running;
     private String device;
     private Long timeget;
+    @Column(columnDefinition = "bigint default 0")
+    private Long task_time=0L;
     private String geo;
     private Long orderid;
 
     public HistoryTraffic() {
     }
 
-    public HistoryTraffic(Long id, String username, String listorderid, String vps, Integer running, String device, Long timeget, String geo, Long orderid) {
+    public HistoryTraffic(Long id, String username, String listorderid, String vps, Integer running, String device, Long timeget, Long task_time, String geo, Long orderid) {
         this.id = id;
         this.username = username;
         this.listorderid = listorderid;
@@ -28,6 +30,7 @@ public class HistoryTraffic {
         this.running = running;
         this.device = device;
         this.timeget = timeget;
+        this.task_time = task_time;
         this.geo = geo;
         this.orderid = orderid;
     }
@@ -102,5 +105,13 @@ public class HistoryTraffic {
 
     public void setOrderid(Long orderid) {
         this.orderid = orderid;
+    }
+
+    public Long getTask_time() {
+        return task_time;
+    }
+
+    public void setTask_time(Long task_time) {
+        this.task_time = task_time;
     }
 }

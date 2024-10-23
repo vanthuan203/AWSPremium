@@ -23,11 +23,6 @@ public class AutoRunCheckProxy {
     private ProxyController proxyController;
     @Autowired
     private IpV4Repository ipV4Repository;
-    @Autowired
-    private OrderSpeedTrue orderSpeedTrue;
-
-    @Autowired
-    private BalanceRepository balanceRepository;
 
     @Autowired
     private Environment env;

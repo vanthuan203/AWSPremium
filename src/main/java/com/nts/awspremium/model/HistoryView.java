@@ -15,12 +15,14 @@ public class HistoryView {
     private Integer running;
     private String channelid;
     private Long timeget;
+    @Column(columnDefinition = "bigint default 0")
     private Long task_time=0L;
     private String typeproxy;
     private String geo;
     private String geo_rand="";
     private String videoid;
     private Long orderid;
+    @Column(columnDefinition = "bigint default 0")
     private Long finger_id=0L;
 
     private Integer task_done=0;
