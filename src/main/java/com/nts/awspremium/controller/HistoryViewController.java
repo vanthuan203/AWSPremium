@@ -859,7 +859,7 @@ public class HistoryViewController {
             try{
                 String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
                 String code="";
-                for(int i=0;i<50;i++){
+                for(int i=0;i<5;i++){
                     Integer ranver=ran.nextInt(stringrand.length());
                     code=code+stringrand.charAt(ranver);
                 }
