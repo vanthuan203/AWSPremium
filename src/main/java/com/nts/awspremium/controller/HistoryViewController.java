@@ -344,7 +344,7 @@ public class HistoryViewController {
             } else {
                 List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
 
-                if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (5+ran.nextInt(5))){
+                if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (10+ran.nextInt(5))){
                     Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
@@ -703,7 +703,7 @@ public class HistoryViewController {
 
         Random ran = new Random();
         try {
-            if((System.currentTimeMillis()-vps_check.getTask_time())/1000<15){
+            if((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(5))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
                 resp.put("fail", "user");
