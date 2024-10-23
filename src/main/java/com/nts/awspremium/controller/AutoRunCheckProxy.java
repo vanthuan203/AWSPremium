@@ -34,53 +34,20 @@ public class AutoRunCheckProxy {
     @PostConstruct
     public void init() throws InterruptedException {
         try{
-            int num_Cron= Integer.parseInt(env.getProperty("server.port"))-8000;
-            for(int i=1;i<=(num_Cron==0?11:10);i++){
-                int finalI = i+(num_Cron==0?0:(num_Cron*10));
-                //System.out.println(finalI);
-                if(num_Cron==0&&i==11){
+            if(Integer.parseInt(env.getProperty("server.port"))==8000) {
+                int num_Cron= ipV4Repository.getMaxCron();
+                for(int i=1;i<=num_Cron;i++) {
+                    int finalI = i;
                     new Thread(() -> {
-                        Long id=0L;
-                        while(true) {
-                            try{
-                                Balance balance=balanceRepository.getBalanceByMaxId();
-                                if(0!=Long.compare(id,balance.getId())){
-                                    id=balance.getId();
-                                    OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
-
-                                    Request request = null;
-
-                                    request = new Request.Builder().url("https://maker.ifttt.com/trigger/pending/with/key/eh3Ut1_iinzl4yCeH5-BC2d21WpaAKdzXTWzVfXurdc?value1=" + balance.getUser().replace("@gmail.com","")+"&value2="+balance.getService()+"&value3="+balance.getBalance()).get().build();
-
-                                    Response response = client.newCall(request).execute();
-                                }
-                                Thread.sleep(2500);
-
-                            }catch (Exception e){
-                                continue;
-                            }
-                        }
-                    }).start();
-                }else{
-                    new Thread(() -> {
-                        Random rand =new Random();
-                        while(true) {
-                            try{
+                        while (true) {
+                            try {
                                 proxyController.checkproxyMain(finalI);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 continue;
                             }
-                        /*
-                        try {
-                            Thread.sleep(300000+rand.nextInt(50000));
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                         */
                         }
                     }).start();
                 }
-
             }
         }catch (Exception e){
 
