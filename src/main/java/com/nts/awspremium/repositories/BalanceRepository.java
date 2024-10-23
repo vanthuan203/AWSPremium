@@ -17,8 +17,8 @@ public interface BalanceRepository extends JpaRepository<Balance,Long> {
     @Query(value = "Select * from balance where balance<0  order by id desc limit 1 ",nativeQuery = true)
     public List<Balance> getfluctuationsNow();
 
-    @Query(value = "SELECT * FROM  balance WHERE id = (SELECT MAX(id) FROM balance)",nativeQuery = true)
-    public Balance getBalanceByMaxId();
+    @Query(value = "SELECT b.*,s.geo FROM  balance b left join service s on b.service=s.service  WHERE b.balance<-1 and b.service IS NOT NULL  order by id desc limit 1",nativeQuery = true)
+    public BalanceHistory getBalanceByMaxId();
 
     @Query(value = "Select sum(balance) from balance where balance<0 and round((UNIX_TIMESTAMP()-time/1000)/60)<=5  order by id desc limit 1 ",nativeQuery = true)
     public Float getfluctuations5M();
