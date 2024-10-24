@@ -250,8 +250,8 @@ public class ApiCmtController {
                             resp.put("error", "This video is a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
-                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() < 60) {
-                            resp.put("error", "Videos under 60 seconds");
+                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() < 10) {
+                            resp.put("error", "Videos under 10 seconds");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         float priceorder = 0;
