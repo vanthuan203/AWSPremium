@@ -324,6 +324,7 @@ public class AuthController {
     public ResponseEntity<String> updateRedirectCron(){
         JSONObject resp = new JSONObject();
         try{
+            /*
             Setting setting = settingRepository.getSettingId1();
             if(historyViewRepository.getThreadRunningViewVN()<(videoViewRepository.getCountThreadViewVN()==null?0:videoViewRepository.getCountThreadViewVN())*(setting.getThreadmin()/100F)){
                 settingRepository.updateRedirectVN(settingRepository.getRedirectVN()==0?0:(settingRepository.getRedirectVN()-100));
@@ -339,6 +340,7 @@ public class AuthController {
             int maxrunningUS=videoViewRepository.getMaxRunningBuffHUS()==null?0:videoViewRepository.getMaxRunningBuffHUS();
             settingRepository.updateMaxRunningBuffHVN(maxrunningVN<=0?0:maxrunningVN);
             settingRepository.updateMaxRunningBuffHUS(maxrunningUS<=0?0:maxrunningUS);
+             */
             videoViewRepository.speedup_threads();
             resp.put("redirect=",true);
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
