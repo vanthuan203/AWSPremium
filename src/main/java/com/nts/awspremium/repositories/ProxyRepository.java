@@ -65,10 +65,10 @@ public interface ProxyRepository extends JpaRepository<Proxy, Integer> {
     @Query(value = "select * from proxy where proxy NOT LIKE ?1 and proxy not in (SELECT proxy FROM AccPremium.proxyhistory where state=1 and round((UNIX_TIMESTAMP()-id/1000)/60)<5  group by proxy  order by count(proxy)  desc) order by running asc,rand() limit 1",nativeQuery = true)
     public List<Proxy> getProxy(String proxy);
 
-    @Query(value = "SELECT proxy FROM AccPremium.proxy where geo=?1 and running=0  and ipv4 in(select ipv4 where state=1);",nativeQuery = true)
+    @Query(value = "SELECT proxy FROM AccPremium.proxy where geo=?1 and running=0  and ipv4 in(select ipv4 from ipv4 where state=1);",nativeQuery = true)
     public List<String> getProxyTrue(String geo);
 
-    @Query(value = "SELECT proxy FROM AccPremium.proxy where geo='kr' and ipv4 in(select ipv4 where state=1);",nativeQuery = true)
+    @Query(value = "SELECT proxy FROM AccPremium.proxy where geo='kr' and ipv4 in(select ipv4 from ipv4 where state=1);",nativeQuery = true)
     public List<String> getProxyKRTrue();
 
 
