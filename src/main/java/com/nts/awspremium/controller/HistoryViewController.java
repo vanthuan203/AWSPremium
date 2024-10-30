@@ -898,14 +898,14 @@ public class HistoryViewController {
 
             String[] proxy = new String[0];
             Random rand=new Random();
-            if(ipV4Repository.checkIPv4Live(histories.get(0).getTypeproxy())==0 || !geo_rand.equals(histories.get(0).getGeo())){
+            if(geo_rand.equals("kr") || ipV4Repository.checkIPv4Live(histories.get(0).getTypeproxy())==0 || !geo_rand.equals(histories.get(0).getGeo())){
 
                 if(geo_rand.equals("vn")){
                     proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("us")){
                     proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("kr")){
-                    proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("test1")){
                     proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }
