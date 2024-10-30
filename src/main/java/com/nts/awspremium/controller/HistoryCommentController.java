@@ -956,7 +956,7 @@ public class HistoryCommentController {
                 }else if(histories.get(0).getGeo().equals("cmt-us")){
                     proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else if(histories.get(0).getGeo().equals("cmt-kr")){
-                    proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }
                 if(proxy.length==0){
                     histories.get(0).setRunning(0);
