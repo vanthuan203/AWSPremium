@@ -730,6 +730,11 @@ public class HistoryCommentController {
             Long historieId = historyCommentRepository.getId(username);
             List<VideoComment> videos = null;
             if (historieId == null) {
+                if(accountRepository.checkByUsername(username.trim())==0){
+                    fail_resp.put("status", "fail");
+                    fail_resp.put("message", "Username không tồn tại!");
+                    return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
+                }
                 HistoryComment history = new HistoryComment();
                 history.setUsername(username);
                 history.setListvideo("");

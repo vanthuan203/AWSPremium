@@ -21,6 +21,9 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "Select id from account where username=?1 limit 1",nativeQuery = true)
     public Long findIdByUsername(String username);
 
+    @Query(value = "Select count(*) from account where username=?1 limit 1",nativeQuery = true)
+    public Integer checkByUsername(String username);
+
     @Query(value = "Select proxy,proxy2 from account where id=?1 limit 1",nativeQuery = true)
     public String findProxyByIdSub(Long id);
 
