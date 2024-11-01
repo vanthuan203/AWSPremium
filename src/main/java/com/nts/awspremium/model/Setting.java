@@ -32,10 +32,11 @@ public class Setting {
     private Integer redirectus;
     private Integer threadmin;
     private Integer randview;
+    private Integer limit_vps_reset=50;
     private Float thread_rate=1.5F;
     ;
 
-    public Setting(Long id, Float maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview, Float thread_rate) {
+    public Setting(Long id, Float maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview, Integer limit_vps_reset, Float thread_rate) {
         this.id = id;
         this.maxorder = maxorder;
         this.maxorderbuffhvn = maxorderbuffhvn;
@@ -58,6 +59,7 @@ public class Setting {
         this.redirectus = redirectus;
         this.threadmin = threadmin;
         this.randview = randview;
+        this.limit_vps_reset = limit_vps_reset;
         this.thread_rate = thread_rate;
     }
 
@@ -246,5 +248,13 @@ public class Setting {
 
     public void setThread_rate(Float thread_rate) {
         this.thread_rate = thread_rate;
+    }
+
+    public Integer getLimit_vps_reset() {
+        return limit_vps_reset;
+    }
+
+    public void setLimit_vps_reset(Integer limit_vps_reset) {
+        this.limit_vps_reset = limit_vps_reset;
     }
 }

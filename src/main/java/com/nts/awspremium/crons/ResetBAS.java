@@ -4,19 +4,22 @@ import com.nts.awspremium.controller.VpsController;
 import com.nts.awspremium.controller.WebTrafficController;
 import com.nts.awspremium.model.OrderSpeedTrue;
 import com.nts.awspremium.model.OrderTrue;
+import com.nts.awspremium.model.Setting;
+import com.nts.awspremium.repositories.SettingRepository;
 import com.nts.awspremium.repositories.VideoViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 public class ResetBAS {
     @Autowired
     private VpsController vpsController;
     @Autowired
-    private VideoViewRepository videoViewRepository;
+    private SettingRepository settingRepository;
     @Autowired
     private OrderTrue orderTrue;
     @Autowired
@@ -36,7 +39,8 @@ public class ResetBAS {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            vpsController.resetBasNoCheckByCron(50,3);
+                            Setting setting=settingRepository.getSettingId1();
+                            vpsController.resetBasNoCheckByCron(setting.getLimit_vps_reset(),3);
                             try {
                                 Thread.sleep(5000);
                             } catch (InterruptedException e) {
