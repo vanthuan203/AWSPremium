@@ -43,7 +43,8 @@ public class ProxyController {
     private Socks_IPV4Repository socksIpv4Repository;
     @Autowired
     private ProxySettingRepository proxySettingRepository;
-
+    @Autowired
+    private ProxyVNTrue proxyVNTrue;
     @Autowired
     private Proxy_IPV4_TikTokRepository proxyIpv4TikTokRepository;
 
@@ -87,6 +88,21 @@ public class ProxyController {
                 jsonArray.add(obj);
             }
             resp.put("socks",jsonArray);
+            return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
+        }catch (Exception e){
+            resp.put("status","fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value="/get_Rand_Proxy",produces = "application/hal_json;charset=utf8")
+    ResponseEntity<String> get_Rand_Proxy(){
+        JSONObject resp = new JSONObject();
+        try{
+            Random ran = new Random();
+            String proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size()));
+            resp.put("proxy",proxy);
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
         }catch (Exception e){
             resp.put("status","fail");
