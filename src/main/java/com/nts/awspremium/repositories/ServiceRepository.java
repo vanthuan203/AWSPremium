@@ -28,6 +28,9 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
     @Query(value = "SELECT * FROM service where enabled=1 and platform='TikTok'",nativeQuery = true)
     public List<Service> getAllServiceTiktok();
 
+    @Query(value = "SELECT * FROM service where enabled=1 and platform='Product'",nativeQuery = true)
+    public List<Service> getAllServiceProduct();
+
 
     @Query(value = "SELECT * FROM service where service=?1 and enabled=1 limit 1",nativeQuery = true)
     public Service getService(Integer service);

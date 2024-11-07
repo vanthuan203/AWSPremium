@@ -6,12 +6,14 @@ public class DataRequest {
     private int quantity;
     private String action;
     private int service=-1;
+    private int product=-1;
     private Long order=-1L;
     private String orders="";
     private String list="";
     private String search="";
     private String suggest="";
     private String comments="";
+    private String require="";
 
     public DataRequest() {
     }
@@ -112,5 +114,21 @@ public class DataRequest {
 
     public void setService(int service) {
         this.service = service;
+    }
+
+    public String getRequire() {
+        return require;
+    }
+
+    public void setRequire(String require) {
+        this.require = require;
+    }
+
+    public int getProduct() {
+        return product;
+    }
+
+    public void setProduct(int product) {
+        this.product = product;
     }
 }

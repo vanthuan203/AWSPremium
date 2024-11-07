@@ -46,6 +46,17 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "Select * from account where id=?1 limit 1",nativeQuery = true)
     public List<Account> findAccountById(Long id);
 
+
+    @Query(value = "Select * from account where id in(?1)",nativeQuery = true)
+    public List<Account> findAccountByListId(List<String> list_orderid);
+
+
+    @Query(value = "Select * from account where id=?1 limit 1",nativeQuery = true)
+    public Account getAccountById(Long id);
+
+    @Query(value = "Select id from account order by rand() limit ?1",nativeQuery = true)
+    public List<Long> getAccountRandByLimit(Integer limit);
+
     @Query(value = "Select id from account where proxy='' order by rand() limit ?1",nativeQuery = true)
     public List<Long> getAccountByLimit(Integer limit);
 

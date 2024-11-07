@@ -1,5 +1,6 @@
 package com.nts.awspremium.repositories;
 
+import com.nts.awspremium.model.Account;
 import com.nts.awspremium.model.Proxy;
 import com.nts.awspremium.model.ProxyVNTrue;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -164,5 +165,14 @@ public interface ProxyRepository extends JpaRepository<Proxy, Integer> {
     @Transactional
     @Query(value = "UPDATE proxylive set running=1,vps=?1,timeget=?2  where id=?3",nativeQuery = true)
     public Integer updateProxyLiveGet(String vps,Long timeget,Integer id);
+
+    @Query(value = "Select id from proxy order by rand() limit ?1",nativeQuery = true)
+    public List<Long> getProxyRandByLimit(Integer limit);
+
+    @Query(value = "Select * from proxy where id=?1 limit 1",nativeQuery = true)
+    public Proxy getProxyById(Long id);
+
+    @Query(value = "Select * from proxy where id in(?1)",nativeQuery = true)
+    public List<Proxy> findProxyByListId(List<String> list_orderid);
 
 }
