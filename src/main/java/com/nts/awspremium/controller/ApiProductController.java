@@ -92,7 +92,7 @@ public class ApiProductController {
                 return new ResponseEntity<String>(serviceBuffH.toJSONString(), HttpStatus.OK);
             }
             //Get trạng thái đơns
-            if (data.getAction().equals("status")) {
+            if (data.getAction().equals("product_order_status")) {
                 if (data.getOrders().length() == 0) {
 
                     ProductHistory productHistory = productHistoryRepository.getProductHistoriesById(data.getOrder());
