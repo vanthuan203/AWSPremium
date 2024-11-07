@@ -257,8 +257,8 @@ public class ApiProductController {
                 balance.setTime(System.currentTimeMillis());
                 balance.setTotalblance(balance_update);
                 balance.setBalance(-priceorder);
-                balance.setService(data.getService());
-                balance.setNote("Order " + data.getQuantity());
+                balance.setService(service.getService());
+                balance.setNote("Order " + data.getQuantity()+ " "+service.getTask());
                 balanceRepository.save(balance);
                 resp.put("order", productHistory.getOrder_id());
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
