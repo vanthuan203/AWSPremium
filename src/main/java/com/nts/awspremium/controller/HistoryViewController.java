@@ -463,7 +463,11 @@ public class HistoryViewController {
                 resp.put("video_title", videos.get(0).getVideotitle());
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
-                resp.put("like", "fail");
+                if(videos.get(0).getService()==801){
+                    resp.put("like", "true");
+                }else{
+                    resp.put("like", "fail");
+                }
                 resp.put("sub", "fail");
                 if(service.getNiche()==1){
                     String[] nicheArr = service.getKeyniche().split(",");
@@ -938,7 +942,11 @@ public class HistoryViewController {
             resp.put("video_title", videos.get(0).getVideotitle());
             resp.put("username", histories.get(0).getUsername());
             resp.put("geo", histories.get(0).getGeo());
-            resp.put("like", "fail");
+            if(videos.get(0).getService()==801){
+                resp.put("like", "true");
+            }else{
+                resp.put("like", "fail");
+            }
             resp.put("sub", "fail");
             resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             if(service.getNiche()==1){
