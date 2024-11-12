@@ -499,7 +499,7 @@ public class AuthController {
             LocalDateTime newDateTime = dateTime.plusHours(7);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
             String formattedDateTime = newDateTime.format(formatter);
-            resp.put("noti",formattedDateTime+ " ▪\uFE0F "+balances.get(0).getUser().replace("@gmail.com","")+" ▪\uFE0F "+(balances.get(0).getService()==null?" ":(balances.get(0).getService()))+" ▪\uFE0F "+balances.get(0).getBalance()+"$");
+            resp.put("noti",formattedDateTime+ " ▪\uFE0F "+balances.get(0).getUser().replace("@gmail.com","")+" ▪\uFE0F "+(balances.get(0).getService()==null?" ":(balances.get(0).getService()))+" ▪\uFE0F "+(-balances.get(0).getBalance())+"$");
         }
 
         return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
