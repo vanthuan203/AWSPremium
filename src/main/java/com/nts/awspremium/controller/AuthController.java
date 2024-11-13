@@ -490,16 +490,22 @@ public class AuthController {
             resp.put("message", "Token expired");
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
         }
-        List<Balance> balances=balanceRepository.getfluctuationsNow();
-        if(balances.size()==0){
+        BalanceHistory balanceHistory=balanceRepository.getfluctuationsNow();
+        if(balanceHistory==null){
             resp.put("noti","");
         }else{
-            Instant instant = Instant.ofEpochMilli(balances.get(0).getTime());
+            Instant instant = Instant.ofEpochMilli(balanceHistory.getTime());
             LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
             LocalDateTime newDateTime = dateTime.plusHours(7);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
             String formattedDateTime = newDateTime.format(formatter);
-            resp.put("noti",formattedDateTime+ " ▪\uFE0F "+balances.get(0).getUser().replace("@gmail.com","")+" ▪\uFE0F "+(balances.get(0).getService()==null?" ":(balances.get(0).getService()))+" ▪\uFE0F "+(-balances.get(0).getBalance())+"$");
+
+            String value1=balanceHistory.getUser().replace("@gmail.com","")+" ▪\uFE0F "+balanceHistory.getService()+" ▪\uFE0F "+(-balanceHistory.getBalance())+"$";
+            String value2=balanceHistory.getGeo().equals("vn")?" ":balanceHistory.getGeo().equals("us")?"\uD83C\uDDFA\uD83C\uDDF8":balanceHistory.getGeo().equals("kr")?"\uD83C\uDDF0\uD83C\uDDF7":balanceHistory.getGeo().toLowerCase();
+            String noti= "⏳ "+value2+" ▪\uFE0F "+formattedDateTime+" ▪\uFE0F "+value1;
+
+
+            resp.put("noti",noti);
         }
 
         return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
@@ -571,16 +577,16 @@ public class AuthController {
             resp.put("message", "Token expired");
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
         }
-        List<Balance> balances=balanceRepository.getfluctuationsNow();
-        if(balances.size()==0){
+        BalanceHistory balanceHistory=balanceRepository.getfluctuationsNow();
+        if(balanceHistory==null){
             resp.put("noti","");
         }else{
-            Instant instant = Instant.ofEpochMilli(balances.get(0).getTime());
+            Instant instant = Instant.ofEpochMilli(balanceHistory.getTime());
             LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
             LocalDateTime newDateTime = dateTime.plusHours(7);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
             String formattedDateTime = newDateTime.format(formatter);
-            resp.put("noti","\uD83D\uDD14 "+ formattedDateTime+" ⏩ "+balances.get(0).getBalance()+"$");
+            resp.put("noti","⏳ "+ formattedDateTime+" ⏩ "+balanceHistory.getBalance()+"$");
         }
 
         return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
