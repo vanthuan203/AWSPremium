@@ -404,9 +404,12 @@ public class VpsController {
             if(!list_time.contains(hour)){
                 resp.put("status", false);
             }
+            if(calendar.get(Calendar.MINUTE)<10){
+                resp.put("status", false);
+            }
             AccountChangeDaily accountChangeDaily=accountChangeDailyRepository.getReferenceById(1L);
             if(accountChangeDaily.getTime()!=hour){
-                if(accountRepository.checkCountAccChanger(accountChangeDaily.getName())==0){
+                if(accountRepository.checkCountAccChanger("mail"+day+"."+month)==0){
                     resp.put("status", false);
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
