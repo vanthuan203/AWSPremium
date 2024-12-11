@@ -38,7 +38,6 @@ public class AutoRunProxyTrue {
                             proxyVNTrue.setValue(proxyRepository.getProxyTrue("vn"));
                             proxyUSTrue.setValue(proxyRepository.getProxyTrue("us"));
                             proxyKRTrue.setValue(proxyRepository.getProxyKRTrue());
-                            System.out.println(proxyKRTrue.getValue());
                             try {
                                 Thread.sleep(60000);
                             } catch (InterruptedException e) {
