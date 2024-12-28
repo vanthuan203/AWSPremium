@@ -468,7 +468,11 @@ public class HistoryViewController {
                 }else{
                     resp.put("like", "fail");
                 }
-                resp.put("sub", "fail");
+                if(videos.get(0).getService()==802){
+                    resp.put("sub", "true");
+                }else{
+                    resp.put("sub", "fail");
+                }
                 if(service.getNiche()==1){
                     String[] nicheArr = service.getKeyniche().split(",");
                     resp.put("niche_key", nicheArr[ran.nextInt(nicheArr.length)]);
@@ -947,7 +951,11 @@ public class HistoryViewController {
             }else{
                 resp.put("like", "fail");
             }
-            resp.put("sub", "fail");
+            if(videos.get(0).getService()==802){
+                resp.put("sub", "true");
+            }else{
+                resp.put("sub", "fail");
+            }
             resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             if(service.getNiche()==1){
                 String[] nicheArr = service.getKeyniche().split(",");
