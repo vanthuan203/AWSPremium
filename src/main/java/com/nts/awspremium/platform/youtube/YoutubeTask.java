@@ -320,7 +320,7 @@ public class YoutubeTask {
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
                 data.put("geo", "like");
-                data.put("live", "true");
+                data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
                 data.put("channel_title", orderRunning.getChannel_title());
                 data.put("video_id", orderRunning.getOrder_key());
@@ -329,7 +329,7 @@ public class YoutubeTask {
                 data.put("keyword", orderRunning.getVideo_title());
                 data.put("suggest_video", "");
                 data.put("suggest_type", "fail");
-                data.put("like","fail");
+                data.put("like","true");
                 data.put("sub","fail");
                 data.put("niche_key","");
 
