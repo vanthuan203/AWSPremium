@@ -364,12 +364,7 @@ public class YoutubeOrder {
                 return resp;
             }
             OrderRunning orderRunning = new OrderRunning();
-            int thread=(int)(data.getQuantity()/1000)*service.getThread();
-            if(thread<2){
-                orderRunning.setThread(2);
-            }else{
-                orderRunning.setThread(thread);
-            }
+            orderRunning.setThread(service.getThread());
             orderRunning.setThread_set(0);
             orderRunning.setDuration(0L);
             orderRunning.setInsert_time(System.currentTimeMillis());

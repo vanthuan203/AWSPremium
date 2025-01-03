@@ -9,12 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(value = "/servive")
+@RequestMapping(value = "/service")
 public class ServiceController {
     @Autowired
     AdminRepository adminRepository;
@@ -24,6 +25,9 @@ public class ServiceController {
     BalanceRepository balanceRepository;
     @Autowired
     ServiceRepository serviceRepository;
+
+    @Autowired
+    ServiceSMMRepository serviceSMMRepository;
     @PostMapping(path = "login",produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> login(@RequestBody Admin admin){
         JSONObject resp=new JSONObject();
@@ -46,6 +50,87 @@ public class ServiceController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(path = "get_Option_Service",produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> getOptionService(){
+        JSONObject resp = new JSONObject();
+        //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
+        List<String > task=serviceSMMRepository.get_All_Task();
+        List<String > type=serviceSMMRepository.get_All_Type();
+        List<String > platform=serviceSMMRepository.get_All_Platform();
+        List<String > mode=serviceSMMRepository.get_All_Mode();
+        String list_Task="";
+        String list_Type="";
+        String list_Platform="";
+        String list_Mode="";
+        for(int i=0;i<task.size();i++){
+            if(i==0){
+                list_Task=task.get(0);
+            }else{
+                list_Task=list_Task+","+task.get(i);
+            }
+
+        }
+        resp.put("list_Task",list_Task);
+
+        for(int i=0;i<type.size();i++){
+            if(i==0){
+                list_Type=type.get(0);
+            }else{
+                list_Type=list_Type+","+type.get(i);
+            }
+
+        }
+        resp.put("list_Type",list_Type);
+        for(int i=0;i<platform.size();i++){
+            if(i==0){
+                list_Platform=platform.get(0);
+            }else{
+                list_Platform=list_Platform+","+platform.get(i);
+            }
+
+        }
+        resp.put("list_Platform",list_Platform);
+        for(int i=0;i<mode.size();i++){
+            if(i==0){
+                list_Mode=mode.get(0);
+            }else{
+                list_Mode=list_Mode+","+mode.get(i);
+            }
+
+        }
+        resp.put("list_Mode",list_Mode);
+        return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
+    }
+
+    @GetMapping(path = "get_List_Service",produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> get_List_Service(@RequestParam(defaultValue = "") String role,@RequestParam(defaultValue = "") String platform,@RequestParam(defaultValue = "") String mode){
+        JSONObject resp = new JSONObject();
+        try {
+            List<String > list_Service;
+            if(role.equals("ROLE_ADMIN")){
+                list_Service=serviceSMMRepository.get_All_Service_Web(platform,mode);
+            }else{
+                list_Service=serviceSMMRepository.get_All_Service_Enabled_Web(platform,mode);
+            }
+            String arr_Service="";
+            for(int i=0;i<list_Service.size();i++){
+                if(i==0){
+                    arr_Service=list_Service.get(0).toUpperCase();
+                }else{
+                    arr_Service=arr_Service+","+list_Service.get(i).toUpperCase();
+                }
+
+            }
+            resp.put("service",arr_Service);
+            return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
+        }catch (Exception e){
+
+            resp.put("status",false);
+            return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(path = "verify_token",produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> verify_token(@RequestHeader(defaultValue = "") String Authorization){
         JSONObject resp = new JSONObject();
