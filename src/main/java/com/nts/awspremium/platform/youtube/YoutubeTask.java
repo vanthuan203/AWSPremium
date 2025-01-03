@@ -297,7 +297,13 @@ public class YoutubeTask {
                 }
             }else{
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","like",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
-            }              if (orderRunning!=null) {
+            }
+            if (orderRunning!=null) {
+                Thread.sleep(ran.nextInt(300));
+                if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
+                    resp.put("status", false);
+                    return resp;
+                }
                 ServiceSMM service=orderRunning.getService();
                 if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
                     data.put("bonus","");
@@ -312,15 +318,20 @@ public class YoutubeTask {
                 resp.put("status", true);
                 data.put("order_id", orderRunning.getOrder_id());
                 //resp.put("proxy", proxy);
-                data.put("account_id", account_id.trim());
-                data.put("platform", service.getPlatform().toLowerCase());
-                data.put("task", service.getTask());
-                data.put("app", service.getApp());
-                data.put("task_key", orderRunning.getOrder_key());
-                data.put("task_link",orderRunning.getOrder_link());
-                data.put("keyword", orderRunning.getVideo_title());
+                data.put("username", account_id.trim());
+                data.put("geo", "like");
+                data.put("live", "true");
                 data.put("channel_id", orderRunning.getChannel_id());
                 data.put("channel_title", orderRunning.getChannel_title());
+                data.put("video_id", orderRunning.getOrder_key());
+                data.put("video_title", orderRunning.getVideo_title());
+                data.put("suggest_key",orderRunning.getVideo_title());
+                data.put("keyword", orderRunning.getVideo_title());
+                data.put("suggest_video", "");
+                data.put("suggest_type", "fail");
+                data.put("like","fail");
+                data.put("sub","fail");
+                data.put("niche_key","");
 
                 List<String> arrSource = new ArrayList<>();
                 for (int i = 0; i < service.getYoutube_external(); i++) {
@@ -345,15 +356,15 @@ public class YoutubeTask {
 
                 if (service.getMin_time() != service.getMax_time()) {
                     if (orderRunning.getDuration() > service.getMax_time() * 60) {
-                        data.put("viewing_time", service.getMin_time() * 60 + ran.nextInt((service.getMax_time() - service.getMin_time()) * 45));
+                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt((service.getMax_time() - service.getMin_time()) * 45));
                     } else {
-                        data.put("viewing_time", service.getMin_time() * 60 < orderRunning.getDuration() ? (service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
+                        data.put("video_duration", service.getMin_time() * 60 < orderRunning.getDuration() ? (service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
                     }
                 }else {
                     if (orderRunning.getDuration() > service.getMax_time() * 60) {
-                        data.put("viewing_time", service.getMin_time() * 60 + ran.nextInt(30) );
+                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt(30) );
                     } else {
-                        data.put("viewing_time", orderRunning.getDuration());
+                        data.put("video_duration", orderRunning.getDuration());
                     }
                 }
                 resp.put("data",data);
