@@ -1053,7 +1053,6 @@ public class HistoryViewController {
                 String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
 
                 Map<String, Object>  dataJson= (Map<String, Object>) get_task.get("data");
-                System.out.println(dataJson);
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setVideoid( dataJson.get("video_id").toString());
                 histories.get(0).setOrderid(Long.parseLong(dataJson.get("order_id").toString()));
