@@ -12,4 +12,7 @@ import java.util.List;
 public interface GoogleAPIKeyRepository extends JpaRepository<GoogleAPIKey,Long> {
     @Query(value = "Select * from googleapikey where state=1 order by count_get asc limit 1",nativeQuery = true)
     public List<GoogleAPIKey> getAllByState();
+
+    @Query(value = "Select * from googleapikey where state=1 order by count_get asc limit 1",nativeQuery = true)
+    public GoogleAPIKey get_Google_Key();
 }

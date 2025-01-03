@@ -1,6 +1,5 @@
 package com.nts.awspremium.controller;
 
-import com.nts.awspremium.TikTokApi;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONArray;

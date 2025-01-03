@@ -8,22 +8,33 @@ public class DataRequest {
     private int service=-1;
     private int product=-1;
     private Long order=-1L;
+    private Long order_refill=-1L;
     private String orders="";
     private String list="";
     private String search="";
     private String suggest="";
     private String comments="";
     private String require="";
+    private String note="";
 
     public DataRequest() {
     }
 
-    public DataRequest(String key, String link, int quantity, String action, int service) {
+    public DataRequest(String key, String link, int quantity, String action, int service, int product, Long order, String orders, String list, String search, String suggest, String comments, String require, String note) {
         this.key = key;
         this.link = link;
         this.quantity = quantity;
         this.action = action;
         this.service = service;
+        this.product = product;
+        this.order = order;
+        this.orders = orders;
+        this.list = list;
+        this.search = search;
+        this.suggest = suggest;
+        this.comments = comments;
+        this.require = require;
+        this.note = note;
     }
 
     public String getComments() {
@@ -130,5 +141,21 @@ public class DataRequest {
 
     public void setProduct(int product) {
         this.product = product;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Long getOrder_refill() {
+        return order_refill;
+    }
+
+    public void setOrder_refill(Long order_refill) {
+        this.order_refill = order_refill;
     }
 }
