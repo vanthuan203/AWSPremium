@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -82,7 +83,8 @@ public class HistoryViewController {
 
     @Autowired
     private HistorySumRepository historySumRepository;
-
+    @Autowired
+    private LogErrorRepository logErrorRepository;
     /*
          @GetMapping(value = "get", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> get(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
@@ -2142,17 +2144,31 @@ public class HistoryViewController {
                         historySum.setAccount_id(username.trim());
                         historySum.setViewing_time(duration);
                         historySum.setAdd_time(System.currentTimeMillis());
-                        historySumRepository.save(historySum);
+                        try {
+                            historySumRepository.save(historySum);
+                        } catch (Exception e) {
+                            try {
+                                historySumRepository.save(historySum);
+                            } catch (Exception f) {
+                            }
+                        }
                     }else{
                         orderRunning=orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
-                        youtubeUpdate.youtube_like(username.trim(),videoid.trim());
                         if(orderRunning!=null){
+                            youtubeUpdate.youtube_like(username.trim(),videoid.trim());
                             HistorySum historySum=new HistorySum();
                             historySum.setOrderRunning(orderRunning);
                             historySum.setAccount_id(username.trim());
                             historySum.setViewing_time(duration);
                             historySum.setAdd_time(System.currentTimeMillis());
-                            historySumRepository.save(historySum);
+                            try {
+                                historySumRepository.save(historySum);
+                            } catch (Exception e) {
+                                try {
+                                    historySumRepository.save(historySum);
+                                } catch (Exception f) {
+                                }
+                            }
                         }
                     }
 
@@ -2186,6 +2202,21 @@ public class HistoryViewController {
 
             }
         } catch (Exception e) {
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            LogError logError =new LogError();
+            logError.setMethod_name(stackTraceElement.getMethodName());
+            logError.setLine_number(stackTraceElement.getLineNumber());
+            logError.setClass_name(stackTraceElement.getClassName());
+            logError.setFile_name(stackTraceElement.getFileName());
+            logError.setMessage(e.getMessage());
+            logError.setAdd_time(System.currentTimeMillis());
+            Date date_time = new Date(System.currentTimeMillis());
+            // Tạo SimpleDateFormat với múi giờ GMT+7
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date_time);
+            logError.setDate_time(formattedDate);
+            logErrorRepository.save(logError);
             resp.put("status", "fail");
             resp.put("message", e.getMessage());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
