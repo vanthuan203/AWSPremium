@@ -2145,6 +2145,7 @@ public class HistoryViewController {
                         historySumRepository.save(historySum);
                     }else{
                         orderRunning=orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
+                        youtubeUpdate.youtube_like(username.trim(),videoid.trim());
                         if(orderRunning!=null){
                             HistorySum historySum=new HistorySum();
                             historySum.setOrderRunning(orderRunning);
