@@ -59,7 +59,7 @@ public class YoutubeTask {
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","view",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
             }
             if (orderRunning!=null) {
-                Thread.sleep(ran.nextInt(300));
+                Thread.sleep(ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
                     resp.put("status", false);
                     return resp;
@@ -79,6 +79,7 @@ public class YoutubeTask {
                 data.put("order_id", orderRunning.getOrder_id());
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
+                data.put("service_id", service.getService_id());
                 data.put("geo", "like");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
@@ -178,7 +179,7 @@ public class YoutubeTask {
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","subscriber",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
             }
             if (orderRunning!=null) {
-                Thread.sleep(ran.nextInt(300));
+                Thread.sleep(ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
                     resp.put("status", false);
                     return resp;
@@ -198,6 +199,7 @@ public class YoutubeTask {
                 data.put("order_id", orderRunning.getOrder_id());
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
+                data.put("service_id", service.getService_id());
                 data.put("geo", "sub");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
@@ -298,7 +300,7 @@ public class YoutubeTask {
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","like",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
             }
             if (orderRunning!=null) {
-                Thread.sleep(ran.nextInt(300));
+                Thread.sleep(ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
                     resp.put("status", false);
                     return resp;
@@ -318,6 +320,7 @@ public class YoutubeTask {
                 data.put("order_id", orderRunning.getOrder_id());
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
+                data.put("service_id", service.getService_id());
                 data.put("geo", "like");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());

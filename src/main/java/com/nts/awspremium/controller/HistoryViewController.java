@@ -2,6 +2,7 @@ package com.nts.awspremium.controller;
 
 import com.nts.awspremium.StringUtils;
 import com.nts.awspremium.model.*;
+import com.nts.awspremium.model_system.OrderThreadCheck;
 import com.nts.awspremium.platform.youtube.YoutubeTask;
 import com.nts.awspremium.platform.youtube.YoutubeUpdate;
 import com.nts.awspremium.repositories.*;
@@ -71,7 +72,8 @@ public class HistoryViewController {
     private IpV4Repository ipV4Repository;
     @Autowired
     private SettingRepository settingRepository;
-
+    @Autowired
+    private OrderThreadCheck orderThreadCheck;
     @Autowired
     private VpsRepository vpsRepository;
     @Autowired
@@ -363,8 +365,15 @@ public class HistoryViewController {
             } else {
                 List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
 
-                if((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (10+ran.nextInt(5))){
+                if(!vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (10+ran.nextInt(5)))){
                     Thread.sleep(ran.nextInt(1000));
+                    resp.put("status", "fail");
+                    resp.put("username", histories.get(0).getUsername());
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }else  if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(5)))){
+                    Thread.sleep(ran.nextInt(500));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("fail", "video");
@@ -408,6 +417,15 @@ public class HistoryViewController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                     Map<String, Object>  dataJson= (Map<String, Object>) get_task.get("data");
+
+                    Thread.sleep(ran.nextInt(150));
+                    if(!orderThreadCheck.getValue().contains(dataJson.get("order_id").toString())){
+                        resp.put("status", "fail");
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid( dataJson.get("video_id").toString());
                     histories.get(0).setOrderid(Long.parseLong(dataJson.get("order_id").toString()));
@@ -422,6 +440,7 @@ public class HistoryViewController {
                     resp.put("video_id", dataJson.get("video_id").toString());
                     resp.put("video_title", dataJson.get("video_title").toString());
                     resp.put("username", histories.get(0).getUsername());
+                    resp.put("service_id", Integer.parseInt(dataJson.get("service_id").toString()));
                     resp.put("geo",dataJson.get("geo").toString());
                     resp.put("like", dataJson.get("like").toString());
                     resp.put("sub", dataJson.get("sub").toString());
@@ -547,6 +566,7 @@ public class HistoryViewController {
                     resp.put("video_id", videos.get(0).getVideoid());
                     resp.put("video_title", videos.get(0).getVideotitle());
                     resp.put("username", histories.get(0).getUsername());
+                    resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
                     if(videos.get(0).getService()==801){
                         resp.put("like", "true");
@@ -1055,6 +1075,15 @@ public class HistoryViewController {
                 String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
 
                 Map<String, Object>  dataJson= (Map<String, Object>) get_task.get("data");
+
+                Thread.sleep(ran.nextInt(150));
+                if(!orderThreadCheck.getValue().contains(dataJson.get("order_id").toString())){
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setVideoid( dataJson.get("video_id").toString());
                 histories.get(0).setOrderid(Long.parseLong(dataJson.get("order_id").toString()));
@@ -1070,6 +1099,7 @@ public class HistoryViewController {
                 resp.put("video_id", dataJson.get("video_id").toString());
                 resp.put("video_title", dataJson.get("video_title").toString());
                 resp.put("username", histories.get(0).getUsername());
+                resp.put("service_id", Integer.parseInt(dataJson.get("service_id").toString()));
                 resp.put("geo",dataJson.get("geo").toString());
                 resp.put("like", dataJson.get("like").toString());
                 resp.put("sub", dataJson.get("sub").toString());
@@ -1128,6 +1158,7 @@ public class HistoryViewController {
                 resp.put("video_id", videos.get(0).getVideoid());
                 resp.put("video_title", videos.get(0).getVideotitle());
                 resp.put("username", histories.get(0).getUsername());
+                resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
                 if(videos.get(0).getService()==801){
                     resp.put("like", "true");
@@ -2111,7 +2142,7 @@ public class HistoryViewController {
 
     @GetMapping(value = "/update", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> update(@RequestParam(defaultValue = "") String username,
-                                  @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration) {
+                                  @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id) {
         JSONObject resp = new JSONObject();
 
         if (username.length() == 0) {
