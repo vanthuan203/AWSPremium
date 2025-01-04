@@ -106,12 +106,22 @@ public class AccountViewController {
         }
         try {
             if (cmt==0) {
-                Integer check_get = vpsRepository.checkGetAccount5ByThreadVps(vps.trim(),geo.trim());
-                if (check_get == 0) {
-                    resp.put("status", "fail");
-                    resp.put("message", "Đã đủ acc cho Vps!");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                if(geo.equals("smm")){
+                    Integer check_get = vpsRepository.checkGetAccountSMMByThreadVps(vps.trim(),geo.trim());
+                    if (check_get == 0) {
+                        resp.put("status", "fail");
+                        resp.put("message", "Đã đủ acc cho Vps!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                }else{
+                    Integer check_get = vpsRepository.checkGetAccount5ByThreadVps(vps.trim(),geo.trim());
+                    if (check_get == 0) {
+                        resp.put("status", "fail");
+                        resp.put("message", "Đã đủ acc cho Vps!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
                 }
+
             } else {
                 if(vpsRepository.checkVpsCmtTrue(vps.trim())==0){
                     resp.put("status", "fail");

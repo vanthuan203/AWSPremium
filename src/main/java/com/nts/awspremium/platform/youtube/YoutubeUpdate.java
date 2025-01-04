@@ -38,9 +38,6 @@ public class YoutubeUpdate {
     private LogErrorRepository logErrorRepository;
     public Boolean youtube_view(String account_id,String task_key){
         try{
-            if(orderRunningRepository.check_No_History(task_key.trim())>0){
-                return true;
-            }
             YoutubeViewHistory youtubeVideoHistory=youtubeViewHistoryRepository.get_By_AccountId(account_id.trim());
             if(youtubeVideoHistory!=null){
                 char target = '|';

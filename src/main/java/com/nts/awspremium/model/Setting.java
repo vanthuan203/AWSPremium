@@ -20,6 +20,8 @@ public class Setting {
     private Integer maxordervn;
     private Integer maxorderus;
     private Integer levelthread;
+
+    private Integer max_acc_smm=500;
     private Float leveluser;
 
     private Integer cmtcountuser;
@@ -36,34 +38,17 @@ public class Setting {
     private Float thread_rate=1.5F;
     ;
 
-    public Setting(Long id, Float maxorder, Integer maxorderbuffhvn, Integer maxorderbuffhus, Float maxrunningam, Float maxrunningpm, Integer mintimebuff, Integer maxthread, Integer pricerate, Integer bonus, Integer maxordervn, Integer maxorderus, Integer levelthread, Float leveluser, Integer cmtcountuser, Integer cmtcountuser_us, Integer cmtcountuser_kr, Integer redirect, Integer redirectvn, Integer redirectus, Integer threadmin, Integer randview, Integer limit_vps_reset, Float thread_rate) {
-        this.id = id;
-        this.maxorder = maxorder;
-        this.maxorderbuffhvn = maxorderbuffhvn;
-        this.maxorderbuffhus = maxorderbuffhus;
-        this.maxrunningam = maxrunningam;
-        this.maxrunningpm = maxrunningpm;
-        this.mintimebuff = mintimebuff;
-        this.maxthread = maxthread;
-        this.pricerate = pricerate;
-        this.bonus = bonus;
-        this.maxordervn = maxordervn;
-        this.maxorderus = maxorderus;
-        this.levelthread = levelthread;
-        this.leveluser = leveluser;
-        this.cmtcountuser = cmtcountuser;
-        this.cmtcountuser_us = cmtcountuser_us;
-        this.cmtcountuser_kr = cmtcountuser_kr;
-        this.redirect = redirect;
-        this.redirectvn = redirectvn;
-        this.redirectus = redirectus;
-        this.threadmin = threadmin;
-        this.randview = randview;
-        this.limit_vps_reset = limit_vps_reset;
-        this.thread_rate = thread_rate;
-    }
+
 
     public Setting() {
+    }
+
+    public Integer getMax_acc_smm() {
+        return max_acc_smm;
+    }
+
+    public void setMax_acc_smm(Integer max_acc_smm) {
+        this.max_acc_smm = max_acc_smm;
     }
 
     public Integer getCmtcountuser_us() {

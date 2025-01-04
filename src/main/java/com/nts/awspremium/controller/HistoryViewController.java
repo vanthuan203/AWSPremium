@@ -2155,20 +2155,38 @@ public class HistoryViewController {
                     }else{
                         orderRunning=orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
                         if(orderRunning!=null){
-                            youtubeUpdate.youtube_like(username.trim(),videoid.trim());
-                            HistorySum historySum=new HistorySum();
-                            historySum.setOrderRunning(orderRunning);
-                            historySum.setAccount_id(username.trim());
-                            historySum.setViewing_time(duration);
-                            historySum.setAdd_time(System.currentTimeMillis());
-                            try {
-                                historySumRepository.save(historySum);
-                            } catch (Exception e) {
+                            if(orderRunning.getService().getTask().equals("like")){
+                                youtubeUpdate.youtube_like(username.trim(),videoid.trim());
+                                HistorySum historySum=new HistorySum();
+                                historySum.setOrderRunning(orderRunning);
+                                historySum.setAccount_id(username.trim());
+                                historySum.setViewing_time(duration);
+                                historySum.setAdd_time(System.currentTimeMillis());
                                 try {
                                     historySumRepository.save(historySum);
-                                } catch (Exception f) {
+                                } catch (Exception e) {
+                                    try {
+                                        historySumRepository.save(historySum);
+                                    } catch (Exception f) {
+                                    }
+                                }
+                            }else if(orderRunning.getService().getTask().equals("view")){
+                                youtubeUpdate.youtube_view(username.trim(),videoid.trim());
+                                HistorySum historySum=new HistorySum();
+                                historySum.setOrderRunning(orderRunning);
+                                historySum.setAccount_id(username.trim());
+                                historySum.setViewing_time(duration);
+                                historySum.setAdd_time(System.currentTimeMillis());
+                                try {
+                                    historySumRepository.save(historySum);
+                                } catch (Exception e) {
+                                    try {
+                                        historySumRepository.save(historySum);
+                                    } catch (Exception f) {
+                                    }
                                 }
                             }
+
                         }
                     }
 
