@@ -372,8 +372,8 @@ public class HistoryViewController {
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                }else  if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(5)))){
-                    Thread.sleep(ran.nextInt(500));
+                }else  if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(25)))){
+                    Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("fail", "video");
@@ -406,12 +406,20 @@ public class HistoryViewController {
                         }
                     }
                     if(get_task==null){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_time(System.currentTimeMillis());
+                        historyViewRepository.save(histories.get(0));
                         resp.put("status", "fail");
+                        resp.put("username", histories.get(0).getUsername());
                         resp.put("fail", "video");
                         resp.put("message", "Không còn video để view!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }else if(get_task.get("status").equals(false)){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_time(System.currentTimeMillis());
+                        historyViewRepository.save(histories.get(0));
                         resp.put("status", "fail");
+                        resp.put("username", histories.get(0).getUsername());
                         resp.put("fail", "video");
                         resp.put("message", "Không còn video để view!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -420,7 +428,11 @@ public class HistoryViewController {
 
                     Thread.sleep(ran.nextInt(150));
                     if(!orderThreadCheck.getValue().contains(dataJson.get("order_id").toString())){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_time(System.currentTimeMillis());
+                        historyViewRepository.save(histories.get(0));
                         resp.put("status", "fail");
+                        resp.put("username", histories.get(0).getUsername());
                         resp.put("fail", "video");
                         resp.put("message", "Không còn video để view!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -819,7 +831,13 @@ public class HistoryViewController {
 
         Random ran = new Random();
         try {
-            if((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(5))){
+            if(!vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(5)))){
+                Thread.sleep(ran.nextInt(1000));
+                resp.put("status", "fail");
+                resp.put("fail", "user");
+                resp.put("message", "Không còn user để view!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }else if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (60+ran.nextInt(25)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
                 resp.put("fail", "user");
@@ -878,11 +896,25 @@ public class HistoryViewController {
                     }
                 }
                 if(get_task==null){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
                     resp.put("status", "fail");
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }else if(get_task.get("status").equals(false)){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
                     resp.put("status", "fail");
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
@@ -1078,6 +1110,13 @@ public class HistoryViewController {
 
                 Thread.sleep(ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(dataJson.get("order_id").toString())){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
                     resp.put("status", "fail");
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
