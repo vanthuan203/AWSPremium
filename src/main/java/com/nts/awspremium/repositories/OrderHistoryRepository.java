@@ -2,6 +2,7 @@ package com.nts.awspremium.repositories;
 
 import com.nts.awspremium.model.OrderHistory;
 import com.nts.awspremium.model.OrderHistoryShow;
+import com.nts.awspremium.model.OrderRunning;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -84,5 +85,15 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long>
             "s.task,s.mode from order_history o left join service_smm s on o.service_id=s.service_id where  o.order_id=?1 \n" +
             "limit 1",nativeQuery = true)
     public OrderHistoryShow get_Order_History(Long order_id);
+
+
+    @Query(value = "SELECT o from OrderHistory o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (?1-o.end_time)/1000/60/60>o.service.check_end_time and (?1-o.update_current_time)/1000/60/60>=4 and (?1-o.end_time)/1000/60/60/24<o.service.refund_time")
+    public List<OrderHistory> get_Order_By_Check_Count(Long now);
+
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE order_history set current_count=?1,update_current_time=?2 where order_id=?3",nativeQuery = true)
+    public void update_Current_Count(Integer current_count,Long update_current_time,Long order_id);
 
 }

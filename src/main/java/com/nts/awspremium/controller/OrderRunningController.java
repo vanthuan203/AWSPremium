@@ -1033,4 +1033,54 @@ public class OrderRunningController {
 
     }
 
+    @GetMapping(value = "update_Running_Order_Pending", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<Map<String, Object>> update_Running_Order_Pending() throws InterruptedException {
+        Map<String, Object> resp = new LinkedHashMap<>();
+        Map<String, Object> data = new LinkedHashMap<>();
+        try{
+            List<OrderRunning> orderPending=orderRunningRepository.get_List_Order_Pending();
+            for(int i=0;i<orderPending.size();i++){
+                if(orderPending.get(i).getService().getPlatform().equals("youtube")){
+                    if(orderPending.get(i).getService().getTask().equals("subscriber")){
+                        List<String> videoList =GoogleApi.getVideoLinks("https://www.youtube.com/channel/"+orderPending.get(i).getOrder_key().trim()+"/videos");
+                        if(videoList.size()<3){
+                            delete_Order_Running("api@gmail.com",orderPending.get(i).getOrder_id().toString(),0,"Could not find this account");
+                            continue;
+                        }
+                        int start_Count =GoogleApi.getCountSubcriberCurrent(orderPending.get(i).getOrder_key().trim());
+                        if(start_Count==-2){
+                            delete_Order_Running("api@gmail.com",orderPending.get(i).getOrder_id().toString(),0,"Can't get SubcriberCurrent");
+                            continue;
+                        }
+                    }
+                }
+
+            }
+            resp.put("status",true);
+            data.put("message", "update thành công");
+            resp.put("data",data);
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }catch (Exception e){
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            LogError logError =new LogError();
+            logError.setMethod_name(stackTraceElement.getMethodName());
+            logError.setLine_number(stackTraceElement.getLineNumber());
+            logError.setClass_name(stackTraceElement.getClassName());
+            logError.setFile_name(stackTraceElement.getFileName());
+            logError.setMessage(e.getMessage());
+            logError.setAdd_time(System.currentTimeMillis());
+            Date date_time = new Date(System.currentTimeMillis());
+            // Tạo SimpleDateFormat với múi giờ GMT+7
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date_time);
+            logError.setDate_time(formattedDate);
+            logErrorRepository.save(logError);
+
+            resp.put("status", false);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 }

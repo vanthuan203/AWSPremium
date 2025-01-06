@@ -375,6 +375,77 @@ public class OrderHistoryController {
         }
     }
 
+    @GetMapping(value = "update_Current_Count", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<Map<String, Object>> update_Current_Count() throws InterruptedException {
+        Map<String, Object> resp = new LinkedHashMap<>();
+        Map<String, Object> data = new LinkedHashMap<>();
+        try{
+            List<OrderHistory> orderHistoryList=orderHistoryRepository.get_Order_By_Check_Count(System.currentTimeMillis());
+            for(int i=0;i<orderHistoryList.size();i++){
+                try {
+                    if(orderHistoryList.get(i).getService().getPlatform().equals("youtube")){
+                        if(orderHistoryList.get(i).getService().getTask().equals("subscriber")){
+                            int current_Count=GoogleApi.getCountSubcriberCurrent(orderHistoryList.get(i).getOrder_key());
+                            if(current_Count>=0){
+                                orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
+                            }
+                        }else if(orderHistoryList.get(i).getService().getTask().equals("like")){
+                            int current_Count=GoogleApi.getCountLikeCurrent(orderHistoryList.get(i).getOrder_key());
+                            if(current_Count>=0){
+                                orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
+                            }
+                        }else if(orderHistoryList.get(i).getService().getTask().equals("view")){
+                            int current_Count=GoogleApi.getCountView(orderHistoryList.get(i).getOrder_key(),get_key());
+                            if(current_Count>=0){
+                                orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+                    LogError logError =new LogError();
+                    logError.setMethod_name(stackTraceElement.getMethodName());
+                    logError.setLine_number(stackTraceElement.getLineNumber());
+                    logError.setClass_name(stackTraceElement.getClassName());
+                    logError.setFile_name(stackTraceElement.getFileName());
+                    logError.setMessage(e.getMessage());
+                    logError.setAdd_time(System.currentTimeMillis());
+                    Date date_time = new Date(System.currentTimeMillis());
+                    // Tạo SimpleDateFormat với múi giờ GMT+7
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+                    String formattedDate = sdf.format(date_time);
+                    logError.setDate_time(formattedDate);
+                    logErrorRepository.save(logError);
+                }
+            }
+            resp.put("status",true);
+            data.put("message", "update thành công");
+            resp.put("data",data);
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }catch (Exception e){
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            LogError logError =new LogError();
+            logError.setMethod_name(stackTraceElement.getMethodName());
+            logError.setLine_number(stackTraceElement.getLineNumber());
+            logError.setClass_name(stackTraceElement.getClassName());
+            logError.setFile_name(stackTraceElement.getFileName());
+            logError.setMessage(e.getMessage());
+            logError.setAdd_time(System.currentTimeMillis());
+            Date date_time = new Date(System.currentTimeMillis());
+            // Tạo SimpleDateFormat với múi giờ GMT+7
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date_time);
+            logError.setDate_time(formattedDate);
+            logErrorRepository.save(logError);
+
+            resp.put("status", false);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
 
     @GetMapping(path = "refill", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> refill(@RequestHeader(defaultValue = "") String Authorization,

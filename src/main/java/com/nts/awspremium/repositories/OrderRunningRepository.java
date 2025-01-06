@@ -35,8 +35,9 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "SELECT count(*) from order_running where check_count=1 and order_id=?1",nativeQuery = true)
     public Integer check_Check_Count(Long order_id);
 
-    @Query(value = "SELECT o from OrderRunning o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (o.update_current_time<o.update_time or (?1-o.update_current_time)/1000/60>=30)")
+    @Query(value = "SELECT o from OrderRunning o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (o.update_current_time<o.update_time or (?1-o.update_current_time)/1000/60/60<24)")
     public List<OrderRunning> get_Order_By_Check_Count(Long now);
+
     @Query(value = "SELECT count(*) from order_running where order_key=?1 and service_id in(select service_id from service_smm where task=?2)",nativeQuery = true)
     public Integer get_Order_By_Order_Key_And_Task(String order_id,String task);
 
@@ -66,6 +67,12 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
 
     @Query(value = "SELECT o FROM OrderRunning o where o.service.task='comment' and o.start_time=0")
     public List<OrderRunning> get_Order_Comment_Pending();
+
+    @Query(value = "SELECT o FROM OrderRunning o where o.start_time=0")
+    public List<OrderRunning> get_List_Order_Pending();
+
+    @Query(value = "SELECT o FROM OrderRunning o where o.service.task='subscriber' and o.start_time=0")
+    public List<OrderRunning> get_Order_Subscriber_Pending();
 
     @Query(value = "SELECT service_id from order_running where order_key=?1 and service_id in(select service_id from service_smm where task='view' and platform='youtube')",nativeQuery = true)
     public Integer get_ServiceId_By_TaskKey(String order_key);
