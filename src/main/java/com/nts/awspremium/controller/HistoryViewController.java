@@ -365,14 +365,14 @@ public class HistoryViewController {
             } else {
                 List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
 
-                if(!vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (10+ran.nextInt(5)))){
+                if(!vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (10+ran.nextInt(5)))){
                     Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                }else  if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(25)))){
+                }else  if(vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(25)))){
                     Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
@@ -381,7 +381,7 @@ public class HistoryViewController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 Map<String, Object> get_task =null;
-                if(vps_check.getVpsoption().equals("smm")){
+                if(vps_check.getVpsoption().contains("smm")){
                     List<TaskPriority> priorityTasks =taskPriorityRepository.get_Priority_Task_By_Platform("youtube");
                     List<String> arrTask = new ArrayList<>();
 
@@ -395,11 +395,11 @@ public class HistoryViewController {
 
                         while(arrTask.remove(task)) {}
                         if(task.equals("youtube_view")){
-                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),"auto");
+                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),vps_check.getVpsoption());
                         }else if(task.equals("youtube_like")){
-                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),"auto");
+                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),vps_check.getVpsoption());
                         }else if(task.equals("youtube_subscriber")){
-                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),"auto");
+                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),vps_check.getVpsoption());
                         }
                         if(get_task!=null?get_task.get("status").equals(true):false){
                             break;
@@ -831,7 +831,7 @@ public class HistoryViewController {
 
         Random ran = new Random();
         try {
-            if(!vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(5)))){
+            if(!vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(5)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
                 resp.put("fail", "user");
@@ -870,7 +870,7 @@ public class HistoryViewController {
             String geo_rand=histories.get(0).getGeo().trim();
 
             Map<String, Object> get_task =null;
-            if(vps_check.getVpsoption().equals("smm")){
+            if(vps_check.getVpsoption().contains("smm")){
                 geo_rand="smm";
                 List<TaskPriority> priorityTasks =taskPriorityRepository.get_Priority_Task_By_Platform("youtube");
                 List<String> arrTask = new ArrayList<>();
@@ -885,11 +885,11 @@ public class HistoryViewController {
 
                     while(arrTask.remove(task)) {}
                     if(task.equals("youtube_view")){
-                        get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),"auto");
+                        get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),vps_check.getVpsoption());
                     }else if(task.equals("youtube_like")){
-                        get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),"auto");
+                        get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),vps_check.getVpsoption());
                     }else if(task.equals("youtube_subscriber")){
-                        get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),"auto");
+                        get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),vps_check.getVpsoption());
                     }
                     if(get_task!=null?get_task.get("status").equals(true):false){
                         break;
@@ -1084,7 +1084,7 @@ public class HistoryViewController {
             }
 
 
-            if(vps_check.getVpsoption().equals("smm")){
+            if(vps_check.getVpsoption().contains("smm")){
                 String[] proxy = new String[0];
                 Random rand=new Random();
                 if(ipV4Repository.checkIPv4Live(histories.get(0).getTypeproxy())==0){
@@ -2205,59 +2205,63 @@ public class HistoryViewController {
 
                 Vps vps=vpsRepository.getVpsByName(historyView.getVps());
                 System.out.println(vps.getVpsoption());
-                if(vps.getVpsoption().equals("smm")){
-                    OrderRunning orderRunning=orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
-                    if(orderRunning!=null){
-                        youtubeUpdate.youtube_subscriber(username.trim(),channelid.trim());
-                        HistorySum historySum=new HistorySum();
-                        historySum.setOrderRunning(orderRunning);
-                        historySum.setAccount_id(username.trim());
-                        historySum.setViewing_time(duration);
-                        historySum.setAdd_time(System.currentTimeMillis());
-                        try {
-                            historySumRepository.save(historySum);
-                        } catch (Exception e) {
+                if(vps.getVpsoption().contains("smm")){
+                    ServiceSMM serviceSMM =serviceSMMRepository.get_Service(service_id);
+                    if(serviceSMM.getTask().equals("subscriber")) {
+                        OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
+                        if (orderRunning != null) {
+                            youtubeUpdate.youtube_subscriber(username.trim(), channelid.trim());
+                            HistorySum historySum = new HistorySum();
+                            historySum.setOrderRunning(orderRunning);
+                            historySum.setAccount_id(username.trim());
+                            historySum.setViewing_time(duration);
+                            historySum.setAdd_time(System.currentTimeMillis());
                             try {
                                 historySumRepository.save(historySum);
-                            } catch (Exception f) {
+                            } catch (Exception e) {
+                                try {
+                                    historySumRepository.save(historySum);
+                                } catch (Exception f) {
+                                }
                             }
                         }
-                    }else{
-                        orderRunning=orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
-                        if(orderRunning!=null){
-                            if(orderRunning.getService().getTask().equals("like")){
-                                youtubeUpdate.youtube_like(username.trim(),videoid.trim());
-                                HistorySum historySum=new HistorySum();
-                                historySum.setOrderRunning(orderRunning);
-                                historySum.setAccount_id(username.trim());
-                                historySum.setViewing_time(duration);
-                                historySum.setAdd_time(System.currentTimeMillis());
+                    }else if(serviceSMM.getTask().equals("like")) {
+                        OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
+                        if (orderRunning != null) {
+                            youtubeUpdate.youtube_like(username.trim(), videoid.trim());
+                            HistorySum historySum = new HistorySum();
+                            historySum.setOrderRunning(orderRunning);
+                            historySum.setAccount_id(username.trim());
+                            historySum.setViewing_time(duration);
+                            historySum.setAdd_time(System.currentTimeMillis());
+                            try {
+                                historySumRepository.save(historySum);
+                            } catch (Exception e) {
                                 try {
                                     historySumRepository.save(historySum);
-                                } catch (Exception e) {
-                                    try {
-                                        historySumRepository.save(historySum);
-                                    } catch (Exception f) {
-                                    }
-                                }
-                            }else if(orderRunning.getService().getTask().equals("view")){
-                                youtubeUpdate.youtube_view(username.trim(),videoid.trim());
-                                HistorySum historySum=new HistorySum();
-                                historySum.setOrderRunning(orderRunning);
-                                historySum.setAccount_id(username.trim());
-                                historySum.setViewing_time(duration);
-                                historySum.setAdd_time(System.currentTimeMillis());
-                                try {
-                                    historySumRepository.save(historySum);
-                                } catch (Exception e) {
-                                    try {
-                                        historySumRepository.save(historySum);
-                                    } catch (Exception f) {
-                                    }
+                                } catch (Exception f) {
                                 }
                             }
+                        }
+                    }else if(serviceSMM.getTask().equals("view")) {
+                        OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
+                        if (orderRunning != null) {
+                            youtubeUpdate.youtube_view(username.trim(), videoid.trim());
+                            HistorySum historySum = new HistorySum();
+                            historySum.setOrderRunning(orderRunning);
+                            historySum.setAccount_id(username.trim());
+                            historySum.setViewing_time(duration);
+                            historySum.setAdd_time(System.currentTimeMillis());
+                            try {
+                                historySumRepository.save(historySum);
+                            } catch (Exception e) {
+                                try {
+                                    historySumRepository.save(historySum);
+                                } catch (Exception f) {
+                                }
+                            }
+                        }
 
-                        }
                     }
 
                 }else{

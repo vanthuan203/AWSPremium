@@ -106,7 +106,7 @@ public class AccountViewController {
         }
         try {
             if (cmt==0) {
-                if(geo.equals("smm")){
+                if(geo.contains("smm")){
                     Integer check_get = vpsRepository.checkGetAccountSMMByThreadVps(vps.trim(),geo.trim());
                     if (check_get == 0) {
                         resp.put("status", "fail");
