@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ServiceSMMRepository extends JpaRepository<ServiceSMM,Integer> {
-    @Query(value = "SELECT * FROM service_smm where enabled=1",nativeQuery = true)
+    @Query(value = "SELECT * FROM service_smm where enabled=1 and mode='smm'",nativeQuery = true)
     public List<ServiceSMM> get_All_Service_Enabled();
     @Query(value = "SELECT * FROM service_smm where enabled=1",nativeQuery = true)
     public List<ServiceSMM> get_All_Service();

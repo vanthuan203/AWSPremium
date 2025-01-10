@@ -375,6 +375,7 @@ public class OrderRunningController {
                 obj.put("insert_time", orderRunnings.get(i).getInsert_time());
                 obj.put("start_time", orderRunnings.get(i).getStart_time());
                 obj.put("update_time", orderRunnings.get(i).getUpdate_time());
+                obj.put("update_current_time", orderRunnings.get(i).getUpdate_current_time());
                 obj.put("start_count", orderRunnings.get(i).getStart_count());
                 obj.put("check_count", orderRunnings.get(i).getCheck_count());
                 obj.put("current_count", orderRunnings.get(i).getCurrent_count());
@@ -388,6 +389,7 @@ public class OrderRunningController {
                 obj.put("platform", orderRunnings.get(i).getPlatform());
                 obj.put("bonus", orderRunnings.get(i).getBonus());
                 obj.put("mode", orderRunnings.get(i).getMode());
+                obj.put("priority", orderRunnings.get(i).getPriority());
                 jsonArray.add(obj);
             }
 
@@ -441,6 +443,7 @@ public class OrderRunningController {
                 obj.put("insert_time", orderRunnings.get(i).getInsert_time());
                 obj.put("start_time", orderRunnings.get(i).getStart_time());
                 obj.put("update_time", orderRunnings.get(i).getUpdate_time());
+                obj.put("update_current_time", orderRunnings.get(i).getUpdate_current_time());
                 obj.put("start_count", orderRunnings.get(i).getStart_count());
                 obj.put("check_count", orderRunnings.get(i).getCheck_count());
                 obj.put("current_count", orderRunnings.get(i).getCurrent_count());
