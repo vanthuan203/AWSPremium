@@ -27,7 +27,7 @@ public class RunCurrentCount {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(60000);
+                                Thread.sleep(15000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
