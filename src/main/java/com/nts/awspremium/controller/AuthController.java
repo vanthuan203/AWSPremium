@@ -624,6 +624,8 @@ public class AuthController {
             try{
                 Float view_vn=balanceRepository.getAllBalanceVNNow1DG();
                 view_vn=view_vn!=null?view_vn:0F;
+                Float smm=balanceRepository.getAllBalanceSMMNow();
+                smm=smm!=null?smm:0F;
                 Float view_us=balanceRepository.getAllBalanceUSNow1DG();
                 view_us=view_us!=null?view_us:0F;
                 Float view_kr=balanceRepository.getAllBalanceKRNow1DG();
@@ -637,9 +639,10 @@ public class AuthController {
                 Float sum_view=view_vn+view_us+view_kr;
                 Float sum_cmt=cmt_vn+cmt_us+cmt_kr;
                 Float sum1dg=sum_view+sum_cmt;
+                Float sum_f=sum_view+sum_cmt+smm;
                 String view=view_vn+"$ "+view_us+"$ "+view_kr+"$ = "+sum_view+"$";
                 String cmt=cmt_vn+"$ "+cmt_us+"$ "+cmt_kr+"$ = "+sum_cmt+"$";
-                String sum=sum1dg+"$";
+                String sum=sum1dg+"$"+ smm+"SMM = "+sum_f;
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 
                 Request request = null;
