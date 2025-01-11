@@ -2206,7 +2206,7 @@ public class HistoryViewController {
                 Vps vps=vpsRepository.getVpsByName(historyView.getVps());
                 System.out.println(vps.getVpsoption());
                 if(vps.getVpsoption().contains("smm")){
-                    ServiceSMM serviceSMM =serviceSMMRepository.get_Service(service_id);
+                    ServiceSMM serviceSMM =serviceSMMRepository.get_Service_By_ServiceId(service_id);
                     if(serviceSMM.getTask().equals("subscriber")) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
                         if (orderRunning != null) {

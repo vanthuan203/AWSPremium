@@ -16,7 +16,7 @@ public class RunOrderPending {
     private OrderRunningController orderRunningController;
     @Autowired
     private Environment env;
-    @PostConstruct
+    //@PostConstruct
     public void init() throws InterruptedException {
         try{
             if(Integer.parseInt(env.getProperty("server.port"))==80099){
