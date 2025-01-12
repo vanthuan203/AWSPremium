@@ -80,6 +80,13 @@ public class HistoryViewController {
     private YoutubeTask youtubeTask;
     @Autowired
     private TaskPriorityRepository taskPriorityRepository;
+
+    @Autowired
+    private ModeOptionRepository modeOptionRepository;
+
+    @Autowired
+    private AccountTaskRepository accountTaskRepository;
+
     @Autowired
     private OrderRunningRepository orderRunningRepository;
 
@@ -392,6 +399,50 @@ public class HistoryViewController {
                     }
                     while (arrTask.size()>0){
                         String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
+
+                        ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim().split("_")[1]);
+                        AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
+                        Long get_time=0L;
+                        if(accountTask!=null){
+                            if(task.trim().contains("follower")){
+                                get_time=accountTask.getFollower_time();
+                            }else if(task.trim().contains("subscriber")){
+                                get_time=accountTask.getSubscriber_time();
+                            }else if(task.trim().contains("view")){
+                                get_time=accountTask.getView_time();
+                            }else if(task.trim().contains("like")){
+                                get_time=accountTask.getLike_time();
+                            }else if(task.trim().contains("comment")){
+                                get_time=accountTask.getComment_time();
+                            }else if(task.trim().contains("repost")){
+                                get_time=accountTask.getRepost_time();
+                            }else if(task.trim().contains("member")){
+                                get_time=accountTask.getMember_time();
+                            }
+                        }
+                        if(modeOption==null){
+
+                            histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_time(System.currentTimeMillis());
+                            historyViewRepository.save(histories.get(0));
+                            resp.put("status", "fail");
+                            resp.put("username", histories.get(0).getUsername());
+                            resp.put("fail", "video");
+                            resp.put("message", "Không còn video để view!");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+
+                        }else if((System.currentTimeMillis()-get_time)/1000/60<modeOption.getTime_get_task()){
+
+                            histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_time(System.currentTimeMillis());
+                            historyViewRepository.save(histories.get(0));
+                            resp.put("status", "fail");
+                            resp.put("username", histories.get(0).getUsername());
+                            resp.put("fail", "video");
+                            resp.put("message", "Không còn video để view!");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
+
 
                         while(arrTask.remove(task)) {}
                         if(task.equals("youtube_view")){
@@ -882,6 +933,52 @@ public class HistoryViewController {
                 }
                 while (arrTask.size()>0){
                     String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
+
+                    ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim().split("_")[1]);
+                    AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
+                    Long get_time=0L;
+                    if(accountTask!=null){
+                        if(task.trim().contains("follower")){
+                            get_time=accountTask.getFollower_time();
+                        }else if(task.trim().contains("subscriber")){
+                            get_time=accountTask.getSubscriber_time();
+                        }else if(task.trim().contains("view")){
+                            get_time=accountTask.getView_time();
+                        }else if(task.trim().contains("like")){
+                            get_time=accountTask.getLike_time();
+                        }else if(task.trim().contains("comment")){
+                            get_time=accountTask.getComment_time();
+                        }else if(task.trim().contains("repost")){
+                            get_time=accountTask.getRepost_time();
+                        }else if(task.trim().contains("member")){
+                            get_time=accountTask.getMember_time();
+                        }
+                    }
+                    if(modeOption==null){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
+
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "mode");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }else if((System.currentTimeMillis()-get_time)/1000/60<modeOption.getTime_get_task()){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
+
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
 
                     while(arrTask.remove(task)) {}
                     if(task.equals("youtube_view")){
@@ -2181,7 +2278,8 @@ public class HistoryViewController {
 
     @GetMapping(value = "/update", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> update(@RequestParam(defaultValue = "") String username,
-                                  @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id) {
+                                  @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id,
+                                  @RequestParam(required = false) Boolean success) {
         JSONObject resp = new JSONObject();
 
         if (username.length() == 0) {
@@ -2210,7 +2308,7 @@ public class HistoryViewController {
                     if(serviceSMM.getTask().equals("subscriber")) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
                         if (orderRunning != null) {
-                            youtubeUpdate.youtube_subscriber(username.trim(), channelid.trim());
+                            youtubeUpdate.youtube_subscriber(username.trim(), channelid.trim(),success);
                             HistorySum historySum = new HistorySum();
                             historySum.setOrderRunning(orderRunning);
                             historySum.setAccount_id(username.trim());
@@ -2228,7 +2326,7 @@ public class HistoryViewController {
                     }else if(serviceSMM.getTask().equals("like")) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
                         if (orderRunning != null) {
-                            youtubeUpdate.youtube_like(username.trim(), videoid.trim());
+                            youtubeUpdate.youtube_like(username.trim(), videoid.trim(),success);
                             HistorySum historySum = new HistorySum();
                             historySum.setOrderRunning(orderRunning);
                             historySum.setAccount_id(username.trim());

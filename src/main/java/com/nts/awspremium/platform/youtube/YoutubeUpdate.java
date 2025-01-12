@@ -27,6 +27,9 @@ public class YoutubeUpdate {
     private AccountRepository accountRepository;
 
     @Autowired
+    private TaskPriorityRepository taskPriorityRepository;
+
+    @Autowired
     private OrderRunningRepository orderRunningRepository;
     @Autowired
     private YoutubeLike24hRepository youtubeLike24hRepository;
@@ -34,6 +37,8 @@ public class YoutubeUpdate {
     private YoutubeView24hRepository youtubeView24hRepository;
     @Autowired
     private YoutubeSubscriber24hRepository youtubeSubscribe24hRepository;
+    @Autowired
+    private AccountTaskRepository accountTaskRepository;
     @Autowired
     private LogErrorRepository logErrorRepository;
     public Boolean youtube_view(String account_id,String task_key){
@@ -65,6 +70,21 @@ public class YoutubeUpdate {
             youtubeView24h.setId(account_id.trim()+task_key.trim()+System.currentTimeMillis());
             youtubeView24h.setUpdate_time(System.currentTimeMillis());
             youtubeView24hRepository.save(youtubeView24h);
+
+            AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(account_id.trim());
+            if(accountTask==null){
+                AccountTask accountTask_New=new AccountTask();
+                accountTask_New.setPlatform("youtube");
+                accountTask_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
+                accountTask_New.setView_time(System.currentTimeMillis());
+                accountTaskRepository.save(accountTask_New);
+            }else{
+                accountTask.setView_time(System.currentTimeMillis());
+                accountTaskRepository.save(accountTask);
+            }
+
+
+
             return true;
         }catch (Exception e){
             StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
@@ -86,25 +106,48 @@ public class YoutubeUpdate {
         }
     }
 
-    public Boolean youtube_subscriber(String account_id,String order_Key){
+    public Boolean youtube_subscriber(String account_id,String order_Key,Boolean success){
         try{
             if(order_Key!=null){
-                YoutubeSubscriberHistory youtubeChannelHistory=youtubeChannelHistoryRepository.get_By_AccountId(account_id.trim());
-                if(youtubeChannelHistory!=null){
-                    youtubeChannelHistory.setList_id(youtubeChannelHistory.getList_id()+order_Key.trim()+"|");
-                    youtubeChannelHistory.setUpdate_time(System.currentTimeMillis());
-                    youtubeChannelHistoryRepository.save(youtubeChannelHistory);
-                }else{
-                    YoutubeSubscriberHistory youtubeChannelHistory_New=new YoutubeSubscriberHistory();
-                    youtubeChannelHistory_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
-                    youtubeChannelHistory_New.setUpdate_time(System.currentTimeMillis());
-                    youtubeChannelHistory_New.setList_id(order_Key.trim()+"|");
-                    youtubeChannelHistoryRepository.save(youtubeChannelHistory_New);
+                if(success==null?true:success){
+                    YoutubeSubscriberHistory youtubeChannelHistory=youtubeChannelHistoryRepository.get_By_AccountId(account_id.trim());
+                    if(youtubeChannelHistory!=null){
+                        youtubeChannelHistory.setList_id(youtubeChannelHistory.getList_id()+order_Key.trim()+"|");
+                        youtubeChannelHistory.setUpdate_time(System.currentTimeMillis());
+                        youtubeChannelHistoryRepository.save(youtubeChannelHistory);
+                    }else{
+                        YoutubeSubscriberHistory youtubeChannelHistory_New=new YoutubeSubscriberHistory();
+                        youtubeChannelHistory_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
+                        youtubeChannelHistory_New.setUpdate_time(System.currentTimeMillis());
+                        youtubeChannelHistory_New.setList_id(order_Key.trim()+"|");
+                        youtubeChannelHistoryRepository.save(youtubeChannelHistory_New);
+                    }
                 }
                 YoutubeSubscriber24h youtubeSubscribe24h =new YoutubeSubscriber24h();
                 youtubeSubscribe24h.setId(account_id.trim()+order_Key.trim());
                 youtubeSubscribe24h.setUpdate_time(System.currentTimeMillis());
                 youtubeSubscribe24hRepository.save(youtubeSubscribe24h);
+
+                AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(account_id.trim());
+                if(accountTask==null){
+                    AccountTask accountTask_New=new AccountTask();
+                    accountTask_New.setPlatform("youtube");
+                    accountTask_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
+                    if(success==null?true:success){
+                        accountTask_New.setSubscriber_time(System.currentTimeMillis());
+                    }else{
+                        accountTask_New.setSubscriber_time(System.currentTimeMillis()+(taskPriorityRepository.get_Wating_Time_By_Task("youtube_subscriber")) * 60 * 1000);
+                    }
+                    accountTaskRepository.save(accountTask_New);
+                }else{
+                    if(success==null?true:success){
+                        accountTask.setSubscriber_time(System.currentTimeMillis());
+                    }else{
+                        accountTask.setSubscriber_time(System.currentTimeMillis()+(taskPriorityRepository.get_Wating_Time_By_Task("youtube_subscriber")) * 60 * 1000);
+                    }
+                    accountTaskRepository.save(accountTask);
+                }
+
             }
             return true;
         }catch (Exception e){
@@ -126,24 +169,48 @@ public class YoutubeUpdate {
             return false;
         }
     }
-    public Boolean youtube_like(String account_id,String task_key){
+    public Boolean youtube_like(String account_id,String task_key,Boolean success){
         try{
-            YoutubeLikeHistory youtubeLikeHistory=youtubeLikeHistoryRepository.get_By_AccountId(account_id.trim());
-            if(youtubeLikeHistory!=null){
-                youtubeLikeHistory.setList_id(youtubeLikeHistory.getList_id()+task_key.trim()+"|");
-                youtubeLikeHistory.setUpdate_time(System.currentTimeMillis());
-                youtubeLikeHistoryRepository.save(youtubeLikeHistory);
-            }else{
-                YoutubeLikeHistory youtubeLikeHistory_New=new YoutubeLikeHistory();
-                youtubeLikeHistory_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
-                youtubeLikeHistory_New.setUpdate_time(System.currentTimeMillis());
-                youtubeLikeHistory_New.setList_id(task_key.trim()+"|");
-                youtubeLikeHistoryRepository.save(youtubeLikeHistory_New);
+            if(success==null?true:success){
+                YoutubeLikeHistory youtubeLikeHistory=youtubeLikeHistoryRepository.get_By_AccountId(account_id.trim());
+                if(youtubeLikeHistory!=null){
+                    youtubeLikeHistory.setList_id(youtubeLikeHistory.getList_id()+task_key.trim()+"|");
+                    youtubeLikeHistory.setUpdate_time(System.currentTimeMillis());
+                    youtubeLikeHistoryRepository.save(youtubeLikeHistory);
+                }else{
+                    YoutubeLikeHistory youtubeLikeHistory_New=new YoutubeLikeHistory();
+                    youtubeLikeHistory_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
+                    youtubeLikeHistory_New.setUpdate_time(System.currentTimeMillis());
+                    youtubeLikeHistory_New.setList_id(task_key.trim()+"|");
+                    youtubeLikeHistoryRepository.save(youtubeLikeHistory_New);
+                }
             }
+
             YoutubeLike24h youtubeLike24h =new YoutubeLike24h();
             youtubeLike24h.setId(account_id.trim()+task_key.trim());
             youtubeLike24h.setUpdate_time(System.currentTimeMillis());
             youtubeLike24hRepository.save(youtubeLike24h);
+
+            AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(account_id.trim());
+            if(accountTask==null){
+                AccountTask accountTask_New=new AccountTask();
+                accountTask_New.setPlatform("youtube");
+                accountTask_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
+                if(success==null?true:success){
+                    accountTask_New.setLike_time(System.currentTimeMillis());
+                }else{
+                    accountTask_New.setLike_time(System.currentTimeMillis()+(taskPriorityRepository.get_Wating_Time_By_Task("youtube_like")) * 60 * 1000);
+                }
+                accountTaskRepository.save(accountTask_New);
+            }else{
+                if(success==null?true:success){
+                    accountTask.setLike_time(System.currentTimeMillis());
+                }else{
+                    accountTask.setLike_time(System.currentTimeMillis()+(taskPriorityRepository.get_Wating_Time_By_Task("youtube_like")) * 60 * 1000);
+                }
+                accountTaskRepository.save(accountTask);
+            }
+
             return true;
         }catch (Exception e){
             StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
