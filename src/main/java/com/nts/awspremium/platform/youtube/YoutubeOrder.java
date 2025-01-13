@@ -110,6 +110,7 @@ public class YoutubeOrder {
                     orderRunning.setDuration(Duration.parse(contentDetails.get("duration").toString()).getSeconds());
                     orderRunning.setInsert_time(System.currentTimeMillis());
                     orderRunning.setTotal(0);
+                    orderRunning.setTotal_check(0);
                     orderRunning.setTime_total(0);
                     orderRunning.setQuantity(data.getQuantity());
                     orderRunning.setOrder_link(data.getLink());
@@ -249,6 +250,7 @@ public class YoutubeOrder {
                     orderRunning.setInsert_time(System.currentTimeMillis());
                     orderRunning.setStart_time(System.currentTimeMillis());
                     orderRunning.setTotal(0);
+                    orderRunning.setTotal_check(0);
                     orderRunning.setTime_total(0);
                     orderRunning.setQuantity(data.getQuantity());
                     orderRunning.setOrder_link(data.getLink());
@@ -374,6 +376,7 @@ public class YoutubeOrder {
             orderRunning.setInsert_time(System.currentTimeMillis());
             orderRunning.setStart_time(System.currentTimeMillis());
             orderRunning.setTotal(0);
+            orderRunning.setTotal_check(0);
             orderRunning.setTime_total(0);
             orderRunning.setUpdate_time(0L);
             orderRunning.setUpdate_current_time(0L);
@@ -489,6 +492,7 @@ public class YoutubeOrder {
             orderRunning.setInsert_time(System.currentTimeMillis());
             orderRunning.setStart_time(System.currentTimeMillis());
             orderRunning.setTotal(0);
+            orderRunning.setTotal_check(0);
             orderRunning.setTime_total(0);
             orderRunning.setUpdate_time(0L);
             orderRunning.setUpdate_current_time(0L);
@@ -586,6 +590,7 @@ public class YoutubeOrder {
             orderRunning.setInsert_time(System.currentTimeMillis());
             orderRunning.setStart_time(0L);
             orderRunning.setTotal(0);
+            orderRunning.setTotal_check(0);
             orderRunning.setTime_total(0);
             orderRunning.setUpdate_time(0L);
             orderRunning.setUpdate_current_time(0L);

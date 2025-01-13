@@ -82,8 +82,16 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "SELECT order_running.order_id,count(*) as total FROM history_sum left join order_running  on history_sum.order_id=order_running.order_id where order_running.start_time>0 group by order_running.order_id order by insert_time desc",nativeQuery = true)
     public List<String> get_Total_Buff_Cron();
 
+    @Query(value = "SELECT order_running.order_id,count(*) as total FROM history_sum left join order_running  on history_sum.order_id=order_running.order_id where order_running.start_time>0 and round((UNIX_TIMESTAMP()-history_sum.add_time/1000)/60/60)<48 group by order_running.order_id order by insert_time desc",nativeQuery = true)
+    public List<String> get_Total_Buff_48h_Cron();
+
     @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)) order by o.start_time asc")
     public List<OrderRunning> get_Order_Running_Done(Integer check_done);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE order_running set update_time=?2,total_check=?1 where order_id=?3",nativeQuery = true)
+    public void update_Total_Buff_48h_By_OrderId(Integer total_check,Long update_time,Long order_id);
 
     @Modifying
     @Transactional

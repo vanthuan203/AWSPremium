@@ -499,6 +499,14 @@ public class OrderRunningController {
 
                 }
             }
+            List<String> totalBuff48H=orderRunningRepository.get_Total_Buff_48h_Cron();
+            for(int i=0;i<totalBuff48H.size();i++){
+                try {
+                    orderRunningRepository.update_Total_Buff_48h_By_OrderId(Integer.parseInt(totalBuff48H.get(i).split(",")[1]),System.currentTimeMillis(),Long.parseLong(totalBuff48H.get(i).split(",")[0]));
+                } catch (Exception e) {
+
+                }
+            }
             resp.put("status",true);
             data.put("message", "update thành công");
             resp.put("data",data);
