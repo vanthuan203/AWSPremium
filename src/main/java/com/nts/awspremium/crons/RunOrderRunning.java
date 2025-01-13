@@ -47,7 +47,7 @@ public class RunOrderRunning {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            orderRunningController.update_Order_Running_Done_Check();
+                            //orderRunningController.update_Order_Running_Done_Check();
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
