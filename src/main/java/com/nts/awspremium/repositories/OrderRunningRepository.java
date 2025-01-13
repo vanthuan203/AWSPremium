@@ -88,7 +88,7 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)) order by o.start_time asc")
     public List<OrderRunning> get_Order_Running_Done(Integer check_done);
 
-    @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)+o.total_check*(o.service.bonus_check/100)) order by o.start_time asc")
+    @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)+(case when o.total_check > o.quantity then o.quantity else o.total_check end)*(o.service.bonus_check/100)) order by o.start_time asc")
     public List<OrderRunning> get_Order_Running_Done_By_Total_Check(Integer check_done);
 
     @Modifying
@@ -129,7 +129,7 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "Select o.order_id,o.order_key,o.order_link,count(running) as total_thread\n" +
             ",o.thread,o.priority,o.insert_time,o.start_time,o.note,\n" +
             "o.start_count,o.quantity,o.username,o.total,o.current_count,\n" +
-            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,\n" +
+            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,s.bonus_check,o.total_check,\n" +
             "s.task,s.mode from order_running o \n" +
             "left join historyview a on a.orderid=o.order_id and running=1 \n" +
             "left join service_smm s on o.service_id=s.service_id where o.username!='refill@gmail.com' and  o.start_time>0 \n" +
@@ -139,7 +139,7 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "Select o.order_id,o.order_key,o.order_link,count(running) as total_thread\n" +
             ",o.thread,o.priority,o.insert_time,o.start_time,o.note,\n" +
             "o.start_count,o.quantity,o.username,o.total,o.current_count,\n" +
-            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,\n" +
+            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,s.bonus_check,o.total_check,\n" +
             "s.task,s.mode from order_running o \n" +
             "left join historyview a on a.orderid=o.order_id and running=1 \n" +
             "left join service_smm s on o.service_id=s.service_id where o.order_id=?1 and o.start_time>0 \n" +
@@ -149,7 +149,7 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "Select o.order_id,o.order_key,o.order_link,0 as total_thread\n" +
             ",o.thread,o.insert_time,o.start_time,o.note,\n" +
             "o.start_count,o.quantity,o.username,o.total,o.current_count,\n" +
-            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,\n" +
+            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,s.bonus_check,o.total_check,\n" +
             "s.task,s.mode from order_running o \n" +
             "left join service_smm s on o.service_id=s.service_id where  o.start_time=0 \n" +
             "group by o.order_id order by o.insert_time desc",nativeQuery = true)
@@ -158,7 +158,7 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "Select o.order_id,o.order_key,o.order_link,0 as total_thread\n" +
             ",o.thread,o.insert_time,o.start_time,o.note,\n" +
             "o.start_count,o.quantity,o.username,o.total,o.current_count,\n" +
-            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,\n" +
+            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,s.bonus_check,o.total_check,\n" +
             "s.task,s.mode from order_running o \n" +
             "left join service_smm s on o.service_id=s.service_id where o.username=?1 and  o.start_time=0 \n" +
             "group by o.order_id order by o.insert_time desc",nativeQuery = true)
@@ -167,7 +167,7 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "Select o.order_id,o.order_key,o.order_link,count(running) as total_thread\n" +
             ",o.thread,o.priority,o.insert_time,o.start_time,o.note,\n" +
             "o.start_count,o.quantity,o.username,o.total,o.current_count,\n" +
-            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,\n" +
+            "o.update_time,o.update_current_time,o.charge,o.service_id,s.platform,s.check_count,s.bonus,s.bonus_check,o.total_check,\n" +
             "s.task,s.mode from order_running o \n" +
             "left join historyview a on a.orderid=o.order_id and running=1 \n" +
             "left join service_smm s on o.service_id=s.service_id where o.username=?1 and  o.start_time>0 \n" +

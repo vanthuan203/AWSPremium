@@ -13,6 +13,7 @@ public interface OrderRunningShow {
     Long getUpdate_time();
     Long getUpdate_current_time();
     Integer getTotal();
+    Integer getTotal_check();
     Float getCharge();
     Integer getService_id();
     Integer getQuantity();
@@ -23,6 +24,7 @@ public interface OrderRunningShow {
     String getTask();
     String getMode();
     Integer getBonus();
+    Integer getBonus_check();
     Integer getPriority();
 
 
