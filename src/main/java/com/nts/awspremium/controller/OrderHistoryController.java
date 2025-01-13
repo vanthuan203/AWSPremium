@@ -259,6 +259,7 @@ public class OrderHistoryController {
                 JSONObject obj = new JSONObject();
                 obj.put("order_id", orderHistoryShow.getOrder_id());
                 obj.put("order_key", orderHistoryShow.getOrder_key());
+                obj.put("order_link", orderHistoryShow.getOrder_link());
                 obj.put("insert_time", orderHistoryShow.getInsert_time());
                 obj.put("start_time", orderHistoryShow.getStart_time());
                 obj.put("end_time", orderHistoryShow.getEnd_time());
@@ -579,6 +580,7 @@ public class OrderHistoryController {
                 JSONObject obj = new JSONObject();
                 obj.put("order_id", orderHistoryShow.getOrder_id());
                 obj.put("order_key", orderHistoryShow.getOrder_key());
+                obj.put("order_link", orderHistoryShow.getOrder_link());
                 obj.put("insert_time", orderHistoryShow.getInsert_time());
                 obj.put("start_time", orderHistoryShow.getStart_time());
                 obj.put("end_time", orderHistoryShow.getEnd_time());

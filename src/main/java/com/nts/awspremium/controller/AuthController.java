@@ -499,9 +499,9 @@ public class AuthController {
             LocalDateTime newDateTime = dateTime.plusHours(7);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
             String formattedDateTime = newDateTime.format(formatter);
-
+            String geo=balanceHistory.getGeo()==null?"SMM":balanceHistory.getGeo();
             String value1=balanceHistory.getUser().replace("@gmail.com","")+" ▪\uFE0F "+balanceHistory.getService()+" ▪\uFE0F "+(-balanceHistory.getBalance())+"$";
-            String value2=balanceHistory.getGeo().equals("vn")?" ":balanceHistory.getGeo().equals("us")?"\uD83C\uDDFA\uD83C\uDDF8":balanceHistory.getGeo().equals("kr")?"\uD83C\uDDF0\uD83C\uDDF7":balanceHistory.getGeo().toLowerCase();
+            String value2=geo.equals("vn")?" ":geo.equals("us")?"\uD83C\uDDFA\uD83C\uDDF8":geo.equals("kr")?"\uD83C\uDDF0\uD83C\uDDF7":geo.toLowerCase();
             String noti= "⏳ "+value2+" ▪\uFE0F "+formattedDateTime+" ▪\uFE0F "+value1;
 
 
