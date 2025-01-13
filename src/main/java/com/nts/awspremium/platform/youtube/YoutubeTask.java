@@ -117,13 +117,13 @@ public class YoutubeTask {
 
                 if (service.getMin_time() != service.getMax_time()) {
                     if (orderRunning.getDuration() > service.getMax_time() * 60) {
-                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt((service.getMax_time() - service.getMin_time()) * 45));
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt((int)((service.getMax_time() - service.getMin_time()) * 60))));
                     } else {
-                        data.put("video_duration", service.getMin_time() * 60 < orderRunning.getDuration() ? (service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
+                        data.put("video_duration", service.getMin_time() * 60 < orderRunning.getDuration() ? (int)(service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
                     }
                 }else {
                     if (orderRunning.getDuration() > service.getMax_time() * 60) {
-                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt(30) );
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt(30)) );
                     } else {
                         data.put("video_duration", orderRunning.getDuration());
                     }
@@ -235,18 +235,17 @@ public class YoutubeTask {
                     arrSource.add("embed");
                 }
                 data.put("source", arrSource.get(ran.nextInt(arrSource.size())).trim());
-
                 if (service.getMin_time() != service.getMax_time()) {
-                    if (dataSubscriber.getDuration() > service.getMax_time() * 60) {
-                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt((service.getMax_time() - service.getMin_time()) * 45));
+                    if (orderRunning.getDuration() > service.getMax_time() * 60) {
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt((int)((service.getMax_time() - service.getMin_time()) * 60))));
                     } else {
-                        data.put("video_duration", service.getMin_time() * 60 < dataSubscriber.getDuration() ? (service.getMin_time() * 60 + ran.nextInt((int)(dataSubscriber.getDuration() - service.getMin_time() * 60))) : dataSubscriber.getDuration());
+                        data.put("video_duration", service.getMin_time() * 60 < orderRunning.getDuration() ? (int)(service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
                     }
                 }else {
-                    if (dataSubscriber.getDuration() > service.getMax_time() * 60) {
-                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt(30) );
+                    if (orderRunning.getDuration() > service.getMax_time() * 60) {
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt(30)) );
                     } else {
-                        data.put("video_duration", dataSubscriber.getDuration());
+                        data.put("video_duration", orderRunning.getDuration());
                     }
                 }
                 resp.put("data",data);
@@ -358,13 +357,13 @@ public class YoutubeTask {
 
                 if (service.getMin_time() != service.getMax_time()) {
                     if (orderRunning.getDuration() > service.getMax_time() * 60) {
-                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt((service.getMax_time() - service.getMin_time()) * 45));
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt((int)((service.getMax_time() - service.getMin_time()) * 60))));
                     } else {
-                        data.put("video_duration", service.getMin_time() * 60 < orderRunning.getDuration() ? (service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
+                        data.put("video_duration", service.getMin_time() * 60 < orderRunning.getDuration() ? (int)(service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration());
                     }
                 }else {
                     if (orderRunning.getDuration() > service.getMax_time() * 60) {
-                        data.put("video_duration", service.getMin_time() * 60 + ran.nextInt(30) );
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt(30)) );
                     } else {
                         data.put("video_duration", orderRunning.getDuration());
                     }

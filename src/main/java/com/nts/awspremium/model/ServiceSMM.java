@@ -53,10 +53,10 @@ public class ServiceSMM implements Serializable {
     private Integer youtube_external;
     @Column(columnDefinition = "integer default 0")
     private Integer youtube_playlists;
-    @Column(columnDefinition = "integer default 0")
-    private Integer min_time;
-    @Column(columnDefinition = "integer default 0")
-    private Integer max_time;
+    @Column(columnDefinition = "float default 0")
+    private Float min_time;
+    @Column(columnDefinition = "float default 0")
+    private Float max_time;
     @Column(columnDefinition = "integer default 60")
     private Integer limit_time=60;
     @Column(columnDefinition = "integer default 0")
