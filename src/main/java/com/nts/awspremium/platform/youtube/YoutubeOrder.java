@@ -346,8 +346,8 @@ public class YoutubeOrder {
                 return resp;
             }
             List<String> videoList =GoogleApi.getVideoLinks("https://www.youtube.com/channel/"+uId+"/videos");
-            if(videoList.size()<3){
-                resp.put("error", "The total number of videos in the account must be greater than or equal to 3 videos");
+            if(videoList.size()<1){
+                resp.put("error", "The account must have at least 1 video with a duration of no less than 90 seconds");
                 return resp;
             }
             String[] key={"AIzaSyA1mXzdZh1THOmazXeLuU1QNW1GyJqBS_A","AIzaSyA6m4AmAGSiGANwtO2UtHglFFz9RF3YTwI","AIzaSyA8zA-au4ZLpXTqrv3CFqW2dvN0mMQuWaE","AIzaSyAc3zrvWloLGpDZMmex-Kq0UqrVFqJPRac","AIzaSyAct-_8qIpPxSJJFFLno6BBACZsZeYDmPw"};
@@ -463,8 +463,8 @@ public class YoutubeOrder {
                 return resp;
             }
             List<String> videoList =GoogleApi.getVideoLinks("https://www.youtube.com/channel/"+uId+"/videos");
-            if(videoList.size()<3){
-                resp.put("error", "The total number of videos in the account must be greater than or equal to 3 videos");
+            if(videoList.size()<1){
+                resp.put("error", "The account must have at least 1 video with a duration of no less than 90 seconds");
                 return resp;
             }
             int start_Count =GoogleApi.getCountSubcriberCurrent(uId);
