@@ -87,7 +87,7 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long>
     public OrderHistoryShow get_Order_History(Long order_id);
 
 
-    @Query(value = "SELECT o from OrderHistory o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (?1-o.end_time)/1000/60/60>o.service.check_end_time and (?1-o.update_current_time)/1000/60/60>=4 and (?1-o.end_time)/1000/60/60/24<o.service.refund_time")
+    @Query(value = "SELECT o from OrderHistory o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (?1-o.end_time)/1000/60/60>o.service.check_end_time and (?1-o.update_current_time)/1000/60/60>=1 and (?1-o.end_time)/1000/60/60/24<o.service.refund_time")
     public List<OrderHistory> get_Order_By_Check_Count(Long now);
 
 
