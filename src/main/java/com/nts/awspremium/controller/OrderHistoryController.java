@@ -391,7 +391,12 @@ public class OrderHistoryController {
                                 if(orderHistoryList.get(i).getService().getRefill()==1&&orderHistoryList.get(i).getUser().getRole().equals("ROLE_USER")){
                                     Integer total= orderHistoryList.get(i).getTotal()>orderHistoryList.get(i).getQuantity()?orderHistoryList.get(i).getQuantity():orderHistoryList.get(i).getTotal();
                                     if(current_Count<orderHistoryList.get(i).getStart_count()+total){
-                                        refill("1",orderHistoryList.get(i).getOrder_id().toString());
+                                        if(current_Count<orderHistoryList.get(i).getStart_count()){
+                                            refund("1",orderHistoryList.get(i).getOrder_id().toString(),true,true);
+                                            orderHistoryRepository.update_Note("Current quantity is less than Starting quantity",orderHistoryList.get(i).getOrder_id());
+                                        }else{
+                                            refill("1",orderHistoryList.get(i).getOrder_id().toString());
+                                        }
                                     }
                                 }
                             }
@@ -401,7 +406,10 @@ public class OrderHistoryController {
                                 orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
                                 if(orderHistoryList.get(i).getService().getRefill()==1&&orderHistoryList.get(i).getUser().getRole().equals("ROLE_USER")){
                                     Integer total= orderHistoryList.get(i).getTotal()>orderHistoryList.get(i).getQuantity()?orderHistoryList.get(i).getQuantity():orderHistoryList.get(i).getTotal();
-                                    if(current_Count<orderHistoryList.get(i).getStart_count()+total){
+                                    if(current_Count<orderHistoryList.get(i).getStart_count()){
+                                        refund("1",orderHistoryList.get(i).getOrder_id().toString(),true,true);
+                                        orderHistoryRepository.update_Note("Current quantity is less than Starting quantity",orderHistoryList.get(i).getOrder_id());
+                                    }else{
                                         refill("1",orderHistoryList.get(i).getOrder_id().toString());
                                     }
                                 }
@@ -526,7 +534,7 @@ public class OrderHistoryController {
                             current_Count=TikTokApi.getCountComment(orderHistory.getOrder_key());
                         }
                     }
-                    if(current_Count>=0){
+                    if(current_Count>=0 && current_Count>=orderHistory.getStart_count()){
                         int quantity=orderHistory.getQuantity()>orderHistory.getTotal()?orderHistory.getTotal():orderHistory.getQuantity();
                         int count_Sum=quantity+orderHistory.getStart_count();
                         int quantity_Refund= count_Sum-current_Count ;
@@ -561,6 +569,8 @@ public class OrderHistoryController {
                             }
 
                         }
+                    }else if(current_Count>=0 && current_Count<orderHistory.getStart_count()){
+                        status="✘ current_Count<start_count => Chỉ refund";
                     }else{
                         status="✘ Lỗi check Current Count";
                     }

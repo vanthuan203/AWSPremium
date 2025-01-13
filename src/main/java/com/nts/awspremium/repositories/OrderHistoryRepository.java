@@ -96,4 +96,9 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long>
     @Query(value = "UPDATE order_history set current_count=?1,update_current_time=?2 where order_id=?3",nativeQuery = true)
     public void update_Current_Count(Integer current_count,Long update_current_time,Long order_id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE order_history set note=?1 where order_id=?2",nativeQuery = true)
+    public void update_Note(String note,Long order_id);
+
 }
