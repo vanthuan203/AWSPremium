@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long> {
-    @Query(value = "SELECT * from order_history where order_id=?1",nativeQuery = true)
+    @Query(value = "SELECT o from OrderHistory o JOIN FETCH o.service where o.order_id=?1 limit 1")
     public OrderHistory get_Order_By_Id(Long order_id);
 
     @Query(value = "SELECT end_time from order_history where order_refill=?1 and cancel!=1 order by end_time desc limit 1",nativeQuery = true)
