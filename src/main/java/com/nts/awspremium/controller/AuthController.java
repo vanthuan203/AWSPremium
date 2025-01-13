@@ -642,7 +642,7 @@ public class AuthController {
                 Float sum_f=sum_view+sum_cmt+smm;
                 String view=view_vn+"$ "+view_us+"$ "+view_kr+"$ = "+sum_view+"$";
                 String cmt=cmt_vn+"$ "+cmt_us+"$ "+cmt_kr+"$ = "+sum_cmt+"$";
-                String sum=sum1dg+"$"+ smm+"SMM = "+sum_f;
+                String sum=sum1dg+"$ + \uD83C\uDDF8 "+ smm+"$ = "+sum_f;
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 
                 Request request = null;

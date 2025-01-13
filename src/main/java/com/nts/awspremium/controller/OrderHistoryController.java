@@ -407,11 +407,13 @@ public class OrderHistoryController {
                                 orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
                                 if(orderHistoryList.get(i).getService().getRefill()==1&&orderHistoryList.get(i).getUser().getRole().equals("ROLE_USER")){
                                     Integer total= orderHistoryList.get(i).getTotal()>orderHistoryList.get(i).getQuantity()?orderHistoryList.get(i).getQuantity():orderHistoryList.get(i).getTotal();
-                                    if(current_Count<orderHistoryList.get(i).getStart_count()){
-                                        refund("1",orderHistoryList.get(i).getOrder_id().toString(),true,true);
-                                        orderHistoryRepository.update_Note("Current quantity is less than Starting quantity",orderHistoryList.get(i).getOrder_id());
-                                    }else{
-                                        refill("1",orderHistoryList.get(i).getOrder_id().toString());
+                                    if(current_Count<orderHistoryList.get(i).getStart_count()+total){
+                                        if(current_Count<orderHistoryList.get(i).getStart_count()){
+                                            refund("1",orderHistoryList.get(i).getOrder_id().toString(),true,true);
+                                            orderHistoryRepository.update_Note("Current quantity is less than Starting quantity",orderHistoryList.get(i).getOrder_id());
+                                        }else{
+                                            refill("1",orderHistoryList.get(i).getOrder_id().toString());
+                                        }
                                     }
                                 }
                             }
