@@ -539,11 +539,17 @@ public class OrderRunningController {
                             int current_Count=GoogleApi.getCountSubcriberCurrent(orderRunningList.get(i).getOrder_key());
                             if(current_Count>=0){
                                 orderRunningRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderRunningList.get(i).getOrder_id());
+                                if(orderRunningList.get(i).getTotal()>=10&&current_Count<orderRunningList.get(i).getStart_count()){
+                                    delete_Order_Running("1",orderRunningList.get(i).getOrder_id().toString(),0,"Current quantity is less than Starting quantity");
+                                }
                             }
                         }else if(orderRunningList.get(i).getService().getTask().equals("like")){
                             int current_Count=GoogleApi.getCountLikeCurrent(orderRunningList.get(i).getOrder_key());
                             if(current_Count>=0){
                                 orderRunningRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderRunningList.get(i).getOrder_id());
+                                if(orderRunningList.get(i).getTotal()>=10&&current_Count<orderRunningList.get(i).getStart_count()){
+                                    delete_Order_Running("1",orderRunningList.get(i).getOrder_id().toString(),0,"Current quantity is less than Starting quantity");
+                                }
                             }
                         }
                     }else  if(orderRunningList.get(i).getService().getPlatform().equals("tiktok")) {
@@ -756,6 +762,8 @@ public class OrderRunningController {
                     int realTime=orderRunning.getCurrent_count()<=0?orderRunning.getTotal():orderRunning.getCurrent_count()-orderRunning.getStart_count();
                     if(realTime>orderRunning.getTotal()){
                         realTime=orderRunning.getTotal();
+                    }else if(realTime<0){
+                        realTime=0;
                     }
                     orderHistory.setTotal(realTime);
                     if (cancel == 1) {

@@ -388,11 +388,23 @@ public class OrderHistoryController {
                             int current_Count=GoogleApi.getCountSubcriberCurrent(orderHistoryList.get(i).getOrder_key());
                             if(current_Count>=0){
                                 orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
+                                if(orderHistoryList.get(i).getService().getRefill()==1&&orderHistoryList.get(i).getUser().getRole().equals("ROLE_USER")){
+                                    Integer total= orderHistoryList.get(i).getTotal()>orderHistoryList.get(i).getQuantity()?orderHistoryList.get(i).getQuantity():orderHistoryList.get(i).getTotal();
+                                    if(current_Count<orderHistoryList.get(i).getStart_count()+total){
+                                        refill("1",orderHistoryList.get(i).getOrder_id().toString());
+                                    }
+                                }
                             }
                         }else if(orderHistoryList.get(i).getService().getTask().equals("like")){
                             int current_Count=GoogleApi.getCountLikeCurrent(orderHistoryList.get(i).getOrder_key());
                             if(current_Count>=0){
                                 orderHistoryRepository.update_Current_Count(current_Count,System.currentTimeMillis(),orderHistoryList.get(i).getOrder_id());
+                                if(orderHistoryList.get(i).getService().getRefill()==1&&orderHistoryList.get(i).getUser().getRole().equals("ROLE_USER")){
+                                    Integer total= orderHistoryList.get(i).getTotal()>orderHistoryList.get(i).getQuantity()?orderHistoryList.get(i).getQuantity():orderHistoryList.get(i).getTotal();
+                                    if(current_Count<orderHistoryList.get(i).getStart_count()+total){
+                                        refill("1",orderHistoryList.get(i).getOrder_id().toString());
+                                    }
+                                }
                             }
                         }else if(orderHistoryList.get(i).getService().getTask().equals("view")){
                             int current_Count=GoogleApi.getCountView(orderHistoryList.get(i).getOrder_key(),get_key());
