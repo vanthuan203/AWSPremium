@@ -889,7 +889,7 @@ public class OrderRunningController {
         Map<String, Object> resp = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
         try{
-            List<OrderRunning> orderRunningList=orderRunningRepository.get_Order_Running_Done(1);
+            List<OrderRunning> orderRunningList=orderRunningRepository.get_Order_Running_Done_By_Total_Check(1);
             for (int i=0;i<orderRunningList.size();i++){
                 int count_check=0;
                 String key = get_key();
@@ -900,7 +900,8 @@ public class OrderRunningController {
                         {
                             continue;
                         }else if(count>=0) {
-                            if(count-orderRunningList.get(i).getStart_count()<orderRunningList.get(i).getQuantity()+(orderRunningList.get(i).getService().getBonus()/100F)*orderRunningList.get(i).getQuantity()){
+                            if(count-orderRunningList.get(i).getStart_count()<orderRunningList.get(i).getQuantity()+(orderRunningList.get(i).getService().getBonus_check()/100F)*orderRunningList.get(i).getTotal_check()
+                                    +(orderRunningList.get(i).getService().getBonus()/100F)*orderRunningList.get(i).getQuantity()){
                                 continue;
                             }
                         }
@@ -911,7 +912,8 @@ public class OrderRunningController {
                         {
                             continue;
                         }else if(count>=0) {
-                            if(count-orderRunningList.get(i).getStart_count()<orderRunningList.get(i).getQuantity()+(orderRunningList.get(i).getService().getBonus()/100F)*orderRunningList.get(i).getQuantity()){
+                            if(count-orderRunningList.get(i).getStart_count()<orderRunningList.get(i).getQuantity()+(orderRunningList.get(i).getService().getBonus_check()/100F)*orderRunningList.get(i).getTotal_check()
+                                    +(orderRunningList.get(i).getService().getBonus()/100F)*orderRunningList.get(i).getQuantity()){
                                 continue;
                             }
                         }
@@ -922,7 +924,8 @@ public class OrderRunningController {
                         {
                             continue;
                         }else if(count>=0) {
-                            if(count-orderRunningList.get(i).getStart_count()<orderRunningList.get(i).getQuantity()+(orderRunningList.get(i).getService().getBonus()/100F)*orderRunningList.get(i).getQuantity()){
+                            if(count-orderRunningList.get(i).getStart_count()<orderRunningList.get(i).getQuantity()+(orderRunningList.get(i).getService().getBonus_check()/100F)*orderRunningList.get(i).getTotal_check()
+                                    +(orderRunningList.get(i).getService().getBonus()/100F)*orderRunningList.get(i).getQuantity()){
                                 continue;
                             }
                         }

@@ -87,6 +87,8 @@ public class ServiceSMM implements Serializable {
     private Integer youtube_reply;
     @Column(columnDefinition = "integer default 0")
     private Integer bonus ;
+    @Column(columnDefinition = "integer default 0")
+    private Integer bonus_check ;
     @Column(columnDefinition = "integer default 500")
     private Integer max_bonus=500;
     @Column(columnDefinition = "integer default 0")

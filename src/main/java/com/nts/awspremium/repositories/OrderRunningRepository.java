@@ -88,6 +88,9 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)) order by o.start_time asc")
     public List<OrderRunning> get_Order_Running_Done(Integer check_done);
 
+    @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)+o.total_check*(o.service.bonus_check/100)) order by o.start_time asc")
+    public List<OrderRunning> get_Order_Running_Done_By_Total_Check(Integer check_done);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE order_running set update_time=?2,total_check=?1 where order_id=?3",nativeQuery = true)
