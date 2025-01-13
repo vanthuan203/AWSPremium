@@ -88,8 +88,8 @@ public class OrderRunningController {
                 obj.put("check_count", orderRunnings.get(i).getCheck_count());
                 obj.put("current_count", orderRunnings.get(i).getCurrent_count());
                 obj.put("total", orderRunnings.get(i).getTotal());
-                obj.put("total_check", (int)(orderRunnings.get(i).getQuantity()+(orderRunnings.get(i).getBonus_check()/100F)*orderRunnings.get(i).getTotal_check()
-                        +(orderRunnings.get(i).getBonus()/100F)*orderRunnings.get(i).getQuantity()));
+                obj.put("total_check", (int)orderRunnings.get(i).getQuantity()+(orderRunnings.get(i).getBonus_check()/100F)*(orderRunnings.get(i).getTotal_check()>orderRunnings.get(i).getQuantity()?orderRunnings.get(i).getQuantity():orderRunnings.get(i).getTotal_check())
+                        +(orderRunnings.get(i).getBonus()/100F)*orderRunnings.get(i).getQuantity());
                 obj.put("bonus_check", orderRunnings.get(i).getBonus_check());
                 obj.put("quantity", orderRunnings.get(i).getQuantity());
                 obj.put("note", orderRunnings.get(i).getNote());
@@ -175,8 +175,8 @@ public class OrderRunningController {
                 obj.put("bonus",orderRunningShow.getBonus());
                 obj.put("mode",orderRunningShow.getMode());
                 obj.put("priority", orderRunningShow.getPriority());
-                obj.put("total_check", (int)(orderRunningShow.getQuantity()+(orderRunningShow.getBonus_check()/100F)*orderRunningShow.getTotal_check()
-                        +(orderRunningShow.getBonus()/100F)*orderRunningShow.getQuantity()));
+                obj.put("total_check", (int)orderRunningShow.getQuantity()+(orderRunningShow.getBonus_check()/100F)*(orderRunningShow.getTotal_check()>orderRunningShow.getQuantity()?orderRunningShow.getQuantity():orderRunningShow.getTotal_check())
+                        +(orderRunningShow.getBonus()/100F)*orderRunningShow.getQuantity());
                 obj.put("bonus_check", orderRunningShow.getBonus_check());
                 jsonArray.add(obj);
             }
@@ -251,8 +251,8 @@ public class OrderRunningController {
                 obj.put("bonus",orderRunningShow.getBonus());
                 obj.put("mode",orderRunningShow.getMode());
                 obj.put("priority", orderRunningShow.getPriority());
-                obj.put("total_check", (int)(orderRunningShow.getQuantity()+(orderRunningShow.getBonus_check()/100F)*orderRunningShow.getTotal_check()
-                        +(orderRunningShow.getBonus()/100F)*orderRunningShow.getQuantity()));
+                obj.put("total_check", (int)orderRunningShow.getQuantity()+(orderRunningShow.getBonus_check()/100F)*(orderRunningShow.getTotal_check()>orderRunningShow.getQuantity()?orderRunningShow.getQuantity():orderRunningShow.getTotal_check())
+                        +(orderRunningShow.getBonus()/100F)*orderRunningShow.getQuantity());
                 obj.put("bonus_check", orderRunningShow.getBonus_check());
                 jsonArray.add(obj);
             }
@@ -327,8 +327,8 @@ public class OrderRunningController {
                 obj.put("bonus",orderRunningShow.getBonus());
                 obj.put("mode",orderRunningShow.getMode());
                 obj.put("priority", orderRunningShow.getPriority());
-                obj.put("total_check", (int)(orderRunningShow.getQuantity()+(orderRunningShow.getBonus_check()/100F)*orderRunningShow.getTotal_check()
-                        +(orderRunningShow.getBonus()/100F)*orderRunningShow.getQuantity()));
+                obj.put("total_check", (int)orderRunningShow.getQuantity()+(orderRunningShow.getBonus_check()/100F)*(orderRunningShow.getTotal_check()>orderRunningShow.getQuantity()?orderRunningShow.getQuantity():orderRunningShow.getTotal_check())
+                        +(orderRunningShow.getBonus()/100F)*orderRunningShow.getQuantity());
                 obj.put("bonus_check", orderRunningShow.getBonus_check());
                 jsonArray.add(obj);
             }
@@ -402,8 +402,8 @@ public class OrderRunningController {
                 obj.put("bonus", orderRunnings.get(i).getBonus());
                 obj.put("mode", orderRunnings.get(i).getMode());
                 obj.put("priority", orderRunnings.get(i).getPriority());
-                obj.put("total_check", (int)(orderRunnings.get(i).getQuantity()+(orderRunnings.get(i).getBonus_check()/100F)*orderRunnings.get(i).getTotal_check()
-                        +(orderRunnings.get(i).getBonus()/100F)*orderRunnings.get(i).getQuantity()));
+                obj.put("total_check", (int)orderRunnings.get(i).getQuantity()+(orderRunnings.get(i).getBonus_check()/100F)*(orderRunnings.get(i).getTotal_check()>orderRunnings.get(i).getQuantity()?orderRunnings.get(i).getQuantity():orderRunnings.get(i).getTotal_check())
+                        +(orderRunnings.get(i).getBonus()/100F)*orderRunnings.get(i).getQuantity());
                 obj.put("bonus_check", orderRunnings.get(i).getBonus_check());
                 jsonArray.add(obj);
             }
@@ -473,8 +473,8 @@ public class OrderRunningController {
                 obj.put("bonus", orderRunnings.get(i).getBonus());
                 obj.put("mode", orderRunnings.get(i).getMode());
                 obj.put("priority", orderRunnings.get(i).getPriority());
-                obj.put("total_check", (int)(orderRunnings.get(i).getQuantity()+(orderRunnings.get(i).getBonus_check()/100F)*orderRunnings.get(i).getTotal_check()
-                        +(orderRunnings.get(i).getBonus()/100F)*orderRunnings.get(i).getQuantity()));
+                obj.put("total_check", (int)orderRunnings.get(i).getQuantity()+(orderRunnings.get(i).getBonus_check()/100F)*(orderRunnings.get(i).getTotal_check()>orderRunnings.get(i).getQuantity()?orderRunnings.get(i).getQuantity():orderRunnings.get(i).getTotal_check())
+                        +(orderRunnings.get(i).getBonus()/100F)*orderRunnings.get(i).getQuantity());
                 obj.put("bonus_check", orderRunnings.get(i).getBonus_check());
                 jsonArray.add(obj);
             }
