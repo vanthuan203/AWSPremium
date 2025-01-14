@@ -550,7 +550,7 @@ public class OrderHistoryController {
                             if(quantity_Refund>quantity){
                                 quantity_Refund=quantity;
                             }
-                            quantity_Refund=quantity_Refund<50?50:quantity_Refund;
+                            quantity_Refund=quantity_Refund<5?5:quantity_Refund;
                             DataRequest dataRequest=new DataRequest();
                             dataRequest.setQuantity(quantity_Refund);
                             dataRequest.setLink(orderHistory.getOrder_link());
