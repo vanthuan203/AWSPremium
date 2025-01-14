@@ -882,6 +882,7 @@ public class HistoryViewController {
 
         Random ran = new Random();
         try {
+            /*
             if(!vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(5)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
@@ -895,17 +896,11 @@ public class HistoryViewController {
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+
+             */
             //Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
-            Long historieId=null;
-            if(vps_check.getVpsoption().contains("smm")){
-                historieId = historyViewRepository.get_Account_Task_SMM(vps.trim());
-                if(historieId==null){
-                    historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
-                }
-            }else{
-                historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
-            }
+            Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
             if (historieId == null) {
                 vps_check.setTask_time(System.currentTimeMillis());
                 vpsRepository.save(vps_check);
