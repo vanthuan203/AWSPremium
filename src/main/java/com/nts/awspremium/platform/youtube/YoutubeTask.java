@@ -35,6 +35,8 @@ public class YoutubeTask {
     @Autowired
     private YoutubeSubscriber24hRepository youtubeSubscribe24hRepository;
     @Autowired
+    private AccountTaskRepository accountTaskRepository;
+    @Autowired
     private LogErrorRepository logErrorRepository;
 
     public Map<String, Object> youtube_view(String account_id,String mode){
@@ -162,7 +164,9 @@ public class YoutubeTask {
         Map<String, Object> data = new LinkedHashMap<>();
         try{
             SettingYoutube setting=settingYoutubeRepository.get_Setting();
-            if(youtubeSubscribe24hRepository.count_Subscribe_24h_By_Username(account_id.trim()+"%")>=setting.getMax_subscriber()){
+            Integer count_Sub_24h=youtubeSubscribe24hRepository.count_Subscribe_24h_By_Username(account_id.trim()+"%");
+            if(count_Sub_24h>=setting.getMax_subscriber()){
+                accountTaskRepository.update_Total_Success_24h(count_Sub_24h,account_id.trim());
                 resp.put("status", false);
                 return resp;
             }

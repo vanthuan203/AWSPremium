@@ -26,6 +26,11 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
     @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 order by timeget asc limit 1;",nativeQuery = true)
     public Long getAccToViewNoCheckProxy(String vps);
 
+    @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 \n" +
+            "and username not in (select account_id from account_task where task_success_24h>=(select max_subscriber from setting_youtube\n" +
+            ")) order by timeget asc limit 1",nativeQuery = true)
+    public Long get_Account_Task_SMM(String vps);
+
     @Query(value = "SELECT id FROM AccPremium.historyview where running=0 and vps=?1 order by timeget asc limit 1;",nativeQuery = true)
     public Long getAccToLive(String vps);
 

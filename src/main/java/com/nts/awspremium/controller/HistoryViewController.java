@@ -897,7 +897,15 @@ public class HistoryViewController {
             }
             //Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
-            Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
+            Long historieId=null;
+            if(vps_check.getVpsoption().contains("smm")){
+                historieId = historyViewRepository.get_Account_Task_SMM(vps.trim());
+                if(historieId==null){
+                    historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
+                }
+            }else{
+                historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
+            }
             if (historieId == null) {
                 vps_check.setTask_time(System.currentTimeMillis());
                 vpsRepository.save(vps_check);
