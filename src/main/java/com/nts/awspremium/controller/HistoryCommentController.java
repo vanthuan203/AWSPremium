@@ -51,6 +51,8 @@ public class HistoryCommentController {
     @Autowired
     private ProxyUSTrue proxyUSTrue;
     @Autowired
+    private ProxyVultrTrue proxyVultrTrue;
+    @Autowired
     private ProxyKRTrue proxyKRTrue;
     @Autowired
     private VpsRepository vpsRepository;
@@ -817,9 +819,9 @@ public class HistoryCommentController {
                     if(history.getGeo().equals("cmt-vn")){
                         proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-us")){
-                        proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-kr")){
-                        proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }
                     if(proxy.length==0){
                         history.setRunning(0);
@@ -959,9 +961,9 @@ public class HistoryCommentController {
                 if(histories.get(0).getGeo().equals("cmt-vn")){
                     proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }else if(histories.get(0).getGeo().equals("cmt-us")){
-                    proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                 }else if(histories.get(0).getGeo().equals("cmt-kr")){
-                    proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                 }
                 if(proxy.length==0){
                     histories.get(0).setRunning(0);

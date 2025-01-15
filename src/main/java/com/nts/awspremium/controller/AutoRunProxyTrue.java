@@ -3,6 +3,7 @@ package com.nts.awspremium.controller;
 import com.nts.awspremium.model.ProxyKRTrue;
 import com.nts.awspremium.model.ProxyUSTrue;
 import com.nts.awspremium.model.ProxyVNTrue;
+import com.nts.awspremium.model.ProxyVultrTrue;
 import com.nts.awspremium.repositories.ProxyRepository;
 import com.nts.awspremium.repositories.VideoViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class AutoRunProxyTrue {
     private ProxyUSTrue proxyUSTrue;
     @Autowired
     private ProxyKRTrue proxyKRTrue;
+    private ProxyVultrTrue proxyVultrTrue;
     @Autowired
     private Environment env;
     @PostConstruct
@@ -38,6 +40,7 @@ public class AutoRunProxyTrue {
                             proxyVNTrue.setValue(proxyRepository.getProxyTrue("vn"));
                             proxyUSTrue.setValue(proxyRepository.getProxyTrue("us"));
                             proxyKRTrue.setValue(proxyRepository.getProxyKRTrue());
+                            proxyVultrTrue.setValue(proxyRepository.getProxyVULTRTrue());
                             try {
                                 Thread.sleep(60000);
                             } catch (InterruptedException e) {
