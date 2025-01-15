@@ -183,7 +183,7 @@ public class YoutubeTask {
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","subscriber",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
             }
             if (orderRunning!=null) {
-                Thread.sleep(ran.nextInt(150));
+                Thread.sleep(300+ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
                     resp.put("status", false);
                     return resp;
