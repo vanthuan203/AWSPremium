@@ -26,6 +26,7 @@ public class AutoRunProxyTrue {
     private ProxyUSTrue proxyUSTrue;
     @Autowired
     private ProxyKRTrue proxyKRTrue;
+    @Autowired
     private ProxyVultrTrue proxyVultrTrue;
     @Autowired
     private Environment env;
