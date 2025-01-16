@@ -176,6 +176,8 @@ public class AccountViewController {
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         if(cmt==0){
+                            account.get(0).setProxy("");
+                            /*
                             if(account.get(0).getProxy()== null|| account.get(0).getProxy().length()==0){
                                 List<Proxy> proxies=proxyRepository.getProxyFixAccountByGeo(geo.trim());
                                 if(proxies.size()!=0){
@@ -185,6 +187,8 @@ public class AccountViewController {
                                     account.get(0).setProxy("");
                                 }
                             }
+
+                             */
                         }else{
                             account.get(0).setProxy("");
                         }
@@ -267,6 +271,7 @@ public class AccountViewController {
                 try {
                     List<Account> accountbyVps = accountRepository.findAccountById(idbyVps);
                     if(cmt==0){
+                        /*
                         if(accountbyVps.get(0).getProxy()==null || accountbyVps.get(0).getProxy().length()==0){
                             List<Proxy> proxies=proxyRepository.getProxyFixAccountByGeo(geo.trim());
                             if(proxies.size()!=0){
@@ -276,6 +281,9 @@ public class AccountViewController {
                                 accountbyVps.get(0).setProxy("");
                             }
                         }
+                         */
+                         accountbyVps.get(0).setProxy("");
+
                     }else{
                         accountbyVps.get(0).setProxy("");
                     }

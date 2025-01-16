@@ -1184,23 +1184,21 @@ public class HistoryViewController {
             if(vps_check.getVpsoption().contains("smm")){
                 String[] proxy = new String[0];
                 Random rand=new Random();
-                if(ipV4Repository.checkIPv4Live(histories.get(0).getTypeproxy())==0){
-                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    if(proxy.length==0){
-                        histories.get(0).setTimeget(System.currentTimeMillis());
-                        historyViewRepository.save(histories.get(0));
 
-                        vps_check.setTask_time(System.currentTimeMillis());
-                        vpsRepository.save(vps_check);
+                proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                if(proxy.length==0){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    historyViewRepository.save(histories.get(0));
 
-                        resp.put("status", "fail");
-                        resp.put("fail", "video");
-                        resp.put("message", "Không còn video để view!");
-                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                    }
-                }else{
-                    proxy=histories.get(0).getProxy().split(":");
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
+
                 String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
 
                 Map<String, Object>  dataJson= (Map<String, Object>) get_task.get("data");
@@ -1255,6 +1253,7 @@ public class HistoryViewController {
             }else{
                 String[] proxy = new String[0];
                 Random rand=new Random();
+                /*
                 if(geo_rand.equals("kr") || ipV4Repository.checkIPv4Live(histories.get(0).getTypeproxy())==0 || !geo_rand.equals(histories.get(0).getGeo())){
 
                     if(geo_rand.equals("vn")){
@@ -1281,6 +1280,31 @@ public class HistoryViewController {
                 }else{
                     proxy=histories.get(0).getProxy().split(":");
                 }
+                 */
+
+
+                if(geo_rand.equals("vn")){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else if(geo_rand.equals("us")){
+                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                }else if(geo_rand.equals("kr")){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else if(geo_rand.equals("test1")){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }
+                if(proxy.length==0){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
                 String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                 Service service = serviceRepository.getInfoService(videos.get(0).getService());
                 histories.get(0).setTimeget(System.currentTimeMillis());

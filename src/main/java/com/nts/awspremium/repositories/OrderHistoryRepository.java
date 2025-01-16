@@ -90,7 +90,8 @@ public interface OrderHistoryRepository extends JpaRepository<OrderHistory,Long>
     @Query(value = "SELECT o from OrderHistory o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (?1-o.end_time)/1000/60/60>o.service.check_end_time and (?1-o.update_current_time)/1000/60/60>=1 and (?1-o.end_time)/1000/60/60/24<o.service.refund_time")
     public List<OrderHistory> get_Order_By_Check_Count(Long now);
 
-
+    @Query(value = "SELECT (end_time+24*60*60*1000) from order_history where order_key=?1 and cancel!=1 order by end_time desc limit 1",nativeQuery = true)
+    public Long check_Time_Order_Done_Than(String videoid);
     @Modifying
     @Transactional
     @Query(value = "UPDATE order_history set current_count=?1,update_current_time=?2 where order_id=?3",nativeQuery = true)

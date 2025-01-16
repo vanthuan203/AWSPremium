@@ -11,6 +11,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -28,6 +30,8 @@ public class YoutubeOrder {
     private AdminRepository userRepository;
     @Autowired
     private OrderRunningRepository orderRunningRepository;
+    @Autowired
+    private OrderHistoryRepository orderHistoryRepository;
     @Autowired
     private DataSubscriberRepository dataSubscriberRepository;
     @Autowired
@@ -344,6 +348,16 @@ public class YoutubeOrder {
             if (orderRunningRepository.get_Order_By_Order_Key_And_Task(uId.trim(),service.getTask()) > 0) {
                 resp.put("error", "This ID in process");
                 return resp;
+            }
+            Long last_order_done=orderHistoryRepository.check_Time_Order_Done_Than(uId.trim());
+            if(last_order_done!=null){
+                if(System.currentTimeMillis()-last_order_done<0){
+                    Date date = new Date(last_order_done);
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm yyyy/MM/dd");
+                    format.setTimeZone(TimeZone.getTimeZone("Asia/Bangkok"));
+                    resp.put("error", "Please order after "+ format.format(date)+ " GMT+7");
+                    return resp;
+                }
             }
             List<String> videoList =GoogleApi.getVideoLinks("https://www.youtube.com/channel/"+uId+"/videos");
             if(videoList.size()<1){
