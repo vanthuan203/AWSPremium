@@ -887,7 +887,7 @@ public class HistoryViewController {
                 resp.put("fail", "user");
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-            }else if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (60+ran.nextInt(25)))){
+            }else if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (15+ran.nextInt(25)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
                 resp.put("fail", "user");
