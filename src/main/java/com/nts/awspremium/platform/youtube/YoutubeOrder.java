@@ -364,12 +364,22 @@ public class YoutubeOrder {
                 resp.put("error", "The account must have at least 1 video with a duration of no less than 90 seconds");
                 return resp;
             }
+            /*
             String[] key={"AIzaSyA1mXzdZh1THOmazXeLuU1QNW1GyJqBS_A","AIzaSyA6m4AmAGSiGANwtO2UtHglFFz9RF3YTwI","AIzaSyA8zA-au4ZLpXTqrv3CFqW2dvN0mMQuWaE","AIzaSyAc3zrvWloLGpDZMmex-Kq0UqrVFqJPRac","AIzaSyAct-_8qIpPxSJJFFLno6BBACZsZeYDmPw"};
             int start_Count =GoogleApi.getCountSubcriber(uId,key[ran.nextInt(key.length)]);
             if(start_Count<0){
                 resp.put("error", "Can't get SubcriberCurrent");
                 return resp;
             }
+
+             */
+
+            int start_Count =GoogleApi.getCountSubcriberCurrent(uId);
+            if(start_Count<0){
+                resp.put("error", "Can't get SubcriberCurrent");
+                return resp;
+            }
+
             if((start_Count+data.getQuantity()+data.getQuantity()*((float) (service.getBonus()) / 100)>1000*1000)&&(data.getQuantity()<10000 || data.getQuantity() % 10000 != 0)){
                 resp.put("error", "The number of subscribers is greater than 1,000,000 so the order quantity must be a multiple of 10,000.");
                 return resp;
