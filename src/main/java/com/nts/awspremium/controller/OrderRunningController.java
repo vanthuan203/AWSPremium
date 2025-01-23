@@ -562,7 +562,6 @@ public class OrderRunningController {
         try{
             Pageable pageable = PageRequest.of(page, size);
             List<OrderRunning> orderRunningList=orderRunningRepository.get_Order_By_Check_Count(System.currentTimeMillis(),pageable);
-            System.out.println(page+"-"+orderRunningList.size());
             for(int i=0;i<orderRunningList.size();i++){
                 try {
                     if(orderRunningList.get(i).getService().getPlatform().equals("youtube")){

@@ -24,7 +24,7 @@ public class RunCurrentCountRunning {
         try{
             if(Integer.parseInt(env.getProperty("server.port"))==8000){
 
-                    for(int i=1;i<=30;i++){
+                    for(int i=0;i<30;i++){
                         int finalI = i;
                         new Thread(() -> {
                             //Random rand =new Random();
