@@ -2,6 +2,8 @@ package com.nts.awspremium.repositories;
 
 import com.nts.awspremium.model.OrderRunning;
 import com.nts.awspremium.model.OrderRunningShow;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -37,6 +39,9 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
 
     @Query(value = "SELECT o from OrderRunning o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (o.update_current_time<o.update_time or (?1-o.update_current_time)/1000/60/60<24)")
     public List<OrderRunning> get_Order_By_Check_Count(Long now);
+
+    @Query(value = "SELECT o from OrderRunning o JOIN FETCH o.service where o.service.check_count=1 and o.total>0 and o.start_time>0 and (o.update_current_time<o.update_time or (?1-o.update_current_time)/1000/60/60<24)")
+    public List<OrderRunning> get_Order_By_Check_Count(Long now, Pageable pageable);
 
     @Query(value = "SELECT count(*) from order_running where order_key=?1 and service_id in(select service_id from service_smm where task=?2)",nativeQuery = true)
     public Integer get_Order_By_Order_Key_And_Task(String order_id,String task);

@@ -10,6 +10,8 @@ import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -553,11 +555,14 @@ public class OrderRunningController {
     }
 
     @GetMapping(value = "update_Current_Total", produces = "application/hal+json;charset=utf8")
-    public ResponseEntity<Map<String, Object>> update_Current_Total() throws InterruptedException {
+    public ResponseEntity<Map<String, Object>> update_Current_Total(@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+                                                                    @RequestParam(name = "size", required = false, defaultValue = "5") Integer size) throws InterruptedException {
         Map<String, Object> resp = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
         try{
-            List<OrderRunning> orderRunningList=orderRunningRepository.get_Order_By_Check_Count(System.currentTimeMillis());
+            Pageable pageable = PageRequest.of(page, size);
+            List<OrderRunning> orderRunningList=orderRunningRepository.get_Order_By_Check_Count(System.currentTimeMillis(),pageable);
+            System.out.println(page+"-"+orderRunningList.size());
             for(int i=0;i<orderRunningList.size();i++){
                 try {
                     if(orderRunningList.get(i).getService().getPlatform().equals("youtube")){

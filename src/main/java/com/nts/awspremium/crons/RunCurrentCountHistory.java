@@ -1,8 +1,6 @@
 package com.nts.awspremium.crons;
 
 import com.nts.awspremium.controller.OrderHistoryController;
-import com.nts.awspremium.controller.OrderRunningController;
-import com.nts.awspremium.repositories.OrderHistoryRepository;
 import com.nts.awspremium.repositories.OrderRunningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -11,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class RunCurrentCount {
+public class RunCurrentCountHistory {
     @Autowired
     private OrderRunningRepository orderRunningRepository;
     @Autowired

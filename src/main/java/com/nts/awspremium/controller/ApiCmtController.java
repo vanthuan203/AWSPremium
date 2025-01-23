@@ -246,6 +246,10 @@ public class ApiCmtController {
                             resp.put("error", "Service not found ");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
+                        if(contentDetails.get("duration")==null){
+                            resp.put("error", "This video is not eligible for service");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
                         if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() == 0) {
                             resp.put("error", "This video is a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
