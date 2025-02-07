@@ -679,6 +679,11 @@ public class ProxyController {
 
                 }else{
                     ipV4Repository.updateIpv4Error(System.currentTimeMillis(),proxys.get(i));
+                    String instance_id=ipV4Repository.get_Instance_Error(proxys.get(i));
+                    if(instance_id!=null){
+                        ProxyAPI.run_Reboot_VPS(instance_id);
+                        ipV4Repository.updateIpv4Error_NumCheck0(System.currentTimeMillis(),proxys.get(i));
+                    }
                 }
             }
             if(proxys.size()==0){
@@ -699,6 +704,20 @@ public class ProxyController {
     ResponseEntity<String> resetproxyLiveByVps(@RequestParam(defaultValue = "") String vps) {
         JSONObject resp = new JSONObject();
         try{
+            resp.put("status","true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", e.getStackTrace()[0].getLineNumber());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @GetMapping(value = "/reboot_VPS_Proxy", produces = "application/hal_json;charset=utf8")
+    ResponseEntity<String> reboot_VPS_Proxy(@RequestParam(defaultValue = "") String instance_id) {
+        JSONObject resp = new JSONObject();
+        try{
+            ProxyAPI.run_Reboot_VPS(instance_id.trim());
             resp.put("status","true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {

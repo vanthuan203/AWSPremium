@@ -16,6 +16,7 @@ public class IpV4 {
     private String vps;
     private Integer vspcount;
     private Integer usercount;
+    private String instance_id;
 
     private Integer cron;
     private Integer numcheck;
@@ -125,5 +126,13 @@ public class IpV4 {
 
     public void setOption_setting(String option_setting) {
         this.option_setting = option_setting;
+    }
+
+    public String getInstance_id() {
+        return instance_id;
+    }
+
+    public void setInstance_id(String instance_id) {
+        this.instance_id = instance_id;
     }
 }

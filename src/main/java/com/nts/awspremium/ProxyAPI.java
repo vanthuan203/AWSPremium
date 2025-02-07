@@ -1,10 +1,16 @@
 package com.nts.awspremium;
 
+import okhttp3.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.net.*;
+import java.net.Authenticator;
+import java.util.concurrent.TimeUnit;
 
 public class ProxyAPI {
     public static boolean checkProxy(String proxycheck) {
@@ -50,6 +56,25 @@ public class ProxyAPI {
             return false;
         }
     }
+
+
+    public static void run_Reboot_VPS(String instance_id){
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "");
+            Request request = new Request.Builder()
+                    .url("https://api.vultr.com/v2/instances/"+instance_id+"/reboot")
+                    .method("POST", body)
+                    .addHeader("Authorization", "Bearer BXAVWAY2QRCMR72RFHSZIDD3N72SU3FNG3QA")
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+            Response response = client.newCall(request).execute();
+        } catch (Exception e) {
+        }
+    }
+
     public static boolean checkResponseCode (String link) {
         System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
         //System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
