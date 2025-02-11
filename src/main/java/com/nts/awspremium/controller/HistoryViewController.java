@@ -630,14 +630,14 @@ public class HistoryViewController {
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
-                    if(videos.get(0).getService()==801){
+                    if(ran.nextInt(100)<3){
                         resp.put("like", "true");
+                        resp.put("sub", "fail");
+                    }else if(ran.nextInt(100)<3){
+                        resp.put("sub", "true");
+                        resp.put("like", "fail");
                     }else{
                         resp.put("like", "fail");
-                    }
-                    if(videos.get(0).getService()==802){
-                        resp.put("sub", "true");
-                    }else{
                         resp.put("sub", "fail");
                     }
                     if(service.getNiche()==1){
@@ -1320,16 +1320,17 @@ public class HistoryViewController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
-                if(videos.get(0).getService()==801){
+                if(ran.nextInt(100)<3){
                     resp.put("like", "true");
+                    resp.put("sub", "fail");
+                }else if(ran.nextInt(100)<3){
+                    resp.put("sub", "true");
+                    resp.put("like", "fail");
                 }else{
                     resp.put("like", "fail");
-                }
-                if(videos.get(0).getService()==802){
-                    resp.put("sub", "true");
-                }else{
                     resp.put("sub", "fail");
                 }
+
                 resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
                 if(service.getNiche()==1){
                     String[] nicheArr = service.getKeyniche().split(",");
