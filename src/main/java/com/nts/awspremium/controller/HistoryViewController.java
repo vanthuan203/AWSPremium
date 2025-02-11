@@ -633,7 +633,7 @@ public class HistoryViewController {
                     if(ran.nextInt(100)<3){
                         resp.put("like", "true");
                         resp.put("sub", "fail");
-                    }else if(ran.nextInt(100)<3){
+                    }else if(ran.nextInt(100)<2){
                         resp.put("sub", "true");
                         resp.put("like", "fail");
                     }else{
@@ -1323,7 +1323,7 @@ public class HistoryViewController {
                 if(ran.nextInt(100)<3){
                     resp.put("like", "true");
                     resp.put("sub", "fail");
-                }else if(ran.nextInt(100)<3){
+                }else if(ran.nextInt(100)<2){
                     resp.put("sub", "true");
                     resp.put("like", "fail");
                 }else{
