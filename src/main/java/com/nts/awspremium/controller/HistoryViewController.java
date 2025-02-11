@@ -630,7 +630,7 @@ public class HistoryViewController {
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
-                    float ran_SL=ran.nextFloat(100);
+                    float ran_SL=ran.nextFloat()*100F;
                     if(ran_SL<=0.5){
                         if(ran.nextInt(100)<=20){
                             resp.put("sub", "true");
@@ -1323,7 +1323,7 @@ public class HistoryViewController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
-                float ran_SL=ran.nextFloat(100);
+                float ran_SL=ran.nextFloat()*100F;
                 if(ran_SL<=0.5){
                     if(ran.nextInt(100)<=20){
                         resp.put("sub", "true");
