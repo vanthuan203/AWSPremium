@@ -630,12 +630,17 @@ public class HistoryViewController {
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
-                    if(ran.nextInt(100)<3){
-                        resp.put("like", "true");
-                        resp.put("sub", "fail");
-                    }else if(ran.nextInt(100)<2){
-                        resp.put("sub", "true");
-                        resp.put("like", "fail");
+                    if(ran.nextInt(100)<30){
+                        if(ran.nextInt(100)<3){
+                            resp.put("like", "true");
+                            resp.put("sub", "fail");
+                        }else if(ran.nextInt(100)<2){
+                            resp.put("sub", "true");
+                            resp.put("like", "fail");
+                        }else{
+                            resp.put("like", "fail");
+                            resp.put("sub", "fail");
+                        }
                     }else{
                         resp.put("like", "fail");
                         resp.put("sub", "fail");
@@ -1320,17 +1325,21 @@ public class HistoryViewController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
-                if(ran.nextInt(100)<3){
-                    resp.put("like", "true");
-                    resp.put("sub", "fail");
-                }else if(ran.nextInt(100)<2){
-                    resp.put("sub", "true");
-                    resp.put("like", "fail");
+                if(ran.nextInt(100)<30){
+                    if(ran.nextInt(100)<3){
+                        resp.put("like", "true");
+                        resp.put("sub", "fail");
+                    }else if(ran.nextInt(100)<2){
+                        resp.put("sub", "true");
+                        resp.put("like", "fail");
+                    }else{
+                        resp.put("like", "fail");
+                        resp.put("sub", "fail");
+                    }
                 }else{
                     resp.put("like", "fail");
                     resp.put("sub", "fail");
                 }
-
                 resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
                 if(service.getNiche()==1){
                     String[] nicheArr = service.getKeyniche().split(",");
