@@ -631,17 +631,17 @@ public class HistoryViewController {
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
                     int ran_SL=ran.nextInt(100);
-                    if(ran_SL<25){
-                        if(ran_SL<3){
-                            resp.put("like", "true");
-                            resp.put("sub", "fail");
-                        }else if(ran_SL<2){
+                    if(ran_SL<=1){
+                        if(ran.nextInt(100)<=50){
                             resp.put("sub", "true");
                             resp.put("like", "fail");
                         }else{
-                            resp.put("like", "fail");
+                            resp.put("like", "true");
                             resp.put("sub", "fail");
                         }
+                    }else if(ran_SL<=2){
+                        resp.put("like", "true");
+                        resp.put("sub", "fail");
                     }else{
                         resp.put("like", "fail");
                         resp.put("sub", "fail");
@@ -1327,17 +1327,17 @@ public class HistoryViewController {
                 resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
                 int ran_SL=ran.nextInt(100);
-                if(ran_SL<25){
-                    if(ran_SL<3){
-                        resp.put("like", "true");
-                        resp.put("sub", "fail");
-                    }else if(ran_SL<2){
+                if(ran_SL<=1){
+                    if(ran.nextInt(100)<=50){
                         resp.put("sub", "true");
                         resp.put("like", "fail");
                     }else{
-                        resp.put("like", "fail");
+                        resp.put("like", "true");
                         resp.put("sub", "fail");
                     }
+                }else if(ran_SL<=2){
+                    resp.put("like", "true");
+                    resp.put("sub", "fail");
                 }else{
                     resp.put("like", "fail");
                     resp.put("sub", "fail");
