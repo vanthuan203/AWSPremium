@@ -630,11 +630,12 @@ public class HistoryViewController {
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
-                    if(ran.nextInt(100)<30){
-                        if(ran.nextInt(100)<3){
+                    int ran_SL=ran.nextInt(100);
+                    if(ran_SL<25){
+                        if(ran_SL<3){
                             resp.put("like", "true");
                             resp.put("sub", "fail");
-                        }else if(ran.nextInt(100)<2){
+                        }else if(ran_SL<2){
                             resp.put("sub", "true");
                             resp.put("like", "fail");
                         }else{
@@ -1325,11 +1326,12 @@ public class HistoryViewController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
-                if(ran.nextInt(100)<30){
-                    if(ran.nextInt(100)<3){
+                int ran_SL=ran.nextInt(100);
+                if(ran_SL<25){
+                    if(ran_SL<3){
                         resp.put("like", "true");
                         resp.put("sub", "fail");
-                    }else if(ran.nextInt(100)<2){
+                    }else if(ran_SL<2){
                         resp.put("sub", "true");
                         resp.put("like", "fail");
                     }else{
