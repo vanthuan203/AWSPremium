@@ -301,8 +301,14 @@ public class ApiCmtController {
 
                         if(service.getType().equals("Default")){
                             String title="title video: "+snippet.get("title").toString()+" ,";
-                            String description="description video: "+snippet.get("description").toString()+" ,";
-                            String tags="tags video: "+snippet.get("tags").toString()+" ,";
+                            String tags="";
+                            String description="";
+                            if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
+                                description="description video: "+snippet.get("description").toString()+" ,";
+                            }
+                            if(snippet.get("tags")!=null){
+                                tags="tags video: "+snippet.get("tags").toString()+" ,";
+                            }
                             String prompt="tạo cho tôi "+data.getQuantity()+" bình luận tích cực phù hợp với nội dung video này, bình luận có cùng ngôn ngữ với phần title, bình luận có thể có icon,dấu câu nếu thấy phù hợp, bình luận có thể là câu khẳng định hoặc phủ định hoặc câu hỏi, không cần dấu . cuối câu. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(title+tags+description+prompt);
                         }else if(service.getType().equals("Special")){

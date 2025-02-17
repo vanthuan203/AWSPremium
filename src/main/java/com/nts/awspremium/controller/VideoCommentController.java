@@ -37,7 +37,8 @@ public class VideoCommentController {
     private BalanceRepository balanceRepository;
     @Autowired
     private DataCommentRepository dataCommentRepository;
-
+    @Autowired
+    private OpenAiKeyRepository openAiKeyRepository;
     @Autowired
     private DataReplyCommentRepository dataReplyCommentRepository;
     @Autowired
@@ -1221,7 +1222,7 @@ public class VideoCommentController {
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
 
                 if(service.getAi()==1){
-                    String list_Comment= Openai.chatGPT(videoComments.get(i).getListcomment());
+                    String list_Comment= Openai.chatGPT(videoComments.get(i).getListcomment(),openAiKeyRepository.get_OpenAI_Key());
                     if(list_Comment==null){
                         continue;
                     }else {

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class Openai {
-    public static String chatGPT(String message) {
+    public static String chatGPT(String message,String key) {
 
         try {
             OkHttpClient client = new OkHttpClient.Builder()
@@ -45,7 +45,7 @@ public class Openai {
                     .url("https://api.openai.com/v1/chat/completions")
                     .method("POST", body)
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization", "Bearer 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")
+                    .addHeader("Authorization", "Bearer "+key)
                     .build();
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
