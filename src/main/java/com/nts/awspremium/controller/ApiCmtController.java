@@ -181,8 +181,12 @@ public class ApiCmtController {
                     resp.put("error", "System busy try again");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                if (service.getType().equals("Special") && data.getList().length() == 0) {
-                    resp.put("error", "Keyword is null");
+                if (service.getType().equals("Custom Comments") && data.getComments().length() == 0) {
+                    resp.put("error", "Comments is null");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                if (service.getType().equals("Mention Hastag") && data.getHastag().length() == 0) {
+                    resp.put("error", "Prompt is null");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if (data.getQuantity() > service.getMax() || data.getQuantity() < service.getMin()) {
@@ -311,8 +315,8 @@ public class ApiCmtController {
                             }
                             String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận có nhiều sắc thái khác nhau, các bình luận có cùng ngôn ngữ với phần title, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu , các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(title+tags+description+prompt);
-                        }else if(service.getType().equals("Special")){
-                            String content="content video: "+data.getList()+" ,";
+                        }else if(service.getType().equals("Mention Hastag")){
+                            String content="content video: "+data.getHastag()+" ,";
                             String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận có nhiều sắc thái khác nhau, các bình luận có cùng ngôn ngữ với phần title, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu , các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(content+prompt);
                         }else{
