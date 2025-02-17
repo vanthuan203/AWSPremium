@@ -1,6 +1,7 @@
 package com.nts.awspremium.controller;
 
 import com.nts.awspremium.GoogleApi;
+import com.nts.awspremium.Openai;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import okhttp3.OkHttpClient;
@@ -1216,7 +1217,19 @@ public class VideoCommentController {
             List<VideoComment> videoComments = videoCommentRepository.getOrderThreadNull();
             Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
-                String[] comments = videoComments.get(i).getListcomment().split("\n");
+                String[] comments;
+                Service service = serviceRepository.getService(videoComments.get(i).getService());
+
+                if(service.getAi()==1){
+                    String list_Comment= Openai.chatGPT(videoComments.get(i).getListcomment());
+                    if(list_Comment==null){
+                        continue;
+                    }else {
+                        comments = list_Comment.split("\n");
+                    }
+                }else{
+                    comments = videoComments.get(i).getListcomment().split("\n");
+                }
                 for (int j = 0; j < comments.length; j++) {
                     if (comments[j].length() == 0) {
                         continue;
@@ -1230,7 +1243,6 @@ public class VideoCommentController {
                     dataComment.setVps("");
                     dataCommentRepository.save(dataComment);
                 }
-                Service service = serviceRepository.getService(videoComments.get(i).getService());
                 int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
                  if (max_thread <= 50) {
                      videoComments.get(i).setMaxthreads(max_thread);

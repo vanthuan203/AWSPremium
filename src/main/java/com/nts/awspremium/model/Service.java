@@ -42,6 +42,7 @@ public class Service {
     private String task;
     private Integer reply=0;
     private String device_type="all";
+    private Integer ai=0;
     public Service() {
     }
 
@@ -350,5 +351,13 @@ public class Service {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public Integer getAi() {
+        return ai;
+    }
+
+    public void setAi(Integer ai) {
+        this.ai = ai;
     }
 }

@@ -1,6 +1,7 @@
 package com.nts.awspremium.controller;
 
 import com.nts.awspremium.GoogleApi;
+import com.nts.awspremium.Openai;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import okhttp3.OkHttpClient;
@@ -184,10 +185,6 @@ public class ApiCmtController {
                     resp.put("error", "Keyword is null");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                if (service.getType().equals("Special") && data.getList().length() == 0) {
-                    resp.put("error", "Keyword is null");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                }
                 if (data.getQuantity() > service.getMax() || data.getQuantity() < service.getMin()) {
                     resp.put("error", "Min/Max order is: " + service.getMin() + "/" + service.getMax());
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -216,7 +213,7 @@ public class ApiCmtController {
 
                 Request request1 = null;
                 //AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
 
                 Response response1 = client1.newCall(request1).execute();
 
@@ -301,7 +298,20 @@ public class ApiCmtController {
                         videoViewhnew.setPrice(priceorder);
                         videoViewhnew.setNote("");
                         videoViewhnew.setService(data.getService());
-                        videoViewhnew.setListcomment(data.getComments());
+
+                        if(service.getType().equals("Default")){
+                            String title="title video: "+snippet.get("title").toString()+" ,";
+                            String description="description video: "+snippet.get("description").toString()+" ,";
+                            String tags="tags video: "+snippet.get("tags").toString()+" ,";
+                            String prompt="tạo cho tôi "+data.getQuantity()+" bình luận tích cực phù hợp với nội dung video này, bình luận có cùng ngôn ngữ với phần title, bình luận có thể có icon,dấu câu nếu thấy phù hợp, bình luận có thể là câu khẳng định hoặc phủ định hoặc câu hỏi, không cần dấu . cuối câu. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
+                            videoViewhnew.setListcomment(title+tags+description+prompt);
+                        }else if(service.getType().equals("Special")){
+                            String content="content video: "+data.getList()+" ,";
+                            String prompt="tạo cho tôi "+data.getQuantity()+" bình luận tích cực phù hợp với nội dung video này, bình luận có cùng ngôn ngữ với phần content, bình luận có thể có icon,dấu câu nếu thấy phù hợp, bình luận có thể là câu khẳng định hoặc phủ định hoặc câu hỏi, không cần dấu . cuối câu. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
+                            videoViewhnew.setListcomment(content+prompt);
+                        }else{
+                            videoViewhnew.setListcomment(data.getComments());
+                        }
                         videoCommentRepository.save(videoViewhnew);
 
                         //list comment

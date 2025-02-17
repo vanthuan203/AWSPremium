@@ -19,7 +19,7 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
     @Query(value = "SELECT * FROM service ",nativeQuery = true)
     public List<Service> getAllServiceByWeb();
 
-    @Query(value = "SELECT * FROM service where enabled=1 and type=\"Custom Comments\"",nativeQuery = true)
+    @Query(value = "SELECT * FROM service where enabled=1 and task='comment'",nativeQuery = true)
     public List<Service> getAllServiceCmt();
 
     @Query(value = "SELECT * FROM service where enabled=1 and platform='Website'",nativeQuery = true)
