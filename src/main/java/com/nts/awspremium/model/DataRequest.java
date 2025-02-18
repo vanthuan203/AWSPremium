@@ -16,12 +16,12 @@ public class DataRequest {
     private String comments="";
     private String require="";
     private String note="";
-    private String hastag="";
+    private String hashtag="";
 
     public DataRequest() {
     }
 
-    public DataRequest(String key, String link, int quantity, String action, int service, int product, Long order, Long order_refill, String orders, String list, String search, String suggest, String comments, String require, String note, String hastag) {
+    public DataRequest(String key, String link, int quantity, String action, int service, int product, Long order, Long order_refill, String orders, String list, String search, String suggest, String comments, String require, String note, String hashtag) {
         this.key = key;
         this.link = link;
         this.quantity = quantity;
@@ -37,7 +37,7 @@ public class DataRequest {
         this.comments = comments;
         this.require = require;
         this.note = note;
-        this.hastag = hastag;
+        this.hashtag = hashtag;
     }
 
     public String getComments() {
@@ -162,11 +162,11 @@ public class DataRequest {
         this.order_refill = order_refill;
     }
 
-    public String getHastag() {
-        return hastag;
+    public String getHashtag() {
+        return hashtag;
     }
 
-    public void setHastag(String hastag) {
-        this.hastag = hastag;
+    public void setHashtag(String hashtag) {
+        this.hashtag = hashtag;
     }
 }

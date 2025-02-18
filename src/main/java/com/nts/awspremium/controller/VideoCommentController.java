@@ -1261,6 +1261,57 @@ public class VideoCommentController {
         }
     }
 
+    @GetMapping(path = "updateStateCommentAI", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateStateCommentAI() {
+        JSONObject resp = new JSONObject();
+        //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
+        try {
+            //historyRepository.updateHistoryByAccount();
+            List<VideoComment> videoComments = videoCommentRepository.getOrderAIThreadNull();
+            Setting setting = settingRepository.getSettingId1();
+            for (int i = 0; i < videoComments.size(); i++) {
+                String[] comments;
+                Service service = serviceRepository.getService(videoComments.get(i).getService());
+                if(service.getAi()==1){
+                    String list_Comment= Openai.chatGPT(videoComments.get(i).getListcomment(),openAiKeyRepository.get_OpenAI_Key());
+                    if(list_Comment==null){
+                        continue;
+                    }else {
+                        comments = list_Comment.split("\n");
+                    }
+                }else{
+                    comments = videoComments.get(i).getListcomment().split("\n");
+                }
+                for (int j = 0; j < comments.length; j++) {
+                    if (comments[j].length() == 0) {
+                        continue;
+                    }
+                    DataComment dataComment = new DataComment();
+                    dataComment.setOrderid(videoComments.get(i).getOrderid());
+                    dataComment.setComment(comments[j]);
+                    dataComment.setUsername("");
+                    dataComment.setRunning(0);
+                    dataComment.setTimeget(0L);
+                    dataComment.setVps("");
+                    dataCommentRepository.save(dataComment);
+                }
+                int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                if (max_thread <= 50) {
+                    videoComments.get(i).setMaxthreads(max_thread);
+                } else {
+                    videoComments.get(i).setMaxthreads(50);
+                }
+                videoCommentRepository.save(videoComments.get(i));
+            }
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(path = "updateStateReply", produces = "application/hal+json;charset=utf8")
     public ResponseEntity<String> updateStateReply() {
         JSONObject resp = new JSONObject();
