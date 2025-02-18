@@ -20,7 +20,7 @@ public class Openai {
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
             JsonObject jsonRequest = new JsonObject();
-            jsonRequest.addProperty("model", "gpt-4o-mini");
+            jsonRequest.addProperty("model", "gpt-4o");
 
             // Create the messages array
             JsonArray messagesArray = new JsonArray();
