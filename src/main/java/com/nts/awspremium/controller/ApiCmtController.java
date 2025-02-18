@@ -305,7 +305,7 @@ public class ApiCmtController {
                         videoViewhnew.setNote("");
                         videoViewhnew.setService(data.getService());
                         String title="title video: "+snippet.get("title").toString()+"\n";
-                        String geo=Openai.chatGPT(snippet.get("title").toString()+" => trả lời cho tôi ngôn ngữ của phần trên. Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
+                        String geo=Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: "+snippet.get("title").toString()+"\n =>Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
                         if(service.getType().equals("Default")){String tags="";
                             String description="";
                             if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
