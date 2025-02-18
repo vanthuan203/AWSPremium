@@ -1222,7 +1222,10 @@ public class VideoCommentController {
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
 
                 if(service.getAi()==1){
-                    String list_Comment= Openai.chatGPT(videoComments.get(i).getListcomment(),openAiKeyRepository.get_OpenAI_Key());
+                    Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                    count_render=count_render>=100?100:count_render;
+                    String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
+                    String list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
                     if(list_Comment==null){
                         continue;
                     }else {
@@ -1244,6 +1247,7 @@ public class VideoCommentController {
                     dataComment.setVps("");
                     dataCommentRepository.save(dataComment);
                 }
+                videoComments.get(i).setComment_render(comments.length);
                 int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
                  if (max_thread <= 50) {
                      videoComments.get(i).setMaxthreads(max_thread);
@@ -1268,19 +1272,17 @@ public class VideoCommentController {
         try {
             //historyRepository.updateHistoryByAccount();
             List<VideoComment> videoComments = videoCommentRepository.getOrderAIThreadNull();
-            Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
                 String[] comments;
+                Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                count_render=count_render>=100?100:count_render;
+                String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
-                if(service.getAi()==1){
-                    String list_Comment= Openai.chatGPT(videoComments.get(i).getListcomment(),openAiKeyRepository.get_OpenAI_Key());
-                    if(list_Comment==null){
-                        continue;
-                    }else {
-                        comments = list_Comment.split("\n");
-                    }
-                }else{
-                    comments = videoComments.get(i).getListcomment().split("\n");
+                String list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
+                if(list_Comment==null){
+                    continue;
+                }else {
+                    comments = list_Comment.split("\n");
                 }
                 for (int j = 0; j < comments.length; j++) {
                     if (comments[j].length() == 0) {
@@ -1295,11 +1297,14 @@ public class VideoCommentController {
                     dataComment.setVps("");
                     dataCommentRepository.save(dataComment);
                 }
-                int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
-                if (max_thread <= 50) {
-                    videoComments.get(i).setMaxthreads(max_thread);
-                } else {
-                    videoComments.get(i).setMaxthreads(50);
+                videoComments.get(i).setComment_render(videoComments.get(i).getComment_render()+comments.length);
+                if(videoComments.get(i).getMaxthreads()<=0){
+                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                    if (max_thread <= 50) {
+                        videoComments.get(i).setMaxthreads(max_thread);
+                    } else {
+                        videoComments.get(i).setMaxthreads(50);
+                    }
                 }
                 videoCommentRepository.save(videoComments.get(i));
             }

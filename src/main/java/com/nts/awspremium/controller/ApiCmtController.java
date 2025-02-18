@@ -303,6 +303,7 @@ public class ApiCmtController {
                         videoViewhnew.setMaxthreads(0);
                         videoViewhnew.setPrice(priceorder);
                         videoViewhnew.setNote("");
+                        videoViewhnew.setComment_render(0);
                         videoViewhnew.setService(data.getService());
                         String title="title video: "+snippet.get("title").toString()+"\n";
                         String geo=Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: "+snippet.get("title").toString()+"\n =>Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
@@ -314,11 +315,11 @@ public class ApiCmtController {
                             if(snippet.get("tags")!=null){
                                 tags="tags video: "+snippet.get("tags").toString()+"\n";
                             }
-                            String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
+                            String prompt="tạo cho tôi #cmcmedia@$123 bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(title+tags+description+prompt);
                         }else if(service.getType().equals("Mentions Hashtag")){
-                            String content="content video: "+data.getHashtag()+" ,";
-                            String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
+                            String content="content video: "+data.getHashtag()+"\n";
+                            String prompt="tạo cho tôi #cmcmedia@$123 bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(content+prompt);
                         }else{
                             videoViewhnew.setListcomment(data.getComments());

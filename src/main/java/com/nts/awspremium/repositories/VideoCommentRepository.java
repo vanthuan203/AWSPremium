@@ -151,7 +151,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply=0 and ai=0) order by insertdate asc limit 15\n",nativeQuery = true)
     public List<VideoComment> getOrderThreadNull();
 
-    @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply=0 and ai=1) order by insertdate asc limit 15\n",nativeQuery = true)
+    @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply=0 and ai=1) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
     public List<VideoComment> getOrderAIThreadNull();
 
     @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply>0) order by insertdate asc limit 15\n",nativeQuery = true)

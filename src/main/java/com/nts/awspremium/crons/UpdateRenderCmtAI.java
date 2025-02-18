@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class UpdateState {
+public class UpdateRenderCmtAI {
     @Autowired
     private VideoCommentController videoCommentController;
     @Autowired
@@ -31,17 +31,11 @@ public class UpdateState {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(15000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            videoCommentController.updateStateComment();
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            videoCommentController.updateStateReply();
+                            videoCommentController.updateStateCommentAI();
                         } catch (Exception e) {
                             continue;
                         }

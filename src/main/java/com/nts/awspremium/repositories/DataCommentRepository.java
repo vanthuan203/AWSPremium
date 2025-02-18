@@ -21,6 +21,9 @@ public interface DataCommentRepository extends JpaRepository<DataComment,Long> {
     @Query(value = "SELECT count(*) FROM datacomment WHERE id=?1 limit 1",nativeQuery = true)
     public Integer checkByCommentId(Long id);
 
+    @Query(value = "SELECT count(*) FROM datacomment WHERE orderid=?1",nativeQuery = true)
+    public Integer count_All_By_OrderId(Long orderid);
+
     @Query(value = "SELECT id FROM datacomment WHERE orderid=?1 and comment=?2 limit 1",nativeQuery = true)
     public Long getByCommentId(Long orderid,String comment);
 

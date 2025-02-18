@@ -22,6 +22,8 @@ public class VideoComment {
     private Integer enddate;
     private Integer commentorder;
     private Integer commenttotal;
+
+    private Integer comment_render=0;
     private String listcomment;
     private String lc_code="";
     private Long timeupdate;
@@ -31,7 +33,7 @@ public class VideoComment {
     public VideoComment() {
     }
 
-    public VideoComment(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer commentstart, Long insertdate, Integer maxthreads, Long duration, Integer service, String note, String user, Integer enddate, Integer commentorder, Integer commenttotal, String listcomment, Long timeupdate, Float price, Integer valid) {
+    public VideoComment(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer commentstart, Long insertdate, Integer maxthreads, Long duration, Integer service, String note, String user, Integer enddate, Integer commentorder, Integer commenttotal, Integer comment_render, String listcomment, String lc_code, Long timeupdate, Float price, Integer valid) {
         this.orderid = orderid;
         this.videoid = videoid;
         this.videotitle = videotitle;
@@ -47,7 +49,9 @@ public class VideoComment {
         this.enddate = enddate;
         this.commentorder = commentorder;
         this.commenttotal = commenttotal;
+        this.comment_render = comment_render;
         this.listcomment = listcomment;
+        this.lc_code = lc_code;
         this.timeupdate = timeupdate;
         this.price = price;
         this.valid = valid;
@@ -211,5 +215,13 @@ public class VideoComment {
 
     public void setLc_code(String lc_code) {
         this.lc_code = lc_code;
+    }
+
+    public Integer getComment_render() {
+        return comment_render;
+    }
+
+    public void setComment_render(Integer comment_render) {
+        this.comment_render = comment_render;
     }
 }
