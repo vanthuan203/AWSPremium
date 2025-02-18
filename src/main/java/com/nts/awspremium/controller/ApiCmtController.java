@@ -46,6 +46,8 @@ public class ApiCmtController {
     private SettingRepository settingRepository;
     @Autowired
     private ServiceRepository serviceRepository;
+    @Autowired
+    private OpenAiKeyRepository openAiKeyRepository;
 
     @PostMapping(value = "/cmt", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> view(DataRequest data) throws IOException, ParseException {
@@ -302,22 +304,21 @@ public class ApiCmtController {
                         videoViewhnew.setPrice(priceorder);
                         videoViewhnew.setNote("");
                         videoViewhnew.setService(data.getService());
-
-                        if(service.getType().equals("Default")){
-                            String title="title video: "+snippet.get("title").toString()+" ,";
-                            String tags="";
+                        String title="title video: "+snippet.get("title").toString()+"\n";
+                        String geo=Openai.chatGPT(snippet.get("title").toString()+" => trả lời cho tôi ngôn ngữ của phần trên. Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
+                        if(service.getType().equals("Default")){String tags="";
                             String description="";
                             if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
-                                description="description video: "+snippet.get("description").toString()+" ,";
+                                description="description video: "+snippet.get("description").toString()+"\n";
                             }
                             if(snippet.get("tags")!=null){
-                                tags="tags video: "+snippet.get("tags").toString()+" ,";
+                                tags="tags video: "+snippet.get("tags").toString()+"\n";
                             }
-                            String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận có nhiều sắc thái khác nhau, các bình luận có cùng ngôn ngữ với phần title video, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
+                            String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(title+tags+description+prompt);
                         }else if(service.getType().equals("Mentions Hashtag")){
                             String content="content video: "+data.getHashtag()+" ,";
-                            String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận có nhiều sắc thái khác nhau, các bình luận có cùng ngôn ngữ với phần title video, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
+                            String prompt="tạo cho tôi "+data.getQuantity()+"  bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có icon, dấu câu nếu thấy phù hợp, các bình luận có thể là câu khẳng định, phủ định hoặc câu hỏi, các bình luận có cả viết hoa và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 255 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(content+prompt);
                         }else{
                             videoViewhnew.setListcomment(data.getComments());
