@@ -1297,7 +1297,7 @@ public class VideoCommentController {
                     dataComment.setVps("");
                     dataCommentRepository.save(dataComment);
                 }
-                videoComments.get(i).setComment_render(videoComments.get(i).getComment_render()+comments.length);
+                videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
                 if(videoComments.get(i).getMaxthreads()<=0){
                     int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
                     if (max_thread <= 50) {
