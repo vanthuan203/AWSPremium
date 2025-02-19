@@ -31,11 +31,17 @@ public class UpdateRenderCmtAI {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(15000);
+                                Thread.sleep(5000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoCommentController.updateStateCommentAI();
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            videoCommentController.updateStateReplyAI();
                         } catch (Exception e) {
                             continue;
                         }

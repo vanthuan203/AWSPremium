@@ -72,6 +72,41 @@ public class GoogleApi {
 
     }
 
+    public static String[] get_Content_Comment(String lc,String key){
+        try {
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+            Random ran = new Random();
+            Request request = null;
+            Iterator k = null;
+            request = new Request.Builder().url("https://www.googleapis.com/youtube/v3/comments?fields=items(snippet(textDisplay,authorDisplayName))&part=snippet&key="+key.trim()+"&key=AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY&textFormat=plainText&id=" + lc).get().build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()){
+                String resultJson1 = response.body().string();
+                Object obj1 = new JSONParser().parse(resultJson1);
+                JSONObject jsonObject1 = (JSONObject) obj1;
+                JSONArray items = (JSONArray) jsonObject1.get("items");
+                if (items == null) {
+                    return null;
+                }
+                k = items.iterator();
+                if (k.hasNext() == false) {
+                    return null;
+                }
+                JSONObject video = (JSONObject) k.next();
+                JSONObject snippet = (JSONObject) video.get("snippet");
+                return new String[] {
+                        snippet.get("authorDisplayName").toString(),
+                        snippet.get("textDisplay").toString()
+                };
+            }else{
+                return null;
+            }
+        } catch (IOException | ParseException e) {
+            return null;
+        }
+
+    }
+
     public static Integer getCountSubcriber(String order_key,String key){
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();

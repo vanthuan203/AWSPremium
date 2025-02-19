@@ -1327,7 +1327,20 @@ public class VideoCommentController {
             Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
-                String[] comments = videoComments.get(i).getListcomment().split("\n");
+                String[] comments;
+                if(service.getAi()==1){
+                    Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                    count_render=count_render>=100?100:count_render;
+                    String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
+                    String list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
+                    if(list_Comment==null){
+                        continue;
+                    }else {
+                        comments = list_Comment.split("\n");
+                    }
+                }else{
+                    comments = videoComments.get(i).getListcomment().split("\n");
+                }
                 List<String> arrCmt = new ArrayList<>();
                 if(service.getReply()==1){
                     for (int j = 0; j < comments.length; j++) {
@@ -1396,11 +1409,138 @@ public class VideoCommentController {
                         dataReplyCommentRepository.save(dataReplyComment);
                     }
                 }
+                if(service.getReply()==2){
+                    videoComments.get(i).setComment_render(dataReplyCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                }else{
+                    videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                }
                 int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30) - 1)*3;
                 if (max_thread <= 50) {
                     videoComments.get(i).setMaxthreads(max_thread);
                 } else {
                     videoComments.get(i).setMaxthreads(50);
+                }
+                videoCommentRepository.save(videoComments.get(i));
+            }
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            System.out.println(stackTraceElement.getMethodName());
+            System.out.println(stackTraceElement.getLineNumber());
+            System.out.println(stackTraceElement.getClassName());
+            System.out.println(stackTraceElement.getFileName());
+            System.out.println("Error : " + e.getMessage());
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping(path = "updateStateReplyAI", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateStateReplyAI() {
+        JSONObject resp = new JSONObject();
+        //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
+        try {
+            //historyRepository.updateHistoryByAccount();
+            List<VideoComment> videoComments = videoCommentRepository.getOrderReplyAIThreadNull();
+            for (int i = 0; i < videoComments.size(); i++) {
+                Service service = serviceRepository.getService(videoComments.get(i).getService());
+                String[] comments;
+                if(service.getAi()==1){
+                    Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                    count_render=count_render>=100?100:count_render;
+                    String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
+                    String list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
+                    if(list_Comment==null){
+                        continue;
+                    }else {
+                        comments = list_Comment.split("\n");
+                    }
+                }else{
+                    comments = videoComments.get(i).getListcomment().split("\n");
+                }
+                List<String> arrCmt = new ArrayList<>();
+                if(service.getReply()==1){
+                    for (int j = 0; j < comments.length; j++) {
+                        if (comments[j].length() == 0) {
+                            continue;
+                        }
+                        int check_done=0;
+                        if(comments[j].indexOf("|")>0){
+                            String[] cmt_reply=comments[j].split("\\|");
+                            if(!arrCmt.contains(cmt_reply[0].trim())&&cmt_reply[0].trim().length()>0){
+                                arrCmt.add(cmt_reply[0].trim());
+                                DataComment dataComment = new DataComment();
+                                dataComment.setOrderid(videoComments.get(i).getOrderid());
+                                dataComment.setComment(cmt_reply[0].trim());
+                                dataComment.setUsername("");
+                                dataComment.setRunning(0);
+                                dataComment.setTimeget(0L);
+                                dataComment.setVps("");
+                                dataCommentRepository.save(dataComment);
+                            }else{
+                                check_done=1;
+                            }
+                            if(cmt_reply.length>1){
+                                DataReplyComment dataReplyComment=new DataReplyComment();
+                                dataReplyComment.setComment_id(dataCommentRepository.getByCommentId(videoComments.get(i).getOrderid(),cmt_reply[0].trim()));
+                                dataReplyComment.setOrderid(videoComments.get(i).getOrderid());
+                                dataReplyComment.setReply(cmt_reply[1].trim());
+                                dataReplyComment.setRunning(-1);
+                                dataReplyComment.setCheck_done(check_done);
+                                dataReplyComment.setTimeget(0L);
+                                dataReplyComment.setUsername("");
+                                dataReplyComment.setVps("");
+                                dataReplyCommentRepository.save(dataReplyComment);
+                            }
+                        }else{
+                            if(!arrCmt.equals(comments[j].trim())) {
+
+                                arrCmt.add(comments[j].trim());
+
+                                DataComment dataComment = new DataComment();
+                                dataComment.setOrderid(videoComments.get(i).getOrderid());
+                                dataComment.setComment(comments[j].trim());
+                                dataComment.setUsername("");
+                                dataComment.setRunning(0);
+                                dataComment.setTimeget(0L);
+                                dataComment.setVps("");
+                                dataCommentRepository.save(dataComment);
+                            }
+                        }
+                    }
+                }else{
+                    for (int j = 0; j < comments.length; j++) {
+                        if (comments[j].length() == 0) {
+                            continue;
+                        }
+                        DataReplyComment dataReplyComment=new DataReplyComment();
+                        dataReplyComment.setComment_id(-1L);
+                        dataReplyComment.setOrderid(videoComments.get(i).getOrderid());
+                        dataReplyComment.setReply(comments[j].trim());
+                        dataReplyComment.setRunning(0);
+                        dataReplyComment.setCheck_done(1);
+                        dataReplyComment.setTimeget(0L);
+                        dataReplyComment.setUsername("");
+                        dataReplyComment.setLink(videoComments.get(i).getLc_code());
+                        dataReplyComment.setVps("");
+                        dataReplyCommentRepository.save(dataReplyComment);
+                    }
+                }
+                if(service.getReply()==2){
+                    videoComments.get(i).setComment_render(dataReplyCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                }else{
+                    videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                }
+                if(videoComments.get(i).getMaxthreads()<=0){
+                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30) - 1)*3;
+                    if (max_thread <= 50) {
+                        videoComments.get(i).setMaxthreads(max_thread);
+                    } else {
+                        videoComments.get(i).setMaxthreads(50);
+                    }
                 }
                 videoCommentRepository.save(videoComments.get(i));
             }

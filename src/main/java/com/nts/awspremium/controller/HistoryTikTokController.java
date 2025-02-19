@@ -1,5 +1,6 @@
 package com.nts.awspremium.controller;
 
+import com.nts.awspremium.GoogleApi;
 import com.nts.awspremium.Openai;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
@@ -276,10 +277,8 @@ public class HistoryTikTokController {
     ResponseEntity<String> chatGPT(@RequestParam(defaultValue = "") Integer num) throws InterruptedException {
         JSONObject resp = new JSONObject();
         try {
-            String title="title video: "+"소액결제현금화 대출 대신 휴대폰으로 100만원 받는 방법! #소액결제현금화 ,";
-            String description="description video: "+"소액결제현금화 대출 대신 휴대폰으로 비상금 현금 마련 할 수 있을까?\\n소액결제를 이용해서 현금을 만들고 싶지만, 대출 받기에는 부담이죠? \uD83D\uDCB3\uD83D\uDCB0\\n\\n이번 영상에서는 소액결제현금화의 모든 것을 알려드리겠습니다!\\n✔\uFE0F 소액결제현금화 대출 대신 사용하는 방법\\n✔\uFE0F 신용점수 조회 없이 이력 남지 않는 꿀팁\\n✔\uFE0F 휴대폰으로 5분만에 현금 만드는 비법\\n\\n\uD83D\uDCA1 현금이 필요할 때, 소액결제현금화를 사용하여 100만원 받는 법\\n\uD83D\uDCCC 간편하게 현금 마련 방법 & 서류 절차 없이 해결 꿀팁\\n\\n\uD83D\uDD14 구독 & 좋아요를 눌러두시면 더 많은 유용한 정보 받아보실 수 있습니다!\\n\uD83D\uDCE9 궁금한 점이 있으면 영상 아래 고정 댓글에 있는 공식 홈페이지에 방문 하셔서 해결해보시면 좋을 것 같습니다!\\n\\n#소액결제현금화 #휴대폰소액결제현금화 #핸드폰소액결제현금화 ,";
-            String prompt="tạo cho tôi "+num+" bình luận tích cực phù hợp với nội dung video này, bình luận có cùng ngôn ngữ với phần title. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận và mỗi bình luận được viết một dòng";
-            resp.put("message", title+description+prompt);
+
+            resp.put("message", GoogleApi.get_Content_Comment("Ugysk9PwBtuEwAxHP1R4AaABAg","AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY"));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");
