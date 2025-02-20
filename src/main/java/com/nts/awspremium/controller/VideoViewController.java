@@ -3272,6 +3272,8 @@ public class VideoViewController {
         Random ran = new Random();
         try {
             Thread.sleep(ran.nextInt(1000));
+            videoViewRepository.updateThreadByThreadSet();
+            /*
             videoViewRepository.updateThreadByThreadSet5m();
             Thread.sleep(ran.nextInt(1000));
             videoViewRepository.updateThreadByThreadSet10m();
@@ -3281,6 +3283,8 @@ public class VideoViewController {
             videoViewRepository.updateThreadByThreadSet20m();
             Thread.sleep(ran.nextInt(1000));
             videoViewRepository.updateThreadByThreadSet30m();
+
+             */
             Thread.sleep(ran.nextInt(1000));
             updateRunningOrder();
             resp.put("status", "true");
