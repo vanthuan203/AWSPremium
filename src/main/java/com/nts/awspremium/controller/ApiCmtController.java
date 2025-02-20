@@ -219,7 +219,11 @@ public class ApiCmtController {
 
                 Request request1 = null;
                 //AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                if(service.getAi()==0){
+                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                }else{
+                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                }
 
                 Response response1 = client1.newCall(request1).execute();
 

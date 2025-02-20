@@ -113,7 +113,11 @@ public class VideoViewController {
 
             Request request1 = null;
 
-            request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBNcxI9kl_ODPwf49hMSHyohn6Q7IaKdMI&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+            if(service.getAi()==0){
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBNcxI9kl_ODPwf49hMSHyohn6Q7IaKdMI&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+            }else{
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBNcxI9kl_ODPwf49hMSHyohn6Q7IaKdMI&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+            }
 
             Response response1 = client1.newCall(request1).execute();
 
@@ -226,6 +230,8 @@ public class VideoViewController {
                     videoViewhnew.setValid(1);
                     videoViewhnew.setMinstart(service.getMaxtime());
 
+                    videoViewRepository.save(videoViewhnew);
+
                     if(service.getAi()==1){
 
                         String geo = Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: "+snippet.get("title").toString()+"\n =>Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
@@ -252,9 +258,6 @@ public class VideoViewController {
                         dataOrder.setListkey(list_keys);
                         dataOrderRepository.save(dataOrder);
                     }
-
-
-                    videoViewRepository.save(videoViewhnew);
 
                     Float balance_update=adminRepository.updateBalanceFine(-priceorder,admins.get(0).getUsername().trim());
                     Balance balance = new Balance();
