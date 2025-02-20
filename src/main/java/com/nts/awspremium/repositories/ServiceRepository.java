@@ -12,12 +12,12 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface ServiceRepository extends JpaRepository<Service,Integer> {
-    @Query(value = "SELECT * FROM service where enabled=1 and type!=\"Custom Comments\"",nativeQuery = true)
+    @Query(value = "SELECT * FROM service where enabled=1 and task='view'",nativeQuery = true)
     public List<Service> getAllService();
     @Query(value = "Select geo from service group by geo",nativeQuery = true)
     public List<String> GetAllGeoService();
-    @Query(value = "SELECT * FROM service ",nativeQuery = true)
-    public List<Service> getAllServiceByWeb();
+    @Query(value = "SELECT * FROM service where task='view'",nativeQuery = true)
+    public List<Service> getAllServiceViewByWeb();
 
     @Query(value = "SELECT * FROM service where enabled=1 and task='comment'",nativeQuery = true)
     public List<Service> getAllServiceCmt();
