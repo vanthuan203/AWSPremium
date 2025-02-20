@@ -1,6 +1,7 @@
 package com.nts.awspremium.controller;
 
 import com.nts.awspremium.GoogleApi;
+import com.nts.awspremium.Openai;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import okhttp3.OkHttpClient;
@@ -49,7 +50,8 @@ public class ApiController {
 
     @Autowired
     private LimitServiceRepository limitServiceRepository;
-
+    @Autowired
+    private OpenAiKeyRepository openAiKeyRepository;
     @Autowired
     private VpsRepository vpsRepository;
 
@@ -412,6 +414,31 @@ public class ApiController {
                             dataOrder.setOrderid(videoViewhnew.getOrderid());
                             dataOrder.setListvideo(data.getSuggest());
                             dataOrder.setListkey(data.getSearch());
+                            dataOrderRepository.save(dataOrder);
+                        }else if(service.getAi()==1){
+
+                            String geo = Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: "+snippet.get("title").toString()+"\n =>Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
+                            String title="title video: "+snippet.get("title").toString()+"\n";
+                            String tags="";
+                            String description="";
+                            if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
+                                description="description video: "+snippet.get("description").toString()+"\n";
+                            }
+                            if(snippet.get("tags")!=null){
+                                tags="tags video: "+snippet.get("tags").toString()+"\n";
+                            }
+                            String prompt="=>Tạo cho tôi 15 từ khóa dài liên quan với nội dung video này, ưu tiên liên quan đến title video nhất, các từ khóa là "+geo+". Tuyệt đối chỉ trả cho tôi duy nhất nội dung của từ khóa (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi từ khóa được viết cách nhau dấu \",\"";
+                            String list_keys = Openai.chatGPT(title+tags+description+prompt,openAiKeyRepository.get_OpenAI_Key());
+
+                            if(list_keys==null){
+                                resp.put("error", "Can't get video info");
+                                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                            }
+
+                            DataOrder dataOrder = new DataOrder();
+                            dataOrder.setOrderid(videoViewhnew.getOrderid());
+                            dataOrder.setListvideo(list_keys);
+                            dataOrder.setListkey(list_keys);
                             dataOrderRepository.save(dataOrder);
                         }
 

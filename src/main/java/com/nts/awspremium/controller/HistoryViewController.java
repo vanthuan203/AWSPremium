@@ -681,9 +681,9 @@ public class HistoryViewController {
                         arrSource.add("playlists");
                     }
                     String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
-                    if (source_view.equals("suggest") && service.getType().equals("Special")) {
+                    if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                         resp.put("suggest_type", "true");
-                    } else if (source_view.equals("search") && service.getType().equals("Special")) {
+                    } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
                         resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
                     }
                     resp.put("source", source_view);
@@ -1375,9 +1375,9 @@ public class HistoryViewController {
                     arrSource.add("playlists");
                 }
                 String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
-                if (source_view.equals("suggest") && service.getType().equals("Special")) {
+                if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                     resp.put("suggest_type", "true");
-                } else if (source_view.equals("search") && service.getType().equals("Special")) {
+                } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
                     resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
                 }
                 resp.put("source", source_view);
