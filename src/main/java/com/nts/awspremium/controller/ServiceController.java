@@ -267,7 +267,7 @@ public class ServiceController {
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
         }
         JSONArray jsonArray =new JSONArray();
-        List<Service> admins=serviceRepository.getAllServiceByWeb();
+        List<Service> admins=serviceRepository.getAllServiceViewByWeb();
         for(int i=0;i<admins.size();i++){
             JSONObject obj = new JSONObject();
             obj.put("service", admins.get(i).getService());
