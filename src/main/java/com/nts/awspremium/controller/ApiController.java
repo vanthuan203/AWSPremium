@@ -433,7 +433,7 @@ public class ApiController {
                             if(snippet.get("tags")!=null){
                                 tags="tags video: "+snippet.get("tags").toString()+"\n";
                             }
-                            String prompt="=>Tạo cho tôi 15 từ khóa dài liên quan với nội dung video này, ưu tiên liên quan đến title video nhất, các từ khóa là "+geo+". Tuyệt đối chỉ trả cho tôi duy nhất nội dung của từ khóa (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi từ khóa được viết cách nhau dấu \",\"";
+                            String prompt="=>Tạo cho tôi 15 từ khóa dài liên quan với nội dung video này, ưu tiên liên quan đến title video nhất, các từ khóa là "+geo+". Tuyệt đối chỉ trả cho tôi duy nhất nội dung của từ khóa (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi từ khóa được viết cách nhau bởi dấu ,";
                             String list_keys = Openai.chatGPT(title+tags+description+prompt,openAiKeyRepository.get_OpenAI_Key());
 
                             if(list_keys==null){
