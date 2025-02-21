@@ -15,5 +15,6 @@ public interface OrderCommentHistory {
     Integer getCommentstart();
     Integer getCommentend();
     String getGeo();
+    Integer getAi();
     String getLc_code();
 }

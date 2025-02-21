@@ -282,6 +282,7 @@ public class VideoCommentController {
                 obj.put("commenttotal", orderRunnings.get(i).getCommentTotal());
                 obj.put("price", orderRunnings.get(i).getPrice());
                 obj.put("geo",  orderRunnings.get(i).getGeo());
+                obj.put("ai",  orderRunnings.get(i).getAi());
                 obj.put("lc_code",  orderRunnings.get(i).getLc_code());
                 jsonArray.add(obj);
             }
@@ -885,6 +886,7 @@ public class VideoCommentController {
                 obj.put("price", orderRunnings.get(i).getPrice());
                 obj.put("service", orderRunnings.get(i).getService());
                 obj.put("geo", orderRunnings.get(i).getGeo());
+                obj.put("ai", orderRunnings.get(i).getAi());
                 obj.put("lc_code",  orderRunnings.get(i).getLc_code());
                 jsonArray.add(obj);
             }

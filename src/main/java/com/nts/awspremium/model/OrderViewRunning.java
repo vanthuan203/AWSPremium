@@ -19,5 +19,6 @@ public interface OrderViewRunning {
     Integer getService();
     Integer getPriority();
     String getGeo();
+    Integer getAi();
     Long getTimeUpdate();
 }
