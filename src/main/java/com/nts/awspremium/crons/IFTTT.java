@@ -34,7 +34,7 @@ public class IFTTT {
                             BalanceHistory balance=balanceRepository.getBalanceByMaxId();
                             if(0!=Long.compare(id,balance.getId())){
                                 id=balance.getId();
-                                value1=(balance.getAi()==1?"\uD83E\uDD16":"")+balance.getUser().replace("@gmail.com","")+" ▶\uFE0F "+balance.getService()+" \uD83D\uDD04 "+balance.getBalance()+"\uD83D\uDCB2";
+                                value1=(balance.getAi()==1?"\uD83E\uDD16 ":"")+balance.getUser().replace("@gmail.com","")+" ▶\uFE0F "+balance.getService()+" \uD83D\uDD04 "+balance.getBalance()+"\uD83D\uDCB2";
                                 value2=balance.getGeo().equals("vn")?"\uD83C\uDDFB\uD83C\uDDF3":balance.getGeo().equals("us")?"\uD83C\uDDFA\uD83C\uDDF8":balance.getGeo().equals("kr")?"\uD83C\uDDF0\uD83C\uDDF7":balance.getGeo().toLowerCase();
                                 value3=balance.getTotalblance().toString()+"\uD83D\uDCB2";
                                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
