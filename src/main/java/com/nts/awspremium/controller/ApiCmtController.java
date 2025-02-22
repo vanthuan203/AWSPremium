@@ -311,8 +311,9 @@ public class ApiCmtController {
                         videoViewhnew.setService(data.getService());
                         String title="title video: "+snippet.get("title").toString()+"\n";
                         String geo="";
+                        System.out.println();
                         if(service.getReply()==0){
-                            geo=Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: "+snippet.get("title").toString()+"\n =>Lưu ý chỉ trả lời duy nhất là ngôn ngữ gì",openAiKeyRepository.get_OpenAI_Key());
+                            geo=Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: \""+snippet.get("title").toString()+"\"\n =>Lưu ý chỉ trả lời duy nhất  ngôn ngữ đoạn trên là gì",openAiKeyRepository.get_OpenAI_Key());
                         }
                         if(service.getType().equals("Default")){
                             if(service.getReply()==0){
