@@ -313,7 +313,7 @@ public class ApiCmtController {
                         String geo="";
                         System.out.println();
                         if(service.getReply()==0){
-                            geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau bỏ qua link và icon: \""+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
+                            geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau: \""+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
                         }
                         if(service.getType().equals("Default")){
                             if(service.getReply()==0){
@@ -333,7 +333,7 @@ public class ApiCmtController {
                                     resp.put("error", "Can't get comment content");
                                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                                 }
-                                geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau bỏ qua link và icon: \""+content_Reply[1]+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
+                                geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau: \""+content_Reply[1]+". "+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
                                 String description="Tài khoản youtube " +content_Reply[0]+" đã bình luân trong video \""+snippet.get("title").toString()+"\" có nội dung như sau: "+content_Reply[1]+"\n\n";
                                 String prompt="=>Tạo cho tôi #cmcmedia@$123 bình luận phù hợp để trả lời  bình luận trên, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có dấu câu hoặc không có dấu câu nhưng hạn chế sử dụng dấu !, các bình luận có thể là câu khẳng định, câu phủ định hoặc câu hỏi, các bình luận có cả viết hoa đầu câu và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài các bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc bình luận có độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 155 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                                 videoViewhnew.setListcomment(description+prompt);
