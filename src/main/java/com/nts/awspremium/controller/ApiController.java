@@ -423,7 +423,7 @@ public class ApiController {
                             dataOrderRepository.save(dataOrder);
                         }else if(service.getAi()==1){
 
-                            String geo = Openai.chatGPT("phát hiện ngôn ngữ đoạn sau: "+snippet.get("title").toString()+"\n =>Lưu ý chỉ trả lời duy nhất ngôn ngữ đoạn trên là gì",openAiKeyRepository.get_OpenAI_Key());
+                            String geo = Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau bỏ qua link và icon: \""+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
                             String title="title video: "+snippet.get("title").toString()+"\n";
                             String tags="";
                             String description="";
