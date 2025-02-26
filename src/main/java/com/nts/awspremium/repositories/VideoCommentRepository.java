@@ -56,6 +56,9 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='kr' and task='comment') and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentKRTest(String listvideo,List<String> orderid);
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='jp' and task='comment') and INSTR(?1,videoid)=0 and\n" +
+            "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
+    public List<VideoComment> getvideoCommentJPTest(String listvideo,List<String> orderid);
 
     @Query(value = "select orderid from (select videocomment.orderid,count(running) as total,maxthreads\n" +
             "                      from videocomment left join historycomment on historycomment.orderid=videocomment.orderid and running=1\n" +

@@ -64,6 +64,8 @@ public class HistoryViewController {
     @Autowired
     private ProxyKRTrue proxyKRTrue;
     @Autowired
+    private ProxyJPTrue proxyJPTrue;
+    @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
     private ServiceSMMRepository serviceSMMRepository;
@@ -1292,6 +1294,8 @@ public class HistoryViewController {
                     proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("kr")){
                     proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                }else if(geo_rand.equals("jp")){
+                    proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("test1")){
                     proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }

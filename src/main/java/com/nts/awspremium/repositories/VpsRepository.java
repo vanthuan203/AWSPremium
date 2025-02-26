@@ -38,6 +38,9 @@ public interface VpsRepository extends JpaRepository<Vps,Integer> {
     @Query(value = "Select count(*) from vps where vps=?1 and ((select count(*) from account where geo=?2 and running=1 and vps=?1))<(select cmtcountuser_kr from setting where id=1)",nativeQuery = true)
     public Integer checkGetAccountCmtByVpsKR(String vps,String geo);
 
+    @Query(value = "Select count(*) from vps where vps=?1 and ((select count(*) from account where geo=?2 and running=1 and vps=?1))<(select cmtcountuser_jp from setting where id=1)",nativeQuery = true)
+    public Integer checkGetAccountCmtByVpsJP(String vps,String geo);
+
     @Query(value = "Select count(*) from vps where vps=?1",nativeQuery = true)
     public Integer checkVpsValid(String vps);
 

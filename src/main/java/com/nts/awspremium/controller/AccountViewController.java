@@ -135,6 +135,8 @@ public class AccountViewController {
                     check_get= vpsRepository.checkGetAccountCmtByVpsUS(vps.trim(),"cmt-"+geo.trim());
                 }else if(geo.trim().equals("kr")){
                     check_get= vpsRepository.checkGetAccountCmtByVpsKR(vps.trim(),"cmt-"+geo.trim());
+                }else if(geo.trim().equals("jp")){
+                    check_get= vpsRepository.checkGetAccountCmtByVpsJP(vps.trim(),"cmt-"+geo.trim());
                 }else{
                     check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-"+geo.trim());
                 }
@@ -257,6 +259,7 @@ public class AccountViewController {
 
                         resp.put("status", "true");
                         resp.put("username", account.get(0).getUsername());
+                        resp.put("geo", account.get(0).getGeo());
                         resp.put("password", account.get(0).getPassword());
                         resp.put("recover", account.get(0).getRecover());
                         resp.put("cookie", "");
@@ -351,6 +354,7 @@ public class AccountViewController {
 
                     resp.put("status", "true");
                     resp.put("username", accountbyVps.get(0).getUsername());
+                    resp.put("geo", accountbyVps.get(0).getGeo());
                     resp.put("recover", accountbyVps.get(0).getRecover());
                     resp.put("cookie", "");
                     resp.put("password", accountbyVps.get(0).getPassword());

@@ -55,6 +55,8 @@ public class HistoryCommentController {
     @Autowired
     private ProxyKRTrue proxyKRTrue;
     @Autowired
+    private ProxyJPTrue proxyJPTrue;
+    @Autowired
     private VpsRepository vpsRepository;
     @Autowired
     private ProxyRepository proxyRepository;
@@ -752,6 +754,8 @@ public class HistoryCommentController {
                     videos = videoCommentRepository.getvideoCommentUSTest("",orderCommentTrue.getValue());
                 }else if (history.getGeo().equals("cmt-kr")) {
                     videos = videoCommentRepository.getvideoCommentKRTest("",orderCommentTrue.getValue());
+                }else if (history.getGeo().equals("cmt-jp")) {
+                    videos = videoCommentRepository.getvideoCommentJPTest("",orderCommentTrue.getValue());
                 }else{
                     fail_resp.put("status", "fail");
                     fail_resp.put("message", "Username không cmt!");
@@ -821,7 +825,9 @@ public class HistoryCommentController {
                     }else if(history.getGeo().equals("cmt-us")){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-kr")){
-                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    }else if(history.getGeo().equals("cmt-jp")){
+                        proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
                     }
                     if(proxy.length==0){
                         history.setRunning(0);
@@ -885,6 +891,9 @@ public class HistoryCommentController {
                 }else if (histories.get(0).getGeo().equals("cmt-kr")) {
                     //videos=videoViewRepository.getvideoViewNoCheckMaxThreadUS(histories.get(0).getListvideo());
                     videos = videoCommentRepository.getvideoCommentKRTest(histories.get(0).getListvideo(),orderCommentTrue.getValue());
+                }else if (histories.get(0).getGeo().equals("cmt-jp")) {
+                    //videos=videoViewRepository.getvideoViewNoCheckMaxThreadUS(histories.get(0).getListvideo());
+                    videos = videoCommentRepository.getvideoCommentJPTest(histories.get(0).getListvideo(),orderCommentTrue.getValue());
                 }else{
                     fail_resp.put("status", "fail");
                     fail_resp.put("message", "Username không cmt!");
@@ -963,7 +972,9 @@ public class HistoryCommentController {
                 }else if(histories.get(0).getGeo().equals("cmt-us")){
                     proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                 }else if(histories.get(0).getGeo().equals("cmt-kr")){
-                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyKRTrue.getValue().size())).split(":");
+                }else if(histories.get(0).getGeo().equals("cmt-jp")){
+                    proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
                 }
                 if(proxy.length==0){
                     histories.get(0).setRunning(0);

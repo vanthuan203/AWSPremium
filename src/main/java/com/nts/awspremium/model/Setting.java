@@ -29,6 +29,8 @@ public class Setting {
     private Integer cmtcountuser_us;
 
     private Integer cmtcountuser_kr;
+
+    private Integer cmtcountuser_jp;
     private Integer redirect;
     private Integer redirectvn;
     private Integer redirectus;
