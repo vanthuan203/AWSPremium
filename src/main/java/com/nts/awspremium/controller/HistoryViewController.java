@@ -1289,8 +1289,7 @@ public class HistoryViewController {
 
 
                 if(geo_rand.equals("vn")){
-                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                    //proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("us")){
                     proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("kr")){
