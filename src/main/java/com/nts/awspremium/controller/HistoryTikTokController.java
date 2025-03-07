@@ -273,20 +273,6 @@ public class HistoryTikTokController {
         }
     }
 
-    @GetMapping(value = "chatGPT", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> chatGPT(@RequestParam(defaultValue = "") Integer num) throws InterruptedException {
-        JSONObject resp = new JSONObject();
-        try {
-
-            resp.put("message", GoogleApi.get_Content_Comment("Ugysk9PwBtuEwAxHP1R4AaABAg","AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY"));
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-        } catch (Exception e) {
-            resp.put("status", "fail");
-            resp.put("message", e.getMessage());
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping(value = "/dellHisFollower24HByCron", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> dellHisFollower24HByCron() {
         JSONObject resp = new JSONObject();

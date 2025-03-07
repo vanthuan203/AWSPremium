@@ -78,7 +78,7 @@ public class GoogleApi {
             Random ran = new Random();
             Request request = null;
             Iterator k = null;
-            request = new Request.Builder().url("https://www.googleapis.com/youtube/v3/comments?fields=items(snippet(textDisplay,authorDisplayName))&part=snippet&key="+key.trim()+"&key=AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY&textFormat=plainText&id=" + lc).get().build();
+            request = new Request.Builder().url("https://www.googleapis.com/youtube/v3/comments?fields=items(snippet(textDisplay,authorDisplayName))&part=snippet&key="+key.trim()+"&textFormat=plainText&id=" + lc).get().build();
             Response response = client.newCall(request).execute();
             if(response.isSuccessful()){
                 String resultJson1 = response.body().string();

@@ -114,9 +114,9 @@ public class VideoViewController {
             Request request1 = null;
 
             if(service.getAi()==0){
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBNcxI9kl_ODPwf49hMSHyohn6Q7IaKdMI&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key= AIzaSyDjmKi4nQp5J7H9hHWNONenTSDoc9YzGLM&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
             }else{
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyBNcxI9kl_ODPwf49hMSHyohn6Q7IaKdMI&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key= AIzaSyDjmKi4nQp5J7H9hHWNONenTSDoc9YzGLM&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
             }
 
             Response response1 = client1.newCall(request1).execute();
@@ -373,47 +373,6 @@ public class VideoViewController {
             resp.put("videoview", "Fail check video!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
-    }
-
-
-    @GetMapping(value = "/checkduration", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> checkduration(@RequestParam(defaultValue = "") String listvideo) throws IOException, ParseException {
-        JSONObject resp = new JSONObject();
-        //System.out.println(listvideo);
-        //VIDEOOOOOOOOOOOOOOO
-        OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
-
-        Request request1 = null;
-
-        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY&fields=items(id,contentDetails(duration))&part=contentDetails&id=" + listvideo).get().build();
-
-        Response response1 = client1.newCall(request1).execute();
-
-        String resultJson1 = response1.body().string();
-
-        Object obj1 = new JSONParser().parse(resultJson1);
-
-        JSONObject jsonObject1 = (JSONObject) obj1;
-        JSONArray items = (JSONArray) jsonObject1.get("items");
-        JSONArray jsonArray = new JSONArray();
-        Iterator k = items.iterator();
-
-        while (k.hasNext()) {
-            try {
-                JSONObject video = (JSONObject) k.next();
-                JSONObject obj = new JSONObject();
-                JSONObject contentDetails = (JSONObject) video.get("contentDetails");
-                obj.put("duration", Duration.parse(contentDetails.get("duration").toString()).getSeconds());
-                return new ResponseEntity<String>(obj.toJSONString(), HttpStatus.OK);
-                //jsonArray.add(obj);
-            } catch (Exception e) {
-                resp.put("status", e);
-                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-            }
-
-        }
-        resp.put("durations", jsonArray);
-        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/updateViewEndCheckTimecron", produces = "application/hal+json;charset=utf8")

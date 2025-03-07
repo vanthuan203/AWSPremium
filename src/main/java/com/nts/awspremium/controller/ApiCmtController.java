@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -216,13 +213,13 @@ public class ApiCmtController {
                 }
                 int count = StringUtils.countOccurrencesOf(videolist, ",") + 1;
                 OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
-
+                Random ran = new Random();
                 Request request1 = null;
-                //AIzaSyClOKa8qUz3MJD1RKBsjlIDR5KstE2NmMY
+                String[] key={"AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ","AIzaSyDeJlPN5niDYaHVCbaWyB0kE2cf4--dWS8","AIzaSyAlfEOjSy3smUK2_X0bJatd_tzmuj5tbWQ"};
                 if(service.getAi()==0){
-                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                 }else{
-                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                 }
 
                 Response response1 = client1.newCall(request1).execute();
@@ -328,7 +325,7 @@ public class ApiCmtController {
                                 String prompt="=>Tạo cho tôi #cmcmedia@$123 bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có dấu câu hoặc không có dấu câu nhưng hạn chế sử dụng dấu !, các bình luận có thể là câu khẳng định, câu phủ định hoặc câu hỏi, các bình luận có cả viết hoa đầu câu và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài các bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc bình luận có độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 155 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                                 videoViewhnew.setListcomment(title+tags+description+prompt);
                             }else if(service.getReply()==2){
-                                String [] content_Reply=GoogleApi.get_Content_Comment(lc,"AIzaSyAlfEOjSy3smUK2_X0bJatd_tzmuj5tbWQ");
+                                String [] content_Reply=GoogleApi.get_Content_Comment(lc,key[ran.nextInt(key.length)]);
                                 if(content_Reply==null){
                                     resp.put("error", "Can't get comment content");
                                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

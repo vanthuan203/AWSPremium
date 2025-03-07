@@ -473,8 +473,9 @@ public class AuthController {
         Float vn=balanceRepository.getAllBalanceVNNow();
         Float us=balanceRepository.getAllBalanceUSNow();
         Float kr=balanceRepository.getAllBalanceKRNow();
-        Float sum=(vn!=null?vn:0)+(us!=null?us:0)+(kr!=null?kr:0);
-        resp.put("balance",(sum!=null?sum.toString():"0")+"$,"+(vn!=null?vn.toString():"0")+"$,"+(us!=null?us.toString():"0")+"$"+","+(kr!=null?kr.toString():"0")+"$");
+        Float jp=balanceRepository.getAllBalanceJPNow();
+        Float sum=(vn!=null?vn:0)+(us!=null?us:0)+(kr!=null?kr:0)+(jp!=null?jp:0);
+        resp.put("balance",(sum!=null?sum.toString():"0")+"$,"+(vn!=null?vn.toString():"0")+"$,"+(us!=null?us.toString():"0")+"$"+","+(kr!=null?kr.toString():"0")+"$"+","+(jp!=null?jp.toString():"0")+"$");
         return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
 
 
@@ -630,18 +631,22 @@ public class AuthController {
                 view_us=view_us!=null?view_us:0F;
                 Float view_kr=balanceRepository.getAllBalanceKRNow1DG();
                 view_kr=view_kr!=null?view_kr:0F;
+                Float view_jp=balanceRepository.getAllBalanceJPNow1DG();
+                view_jp=view_jp!=null?view_kr:0F;
                 Float cmt_vn=balanceRepository.getAllBalanceVNNow1DGCMT();
                 cmt_vn=cmt_vn!=null?cmt_vn:0F;
                 Float cmt_us=balanceRepository.getAllBalanceUSNow1DGCMT();
                 cmt_us=cmt_us!=null?cmt_us:0F;
                 Float cmt_kr=balanceRepository.getAllBalanceKRNow1DGCMT();
                 cmt_kr=cmt_kr!=null?cmt_kr:0F;
-                Float sum_view=view_vn+view_us+view_kr;
-                Float sum_cmt=cmt_vn+cmt_us+cmt_kr;
+                Float cmt_jp=balanceRepository.getAllBalanceKRNow1DGCMT();
+                cmt_jp=cmt_jp!=null?cmt_jp:0F;
+                Float sum_view=view_vn+view_us+view_kr+view_jp;
+                Float sum_cmt=cmt_vn+cmt_us+cmt_kr+cmt_jp;
                 Float sum1dg=sum_view+sum_cmt;
                 Float sum_f=sum_view+sum_cmt+smm;
-                String view=view_vn+"$ "+view_us+"$ "+view_kr+"$ = "+sum_view+"$";
-                String cmt=cmt_vn+"$ "+cmt_us+"$ "+cmt_kr+"$ = "+sum_cmt+"$";
+                String view=view_vn+"$ "+view_us+"$ "+view_kr+"$ "+view_jp+"$ = "+sum_view+"$";
+                String cmt=cmt_vn+"$ "+cmt_us+"$ "+cmt_kr+"$ "+cmt_jp+"$ = "+sum_cmt+"$";
                 String sum=sum1dg+"$ + \uD83C\uDDF8 "+ smm+"$ = "+sum_f;
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 

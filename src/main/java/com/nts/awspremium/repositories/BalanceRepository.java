@@ -17,7 +17,7 @@ public interface BalanceRepository extends JpaRepository<Balance,Long> {
     @Query(value = "SELECT b.*,s.geo FROM  balance b left join service s on b.service=s.service  WHERE b.balance<0 and b.service IS NOT NULL  order by id desc limit 1",nativeQuery = true)
     public BalanceHistory getfluctuationsNow();
 
-    @Query(value = "SELECT b.*,s.geo,s.ai FROM  balance b left join service s on b.service=s.service  WHERE (b.balance<-1 or s.ai=1) and b.service IS NOT NULL  order by id desc limit 1",nativeQuery = true)
+    @Query(value = "SELECT b.*,s.geo,s.ai FROM  balance b left join service s on b.service=s.service  WHERE b.balance<-1 and b.service IS NOT NULL  order by id desc limit 1",nativeQuery = true)
     public BalanceHistory getBalanceByMaxId();
 
     @Query(value = "Select sum(balance) from balance where balance<0 and round((UNIX_TIMESTAMP()-time/1000)/60)<=5  order by id desc limit 1 ",nativeQuery = true)
@@ -34,6 +34,13 @@ public interface BalanceRepository extends JpaRepository<Balance,Long> {
             "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
             "               AND  balance<0 and service in(select service from service where geo='kr')",nativeQuery = true)
     public Float getAllBalanceKRNow();
+
+    @Query(value = "SELECT ROUND(-sum(balance),2)\n" +
+            "                    FROM balance\n" +
+            "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
+            "               AND  balance<0 and service in(select service from service where geo='jp')",nativeQuery = true)
+    public Float getAllBalanceJPNow();
+
 
 
     @Query(value = "SELECT ROUND(-sum(balance),2)\n" +
@@ -69,6 +76,12 @@ public interface BalanceRepository extends JpaRepository<Balance,Long> {
     @Query(value = "SELECT ROUND(-sum(balance),2)\n" +
             "                    FROM balance\n" +
             "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
+            "               AND  balance<0 and service in(select service from service where category='Youtube | Views' and geo='jp')",nativeQuery = true)
+    public Float getAllBalanceJPNow1DG();
+
+    @Query(value = "SELECT ROUND(-sum(balance),2)\n" +
+            "                    FROM balance\n" +
+            "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
             "               AND  balance<0 and service in(select service from service where category='Youtube | Comments' and geo='vn')",nativeQuery = true)
     public Float getAllBalanceVNNow1DGCMT();
 
@@ -83,6 +96,12 @@ public interface BalanceRepository extends JpaRepository<Balance,Long> {
             "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
             "               AND  balance<0 and service in(select service from service where category='Youtube | Comments' and geo='kr')",nativeQuery = true)
     public Float getAllBalanceKRNow1DGCMT();
+
+    @Query(value = "SELECT ROUND(-sum(balance),2)\n" +
+            "                    FROM balance\n" +
+            "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
+            "               AND  balance<0 and service in(select service from service where category='Youtube | Comments' and geo='jp')",nativeQuery = true)
+    public Float getAllBalanceJPNow1DGCMT();
 
 
     @Query(value = "SELECT DATE(FROM_UNIXTIME((balance.time / 1000), '%Y-%m-%d %H:%i:%s') + INTERVAL (7-(SELECT TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)) hour) AS date, \n" +
