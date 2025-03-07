@@ -632,14 +632,14 @@ public class AuthController {
                 Float view_kr=balanceRepository.getAllBalanceKRNow1DG();
                 view_kr=view_kr!=null?view_kr:0F;
                 Float view_jp=balanceRepository.getAllBalanceJPNow1DG();
-                view_jp=view_jp!=null?view_kr:0F;
+                view_jp=view_jp!=null?view_jp:0F;
                 Float cmt_vn=balanceRepository.getAllBalanceVNNow1DGCMT();
                 cmt_vn=cmt_vn!=null?cmt_vn:0F;
                 Float cmt_us=balanceRepository.getAllBalanceUSNow1DGCMT();
                 cmt_us=cmt_us!=null?cmt_us:0F;
                 Float cmt_kr=balanceRepository.getAllBalanceKRNow1DGCMT();
                 cmt_kr=cmt_kr!=null?cmt_kr:0F;
-                Float cmt_jp=balanceRepository.getAllBalanceKRNow1DGCMT();
+                Float cmt_jp=balanceRepository.getAllBalanceJPNow1DGCMT();
                 cmt_jp=cmt_jp!=null?cmt_jp:0F;
                 Float sum_view=view_vn+view_us+view_kr+view_jp;
                 Float sum_cmt=cmt_vn+cmt_us+cmt_kr+cmt_jp;
