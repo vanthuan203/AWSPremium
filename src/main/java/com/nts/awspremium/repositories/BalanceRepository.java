@@ -61,6 +61,12 @@ public interface BalanceRepository extends JpaRepository<Balance,Long> {
             "                         AND  balance<0 and service in(select service_id from service_smm )",nativeQuery = true)
     public Float getAllBalanceSMMNow();
 
+    @Query(value = "SELECT user,ROUND(-sum(balance),2) as sum\n" +
+            "                                       FROM balance\n" +
+            "                                         WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +
+            "                                     AND  balance<0 group by user order by sum desc",nativeQuery = true)
+    public List<String> getBalanceByUserNow();
+
     @Query(value = "SELECT ROUND(-sum(balance),2)\n" +
             "                    FROM balance\n" +
             "                     WHERE user in(select username from admin where role='ROLE_USER') and FROM_UNIXTIME((time/1000+(7-TIME_TO_SEC(TIMEDIFF(NOW(), UTC_TIMESTAMP)) / 3600)*60*60),'%Y-%m-%d %H:%i:%s')>=DATE_FORMAT(CONVERT_TZ(NOW(), @@session.time_zone, '+07:00'),'%Y-%m-%d 00-00-00')\n" +

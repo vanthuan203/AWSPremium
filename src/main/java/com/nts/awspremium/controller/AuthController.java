@@ -647,7 +647,7 @@ public class AuthController {
                 Float sum_f=sum_view+sum_cmt+smm;
                 String view=view_vn+"$ "+view_us+"$ "+view_kr+"$ "+view_jp+"$ = "+sum_view+"$";
                 String cmt=cmt_vn+"$ "+cmt_us+"$ "+cmt_kr+"$ "+cmt_jp+"$ = "+sum_cmt+"$";
-                String sum=sum1dg+"$ + \uD83C\uDDF8 "+ smm+"$ = "+sum_f;
+                String sum=sum1dg+"$ + \uD83C\uDDF8 "+ smm+"$ = "+sum_f+"$";
                 OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 
                 Request request = null;
@@ -668,6 +668,37 @@ public class AuthController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
             }
         }
+
+    @GetMapping(value = "balanceNowIFTTTUser",produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> balanceNowIFTTTUser(){
+        JSONObject resp=new JSONObject();
+        try{
+            try{
+                List<String> user_sum=balanceRepository.getBalanceByUserNow();
+                String user_text="\uD83D\uDCB2";
+                for(int i=0;i<user_sum.size();i++){
+                    user_text=user_text+user_sum.get(i).split(",")[0].replace("@gmail.com","").toLowerCase()+"〰\uFE0F"+user_sum.get(i).split(",")[1]+"$ ";
+                }
+                OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+
+                Request request = null;
+
+                request = new Request.Builder().url("https://maker.ifttt.com/trigger/order/with/key/eh3Ut1_iinzl4yCeH5-BC2d21WpaAKdzXTWzVfXurdc?value1=" + user_text).get().build();
+
+                Response response = client.newCall(request).execute();
+
+                resp.put("status", "true");
+
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }catch(Exception e){
+            resp.put("status","fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     @GetMapping(path = "getalluser",produces = "application/hal+json;charset=utf8")
