@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "product_history")
@@ -15,6 +16,8 @@ public class ProductHistory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String uuid;
     @Column(columnDefinition = "varchar(255) default ''")
     private String product_key;
     @Column(columnDefinition = "float default 0")

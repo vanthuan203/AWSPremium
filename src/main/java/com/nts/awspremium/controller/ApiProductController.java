@@ -1,5 +1,6 @@
 package com.nts.awspremium.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONArray;
@@ -12,11 +13,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.UUID;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -57,40 +56,70 @@ public class ApiProductController {
             List<Admin> admins = adminRepository.FindByToken(data.getKey().trim());
             if (data.getKey().length() == 0 || admins.size() == 0) {
                 resp.put("error", "Key not found");
-                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                return new ResponseEntity<>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
             }
             //Danh sách dịch vụ view cmc
             if (data.getAction().equals("products")) {
                 List<Service> services = serviceRepository.getAllServiceProduct();
-                JSONArray arr = new JSONArray();
+                JSONArray arr_Service = new JSONArray();
                 float rate;
                 for (int i = 0; i < services.size(); i++) {
                     rate = services.get(i).getRate() * ((float) (admins.get(0).getRate()) / 100) * ((float) (100 - admins.get(0).getDiscount()) / 100);
-                    JSONObject serviceBuffH = new JSONObject();
-                    serviceBuffH.put("product", services.get(i).getService());
-                    serviceBuffH.put("name", services.get(i).getName());
-                    serviceBuffH.put("type", services.get(i).getType());
-                    serviceBuffH.put("category", services.get(i).getCategory());
-                    serviceBuffH.put("rate", rate);
-                    serviceBuffH.put("min", services.get(i).getMin());
-                    serviceBuffH.put("max", services.get(i).getMax());
-                    serviceBuffH.put("inventory", services.get(i).getMax());
-                    serviceBuffH.put("status","In stock");
-                    if(services.get(i).getTask().equals("proxy")){
-                        serviceBuffH.put("require","Input username/password");
+                    JSONObject serviceJson = new JSONObject();
+                    serviceJson.put("product", services.get(i).getService());
+                    serviceJson.put("name", services.get(i).getName());
+                    serviceJson.put("type", services.get(i).getType());
+                    serviceJson.put("category", services.get(i).getCategory());
+                    serviceJson.put("platform", services.get(i).getPlatform());
+                    serviceJson.put("rate", rate);
+                    serviceJson.put("min", services.get(i).getMin());
+                    serviceJson.put("max", services.get(i).getMax());
+                    serviceJson.put("inventory",services.get(i).getMax());
+                    serviceJson.put("status", "In stock");
+
+                    if ("proxy".equals(services.get(i).getTask())) {
+                        serviceJson.put("require", "Input username/password");
                     }
-                    arr.add(serviceBuffH);
+                    arr_Service.add(serviceJson);
                 }
-                return new ResponseEntity<String>(arr.toJSONString(), HttpStatus.OK);
+                return new ResponseEntity<String>(arr_Service.toJSONString(), HttpStatus.OK);
+
             }
             //truy vấn số dư tài khoản
             if (data.getAction().equals("balance")) {
                 JSONObject serviceBuffH = new JSONObject();
                 serviceBuffH.put("balance", admins.get(0).getBalance());
                 serviceBuffH.put("currency", "USD");
-                return new ResponseEntity<String>(serviceBuffH.toJSONString(), HttpStatus.OK);
+                return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
             }
             //Get trạng thái đơns
+            if (data.getAction().equals("result_product")) {
+                    ProductHistory productHistory = productHistoryRepository.getProductHistoriesById(data.getOrder());
+
+                    if (productHistory == null) {
+                        resp.put("error", "Incorrect order ID");
+                        return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
+                    } else {
+                        Service service = serviceRepository.getService(productHistory.getService());
+                        List<String> idArrInput = new ArrayList<>();
+                        idArrInput.addAll(Arrays.asList(productHistory.getList_id().split(",")));
+                        List<String> resultList = new ArrayList<>();
+                        if(service.getTask().equals("gmail")){
+                            List<Account> accounts=accountRepository.findAccountByListId(idArrInput);
+                            for(int i=0;i<accounts.size();i++){
+                                resultList.add(accounts.get(i).getUsername() + " | " + accounts.get(i).getPassword() + " | " + accounts.get(i).getRecover());
+                            }
+                        }else{
+                            List<Proxy> proxies=proxyRepository.findProxyByListId(idArrInput);
+                            for(int i=0;i<proxies.size();i++){
+                                resultList.add(proxies.get(i).getProxy());
+                            }
+                        }
+                        JSONObject orderList = new JSONObject();
+                        orderList.put("result", resultList);
+                        return new ResponseEntity<>(orderList.toJSONString(), HttpStatus.OK);
+                    }
+            }
             if (data.getAction().equals("product_order_status")) {
                 if (data.getOrders().length() == 0) {
 
@@ -99,31 +128,10 @@ public class ApiProductController {
 
                     if (productHistory == null) {
                         resp.put("error", "Incorrect order ID");
-                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
                     } else {
-                        Service service = serviceRepository.getService(productHistory.getService());
                         List<String> idArrInput = new ArrayList<>();
                         idArrInput.addAll(Arrays.asList(productHistory.getList_id().split(",")));
-
-                        String list_data="";
-                        if(service.getTask().equals("gmail")){
-                            List<Account> accounts=accountRepository.findAccountByListId(idArrInput);
-                            for(int i=0;i<accounts.size();i++){
-                                if(i>0){
-                                    list_data=list_data+",";
-                                }
-                                list_data+=accounts.get(i).getUsername()+"|"+accounts.get(i).getPassword()+"|"+accounts.get(i).getRecover();
-                            }
-                        }else{
-                            List<Proxy> proxies=proxyRepository.findProxyByListId(idArrInput);
-                            for(int i=0;i<proxies.size();i++){
-                                if(i>0){
-                                    list_data=list_data+",";
-                                }
-                                list_data+=proxies.get(i).getProxy();
-                            }
-                        }
-
                         resp.put("charge", productHistory.getCharge());
                         if (productHistory.getCancel() == 1) {
                             resp.put("status", "Canceled");
@@ -132,8 +140,8 @@ public class ApiProductController {
                         } else {
                             resp.put("status", "Completed");
                         }
-                        resp.put("result", list_data);
-                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        resp.put("result", productHistory.getUuid());
+                        return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
                     }
 
                 } else {
@@ -149,26 +157,6 @@ public class ApiProductController {
                             List<String> idArrInput = new ArrayList<>();
                             idArrInput.addAll(Arrays.asList(vh.getList_id().split(",")));
 
-                            String list_data="";
-                            if(service.getTask().equals("gmail")){
-                                List<Account> accounts=accountRepository.findAccountByListId(idArrInput);
-                                for(int i=0;i<accounts.size();i++){
-                                    if(i>0){
-                                        list_data=list_data+",";
-                                    }
-                                    list_data+=accounts.get(i).getUsername()+"|"+accounts.get(i).getPassword()+"|"+accounts.get(i).getRecover();
-                                }
-                            }else{
-                                List<Proxy> proxies=proxyRepository.findProxyByListId(idArrInput);
-                                for(int i=0;i<proxies.size();i++){
-                                    if(i>0){
-                                        list_data=list_data+",";
-                                    }
-                                    list_data+=proxies.get(i).getProxy();
-                                }
-                            }
-
-
                             product_list.put("charge", vh.getCharge());
                             if (vh.getCancel() == 1) {
                                 product_list.put("status", "Canceled");
@@ -177,7 +165,7 @@ public class ApiProductController {
                             } else {
                                 product_list.put("status", "Completed");
                             }
-                            product_list.put("result", list_data);
+                            product_list.put("result", vh.getUuid());
                             productObject.put("" + vh.getOrder_id(), product_list);
                             ordersArrInput.remove("" + vh.getOrder_id());
                         }
@@ -187,7 +175,7 @@ public class ApiProductController {
                         orderIdError.put("error", "Incorrect order ID");
                         productObject.put(orderId, orderIdError);
                     }
-                    return new ResponseEntity<String>(productObject.toJSONString(), HttpStatus.OK);
+                    return new ResponseEntity<>(productObject.toJSONString(), HttpStatus.OK);
                 }
             }
             if (data.getAction().equals("add_product_order")) {
@@ -195,21 +183,21 @@ public class ApiProductController {
                 Service service = serviceRepository.getService(data.getProduct());
                 if (service == null) {
                     resp.put("error", "Invalid product");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if(data.getRequire().trim().length()==0&&service.getTask().equals("proxy")){
                     resp.put("error", "Require is null");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if (data.getQuantity() > service.getMax() || data.getQuantity() < service.getMin()) {
                     resp.put("error", "Min/Max order is: " + service.getMin() + "/" + service.getMax());
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
                 }
                 float priceorder = 0;
                 priceorder = data.getQuantity() * service.getRate() * ((float) (admins.get(0).getRate()) / 100) * ((float) (100 - admins.get(0).getDiscount()) / 100);
                 if (priceorder > (float) admins.get(0).getBalance()) {
                     resp.put("error", "Your balance not enough");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
                 }
                 String list_data="";
                 String list_id_product="";
@@ -238,6 +226,7 @@ public class ApiProductController {
                 }
 
                 ProductHistory productHistory = new ProductHistory();
+                productHistory.setUuid(UUID.randomUUID().toString());
                 productHistory.setInsert_time(System.currentTimeMillis());
                 productHistory.setCharge(priceorder);
                 productHistory.setQuantity(data.getQuantity());
@@ -260,7 +249,7 @@ public class ApiProductController {
                 balance.setNote("Order " + data.getQuantity()+ " "+service.getTask());
                 balanceRepository.save(balance);
                 resp.put("order", productHistory.getOrder_id());
-                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
             }
         } catch (Exception e) {
             //dong loi
@@ -272,9 +261,9 @@ public class ApiProductController {
             System.out.println("Error : " + e.getMessage());
             resp.put("error", "api system error");
             resp.put("error",e.getMessage());
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
         }
         resp.put("error", "api system error");
-        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
     }
 }
