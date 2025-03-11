@@ -90,7 +90,7 @@ public class ApiProductController {
                 JSONObject serviceBuffH = new JSONObject();
                 serviceBuffH.put("balance", admins.get(0).getBalance());
                 serviceBuffH.put("currency", "USD");
-                return new ResponseEntity<>(resp.toJSONString(), HttpStatus.OK);
+                return new ResponseEntity<>(serviceBuffH.toJSONString(), HttpStatus.OK);
             }
             //Get trạng thái đơns
             if (data.getAction().equals("result_product")) {
