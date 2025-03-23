@@ -825,7 +825,7 @@ public class HistoryCommentController {
                     }else if(history.getGeo().equals("cmt-us")){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-kr")){
-                        proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyKRTrue.getValue().size())).split(":");
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-jp")){
                         proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
                     }
