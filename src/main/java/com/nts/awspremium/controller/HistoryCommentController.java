@@ -825,7 +825,7 @@ public class HistoryCommentController {
                     }else if(history.getGeo().equals("cmt-us")){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-kr")){
-                        proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else if(history.getGeo().equals("cmt-jp")){
                         proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
                     }
@@ -972,7 +972,7 @@ public class HistoryCommentController {
                 }else if(histories.get(0).getGeo().equals("cmt-us")){
                     proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                 }else if(histories.get(0).getGeo().equals("cmt-kr")){
-                    proxy=proxyKRTrue.getValue().get(ran.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                 }else if(histories.get(0).getGeo().equals("cmt-jp")){
                     proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
                 }
