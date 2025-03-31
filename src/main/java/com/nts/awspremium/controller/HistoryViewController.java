@@ -1293,7 +1293,11 @@ public class HistoryViewController {
                 }else if(geo_rand.equals("us")){
                     proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("kr")){
-                    proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    if(ran.nextInt(100)<60){
+                        proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    }else{
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }
                 }else if(geo_rand.equals("jp")){
                     proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("test1")){
