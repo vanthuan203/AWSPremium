@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -33,6 +34,8 @@ public class ProxyController {
     private Proxy_IPV4_TikTokRepository proxyLiveRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private VideoViewRepository videoViewRepository;
     @Autowired
     private IpV4Repository ipV4Repository;
     @Autowired
@@ -674,7 +677,7 @@ public class ProxyController {
                 Random ran=new Random();
                 Integer ranproxy=ran.nextInt(100)+13000;
                 String[] proxysetting=proxySettingRepository.getUserPassByHost(proxys.get(i).trim()).split(",");
-                if (ProxyAPI.checkProxy(proxys.get(i)+":"+ranproxy.toString()+":"+proxysetting[0]+":"+proxysetting[1])) {
+                if (ProxyAPI.checkProxy(proxys.get(i)+":"+ranproxy.toString()+":"+proxysetting[0]+":"+proxysetting[1],videoViewRepository.getVideoIDRand().trim())) {
                     ipV4Repository.updateIpv4Ok(System.currentTimeMillis(),proxys.get(i));
 
                 }else{
@@ -750,4 +753,40 @@ public class ProxyController {
 
     }
 
+    @GetMapping(value = "/test", produces = "application/hal_json;charset=utf8")
+    ResponseEntity<String> test(@RequestParam(defaultValue = "") String link,@RequestParam(defaultValue = "") String host,@RequestParam(defaultValue = "") Integer port) {
+        List<String> id_ipv4 = ipV4Repository.getIdByIpv4();
+        JSONObject resp = new JSONObject();
+
+        try {
+            System.out.println(ProxyAPI.checkProxy("195.211.99.149:13087:doanchinh:Chinhchu123@"));
+            System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+            URL url = new URL(link.trim());
+            java.net.Proxy proxy = new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(host.trim(), port));
+            Authenticator authenticator = new Authenticator() {
+                public PasswordAuthentication getPasswordAuthentication() {
+                    return (new PasswordAuthentication("doanchinh",
+                            "Chinhchu123@".toCharArray()));
+                }
+            };
+            Authenticator.setDefault(authenticator);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
+            conn.setRequestMethod("GET");
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(1000);
+
+            conn.connect();
+            int code = conn.getResponseCode();
+            String contents = conn.getResponseMessage();
+            conn.disconnect();
+
+            resp.put("num", "Status: "+code+" Status:" + contents);
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+
+    }
 }
