@@ -1,5 +1,6 @@
 package com.nts.awspremium.controller;
 
+import com.nts.awspremium.Openai;
 import com.nts.awspremium.ProxyAPI;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.model.Proxy;
@@ -7,6 +8,7 @@ import com.nts.awspremium.repositories.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.net.*;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +51,8 @@ public class ProxyController {
     private ProxySettingRepository proxySettingRepository;
     @Autowired
     private ProxyVNTrue proxyVNTrue;
+    @Autowired
+    private OpenAiKeyRepository openAiKeyRepository;
     @Autowired
     private Proxy_IPV4_TikTokRepository proxyIpv4TikTokRepository;
 
@@ -759,7 +764,10 @@ public class ProxyController {
         JSONObject resp = new JSONObject();
 
         try {
-            System.out.println(ProxyAPI.checkProxy("158.247.215.136:13000:doanchinh:Chinhchu123@",videoViewRepository.getVideoIDRand()));
+            File file = new File("File/payload1.mp3");
+            FileUtils.copyURLToFile(new URL("http://idnetwork.com.vn/payload.mp3"), file);
+            resp.put("status", Openai.chatGPT1("File/payload1.mp3",openAiKeyRepository.get_OpenAI_Key()));
+            file.delete();
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");

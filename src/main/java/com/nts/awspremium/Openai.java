@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -73,6 +74,43 @@ public class Openai {
             return null;
         } catch (IOException e) {
             return null;
+        }
+    }
+
+    public static String chatGPT1(String path,String key) {
+
+        File audioFile = new File(path); // Đường dẫn file cần dịch
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            // Tạo body cho file upload
+            RequestBody fileBody = RequestBody.create(MediaType.parse("audio/mpeg"), audioFile);
+
+            // Tạo request body (multipart form-data)
+            RequestBody requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("model", "whisper-1")  // Chọn mô hình Whisper
+                    .addFormDataPart("file", audioFile.getName(), fileBody)
+                    .build();
+
+            // Tạo request gửi đến OpenAI
+            Request request = new Request.Builder()
+                    .url("https://api.openai.com/v1/audio/translations")
+                    .post(requestBody)
+                    .addHeader("Authorization", "Bearer " + key)
+                    .build();
+
+            // Gửi request và lấy response
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                return response.body().string();
+            } else {
+               return null;
+            }
+
+        } catch (IOException e) {
+           return null;
         }
     }
 }
