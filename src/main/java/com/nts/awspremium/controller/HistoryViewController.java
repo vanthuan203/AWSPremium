@@ -1307,7 +1307,7 @@ public class HistoryViewController {
                 }else if(geo_rand.equals("jp")){
                     proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
                 }else if(geo_rand.equals("test1")){
-                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
                 }
                 if(proxy.length==0){
                     histories.get(0).setTimeget(System.currentTimeMillis());
