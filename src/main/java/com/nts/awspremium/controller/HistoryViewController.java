@@ -384,7 +384,7 @@ public class HistoryViewController {
                 }else
 
                  */
-                    if(vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(25)))){
+                if(vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(25)))){
                     Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
                     resp.put("username", histories.get(0).getUsername());
@@ -608,7 +608,7 @@ public class HistoryViewController {
                             }
                         }
                     }
-                    /*
+
                     Thread.sleep(150+ran.nextInt(200));
                     if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
                         histories.get(0).setTimeget(System.currentTimeMillis());
@@ -625,7 +625,6 @@ public class HistoryViewController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
 
-                     */
                     Service service = serviceRepository.getInfoService(videos.get(0).getService());
 
                     histories.get(0).setTimeget(System.currentTimeMillis());
@@ -893,16 +892,13 @@ public class HistoryViewController {
 
         Random ran = new Random();
         try {
-            /*
             if(!vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (5+ran.nextInt(5)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
                 resp.put("fail", "user");
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-            }else
-             */
-                if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (30+ran.nextInt(5)))){
+            }else if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (30+ran.nextInt(5)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
                 resp.put("fail", "user");
@@ -1299,15 +1295,45 @@ public class HistoryViewController {
 
 
                 if(geo_rand.equals("vn")){
-                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(geo_rand.equals("us")){
-                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(geo_rand.equals("kr")){
-                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(geo_rand.equals("jp")){
-                    proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
+                    if(proxyJPTrue.getValue().size()!=0){
+                        proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(geo_rand.equals("test1")){
-                    proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    if(proxyKRTrue.getValue().size()!=0){
+                        proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }
                 if(proxy.length==0){
                     histories.get(0).setTimeget(System.currentTimeMillis());
