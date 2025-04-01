@@ -759,29 +759,7 @@ public class ProxyController {
         JSONObject resp = new JSONObject();
 
         try {
-            System.out.println(ProxyAPI.checkProxy("195.211.99.149:13087:doanchinh:Chinhchu123@"));
-            System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-            URL url = new URL(link.trim());
-            java.net.Proxy proxy = new java.net.Proxy(java.net.Proxy.Type.HTTP, new InetSocketAddress(host.trim(), port));
-            Authenticator authenticator = new Authenticator() {
-                public PasswordAuthentication getPasswordAuthentication() {
-                    return (new PasswordAuthentication("doanchinh",
-                            "Chinhchu123@".toCharArray()));
-                }
-            };
-            Authenticator.setDefault(authenticator);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
-            conn.setRequestMethod("GET");
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(1000);
-
-            conn.connect();
-            int code = conn.getResponseCode();
-            String contents = conn.getResponseMessage();
-            conn.disconnect();
-
-            resp.put("num", "Status: "+code+" Status:" + contents);
+            System.out.println(ProxyAPI.checkProxy("158.247.215.136:13000:doanchinh:Chinhchu123@",videoViewRepository.getVideoIDRand()));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");
