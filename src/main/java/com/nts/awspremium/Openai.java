@@ -91,6 +91,7 @@ public class Openai {
             RequestBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("model", "whisper-1")  // Chọn mô hình Whisper
+                    .addFormDataPart("response_format", "text")  // Chọn mô hình Whisper
                     .addFormDataPart("file", audioFile.getName(), fileBody)
                     .build();
 
