@@ -1307,12 +1307,30 @@ public class HistoryViewController {
                         proxy= new String[]{};
                     }
                 }else if(geo_rand.equals("kr")){
-                    if(proxyKRTrue.getValue().size()!=0){
-                        proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
-                    }else if(proxyUSTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    if(ran.nextInt(100)<60){
+                        if(proxyKRTrue.getValue().size()!=0){
+                            proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                        }else if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
+                    }else if(ran.nextInt(100)<65){
+                        if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }else{
-                        proxy= new String[]{};
+                        if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        }else if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }
                 }else if(geo_rand.equals("jp")){
                     if(proxyJPTrue.getValue().size()!=0){
