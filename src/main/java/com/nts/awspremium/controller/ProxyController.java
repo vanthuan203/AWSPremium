@@ -682,7 +682,7 @@ public class ProxyController {
                 Random ran=new Random();
                 Integer ranproxy=ran.nextInt(100)+13000;
                 String[] proxysetting=proxySettingRepository.getUserPassByHost(proxys.get(i).trim()).split(",");
-                if (ProxyAPI.checkProxy(proxys.get(i)+":"+ranproxy.toString()+":"+proxysetting[0]+":"+proxysetting[1],"https://www.youtube.com/watch?v="+videoViewRepository.getVideoIDRand().trim())) {
+                if (ProxyAPI.checkProxy(proxys.get(i)+":"+ranproxy.toString()+":"+proxysetting[0]+":"+proxysetting[1])) {
                     ipV4Repository.updateIpv4Ok(System.currentTimeMillis(),proxys.get(i));
 
                 }else{

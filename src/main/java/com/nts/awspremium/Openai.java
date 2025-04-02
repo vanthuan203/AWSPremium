@@ -97,7 +97,7 @@ public class Openai {
 
             // Tạo request gửi đến OpenAI
             Request request = new Request.Builder()
-                    .url("https://api.openai.com/v1/audio/translations")
+                    .url("https://api.openai.com/v1/audio/translations") //transcriptions
                     .post(requestBody)
                     .addHeader("Authorization", "Bearer " + key)
                     .build();
