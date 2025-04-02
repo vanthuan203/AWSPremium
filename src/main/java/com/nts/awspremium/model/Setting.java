@@ -25,6 +25,7 @@ public class Setting {
     private Float leveluser;
 
     private Integer cmtcountuser;
+    private Integer check_threads=0;
 
     private Integer cmtcountuser_us;
 

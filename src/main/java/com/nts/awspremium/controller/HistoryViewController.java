@@ -609,23 +609,23 @@ public class HistoryViewController {
                             }
                         }
                     }
-                    /*
-                    Thread.sleep(150+ran.nextInt(200));
-                    if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
-                        histories.get(0).setTimeget(System.currentTimeMillis());
-                        histories.get(0).setTask_time(System.currentTimeMillis());
-                        histories.get(0).setVideoid("");
-                        histories.get(0).setOrderid(0L);
-                        histories.get(0).setChannelid("");
-                        histories.get(0).setRunning(0);
-                        historyViewRepository.save(histories.get(0));
-                        resp.put("status", "fail");
-                        resp.put("username", histories.get(0).getUsername());
-                        resp.put("fail", "video");
-                        resp.put("message", "Không còn video để view!");
-                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    if(settingRepository.getRedirectVN()==1){
+                        Thread.sleep(150+ran.nextInt(200));
+                        if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
+                            histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_time(System.currentTimeMillis());
+                            histories.get(0).setVideoid("");
+                            histories.get(0).setOrderid(0L);
+                            histories.get(0).setChannelid("");
+                            histories.get(0).setRunning(0);
+                            historyViewRepository.save(histories.get(0));
+                            resp.put("status", "fail");
+                            resp.put("username", histories.get(0).getUsername());
+                            resp.put("fail", "video");
+                            resp.put("message", "Không còn video để view!");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
                     }
-                     */
                     Service service = serviceRepository.getInfoService(videos.get(0).getService());
 
                     histories.get(0).setTimeget(System.currentTimeMillis());
