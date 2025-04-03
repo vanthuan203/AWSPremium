@@ -609,7 +609,7 @@ public class HistoryViewController {
                             }
                         }
                     }
-                    if(settingRepository.getRedirectVN()==1){
+                    if(settingRepository.getCheckThreads()==1){
                         Thread.sleep(150+ran.nextInt(200));
                         if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
                             histories.get(0).setTimeget(System.currentTimeMillis());
@@ -1315,15 +1315,18 @@ public class HistoryViewController {
                         proxy= new String[]{};
                     }
                 }else if(geo_rand.equals("kr")){
-                    if(ran.nextInt(100)<0){
-                        if(proxyKRTrue.getValue().size()!=0){
+                    Integer check_rand=ran.nextInt(100);
+                    if(check_rand<50){
+                        if(proxyKRTrue.getValue().size()>2000){
                             proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
                         }else if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        }else if(proxyVNTrue.getValue().size()!=0){
                             proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                         }else{
                             proxy= new String[]{};
                         }
-                    }else if(ran.nextInt(100)<65){
+                    }else if(check_rand<75){
                         if(proxyVNTrue.getValue().size()!=0){
                             proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                         }else if(proxyUSTrue.getValue().size()!=0){
