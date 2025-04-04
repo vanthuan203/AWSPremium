@@ -30,6 +30,10 @@ public class CaptchaController {
         JSONObject resp = new JSONObject();
 
         try {
+            if(1==1){
+                resp.put("status", false);
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
             Random ran= new Random();
             String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
             String name="";
