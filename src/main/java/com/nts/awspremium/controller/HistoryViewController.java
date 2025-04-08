@@ -1317,7 +1317,7 @@ public class HistoryViewController {
                 }else if(geo_rand.equals("kr")){
                     Integer check_rand=ran.nextInt(100);
                     if(check_rand<50){
-                        if(proxyKRTrue.getValue().size()>1000){
+                        if(proxyKRTrue.getValue().size()>10000){
                             proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
                         }else if(proxyUSTrue.getValue().size()!=0){
                             proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
