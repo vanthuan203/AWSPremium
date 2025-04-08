@@ -1319,10 +1319,10 @@ public class HistoryViewController {
                     if(check_rand<50){
                         if(proxyKRTrue.getValue().size()>10000){
                             proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
-                        }else if(proxyUSTrue.getValue().size()!=0){
-                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                         }else if(proxyVNTrue.getValue().size()!=0){
                             proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                         }else{
                             proxy= new String[]{};
                         }
