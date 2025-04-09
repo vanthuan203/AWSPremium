@@ -135,7 +135,7 @@ public class AccountViewController {
                     if(check_get!=0){
                         check_geo=1;
                     }else{
-                        check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-us");
+                        check_get= vpsRepository.checkGetAccountCmtByVpsUS(vps.trim(),"cmt-us");
                         if(check_get!=0){
                             check_geo=2;
                         }
