@@ -105,6 +105,7 @@ public class AccountViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
         try {
+            Integer check_geo=0;
             if (cmt==0) {
                 if(geo.contains("smm")){
                     Integer check_get = vpsRepository.checkGetAccountSMMByThreadVps(vps.trim(),geo.trim());
@@ -130,7 +131,15 @@ public class AccountViewController {
                 }
                 Integer check_get=0;
                 if(geo.trim().equals("vn")){
-                    check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-"+geo.trim());
+                    check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-vn");
+                    if(check_get!=0){
+                        check_geo=1;
+                    }else{
+                        check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-us");
+                        if(check_get!=0){
+                            check_geo=2;
+                        }
+                    }
                 }else if(geo.trim().equals("us")){
                     check_get= vpsRepository.checkGetAccountCmtByVpsUS(vps.trim(),"cmt-"+geo.trim());
                 }else if(geo.trim().equals("kr")){
@@ -153,6 +162,9 @@ public class AccountViewController {
                 idbyVps = accountRepository.getaccountByVps(vps.trim(),geo.trim());
             }else{
                 idbyVps = accountRepository.getaccountByVps(vps.trim(),"cmt-"+geo.trim());
+                if(idbyVps==null&&geo.trim().equals("vn")){
+                    idbyVps = accountRepository.getaccountByVps(vps.trim(),"cmt-us");
+                }
             }
             if (idbyVps == null) {
                 Thread.sleep(ran.nextInt(500));
@@ -160,7 +172,15 @@ public class AccountViewController {
                 if(cmt==0){
                     id = accountRepository.getAccountView(geo.trim());
                 }else{
-                    id = accountRepository.getAccountView("cmt-"+geo.trim());
+                    if(geo.equals("vn")){
+                        if(check_geo==1){
+                            id = accountRepository.getAccountView("cmt-vn");
+                        }else if(check_geo==2){
+                            id = accountRepository.getAccountView("cmt-us");
+                        }
+                    }else{
+                        id = accountRepository.getAccountView("cmt-"+geo.trim());
+                    }
                 }
                 if (id == null) {
                     resp.put("status", "fail");
