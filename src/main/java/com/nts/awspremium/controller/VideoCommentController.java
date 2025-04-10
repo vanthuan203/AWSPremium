@@ -647,7 +647,7 @@ public class VideoCommentController {
                 if(service.getExpired()==0){
                    list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
                 }else if(service.getExpired()==1){
-                    list_Comment= Openai.chatGPT4oMini(prompt,openAiKeyRepository.get_OpenAI_Key());
+                    list_Comment= Openai.chatGPT4oMini("chatGPT4oMini "+prompt,openAiKeyRepository.get_OpenAI_Key());
                 }
                 if(list_Comment==null){
                     continue;
