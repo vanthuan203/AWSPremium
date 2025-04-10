@@ -584,7 +584,7 @@ public class VideoCommentController {
             Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
                 String[] comments;
-                Service service = serviceRepository.getService(videoComments.get(i).getService());
+                Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
 
                 if(service.getAi()==1){
                     Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
@@ -642,11 +642,11 @@ public class VideoCommentController {
                 Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                 count_render=count_render>=100?100:count_render;
                 String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
-                Service service = serviceRepository.getService(videoComments.get(i).getService());
+                Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
                 String list_Comment=null;
                 if(service.getExpired()==0){
                    list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
-                }else{
+                }else if(service.getExpired()==1){
                     list_Comment= Openai.chatGPT4oMini(prompt,openAiKeyRepository.get_OpenAI_Key());
                 }
                 if(list_Comment==null){
@@ -696,7 +696,7 @@ public class VideoCommentController {
             List<VideoComment> videoComments = videoCommentRepository.getOrderReplyThreadNull();
             Setting setting = settingRepository.getSettingId1();
             for (int i = 0; i < videoComments.size(); i++) {
-                Service service = serviceRepository.getService(videoComments.get(i).getService());
+                Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
                 String[] comments;
                 if(service.getAi()==1){
                     Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
@@ -816,7 +816,7 @@ public class VideoCommentController {
             //historyRepository.updateHistoryByAccount();
             List<VideoComment> videoComments = videoCommentRepository.getOrderReplyAIThreadNull();
             for (int i = 0; i < videoComments.size(); i++) {
-                Service service = serviceRepository.getService(videoComments.get(i).getService());
+                Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
                 String[] comments;
                 if(service.getAi()==1){
                     Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
