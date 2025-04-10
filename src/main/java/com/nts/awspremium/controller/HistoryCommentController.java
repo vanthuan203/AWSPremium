@@ -900,6 +900,17 @@ public class HistoryCommentController {
                     return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
                 }
                 if (videos.size() > 0) {
+                    Thread.sleep(150+ran.nextInt(200));
+                    if(!orderCommentTrue.getValue().contains(videos.get(0).getOrderid().toString())){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setRunning(0);
+                        historyCommentRepository.save(histories.get(0));
+                        fail_resp.put("status", "fail");
+                        fail_resp.put("username", histories.get(0).getUsername());
+                        fail_resp.put("fail", "video");
+                        fail_resp.put("message", "Không còn video để comment!");
+                        return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
+                    }
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid(videos.get(0).getVideoid());
                     histories.get(0).setOrderid(videos.get(0).getOrderid());
