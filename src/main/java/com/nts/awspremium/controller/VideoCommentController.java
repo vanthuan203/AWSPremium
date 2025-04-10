@@ -643,7 +643,12 @@ public class VideoCommentController {
                 count_render=count_render>=100?100:count_render;
                 String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
                 Service service = serviceRepository.getService(videoComments.get(i).getService());
-                String list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
+                String list_Comment=null;
+                if(service.getExpired()==0){
+                   list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
+                }else{
+                    list_Comment= Openai.chatGPT4oMini(prompt,openAiKeyRepository.get_OpenAI_Key());
+                }
                 if(list_Comment==null){
                     continue;
                 }else {
