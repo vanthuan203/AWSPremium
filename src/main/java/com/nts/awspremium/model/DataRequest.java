@@ -17,11 +17,12 @@ public class DataRequest {
     private String require="";
     private String note="";
     private String hashtag="";
+    private String keywords="";
 
     public DataRequest() {
     }
 
-    public DataRequest(String key, String link, int quantity, String action, int service, int product, Long order, Long order_refill, String orders, String list, String search, String suggest, String comments, String require, String note, String hashtag) {
+    public DataRequest(String key, String link, int quantity, String action, int service, int product, Long order, Long order_refill, String orders, String list, String search, String suggest, String comments, String require, String note, String hashtag, String keywords) {
         this.key = key;
         this.link = link;
         this.quantity = quantity;
@@ -38,6 +39,7 @@ public class DataRequest {
         this.require = require;
         this.note = note;
         this.hashtag = hashtag;
+        this.keywords = keywords;
     }
 
     public String getComments() {
@@ -168,5 +170,14 @@ public class DataRequest {
 
     public void setHashtag(String hashtag) {
         this.hashtag = hashtag;
+    }
+
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 }

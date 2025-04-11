@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -219,11 +220,11 @@ public class ApiController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if (service.getType().equals("Special") && data.getList().length() == 0) {
-                    resp.put("error", "Keyword is null");
+                    resp.put("error", "Keywords is null");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-                if (service.getType().equals("Special") && data.getList().length() == 0) {
-                    resp.put("error", "Keyword is null");
+                if (service.getType().equals("SEO") && data.getKeywords().length() == 0) {
+                    resp.put("error", "Keywords is null");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if (data.getQuantity() > service.getMax() || data.getQuantity() < service.getMin()) {
@@ -414,6 +415,16 @@ public class ApiController {
                             dataOrder.setOrderid(videoViewhnew.getOrderid());
                             dataOrder.setListvideo(data.getList());
                             dataOrder.setListkey(data.getList());
+                            dataOrderRepository.save(dataOrder);
+                        }else if (service.getType().equals("SEO")) {
+                            String keywords = Arrays.stream(data.getKeywords().split("\n"))
+                                    .map(String::trim)
+                                    .filter(s -> !s.isEmpty())
+                                    .collect(Collectors.joining(","));
+                            DataOrder dataOrder = new DataOrder();
+                            dataOrder.setOrderid(videoViewhnew.getOrderid());
+                            dataOrder.setListvideo(keywords);
+                            dataOrder.setListkey(keywords);
                             dataOrderRepository.save(dataOrder);
                         } else if (service.getType().equals("Special 1")) {
                             DataOrder dataOrder = new DataOrder();
