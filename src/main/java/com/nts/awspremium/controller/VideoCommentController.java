@@ -618,12 +618,16 @@ public class VideoCommentController {
                     dataCommentRepository.save(dataComment);
                 }
                 videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
-                int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
-                 if (max_thread <= 50) {
-                     videoComments.get(i).setMaxthreads(max_thread);
-                 } else {
-                     videoComments.get(i).setMaxthreads(50);
-                 }
+                if(service.getExpired()==0){
+                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                    if (max_thread <= 50) {
+                        videoComments.get(i).setMaxthreads(max_thread);
+                    } else {
+                        videoComments.get(i).setMaxthreads(50);
+                    }
+                }else{
+                    videoComments.get(i).setMaxthreads(service.getThread());
+                }
                 videoCommentRepository.save(videoComments.get(i));
             }
             resp.put("status", "true");
@@ -674,11 +678,15 @@ public class VideoCommentController {
                 }
                 videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
                 if(videoComments.get(i).getMaxthreads()<=0){
-                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
-                    if (max_thread <= 50) {
-                        videoComments.get(i).setMaxthreads(max_thread);
-                    } else {
-                        videoComments.get(i).setMaxthreads(50);
+                    if(service.getExpired()==0){
+                        int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                        if (max_thread <= 50) {
+                            videoComments.get(i).setMaxthreads(max_thread);
+                        } else {
+                            videoComments.get(i).setMaxthreads(50);
+                        }
+                    }else{
+                        videoComments.get(i).setMaxthreads(service.getThread());
                     }
                 }
                 videoCommentRepository.save(videoComments.get(i));
@@ -794,11 +802,15 @@ public class VideoCommentController {
                 }else{
                     videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
                 }
-                int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30) - 1)*3;
-                if (max_thread <= 50) {
-                    videoComments.get(i).setMaxthreads(max_thread);
-                } else {
-                    videoComments.get(i).setMaxthreads(50);
+                if(service.getExpired()==0){
+                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                    if (max_thread <= 50) {
+                        videoComments.get(i).setMaxthreads(max_thread);
+                    } else {
+                        videoComments.get(i).setMaxthreads(50);
+                    }
+                }else{
+                    videoComments.get(i).setMaxthreads(service.getThread());
                 }
                 videoCommentRepository.save(videoComments.get(i));
             }
@@ -920,11 +932,15 @@ public class VideoCommentController {
                     videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
                 }
                 if(videoComments.get(i).getMaxthreads()<=0){
-                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30) - 1)*3;
-                    if (max_thread <= 50) {
-                        videoComments.get(i).setMaxthreads(max_thread);
-                    } else {
-                        videoComments.get(i).setMaxthreads(50);
+                    if(service.getExpired()==0){
+                        int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                        if (max_thread <= 50) {
+                            videoComments.get(i).setMaxthreads(max_thread);
+                        } else {
+                            videoComments.get(i).setMaxthreads(50);
+                        }
+                    }else{
+                        videoComments.get(i).setMaxthreads(service.getThread());
                     }
                 }
                 videoCommentRepository.save(videoComments.get(i));
