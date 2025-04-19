@@ -1131,7 +1131,7 @@ public class VideoViewController {
                 if (k.hasNext() == false) {
                     delete("1",videoViews.get(i).getVideoid().trim(),1);
                     continue;
-                }else{
+                }else if(1==2){
                     while (k.hasNext()) {
                         try {
                             JSONObject video = (JSONObject) k.next();
