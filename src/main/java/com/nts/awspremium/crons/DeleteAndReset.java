@@ -68,7 +68,7 @@ public class DeleteAndReset {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            //videoViewController.DeleteOrderNotValidCron();
+                            videoViewController.DeleteOrderNotValidCron();
                         } catch (Exception e) {
                             continue;
                         }
