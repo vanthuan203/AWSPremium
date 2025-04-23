@@ -1259,6 +1259,37 @@ public class VideoCommentController {
             return "Fail";
         }
     }
+
+
+    String refundCMTByVideoComment100(@RequestBody() VideoCommentHistory videoCommentHistory) {
+
+        try {
+            Service service = serviceRepository.getInfoService(videoCommentHistory.getService());
+            List<Admin> user = adminRepository.getAdminByUser(videoCommentHistory.getUser());
+            float price_refund = videoCommentHistory.getPrice();
+            Integer cmtThan=videoCommentHistory.getCommenttotal();
+            videoCommentHistory.setPrice(0F);
+            videoCommentHistory.setTimecheck(System.currentTimeMillis());
+            videoCommentHistory.setCommenttotal(0);
+            videoCommentHistory.setCancel(1);
+            videoCommentHistoryRepository.save(videoCommentHistory);
+            //hoàn tiền & add thong báo số dư
+            Float balance_update=adminRepository.updateBalanceFine(price_refund,videoCommentHistory.getUser().trim());
+            Balance balance = new Balance();
+            balance.setUser(user.get(0).getUsername().trim());
+            balance.setTime(System.currentTimeMillis());
+            balance.setTotalblance(balance_update);
+            balance.setBalance(price_refund);
+            balance.setService(videoCommentHistory.getService());
+            balance.setNote("Refund " + (cmtThan) + " cmt cho " + videoCommentHistory.getVideoid());
+            balanceRepository.save(balance);
+            return "Đã hoàn 100%";
+
+        } catch (Exception e) {
+            return "Fail";
+        }
+    }
+
     @GetMapping(path = "updateRefundHis", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> updateRefundHis(@RequestHeader(defaultValue = "") String Authorization,@RequestParam(defaultValue = "") String orderid) {
         JSONObject resp = new JSONObject();
@@ -1290,6 +1321,71 @@ public class VideoCommentController {
                     status="Quá hạn "+service.getMaxtimerefill()+" ngày";
                 }else{
                     status=refundCMTByVideoComment(video);
+                    video_refil= videoCommentHistoryRepository.getVideoViewHisById(Long.parseLong(videoidIdArr[i].trim()));
+                }
+
+                JSONObject obj = new JSONObject();
+                obj.put("orderid", video_refil.getOrderid());
+                obj.put("videoid", video_refil.getVideoid());
+                obj.put("videotitle", video_refil.getVideotitle());
+                obj.put("commentstart",video_refil.getCommentstart());
+                obj.put("maxthreads", video_refil.getMaxthreads());
+                obj.put("insertdate", video_refil.getInsertdate());
+                obj.put("user", video_refil.getUser());
+                obj.put("note", video_refil.getNote());
+                obj.put("duration", video_refil.getDuration());
+                obj.put("enddate", video_refil.getEnddate());
+                obj.put("cancel", video_refil.getCancel());
+                //obj.put("home_rate", orderRunnings.get(i).get());
+                obj.put("commentend", video_refil.getCommentend());
+                obj.put("commenttotal", video_refil.getCommenttotal());
+                obj.put("commentorder", video_refil.getCommentorder());
+                obj.put("price", video_refil.getPrice());
+                obj.put("service", video_refil.getService());
+                obj.put("status", status);
+
+                jsonArray.add(obj);
+            }
+            resp.put("videocomment", jsonArray);
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(path = "updateRefund100His", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> updateRefund100His(@RequestHeader(defaultValue = "") String Authorization,@RequestParam(defaultValue = "") String orderid) {
+        JSONObject resp = new JSONObject();
+        //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
+        List<Admin> admins = adminRepository.FindByToken(Authorization.trim());
+        if (Authorization.length() == 0 || admins.size() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Token expired");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            String[] videoidIdArr = orderid.split(",");
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < videoidIdArr.length; i++) {
+                String status="No refunds";
+                VideoCommentHistory video = videoCommentHistoryRepository.getVideoViewHisById(Long.parseLong(videoidIdArr[i].trim()));
+                Float price_old=video.getPrice();
+                Service service = serviceRepository.getInfoService(video.getService());
+                VideoCommentHistory video_refil=video;
+                if(service.getRefill()==0){
+                    status="DV không bảo hành";
+                }else if(video.getUser().equals("baohanh01@gmail.com")){
+                    status="Đơn bảo hành";
+                } else if(videoCommentRepository.getCountVideoIdNotPending(video.getVideoid())>0){
+                    status="Đơn mới đang chạy";
+                }else if(video.getCancel()==1){
+                    status="Được hủy trước đó";
+                }else if(serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0){
+                    status="Quá hạn "+service.getMaxtimerefill()+" ngày";
+                }else{
+                    status=refundCMTByVideoComment100(video);
                     video_refil= videoCommentHistoryRepository.getVideoViewHisById(Long.parseLong(videoidIdArr[i].trim()));
                 }
 
