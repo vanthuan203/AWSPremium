@@ -787,7 +787,7 @@ public class HistoryCommentController {
                         if(dataReplyCommentRepository.checkReplyByCommentId(Long.parseLong(comment.split(",")[0]))>0){
                             resp.put("device_type","pc");
                         }else{
-                            resp.put("device_type","mobile");
+                            resp.put("device_type","pc");
                         }
                         resp.put("comment_id", comment.split(",")[0]);
                         resp.put("comment", comment.substring(comment.indexOf(",")+1));
@@ -945,7 +945,7 @@ public class HistoryCommentController {
                     if(dataReplyCommentRepository.checkReplyByCommentId(Long.parseLong(comment.split(",")[0]))>0){
                         resp.put("device_type","pc");
                     }else{
-                        resp.put("device_type","mobile");
+                        resp.put("device_type","pc");
                     }
                     resp.put("comment_id", comment.split(",")[0]);
                     resp.put("comment", comment.substring(comment.indexOf(",")+1));
