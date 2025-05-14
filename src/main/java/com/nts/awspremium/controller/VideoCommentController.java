@@ -602,8 +602,8 @@ public class VideoCommentController {
                         comments = list_Comment.split("\n");
                     }
                 }if(service.getAi()==2){
-                    if(Openai.statusTask(videoComments.get(i).getListcomment())!=null&&
-                            Openai.statusTask(videoComments.get(i).getListcomment()).equals("completed")) {
+                    String status=Openai.statusTask(videoComments.get(i).getListcomment());
+                    if(status!=null&&status.equals("completed")) {
 
                         String list_Comment = Openai.getTask(videoComments.get(i).getListcomment());
                         if (list_Comment == null) {
@@ -724,8 +724,8 @@ public class VideoCommentController {
                         }
                         continue;
                     }
-                    if(Openai.statusTask(videoComments.get(i).getListcomment())!=null&&
-                            Openai.statusTask(videoComments.get(i).getListcomment()).equals("completed")) {
+                    String status=Openai.statusTask(videoComments.get(i).getListcomment());
+                    if(status!=null&&status.equals("completed")) {
 
                         String list_Comment = Openai.getTask(videoComments.get(i).getListcomment());
                         if (list_Comment == null) {
