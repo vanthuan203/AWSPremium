@@ -359,6 +359,8 @@ public class ApiSMMController {
                         get_task=youtubeOrder.youtube_like(data,service,user);
                     }else if(service.getTask().trim().equals("subscriber")){
                         get_task=youtubeOrder.youtube_subscriber(data,service,user);
+                    }else if(service.getTask().trim().equals("live")){
+                        get_task=youtubeOrder.youtube_live(data,service,user);
                     }
                 }
                 if(get_task==null){

@@ -401,4 +401,123 @@ public class YoutubeTask {
             return resp;
         }
     }
+
+    public Map<String, Object> youtube_live(String account_id,String mode){
+        Map<String, Object> resp = new LinkedHashMap<>();
+        Map<String, Object> data = new LinkedHashMap<>();
+        try{
+            SettingYoutube setting=settingYoutubeRepository.get_Setting();
+            if(youtubeLike24hRepository.count_Like_24h_By_Username(account_id.trim()+"%")>=setting.getMax_like()){
+                resp.put("status", false);
+                return resp;
+            }
+            Random ran = new Random();
+            OrderRunning orderRunning=null;
+            SettingSystem settingSystem =settingSystemRepository.get_Setting_System();
+            if(ran.nextInt(100)<settingSystem.getMax_priority()){
+                orderRunning = orderRunningRepository.get_Order_Running_Priority_By_Task("youtube","live",mode,"",orderThreadCheck.getValue());
+                if(orderRunning==null){
+                    orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","live",mode,"",orderThreadCheck.getValue());
+                }
+            }else{
+                orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","live",mode,"",orderThreadCheck.getValue());
+            }
+            if (orderRunning!=null) {
+                Thread.sleep(ran.nextInt(150));
+                if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
+                    resp.put("status", false);
+                    return resp;
+                }
+                ServiceSMM service=orderRunning.getService();
+                if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
+                    data.put("bonus","");
+                }else{
+                    if(ran.nextInt(100)<service.getBonus_list_percent()){
+                        String [] bonus_list=service.getBonus_list().split(",");
+                        data.put("bonus",bonus_list[ran.nextInt(bonus_list.length)]);
+                    }else{
+                        data.put("bonus","");
+                    }
+                }
+                resp.put("status", true);
+                data.put("order_id", orderRunning.getOrder_id());
+                //resp.put("proxy", proxy);
+                data.put("username", account_id.trim());
+                data.put("service_id", service.getService_id());
+                data.put("geo", "like");
+                data.put("live", "fail");
+                data.put("channel_id", orderRunning.getChannel_id());
+                data.put("channel_title", orderRunning.getChannel_title());
+                data.put("video_id", orderRunning.getOrder_key());
+                data.put("video_title", orderRunning.getVideo_title());
+                data.put("suggest_key",orderRunning.getVideo_title());
+                data.put("keyword", orderRunning.getVideo_title());
+                data.put("suggest_video", "");
+                data.put("suggest_type", "fail");
+                data.put("like","true");
+                data.put("sub","fail");
+                data.put("niche_key","");
+
+                List<String> arrSource = new ArrayList<>();
+                for (int i = 0; i < service.getYoutube_external(); i++) {
+                    arrSource.add("external");
+                }
+                for (int i = 0; i < service.getYoutube_search(); i++) {
+                    arrSource.add("search");
+                }
+                for (int i = 0; i < service.getYoutube_direct(); i++) {
+                    arrSource.add("direct");
+                }
+                for (int i = 0; i < service.getYoutube_suggest(); i++) {
+                    arrSource.add("suggest");
+                }
+                for (int i = 0; i < service.getYoutube_dtn(); i++) {
+                    arrSource.add("dtn");
+                }
+                for (int i = 0; i < service.getYoutube_embed(); i++) {
+                    arrSource.add("embed");
+                }
+                data.put("source", arrSource.get(ran.nextInt(arrSource.size())).trim());
+
+                if (service.getMin_time() != service.getMax_time()) {
+                    if (orderRunning.getDuration() > service.getMax_time() * 60) {
+                        data.put("video_duration",(int)(service.getMin_time() * 60 + ran.nextInt((int)((service.getMax_time() - service.getMin_time()) * 60))));
+                    } else {
+                        data.put("video_duration", (int)(service.getMin_time() * 60 < orderRunning.getDuration() ? (service.getMin_time() * 60 + ran.nextInt((int)(orderRunning.getDuration() - service.getMin_time() * 60))) : orderRunning.getDuration()));
+                    }
+                }else {
+                    if (orderRunning.getDuration() > service.getMax_time() * 60) {
+                        data.put("video_duration", (int)(service.getMin_time() * 60 + ran.nextInt(30) ));
+                    } else {
+                        data.put("video_duration", orderRunning.getDuration());
+                    }
+                }
+                resp.put("data",data);
+                return resp;
+
+            } else {
+                resp.put("status", false);
+                return resp;
+            }
+        }catch (Exception e){
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            LogError logError =new LogError();
+            logError.setMethod_name(stackTraceElement.getMethodName());
+            logError.setLine_number(stackTraceElement.getLineNumber());
+            logError.setClass_name(stackTraceElement.getClassName());
+            logError.setFile_name(stackTraceElement.getFileName());
+            logError.setMessage(e.getMessage());
+            logError.setAdd_time(System.currentTimeMillis());
+            Date date_time = new Date(System.currentTimeMillis());
+            // Tạo SimpleDateFormat với múi giờ GMT+7
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date_time);
+            logError.setDate_time(formattedDate);
+            logErrorRepository.save(logError);
+
+            resp.put("status", false);
+            return resp;
+        }
+    }
 }

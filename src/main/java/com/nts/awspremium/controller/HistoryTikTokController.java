@@ -2,6 +2,7 @@ package com.nts.awspremium.controller;
 
 import com.nts.awspremium.GoogleApi;
 import com.nts.awspremium.Openai;
+import com.nts.awspremium.TikTokApi;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONObject;
@@ -253,24 +254,12 @@ public class HistoryTikTokController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping(value = "delThreadByVPS", produces = "application/hal+json;charset=utf8")
+    @GetMapping(value = "test", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> delThreadByVPS(@RequestParam(defaultValue = "") String vps) throws InterruptedException {
         JSONObject resp = new JSONObject();
-        if (vps.length() == 0) {
-            resp.put("status", "fail");
-            resp.put("message", "vps không để trống");
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
-        }
-        try {
-            historyTiktokRepository.resetThreadByVps(vps.trim());
-            resp.put("status", "true");
-            resp.put("message", "Update running thành công!");
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-        } catch (Exception e) {
-            resp.put("status", "fail");
-            resp.put("message", e.getMessage());
-            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
-        }
+        resp.put("status", Openai.statusTask("78444644e8ef4942a4715fdfdfd22956ffa1bded"));
+        resp.put("message", "vps không để trống");
+        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/dellHisFollower24HByCron", produces = "application/hal+json;charset=utf8")

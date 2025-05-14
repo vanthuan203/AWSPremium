@@ -601,6 +601,20 @@ public class VideoCommentController {
                     }else {
                         comments = list_Comment.split("\n");
                     }
+                }if(service.getAi()==2){
+                    if(Openai.statusTask(videoComments.get(i).getListcomment())!=null&&
+                            Openai.statusTask(videoComments.get(i).getListcomment()).equals("completed")) {
+
+                        String list_Comment = Openai.getTask(videoComments.get(i).getListcomment());
+                        if (list_Comment == null) {
+                            continue;
+                        } else {
+                            comments = list_Comment.split("\\R");
+                        }
+                        videoComments.get(i).setListcomment("");
+                    }else{
+                        continue;
+                    }
                 }else{
                     comments = videoComments.get(i).getListcomment().split("\n");
                 }
@@ -618,6 +632,14 @@ public class VideoCommentController {
                     dataCommentRepository.save(dataComment);
                 }
                 videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                if(service.getAi()==2&&videoComments.get(i).getComment_render()< videoComments.get(i).getCommentorder()){
+                    Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                    count_render=count_render>=100?100:count_render;
+                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                    if(uuid!=null){
+                        videoComments.get(i).setListcomment(uuid);
+                    }
+                }
                 if(service.getExpired()==0){
                     int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
                     if (max_thread <= 50) {
@@ -647,49 +669,111 @@ public class VideoCommentController {
             //historyRepository.updateHistoryByAccount();
             List<VideoComment> videoComments = videoCommentRepository.getOrderAIThreadNull();
             for (int i = 0; i < videoComments.size(); i++) {
-                String[] comments;
-                Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
-                count_render=count_render>=100?100:count_render;
-                String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
                 Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
-                String list_Comment=null;
-                if(service.getExpired()==0){
-                   list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
-                }else{
-                    list_Comment= Openai.chatGPT4oMini(prompt,openAiKeyRepository.get_OpenAI_Key());
-                }
-                if(list_Comment==null){
-                    continue;
-                }else {
-                    comments = list_Comment.split("\n");
-                }
-                for (int j = 0; j < comments.length; j++) {
-                    if (comments[j].length() == 0) {
+                if(service.getAi()==1){
+                    String[] comments;
+                    Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                    count_render=count_render>=100?100:count_render;
+                    String prompt=videoComments.get(i).getListcomment().replace("#cmcmedia@$123",count_render.toString());
+                    String list_Comment=null;
+                    if(service.getExpired()==0){
+                        list_Comment= Openai.chatGPT(prompt,openAiKeyRepository.get_OpenAI_Key());
+                    }else{
+                        list_Comment= Openai.chatGPT4oMini(prompt,openAiKeyRepository.get_OpenAI_Key());
+                    }
+                    if(list_Comment==null){
+                        continue;
+                    }else {
+                        comments = list_Comment.split("\n");
+                    }
+                    for (int j = 0; j < comments.length; j++) {
+                        if (comments[j].length() == 0) {
+                            continue;
+                        }
+                        DataComment dataComment = new DataComment();
+                        dataComment.setOrderid(videoComments.get(i).getOrderid());
+                        dataComment.setComment(comments[j]);
+                        dataComment.setUsername("");
+                        dataComment.setRunning(0);
+                        dataComment.setTimeget(0L);
+                        dataComment.setVps("");
+                        dataCommentRepository.save(dataComment);
+                    }
+                    videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                    if(videoComments.get(i).getMaxthreads()<=0){
+                        if(service.getExpired()==0){
+                            int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                            if (max_thread <= 50) {
+                                videoComments.get(i).setMaxthreads(max_thread);
+                            } else {
+                                videoComments.get(i).setMaxthreads(50);
+                            }
+                        }else{
+                            videoComments.get(i).setMaxthreads(service.getThread());
+                        }
+                    }
+                    videoCommentRepository.save(videoComments.get(i));
+                }else if(service.getAi()==2){
+                    String[] comments;
+                    if(videoComments.get(i).getListcomment().length()==0){
+                        Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                        count_render=count_render>=100?100:count_render;
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        if(uuid!=null){
+                            videoComments.get(i).setListcomment(uuid);
+                        }
                         continue;
                     }
-                    DataComment dataComment = new DataComment();
-                    dataComment.setOrderid(videoComments.get(i).getOrderid());
-                    dataComment.setComment(comments[j]);
-                    dataComment.setUsername("");
-                    dataComment.setRunning(0);
-                    dataComment.setTimeget(0L);
-                    dataComment.setVps("");
-                    dataCommentRepository.save(dataComment);
-                }
-                videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
-                if(videoComments.get(i).getMaxthreads()<=0){
-                    if(service.getExpired()==0){
-                        int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
-                        if (max_thread <= 50) {
-                            videoComments.get(i).setMaxthreads(max_thread);
+                    if(Openai.statusTask(videoComments.get(i).getListcomment())!=null&&
+                            Openai.statusTask(videoComments.get(i).getListcomment()).equals("completed")) {
+
+                        String list_Comment = Openai.getTask(videoComments.get(i).getListcomment());
+                        if (list_Comment == null) {
+                            continue;
                         } else {
-                            videoComments.get(i).setMaxthreads(50);
+                            comments = list_Comment.split("\\R");
                         }
+                        videoComments.get(i).setListcomment("");
                     }else{
-                        videoComments.get(i).setMaxthreads(service.getThread());
+                        continue;
                     }
+                    for (int j = 0; j < comments.length; j++) {
+                        if (comments[j].length() == 0) {
+                            continue;
+                        }
+                        DataComment dataComment = new DataComment();
+                        dataComment.setOrderid(videoComments.get(i).getOrderid());
+                        dataComment.setComment(comments[j]);
+                        dataComment.setUsername("");
+                        dataComment.setRunning(0);
+                        dataComment.setTimeget(0L);
+                        dataComment.setVps("");
+                        dataCommentRepository.save(dataComment);
+                    }
+                    videoComments.get(i).setComment_render(dataCommentRepository.count_All_By_OrderId(videoComments.get(i).getOrderid()));
+                    if(videoComments.get(i).getComment_render()< videoComments.get(i).getCommentorder()){
+                        Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                        count_render=count_render>=100?100:count_render;
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        if(uuid!=null){
+                            videoComments.get(i).setListcomment(uuid);
+                        }
+                    }
+                    if(videoComments.get(i).getMaxthreads()<=0){
+                        if(service.getExpired()==0){
+                            int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
+                            if (max_thread <= 50) {
+                                videoComments.get(i).setMaxthreads(max_thread);
+                            } else {
+                                videoComments.get(i).setMaxthreads(50);
+                            }
+                        }else{
+                            videoComments.get(i).setMaxthreads(service.getThread());
+                        }
+                    }
+                    videoCommentRepository.save(videoComments.get(i));
                 }
-                videoCommentRepository.save(videoComments.get(i));
+
             }
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
