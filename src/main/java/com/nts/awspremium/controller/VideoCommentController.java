@@ -612,6 +612,14 @@ public class VideoCommentController {
                             comments = list_Comment.split("\\R");
                         }
                         videoComments.get(i).setListcomment("");
+                    }else  if(status!=null&&status.equals("failed"))  {
+                        Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                        count_render=count_render>=100?100:count_render;
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        if(uuid!=null){
+                            videoComments.get(i).setListcomment(uuid);
+                        }
+                        continue;
                     }else{
                         continue;
                     }
@@ -734,7 +742,15 @@ public class VideoCommentController {
                             comments = list_Comment.split("\\R");
                         }
                         videoComments.get(i).setListcomment("");
-                    }else{
+                    }else  if(status!=null&&status.equals("failed"))  {
+                        Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
+                        count_render=count_render>=100?100:count_render;
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        if(uuid!=null){
+                            videoComments.get(i).setListcomment(uuid);
+                        }
+                        continue;
+                    }else {
                         continue;
                     }
                     for (int j = 0; j < comments.length; j++) {
