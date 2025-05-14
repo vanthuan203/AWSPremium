@@ -618,6 +618,7 @@ public class VideoCommentController {
                         String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
+                            videoCommentRepository.save( videoComments.get(i));
                         }
                         continue;
                     }else{
@@ -748,6 +749,7 @@ public class VideoCommentController {
                         String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
+                            videoCommentRepository.save( videoComments.get(i));
                         }
                         continue;
                     }else {
