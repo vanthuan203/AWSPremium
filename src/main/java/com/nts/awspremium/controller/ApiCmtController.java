@@ -346,8 +346,7 @@ public class ApiCmtController {
                             if(uuid!=null){
                                 videoViewhnew.setListcomment(uuid);
                             }else{
-                                resp.put("error", "Can't get comment content");
-                                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                                videoViewhnew.setListcomment("");
                             }
                         }else if(service.getType().equals("Mentions Hashtag")&&service.getAi()==1){
                             String content="content video: "+data.getHashtag()+"\n";
