@@ -231,8 +231,8 @@ public class Openai {
 
             // Tạo JSON body bằng JSONObject
             JSONObject json = new JSONObject();
-            json.put("youtube_url",link);
-            json.put("quantity", quantity.toString());
+            json.put("url",link);
+            json.put("quantity", quantity);
             json.put("platform", platform);
             json.put("task", task);
             json.put("priority", priority);
