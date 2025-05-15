@@ -638,7 +638,7 @@ public class VideoCommentController {
                     comments = videoComments.get(i).getListcomment().split("\n");
                 }
                 for (int j = 0; j < comments.length; j++) {
-                    if (comments[j].length() == 0) {
+                    if (comments[j].trim().length() == 0) {
                         continue;
                     }
                     DataComment dataComment = new DataComment();
@@ -706,7 +706,7 @@ public class VideoCommentController {
                         comments = list_Comment.split("\n");
                     }
                     for (int j = 0; j < comments.length; j++) {
-                        if (comments[j].length() == 0) {
+                        if (comments[j].trim().length() == 0) {
                             continue;
                         }
                         DataComment dataComment = new DataComment();
