@@ -601,7 +601,7 @@ public class VideoCommentController {
                     }else {
                         comments = list_Comment.split("\n");
                     }
-                }if(service.getAi()==2){
+                }else if(service.getAi()==2){
                     if(videoComments.get(i).getListcomment().length()==0){
                         Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                         count_render=count_render>=100?100:count_render;
