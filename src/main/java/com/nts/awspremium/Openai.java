@@ -305,7 +305,7 @@ public class Openai {
             String resultJson = response.body().string();
             response.body().close();
             JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
-            return jsonObject.getAsJsonArray("comments").get(0).getAsJsonObject().get("cmt").getAsString();
+            return jsonObject.get("cmt").getAsString();
 
         } catch (Exception e) {
             return null;
