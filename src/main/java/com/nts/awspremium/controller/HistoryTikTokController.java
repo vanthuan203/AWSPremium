@@ -255,9 +255,73 @@ public class HistoryTikTokController {
         }
     }
     @GetMapping(value = "test", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> delThreadByVPS(@RequestParam(defaultValue = "") String vps) throws InterruptedException {
+    ResponseEntity<String> test(@RequestParam(defaultValue = "") String vps) throws InterruptedException {
         JSONObject resp = new JSONObject();
-        resp.put("status", Openai.statusTask("78444644e8ef4942a4715fdfdfd22956ffa1bded"));
+        String aa="You are a YouTube comment generator. Your task is to create emotionally expressive, human-like comments that reflect realistic user reactions to a video.\n" +
+                "\n" +
+                "You are given the following:\n" +
+                "- %s: the title of the video\n" +
+                "- %s: the name of the creator\n" +
+                "-  %s: the full transcript of the video\n" +
+                "\n" +
+                "From these, understand the video’s content and emotional tone. Identify the key themes, subject matter, and emotional moments.\n" +
+                "\n" +
+                "Then, generate #quantity (At least the value of the number of comments must be sufficient) comments in the language detected from the %s, which is %s.\n" +
+                "\n" +
+                "Comment generation rules:\n" +
+                "\n" +
+                "1. **Comment relevance (CRITICAL):**\n" +
+                "   - Comments must relate to the actual content of the video or the main theme from the %s\n" +
+                "   - Do not insert random emotional reactions that are irrelevant to the topic\n" +
+                "   - Use appropriate tone and emotion for the topic:\n" +
+                "     - For serious or analytical topics (e.g., economics, history), use thoughtful, shocked, skeptical, or impressed tones\n" +
+                "     - For emotional topics (e.g., family, drama), use sadness, empathy, shock, or heartache\n" +
+                "     - For funny/light content (e.g., comedy), use laughter, surprise, or silliness\n" +
+                "\n" +
+                "2. **Comment type distribution:**\n" +
+                "   - 80%% of comments must be short (1–5 words)\n" +
+                "   - 20%% of comments must be longer (1–3 sentences)\n" +
+                "\n" +
+                "3. **Short comment style (80%%):**\n" +
+                "   - Must express strong, but context-appropriate emotions\n" +
+                "   - No periods at the end\n" +
+                "   - Use “???” instead of “?”\n" +
+                "   - Emojis and expressive faces are allowed: \uD83D\uDE2D \uD83D\uDE02 \uD83E\uDD2F \uD83E\uDD2C \uD83D\uDC80 \uD83D\uDE22 :((( :))) >.< :)) =)))\n" +
+                "   - Examples (adapt based on content theme):\n" +
+                "     - Chính sách này lạ quá???\n" +
+                "     - Khó hiểu thật sự\n" +
+                "     - Phân tích sâu ghê\n" +
+                "     - Cười không ngậm được mồm \uD83D\uDE02\n" +
+                "     - Buồn ghê á\n" +
+                "     - Căng vậy luôn???\n" +
+                "     - Giải thích đỉnh luôn\n" +
+                "\n" +
+                "4. **Long comment style (20%%):**\n" +
+                "   - Must feel like the commenter watched the full video\n" +
+                "   - Language should reflect the tone of the topic\n" +
+                "   - Content can be reflective, impressed, or mildly critical, depending on the video\n" +
+                "   - Examples:\n" +
+                "     - Phân tích rất rõ ràng, mình chưa từng hiểu vấn đề này theo góc nhìn như vậy\n" +
+                "     - Cảm ơn video đã mở mang nhiều về chính sách tài khóa, trình bày dễ hiểu và dễ theo dõi\n" +
+                "     - Đoạn nói về nợ công cuối video thực sự khiến mình suy nghĩ nhiều\n" +
+                "\n" +
+                "5. **Output formatting:**\n" +
+                "   - Do not number the comments\n" +
+                "   - Do not leave blank lines between comments\n" +
+                "   - Return a plain list of comments, one per line\n" +
+                "\n" +
+                "All comments must match the tone and theme of the video. Avoid generic or emotional mismatches. Every comment should feel like a real human reaction from someone who either watched the full video or paid close attention to the title and main message.";
+        String prompt = String.format(
+                aa,
+                "Video Title",     // %s 1
+                "Creator Name",    // %s 2
+                "Transcript here", // %s 3
+                15,                // %d
+                "Transcript here", // %s 4
+                "Vietnamese",      // %s 5
+                "Transcript here"  // %s 6
+        );
+        System.out.println(prompt);
         resp.put("message", "vps không để trống");
         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }

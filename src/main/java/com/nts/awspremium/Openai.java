@@ -80,6 +80,41 @@ public class Openai {
         }
     }
 
+    public static String getCaptions(String video_id) {
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            Request request = new Request.Builder()
+                    .url("https://youtube-captions-transcript-subtitles-video-combiner.p.rapidapi.com/download-webvtt/"+video_id+"?language=en")
+                    .addHeader("x-rapidapi-host", "youtube-captions-transcript-subtitles-video-combiner.p.rapidapi.com")
+                    .addHeader("x-rapidapi-key", "4010c38bfamsh398346af7e9f654p1492c2jsn20af8f084b5a")
+                    .get().build();
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            if(response.code()==200){
+                StringBuilder result = new StringBuilder();
+                String[] lines = resultJson.split("\\R");
+
+                for (String line : lines) {
+                    line = line.trim();
+                    // Bỏ qua dòng trống, timestamp và "WEBVTT"
+                    if (line.isEmpty() || line.equals("WEBVTT") || line.matches("\\d{2}:\\d{2}:\\d{2}\\.\\d{3} --> .*")) {
+                        continue;
+                    }
+                    result.append(line).append("\n");
+                }
+
+                return result.toString().trim();
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
     public static String chatGPT4oMini(String message,String key) {
 
         try {
@@ -188,7 +223,11 @@ public class Openai {
     public static String createTask(String link,Integer quantity,String platform,String task,Integer priority) {
 
         try {
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
 
             // Tạo JSON body bằng JSONObject
             JSONObject json = new JSONObject();
@@ -219,7 +258,11 @@ public class Openai {
     public static String statusTask(String uuid) {
 
         try {
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
 
             // Tạo request body rỗng
             RequestBody emptyBody = RequestBody.create(MediaType.parse("application/json"), "");
@@ -244,7 +287,11 @@ public class Openai {
     public static String getTask(String uuid) {
 
         try {
-            OkHttpClient client = new OkHttpClient();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
 
             // Tạo request body rỗng
             RequestBody emptyBody = RequestBody.create(MediaType.parse("application/json"), "");
