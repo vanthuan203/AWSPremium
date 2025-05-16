@@ -605,7 +605,7 @@ public class VideoCommentController {
                     if(videoComments.get(i).getListcomment().length()==0){
                         Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                         count_render=count_render>=100?100:count_render;
-                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
                             videoCommentRepository.save( videoComments.get(i));
@@ -625,7 +625,7 @@ public class VideoCommentController {
                     }else  if(status!=null&&status.equals("failed"))  {
                         Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                         count_render=count_render>=100?100:count_render;
-                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
                             videoCommentRepository.save( videoComments.get(i));
@@ -654,7 +654,7 @@ public class VideoCommentController {
                 if(service.getAi()==2&&videoComments.get(i).getComment_render()< videoComments.get(i).getCommentorder()){
                     Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                     count_render=count_render>=100?100:count_render;
-                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                     if(uuid!=null){
                         videoComments.get(i).setListcomment(uuid);
                     }
@@ -737,7 +737,7 @@ public class VideoCommentController {
                     if(videoComments.get(i).getListcomment().length()==0){
                         Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                         count_render=count_render>=100?100:count_render;
-                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
                             videoCommentRepository.save( videoComments.get(i));
@@ -757,7 +757,7 @@ public class VideoCommentController {
                     }else  if(status!=null&&status.equals("failed"))  {
                         Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                         count_render=count_render>=100?100:count_render;
-                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
                             videoCommentRepository.save( videoComments.get(i));
@@ -783,7 +783,7 @@ public class VideoCommentController {
                     if(videoComments.get(i).getComment_render()< videoComments.get(i).getCommentorder()){
                         Integer count_render=videoComments.get(i).getCommentorder()-videoComments.get(i).getComment_render();
                         count_render=count_render>=100?100:count_render;
-                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0);
+                        String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),count_render,"youtube","comment",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                         if(uuid!=null){
                             videoComments.get(i).setListcomment(uuid);
                         }

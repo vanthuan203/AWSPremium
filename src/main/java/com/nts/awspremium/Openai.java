@@ -220,7 +220,7 @@ public class Openai {
     }
 
 
-    public static String createTask(String link,Integer quantity,String platform,String task,Integer priority) {
+    public static String createTask(String link,Integer quantity,String platform,String task,Integer priority,String video_title,String channel_title,String video_description) {
 
         try {
             OkHttpClient client = new OkHttpClient.Builder()
@@ -232,10 +232,14 @@ public class Openai {
             // Tạo JSON body bằng JSONObject
             JSONObject json = new JSONObject();
             json.put("url",link);
+            json.put("channel_title", channel_title);
+            json.put("video_title", video_title);
+            json.put("video_description", video_description);
             json.put("quantity", quantity);
             json.put("platform", platform);
             json.put("task", task);
             json.put("priority", priority);
+
             // Request body
             RequestBody body = RequestBody.create(MediaType.parse("application/json"), json.toString());
             // Build request

@@ -25,6 +25,7 @@ public class VideoComment {
 
     private Integer comment_render=0;
     private String listcomment;
+    private String description="";
     private String lc_code="";
     private Long timeupdate;
     private Float price;
@@ -223,5 +224,13 @@ public class VideoComment {
 
     public void setComment_render(Integer comment_render) {
         this.comment_render = comment_render;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

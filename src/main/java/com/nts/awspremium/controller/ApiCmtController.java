@@ -216,11 +216,8 @@ public class ApiCmtController {
                 Random ran = new Random();
                 Request request1 = null;
                 String[] key={"AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ","AIzaSyDeJlPN5niDYaHVCbaWyB0kE2cf4--dWS8","AIzaSyAlfEOjSy3smUK2_X0bJatd_tzmuj5tbWQ"};
-                if(service.getAi()!=1){
-                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
-                }else{
-                    request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
-                }
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,channelTitle,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+
 
                 Response response1 = client1.newCall(request1).execute();
 
@@ -288,9 +285,16 @@ public class ApiCmtController {
                         videoViewhnew.setCommentorder(data.getQuantity());
                         videoViewhnew.setUser(admins.get(0).getUsername());
                         videoViewhnew.setChannelid(snippet.get("channelId").toString());
+                        videoViewhnew.setChanneltitle(snippet.get("channelTitle").toString());
                         videoViewhnew.setVideotitle(snippet.get("title").toString());
                         videoViewhnew.setVideoid(video.get("id").toString());
                         videoViewhnew.setCommentstart(Integer.parseInt(statistics.get("commentCount").toString()));
+                        if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
+                            videoViewhnew.setDescription(snippet.get("description").toString());
+                        }else{
+                            videoViewhnew.setDescription("");
+                        }
+
                         //int max_thread = service.getThread() + ((int) (data.getQuantity() / 1000) - 1) * setting.getLevelthread();
                         //int max_thread = (int)(data.getQuantity() / 2);
                         /*
@@ -308,7 +312,7 @@ public class ApiCmtController {
                         videoViewhnew.setService(data.getService());
                         String title="title video: "+snippet.get("title").toString()+"\n";
                         String geo="";
-                        if(service.getReply()==0){
+                        if(service.getReply()==0&&service.getAi()==1){
                             geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau: \""+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
                         }
                         if(service.getType().equals("Default")&&service.getAi()==1){
@@ -340,14 +344,18 @@ public class ApiCmtController {
                                 String prompt="=>Tạo cho tôi #cmcmedia@$123 bình luận phù hợp để trả lời  bình luận trên, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có dấu câu hoặc không có dấu câu nhưng hạn chế sử dụng dấu !, các bình luận có thể là câu khẳng định, câu phủ định hoặc câu hỏi, các bình luận có cả viết hoa đầu câu và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài các bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc bình luận có độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 155 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                                 videoViewhnew.setListcomment(description+prompt);
                             }
-
                         }else if(service.getType().equals("Default")&&service.getAi()==2){
-                            String uuid=Openai.createTask("https://www.youtube.com/watch?v="+video.get("id").toString(),data.getQuantity()>100?100:data.getQuantity(),"youtube","comment",0);
+                            String description="";
+                            if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
+                                description=snippet.get("description").toString();
+                            }
+                            String uuid=Openai.createTask("https://www.youtube.com/watch?v="+video.get("id").toString(),data.getQuantity()>100?100:data.getQuantity(),"youtube","comment",0,snippet.get("title").toString(),snippet.get("channelTitle").toString(),description);
                             if(uuid!=null){
                                 videoViewhnew.setListcomment(uuid);
                             }else{
                                 videoViewhnew.setListcomment("");
                             }
+
                         }else if(service.getType().equals("Mentions Hashtag")&&service.getAi()==1){
                             String content="content video: "+data.getHashtag()+"\n";
                             String prompt="=>Tạo cho tôi #cmcmedia@$123 bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có dấu câu hoặc không có dấu câu nhưng hạn chế sử dụng dấu !, các bình luận có thể là câu khẳng định, câu phủ định hoặc câu hỏi, các bình luận có cả viết hoa đầu câu và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài các bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc bình luận có độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 155 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
