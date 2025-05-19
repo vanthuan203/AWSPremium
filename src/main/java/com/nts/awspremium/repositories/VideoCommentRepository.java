@@ -148,7 +148,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply=0) ",nativeQuery = true)
     public List<VideoComment> getOrderFullCmt();
 
-    @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply>0) and orderid not in(select orderid from data_reply_comment group by orderid) ",nativeQuery = true)
+    @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply>0)",nativeQuery = true)
     public List<VideoComment> getOrderFullReply();
 
     @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply=0) order by insertdate asc limit 15\n",nativeQuery = true)
