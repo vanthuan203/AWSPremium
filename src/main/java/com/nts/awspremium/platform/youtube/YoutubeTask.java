@@ -39,6 +39,9 @@ public class YoutubeTask {
     @Autowired
     private LogErrorRepository logErrorRepository;
 
+    @Autowired
+    private DataCommentLiveRepository dataCommentLiveRepository;
+
     public Map<String, Object> youtube_view(String account_id,String mode){
         Map<String, Object> resp = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
@@ -520,4 +523,5 @@ public class YoutubeTask {
             return resp;
         }
     }
+
 }

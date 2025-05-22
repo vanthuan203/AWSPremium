@@ -146,6 +146,8 @@ public class HistoryTaskController {
                     get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),vps_check.getVpsoption());
                 }else if(task.equals("youtube_live")){
                     get_task=youtubeTask.youtube_live(histories.get(0).getUsername(),vps_check.getVpsoption());
+                }else if(task.equals("youtube_comment_live")){
+                    get_task=youtubeTask.youtube_live(histories.get(0).getUsername(),vps_check.getVpsoption());
                 }
                 if(get_task!=null?get_task.get("status").equals(true):false){
                     break;

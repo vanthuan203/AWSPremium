@@ -821,13 +821,29 @@ public class HistoryCommentController {
                     }
                     String[] proxy =new String[0];
                     if(history.getGeo().equals("cmt-vn")){
-                        proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }else if(history.getGeo().equals("cmt-us")){
-                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        if(proxyVultrTrue.getValue().size()!=0){
+                            proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }else if(history.getGeo().equals("cmt-kr")){
-                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        if(proxyVultrTrue.getValue().size()!=0){
+                            proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }else if(history.getGeo().equals("cmt-jp")){
-                        proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
+                        if(proxyVultrTrue.getValue().size()!=0){
+                            proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }
                     if(proxy.length==0){
                         history.setRunning(0);
