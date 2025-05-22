@@ -993,15 +993,31 @@ public class HistoryCommentController {
                     fail_resp.put("message", "Không còn video để comment!");
                     return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
                 }
-                String[] proxy=new String[0];
+                String[] proxy =new String[0];
                 if(histories.get(0).getGeo().equals("cmt-vn")){
-                    proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(histories.get(0).getGeo().equals("cmt-us")){
-                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    if(proxyVultrTrue.getValue().size()!=0){
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(histories.get(0).getGeo().equals("cmt-kr")){
-                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    if(proxyVultrTrue.getValue().size()!=0){
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else if(histories.get(0).getGeo().equals("cmt-jp")){
-                    proxy=proxyJPTrue.getValue().get(ran.nextInt(proxyJPTrue.getValue().size())).split(":");
+                    if(proxyVultrTrue.getValue().size()!=0){
+                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }
                 if(proxy.length==0){
                     histories.get(0).setRunning(0);
