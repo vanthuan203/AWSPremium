@@ -756,6 +756,8 @@ public class HistoryCommentController {
                     videos = videoCommentRepository.getvideoCommentKRTest("",orderCommentTrue.getValue());
                 }else if (history.getGeo().equals("cmt-jp")) {
                     videos = videoCommentRepository.getvideoCommentJPTest("",orderCommentTrue.getValue());
+                }else if (history.getGeo().contains("live")) {
+                    videos = videoCommentRepository.getvideoChatLiveByGeo(history.getGeo(),"",orderCommentTrue.getValue());
                 }else{
                     fail_resp.put("status", "fail");
                     fail_resp.put("message", "Username không cmt!");
@@ -820,25 +822,25 @@ public class HistoryCommentController {
                         return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
                     }
                     String[] proxy =new String[0];
-                    if(history.getGeo().equals("cmt-vn")){
+                    if(history.getGeo().contains("vn")){
                         if(proxyVNTrue.getValue().size()!=0){
                             proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                         }else{
                             proxy= new String[]{};
                         }
-                    }else if(history.getGeo().equals("cmt-us")){
+                    }else if(history.getGeo().contains("us")){
                         if(proxyVultrTrue.getValue().size()!=0){
                             proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                         }else{
                             proxy= new String[]{};
                         }
-                    }else if(history.getGeo().equals("cmt-kr")){
+                    }else if(history.getGeo().contains("kr")){
                         if(proxyVultrTrue.getValue().size()!=0){
                             proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                         }else{
                             proxy= new String[]{};
                         }
-                    }else if(history.getGeo().equals("cmt-jp")){
+                    }else if(history.getGeo().contains("jp")){
                         if(proxyVultrTrue.getValue().size()!=0){
                             proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                         }else{
@@ -857,6 +859,7 @@ public class HistoryCommentController {
                     resp.put("channel_id", videos.get(0).getChannelid());
                     resp.put("status", "true");
                     resp.put("video_id", videos.get(0).getVideoid());
+                    resp.put("live", service.getLive() == 1 ? "true" : "fail");
                     resp.put("video_title", videos.get(0).getVideotitle());
                     resp.put("username", history.getUsername());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
@@ -910,6 +913,9 @@ public class HistoryCommentController {
                 }else if (histories.get(0).getGeo().equals("cmt-jp")) {
                     //videos=videoViewRepository.getvideoViewNoCheckMaxThreadUS(histories.get(0).getListvideo());
                     videos = videoCommentRepository.getvideoCommentJPTest(histories.get(0).getListvideo(),orderCommentTrue.getValue());
+                }else if (histories.get(0).getGeo().contains("live")) {
+                    //videos=videoViewRepository.getvideoViewNoCheckMaxThreadUS(histories.get(0).getListvideo());
+                    videos = videoCommentRepository.getvideoChatLiveByGeo(histories.get(0).getGeo(),histories.get(0).getListvideo(),orderCommentTrue.getValue());
                 }else{
                     fail_resp.put("status", "fail");
                     fail_resp.put("message", "Username không cmt!");
@@ -994,25 +1000,25 @@ public class HistoryCommentController {
                     return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
                 }
                 String[] proxy =new String[0];
-                if(histories.get(0).getGeo().equals("cmt-vn")){
+                if(histories.get(0).getGeo().contains("vn")){
                     if(proxyVNTrue.getValue().size()!=0){
                         proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
-                }else if(histories.get(0).getGeo().equals("cmt-us")){
+                }else if(histories.get(0).getGeo().contains("us")){
                     if(proxyVultrTrue.getValue().size()!=0){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
-                }else if(histories.get(0).getGeo().equals("cmt-kr")){
+                }else if(histories.get(0).getGeo().contains("kr")){
                     if(proxyVultrTrue.getValue().size()!=0){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
-                }else if(histories.get(0).getGeo().equals("cmt-jp")){
+                }else if(histories.get(0).getGeo().contains("jp")){
                     if(proxyVultrTrue.getValue().size()!=0){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
                     }else{
@@ -1035,6 +1041,7 @@ public class HistoryCommentController {
                 resp.put("channel_id", videos.get(0).getChannelid());
                 resp.put("status", "true");
                 resp.put("video_id", videos.get(0).getVideoid());
+                resp.put("live", service.getLive() == 1 ? "true" : "fail");
                 resp.put("video_title", videos.get(0).getVideotitle());
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("geo", accountRepository.getGeoByUsername(username.trim()));

@@ -55,4 +55,9 @@ public interface DataCommentRepository extends JpaRepository<DataComment,Long> {
     @Transactional
     @Query(value = "delete FROM AccPremium.datacomment where orderid not in (select orderid from videocomment)",nativeQuery = true)
     public void deleteCommentDoneByCron();
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete FROM AccPremium.datacomment where orderid=?1",nativeQuery = true)
+    public void deleteCommentByOrderId(Long orderid);
 }

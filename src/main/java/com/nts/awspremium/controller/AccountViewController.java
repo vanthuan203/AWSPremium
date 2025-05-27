@@ -146,15 +146,16 @@ public class AccountViewController {
                     check_get= vpsRepository.checkGetAccountCmtByVpsKR(vps.trim(),"cmt-"+geo.trim());
                 }else if(geo.trim().equals("jp")){
                     check_get= vpsRepository.checkGetAccountCmtByVpsJP(vps.trim(),"cmt-"+geo.trim());
-                }else{
+                }else if(geo.trim().equals("vn")){
                     check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-"+geo.trim());
+                }else if(geo.trim().contains("live")){
+                    check_get= vpsRepository.checkGetAccount5ByThreadVps(vps.trim(),"cmt-"+geo.trim());
                 }
                 if (check_get == 0) {
                     resp.put("status", "fail");
                     resp.put("message", "Đã đủ acc cmt cho Vps!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-
             }
             Thread.sleep(ran.nextInt(500));
             Long idbyVps=null;

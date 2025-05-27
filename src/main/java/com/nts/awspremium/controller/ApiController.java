@@ -285,7 +285,7 @@ public class ApiController {
                         JSONObject video = (JSONObject) k.next();
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                         JSONObject snippet = (JSONObject) video.get("snippet");
-                        if(contentDetails.get("duration")==null){
+                        if(contentDetails.get("duration")==null&&service.getLive()==0){
                             resp.put("error", "This video is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }

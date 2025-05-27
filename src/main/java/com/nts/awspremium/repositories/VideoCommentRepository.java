@@ -24,7 +24,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentVN(String listvideo,List<String> orderid);
 
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='vn' and task='comment') and INSTR(?1,videoid)=0 and\n" +
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='vn' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentVNTest(String listvideo,List<String> orderid);
 
@@ -38,7 +38,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentUS(String listvideo,List<String> orderid);
 
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='us' and task='comment') and INSTR(?1,videoid)=0 and\n" +
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='us' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentUSTest(String listvideo,List<String> orderid);
 
@@ -53,10 +53,16 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     public List<VideoComment> getvideoCommentKR(String listvideo,List<String> orderid);
 
 
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='kr' and task='comment') and INSTR(?1,videoid)=0 and\n" +
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='kr' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentKRTest(String listvideo,List<String> orderid);
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='jp' and task='comment') and INSTR(?1,videoid)=0 and\n" +
+
+
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo=?1 and task='comment' and live=1) and INSTR(?2,videoid)=0 and\n" +
+            "            orderid in (?3) order by rand() limit 1",nativeQuery = true)
+    public List<VideoComment> getvideoChatLiveByGeo(String geo,String listvideo,List<String> orderid);
+
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='jp' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentJPTest(String listvideo,List<String> orderid);
 
@@ -156,6 +162,9 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
 
     @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply=0 and ai>0) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
     public List<VideoComment> getOrderAIThreadNull();
+
+    @Query(value = "select * from videocomment where service in(select service from service where task='comment' and reply=0 and ai>0 and live=1) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
+    public List<VideoComment> getOrderLiveAIThreadNull();
 
     @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply>0) order by insertdate asc limit 15\n",nativeQuery = true)
     public List<VideoComment> getOrderReplyThreadNull();
