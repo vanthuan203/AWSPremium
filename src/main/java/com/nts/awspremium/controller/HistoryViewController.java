@@ -733,19 +733,23 @@ public class HistoryViewController {
 
 
                     if (service.getMintime() != service.getMaxtime()) {
-                        if (videos.get(0).getDuration() > service.getMaxtime() * 60) {
+                        if (videos.get(0).getDuration()>0 && videos.get(0).getDuration() > service.getMaxtime() * 60) {
                             //resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() < service.getMaxtime() ? (ran.nextInt((service.getMaxtime() - service.getMintime()) * 45) + (service.getMaxtime() >= 10 ? 30 : 0)) : 0));
                             resp.put("video_duration", service.getMintime() * 60 +ran.nextInt((service.getMaxtime()-service.getMintime()==1?30:60)));
-                        } else {
+                        } else if(videos.get(0).getDuration()>0) {
                             //resp.put("video_duration", service.getMintime() * 60 < videos.get(0).getDuration() ? (service.getMintime() * 60 + ran.nextInt((int)(videos.get(0).getDuration() - service.getMintime() * 60))) : videos.get(0).getDuration());
                             resp.put("video_duration", service.getMintime() * 60 < videos.get(0).getDuration() ? (service.getMintime() * 60 + ran.nextInt((service.getMaxtime()-service.getMintime()==1?30:60))) : videos.get(0).getDuration());
+                        }else{
+                            resp.put("video_duration", service.getMintime() * 60);
                         }
                     }else {
-                        if (videos.get(0).getDuration() > service.getMaxtime() * 60) {
+                        if (videos.get(0).getDuration()>0 &&videos.get(0).getDuration() > service.getMaxtime() * 60) {
                             //resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() < service.getMaxtime() ? (ran.nextInt((service.getMaxtime() - service.getMintime()) * 60 + service.getMaxtime() >= 10 ? 60 : 0)) : 0));
                             resp.put("video_duration", service.getMintime() * 60);
-                        } else {
+                        } else if (videos.get(0).getDuration()>0) {
                             resp.put("video_duration", videos.get(0).getDuration());
+                        }else{
+                            resp.put("video_duration", service.getMintime() * 60);
                         }
                     }
                     if(((Integer.parseInt(resp.get("video_duration").toString())<6||Integer.parseInt(resp.get("video_duration").toString())>20))&&service.getMintime()==0){
@@ -1530,19 +1534,23 @@ public class HistoryViewController {
 
 
                 if (service.getMintime() != service.getMaxtime()) {
-                    if (videos.get(0).getDuration() > service.getMaxtime() * 60) {
+                    if (videos.get(0).getDuration()>0 && videos.get(0).getDuration() > service.getMaxtime() * 60) {
                         //resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() < service.getMaxtime() ? (ran.nextInt((service.getMaxtime() - service.getMintime()) * 45) + (service.getMaxtime() >= 10 ? 30 : 0)) : 0));
                         resp.put("video_duration", service.getMintime() * 60 +ran.nextInt((service.getMaxtime()-service.getMintime()==1?30:60)));
-                    } else {
+                    } else if(videos.get(0).getDuration()>0) {
                         //resp.put("video_duration", service.getMintime() * 60 < videos.get(0).getDuration() ? (service.getMintime() * 60 + ran.nextInt((int)(videos.get(0).getDuration() - service.getMintime() * 60))) : videos.get(0).getDuration());
                         resp.put("video_duration", service.getMintime() * 60 < videos.get(0).getDuration() ? (service.getMintime() * 60 + ran.nextInt((service.getMaxtime()-service.getMintime()==1?30:60))) : videos.get(0).getDuration());
+                    }else{
+                        resp.put("video_duration", service.getMintime() * 60);
                     }
                 }else {
-                    if (videos.get(0).getDuration() > service.getMaxtime() * 60) {
+                    if (videos.get(0).getDuration()>0 && videos.get(0).getDuration() > service.getMaxtime() * 60) {
                         //resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() < service.getMaxtime() ? (ran.nextInt((service.getMaxtime() - service.getMintime()) * 60 + service.getMaxtime() >= 10 ? 60 : 0)) : 0));
                         resp.put("video_duration", service.getMintime() * 60);
-                    } else {
+                    } else if(videos.get(0).getDuration()>0) {
                         resp.put("video_duration", videos.get(0).getDuration());
+                    }else{
+                        resp.put("video_duration", service.getMintime() * 60);
                     }
                 }
                 if(((Integer.parseInt(resp.get("video_duration").toString())<6||Integer.parseInt(resp.get("video_duration").toString())>20))&&service.getMaxtime()==1){

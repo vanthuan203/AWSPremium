@@ -239,6 +239,7 @@ public class ApiCmtController {
                     try {
                         JSONObject video = (JSONObject) k.next();
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
+                        JSONObject snippet = (JSONObject) video.get("snippet");
                         if (videoCommentRepository.getCountVideoId(video.get("id").toString().trim()) > 0) {
                             resp.put("error", "This video in process");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -247,16 +248,24 @@ public class ApiCmtController {
                             resp.put("error", "Service not found ");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
-                        if(contentDetails.get("duration")==null){
+                        if(contentDetails.get("duration")==null&&service.getLive()==0){
                             resp.put("error", "This video is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
-                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() == 0) {
+                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() == 0&&service.getLive()==0) {
                             resp.put("error", "This video is a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
-                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() < 5) {
+                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() < 5&&service.getLive()==0) {
                             resp.put("error", "Videos under 5 seconds");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
+                        if (!snippet.get("liveBroadcastContent").toString().equals("none")&&service.getLive()==0) {
+                            resp.put("error", "This video is not a pure public video");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
+                        if (snippet.get("liveBroadcastContent").toString().equals("none")&&service.getLive()==1) {
+                            resp.put("error", "This video is not a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         float priceorder = 0;
@@ -264,11 +273,6 @@ public class ApiCmtController {
                         priceorder = (data.getQuantity() / 1000F) * service.getRate() * ((float) (admins.get(0).getRate()) / 100) * ((float) (100 - admins.get(0).getDiscount()) / 100);
                         if (priceorder > (float) admins.get(0).getBalance()) {
                             resp.put("error", "Your balance not enough");
-                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                        }
-                        JSONObject snippet = (JSONObject) video.get("snippet");
-                        if (!snippet.get("liveBroadcastContent").toString().equals("none")) {
-                            resp.put("error", "This video is not a pure public video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         JSONObject statistics = (JSONObject) video.get("statistics");
