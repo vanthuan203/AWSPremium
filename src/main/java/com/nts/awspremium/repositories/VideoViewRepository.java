@@ -131,6 +131,10 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Query(value = "SELECT * FROM videoview where maxthreads=-3 and timestart=0 order by priority desc,insertdate asc limit 25",nativeQuery = true)
     public List<VideoView> getAllOrderPending3();
 
+
+    @Query(value = "SELECT * FROM videoview where service in(select service from service where live=1) order by priority desc,insertdate asc limit 25",nativeQuery = true)
+    public List<VideoView> getAllOrderLiveRunning();
+
     @Query(value = "SELECT count(*) FROM videoview where maxthreads=-3 and timestart=0",nativeQuery = true)
     public Integer getCountOrderPending3();
 
@@ -189,6 +193,11 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Transactional
     @Query(value = "UPDATE videoview set viewstart=?1,maxthreads=?2,timestart=?3 where timestart=0 and maxthreads=0 and videoid=?4",nativeQuery = true)
     public void updatePendingOrderByVideoId(Integer viewstart,Integer maxthreads,Long timestart,String videoid);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE videoview set viewstart=?1,maxthreads=maxthreads*1.15,timestart=?3 where timestart=0 and maxthreads=-2 and videoid=?4",nativeQuery = true)
+    public void updateRunningLiveOrderByVideoId(Integer viewstart,Long timestart,String videoid);
 
     @Modifying
     @Transactional

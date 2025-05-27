@@ -22,7 +22,7 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
     @Query(value = "SELECT * FROM service where enabled=1 and task='comment'",nativeQuery = true)
     public List<Service> getAllServiceCmt();
 
-    @Query(value = "SELECT * FROM service where enabled=1 and platform='Website'",nativeQuery = true)
+    @Query(value = "SELECT * FROM service where enabled=1 and task='traffic'",nativeQuery = true)
     public List<Service> getAllServiceTraffic();
 
     @Query(value = "SELECT * FROM service where enabled=1 and platform='TikTok'",nativeQuery = true)
@@ -32,7 +32,7 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
     public List<Service> getAllServiceProduct();
 
 
-    @Query(value = "SELECT * FROM service where service=?1 and enabled=1 limit 1",nativeQuery = true)
+    @Query(value = "SELECT * FROM service where service=?1  and enabled=1 limit 1",nativeQuery = true)
     public Service getService(Integer service);
 
     @Query(value = "SELECT geo FROM service where service=?1 limit 1",nativeQuery = true)
@@ -48,8 +48,14 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
     public Integer getServiceRand(String geo);
 
 
-    @Query(value = "SELECT * FROM service where service=?1 and enabled=1 limit 1",nativeQuery = true)
+    @Query(value = "SELECT * FROM service where service=?1 and task='comment' and enabled=1 limit 1",nativeQuery = true)
     public Service getServiceCmt(Integer service);
+
+    @Query(value = "SELECT * FROM service where service=?1 and task='view' and enabled=1 limit 1",nativeQuery = true)
+    public Service getServiceView(Integer service);
+
+    @Query(value = "SELECT * FROM service where service=?1 and task='traffic' and enabled=1 limit 1",nativeQuery = true)
+    public Service getServiceTraffic(Integer service);
 
     @Query(value = "SELECT * FROM service where service=?1 limit 1",nativeQuery = true)
     public Service getInfoService(Integer service);

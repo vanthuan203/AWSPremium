@@ -179,7 +179,7 @@ public class ApiController {
             }
             if (data.getAction().equals("add")) {
 
-                Service service = serviceRepository.getService(data.getService());
+                Service service = serviceRepository.getServiceView(data.getService());
                 if (service == null) {
                     resp.put("error", "Invalid service");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -381,10 +381,7 @@ public class ApiController {
                             videoViewhnew.setTimestart(System.currentTimeMillis());
                             videoViewhnew.setMinstart(service.getMaxtime());
                         } else if (snippet.get("liveBroadcastContent").toString().equals("upcoming")&& service.getLive()==1) {
-                            JSONObject liveStreamingDetails = (JSONObject) video.get("liveStreamingDetails");
-                            Instant instant = Instant.parse(liveStreamingDetails.get("scheduledStartTime").toString());
-                            scheduledStartTime=instant.toEpochMilli();
-                            videoViewhnew.setTimestart(scheduledStartTime);
+                            videoViewhnew.setTimestart(0L);
                             videoViewhnew.setMaxthreads(-2);
                             videoViewhnew.setThreadset(data.getQuantity()+(int)(data.getQuantity()*0.15));
                         }else{

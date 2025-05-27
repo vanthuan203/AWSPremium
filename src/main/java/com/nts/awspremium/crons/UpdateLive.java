@@ -1,7 +1,7 @@
 package com.nts.awspremium.crons;
 
+import com.nts.awspremium.controller.VideoCommentController;
 import com.nts.awspremium.controller.VideoViewController;
-import com.nts.awspremium.controller.WebTrafficController;
 import com.nts.awspremium.model.OrderSpeedTrue;
 import com.nts.awspremium.model.OrderTrue;
 import com.nts.awspremium.repositories.VideoViewRepository;
@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class UpdateBuffH {
+public class UpdateLive {
     @Autowired
-    private WebTrafficController webTrafficController;
+    private VideoCommentController videoCommentController;
     @Autowired
     private VideoViewController videoViewController;
     @Autowired
@@ -23,7 +23,7 @@ public class UpdateBuffH {
     private OrderSpeedTrue orderSpeedTrue;
     @Autowired
     private Environment env;
-    //@PostConstruct
+    @PostConstruct
     public void init() throws InterruptedException {
         try{
             if(Integer.parseInt(env.getProperty("server.port"))==8000){
@@ -32,17 +32,23 @@ public class UpdateBuffH {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(60000);
+                                Thread.sleep(5000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            videoViewController.updateRunningOrderBuffHVN();
+                            videoViewController.updateRunningLiveOrder();
                             try {
                                 Thread.sleep(5000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            videoViewController.updateRunningOrderBuffHUS();
+                            videoCommentController.updateRunningLiveOrder();
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            videoCommentController.updateStateChatLilveAI();
                         } catch (Exception e) {
                             continue;
                         }

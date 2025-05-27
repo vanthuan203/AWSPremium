@@ -52,6 +52,13 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentKR(String listvideo,List<String> orderid);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE videocomment set maxthreads=0 where maxthreads=-2 and videoid=?4",nativeQuery = true)
+    public void updateRunningLiveOrderByVideoId(String videoid);
+
+    @Query(value = "SELECT * from videocomment where videoid=?1",nativeQuery = true)
+    public VideoComment getVideoCmtByVideoid(String videoid);
 
     @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='kr' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
@@ -162,6 +169,9 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
 
     @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply=0 and ai>0 and live=0) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
     public List<VideoComment> getOrderAIThreadNull();
+
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where live=1) order by insertdate asc limit 25",nativeQuery = true)
+    public List<VideoComment> getAllOrderLiveChatRunning();
 
     @Query(value = "select * from videocomment where service in(select service from service where task='comment' and reply=0 and ai>0 and live=1) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
     public List<VideoComment> getOrderLiveAIThreadNull();

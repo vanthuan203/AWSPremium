@@ -309,7 +309,11 @@ public class ApiCmtController {
                         }
 
                          */
-                        videoViewhnew.setMaxthreads(0);
+                        if(!snippet.get("liveBroadcastContent").toString().equals("live")&&service.getLive()==1){
+                            videoViewhnew.setMaxthreads(-2);
+                        }else{
+                            videoViewhnew.setMaxthreads(0);
+                        }
                         videoViewhnew.setPrice(priceorder);
                         videoViewhnew.setNote("");
                         videoViewhnew.setComment_render(0);
@@ -319,7 +323,7 @@ public class ApiCmtController {
                         if(service.getReply()==0&&service.getAi()==1){
                             geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau: \""+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
                         }
-                        if(service.getType().equals("Default")&&service.getAi()==1){
+                        if(service.getType().equals("Default")&&service.getAi()==1&&service.getLive()==0){
                             if(service.getReply()==0){
                                 String tags="";
                                 String description="";
@@ -348,7 +352,7 @@ public class ApiCmtController {
                                 String prompt="=>Tạo cho tôi #cmcmedia@$123 bình luận phù hợp để trả lời  bình luận trên, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có dấu câu hoặc không có dấu câu nhưng hạn chế sử dụng dấu !, các bình luận có thể là câu khẳng định, câu phủ định hoặc câu hỏi, các bình luận có cả viết hoa đầu câu và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài các bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc bình luận có độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 155 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                                 videoViewhnew.setListcomment(description+prompt);
                             }
-                        }else if(service.getType().equals("Default")&&service.getAi()==2){
+                        }else if(service.getType().equals("Default")&&service.getAi()==2&&service.getLive()==0){
                             String description="";
                             if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
                                 description=snippet.get("description").toString();
@@ -360,10 +364,12 @@ public class ApiCmtController {
                                 videoViewhnew.setListcomment("");
                             }
 
-                        }else if(service.getType().equals("Mentions Hashtag")&&service.getAi()==1){
+                        }else if(service.getType().equals("Mentions Hashtag")&&service.getAi()==1&&service.getLive()==0){
                             String content="content video: "+data.getHashtag()+"\n";
                             String prompt="=>Tạo cho tôi #cmcmedia@$123 bình luận tích cực phù hợp với nội dung video này, các bình luận là "+geo+", các bình luận có nhiều sắc thái cảm xúc khác nhau, các bình luận có thể có dấu câu hoặc không có dấu câu nhưng hạn chế sử dụng dấu !, các bình luận có thể là câu khẳng định, câu phủ định hoặc câu hỏi, các bình luận có cả viết hoa đầu câu và không viết hoa đầu câu, các bình luận không cần dấu . cuối câu, độ dài các bình luận thay đổi linh hoạt như bình luận chỉ có icon hoặc bình luận có độ dài cực ngắn, ngắn, trung bình, dài và bình luận cực dài, độ dài bình luận tối đa là 155 ký tự. Tuyệt đối chỉ trả cho tôi duy nhất nội dung của bình luận (không thêm phần số thứ tự hoặc gạch đầu dòng... ) và mỗi bình luận được viết một dòng";
                             videoViewhnew.setListcomment(content+prompt);
+                        }else if(service.getAi()==1&&service.getLive()==1){
+                            videoViewhnew.setListcomment("");
                         }else{
                             videoViewhnew.setListcomment(data.getComments());
                         }

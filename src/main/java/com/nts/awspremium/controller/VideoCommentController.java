@@ -214,6 +214,70 @@ public class VideoCommentController {
         }
     }
 
+
+    @GetMapping(value = "/updateRunningLiveOrder", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateRunningLiveOrder() throws IOException, ParseException {
+        JSONObject resp = new JSONObject();
+        List<VideoComment> listvideo = videoCommentRepository.getAllOrderLiveChatRunning();
+        if (listvideo.size() == 0) {
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+        String s_videoid = "";
+        for (int i = 0; i < listvideo.size(); i++) {
+            if (i == 0) {
+                s_videoid = listvideo.get(i).getVideoid();
+            } else {
+                s_videoid = s_videoid + "," + listvideo.get(i).getVideoid();
+            }
+            //System.out.println(s_videoid);
+        }
+        //VIDEOOOOOOOOOOOOOOO
+        OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+
+        Request request1 = null;
+        List<GoogleAPIKey> keys = googleAPIKeyRepository.getAllByState();
+        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=" + keys.get(0).getKey().trim() + "&fields=items(id,snippet(liveBroadcastContent))&part=snippet&id=" + s_videoid).get().build();
+        keys.get(0).setCount(keys.get(0).getCount() + 1L);
+        googleAPIKeyRepository.save(keys.get(0));
+        Response response1 = client1.newCall(request1).execute();
+
+        String resultJson1 = response1.body().string();
+
+        Object obj1 = new JSONParser().parse(resultJson1);
+
+        JSONObject jsonObject1 = (JSONObject) obj1;
+        JSONArray items = (JSONArray) jsonObject1.get("items");
+        if(items==null){
+            resp.put("status", "fail");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+        JSONArray jsonArray = new JSONArray();
+        Iterator k = items.iterator();
+        Setting setting = settingRepository.getSettingId1();
+        while (k.hasNext()) {
+            try {
+                JSONObject video = (JSONObject) k.next();
+                JSONObject obj = new JSONObject();
+                JSONObject statistics = (JSONObject) video.get("statistics");
+                JSONObject snippet = (JSONObject) video.get("snippet");
+                VideoComment videoView = videoCommentRepository.getVideoCmtByVideoid(video.get("id").toString());
+                if (snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getMaxthreads()==-2) {
+                    videoCommentRepository.updateRunningLiveOrderByVideoId(video.get("id").toString());
+                }else if(!snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getMaxthreads()>=0){
+                    delete("1",videoView.getVideoid(),0);
+                }
+            } catch (Exception e) {
+                resp.put("status", e);
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+
+        }
+        resp.put("status", "true");
+        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+    }
+
+
     @GetMapping(path = "getorderviewhhistory", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getorderviewhhistory(@RequestHeader(defaultValue = "") String Authorization, @RequestParam(defaultValue = "") String user) {
         JSONObject resp = new JSONObject();

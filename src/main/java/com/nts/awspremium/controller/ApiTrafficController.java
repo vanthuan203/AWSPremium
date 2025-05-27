@@ -178,7 +178,7 @@ public class ApiTrafficController {
             }
             if (data.getAction().equals("add")) {
 
-                Service service = serviceRepository.getService(data.getService());
+                Service service = serviceRepository.getServiceTraffic(data.getService());
                 if (service == null) {
                     resp.put("error", "Invalid service");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

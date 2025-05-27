@@ -288,6 +288,35 @@ public class Openai {
         }
     }
 
+    public static String statusTaskLive(String uuid) {
+
+        try {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
+
+            // Tạo request body rỗng
+            RequestBody emptyBody = RequestBody.create(MediaType.parse("application/json"), "");
+
+            // Gửi POST không có body
+            Request request = new Request.Builder()
+                    .url("https://ai-comment.yofatik.ai/api/v1/tasks/get?uuid="+uuid)
+                    .post(emptyBody)
+                    .build();
+            // Gửi request và lấy response
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+            return jsonObject.get("status").getAsString();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public static String getTask(String uuid) {
 
         try {
