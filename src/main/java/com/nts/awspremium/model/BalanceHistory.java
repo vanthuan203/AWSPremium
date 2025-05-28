@@ -8,6 +8,7 @@ public interface BalanceHistory {
     Long getTime();
     String getNote();
     String getGeo();
+    String getTask();
     Integer getAi();
     Integer getService();
 }
