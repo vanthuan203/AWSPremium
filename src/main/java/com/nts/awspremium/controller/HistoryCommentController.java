@@ -1001,10 +1001,18 @@ public class HistoryCommentController {
                 }
                 String[] proxy =new String[0];
                 if(histories.get(0).getGeo().contains("vn")){
-                    if(proxyVNTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    if(service.getGeo().equals("go")){
+                        if(proxyVultrTrue.getValue().size()!=0){
+                            proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }else{
-                        proxy= new String[]{};
+                        if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }
                 }else if(histories.get(0).getGeo().contains("us")){
                     if(proxyVultrTrue.getValue().size()!=0){
