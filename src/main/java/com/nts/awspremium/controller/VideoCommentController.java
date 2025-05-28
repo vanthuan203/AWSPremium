@@ -499,8 +499,8 @@ public class VideoCommentController {
                 videoBuffhnew.setNumbh(0);
                 videoBuffhnew.setTimecheck(0L);
                 //videoBuffhnew.setPrice(videoBuffh.get(0).getPrice());
+                Service service = serviceRepository.getService(videoBuffh.get(0).getService());
                 if (cancel == 1) {
-                    Service service = serviceRepository.getService(videoBuffh.get(0).getService());
                     List<Admin> user = adminRepository.getAdminByUser(videoBuffh.get(0).getUser());
                     //Hoàn tiền những view chưa buff
                     int viewbuff = videoBuffh.get(0).getCommenttotal();
@@ -533,6 +533,9 @@ public class VideoCommentController {
                 videoBuffhnew.setEnddate(enddate);
                 videoBuffhnew.setCommenttotal(videoBuffh.get(0).getCommenttotal());
                 videoCommentHistoryRepository.save(videoBuffhnew);
+                if(service.getLive()==1 && service.getAi()>0){
+                    Openai.stopTask(videoBuffh.get(0).getListcomment().trim());
+                }
                 videoCommentRepository.deletevideoByVideoId(videoidArr[i].trim());
             }
             resp.put("videocomment", "");
@@ -554,6 +557,8 @@ public class VideoCommentController {
             List<VideoComment> videoBuffh = videoCommentRepository.getOrderFullCmt();
             for (int i = 0; i < videoBuffh.size(); i++) {
                 Long enddate = System.currentTimeMillis();
+
+                Service service = serviceRepository.getService(videoBuffh.get(0).getService());
 
                 VideoCommentHistory videoBuffhnew = new VideoCommentHistory();
                 videoBuffhnew.setOrderid(videoBuffh.get(i).getOrderid());
@@ -577,6 +582,9 @@ public class VideoCommentController {
                 videoBuffhnew.setPrice(videoBuffh.get(i).getPrice());
                 try {
                     videoCommentHistoryRepository.save(videoBuffhnew);
+                    if(service.getLive()==1 && service.getAi()>0){
+                        Openai.stopTask(videoBuffh.get(0).getListcomment().trim());
+                    }
                     videoCommentRepository.deletevideoByVideoId(videoBuffh.get(i).getVideoid().trim());
                 } catch (Exception e) {
 
