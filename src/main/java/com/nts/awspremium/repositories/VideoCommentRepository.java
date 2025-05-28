@@ -38,7 +38,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentUS(String listvideo,List<String> orderid);
 
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='us' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where (geo='us' or geo='go') and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentUSTest(String listvideo,List<String> orderid);
 
@@ -60,7 +60,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "SELECT * from videocomment where videoid=?1",nativeQuery = true)
     public VideoComment getVideoCmtByVideoid(String videoid);
 
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='kr' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where (geo='kr' or geo='go') and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentKRTest(String listvideo,List<String> orderid);
 
@@ -69,7 +69,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
             "            orderid in (?3) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoChatLiveByGeo(String geo,String listvideo,List<String> orderid);
 
-    @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo='jp' and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where (geo='jp' or geo='go') and task='comment' and live=0) and INSTR(?1,videoid)=0 and\n" +
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentJPTest(String listvideo,List<String> orderid);
 
