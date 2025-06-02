@@ -1077,10 +1077,10 @@ public class HistoryViewController {
                     if(vps_check.getVpsoption().contains("live")){
                         videos = videoViewRepository.getvideoLiveByGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
                     }else{
-                        //videos = videoViewRepository.getvideoLiveByGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
-                        //if(videos.size()==0){
+                        videos = videoViewRepository.getvideoLiveByGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
+                        if(videos.size()==0){
                             videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
-                        //}
+                        }
                     }
                 }
                 if (videos.size() > 0) {
@@ -1099,10 +1099,10 @@ public class HistoryViewController {
                         if(vps_check.getVpsoption().contains("live")){
                             videos = videoViewRepository.getvideoLiveRandNotGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
                         }else{
-                            //videos = videoViewRepository.getvideoLiveRandNotGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
-                            //if(videos.size()==0){
+                            videos = videoViewRepository.getvideoLiveRandNotGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
+                            if(videos.size()==0){
                                 videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
-                            //}
+                            }
                         }
                         if (videos.size() > 0&&!geo_rand.equals("test1")) {
                             geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
