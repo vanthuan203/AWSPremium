@@ -3322,7 +3322,7 @@ public class VideoViewController {
 
 
     @GetMapping(path = "updateorderlivedonecron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateorderlivedonecron() {
+    public ResponseEntity<String> updateorderlivedonecron() {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {

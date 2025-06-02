@@ -31,43 +31,49 @@ public class UpdateView {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateThreadByThreadSet();
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateorderviewcron();
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateorderbuffhcron();
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updatechanneldonecron();
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            videoViewController.updateorderlivedonecron();
+                            try {
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateorderbuffh30mdonecron();
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateRunningOrder();
                             try {
-                                Thread.sleep(5000);
+                                Thread.sleep(3000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
