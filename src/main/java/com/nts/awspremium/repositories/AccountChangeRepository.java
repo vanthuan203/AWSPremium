@@ -13,6 +13,10 @@ public interface AccountChangeRepository extends JpaRepository<AccountChange,Lon
 
     @Query(value = "SELECT * FROM AccPremium.accountchange where running=0 and geo='kr' order by priority desc,id asc limit 1",nativeQuery = true)
     public List<AccountChange> getGeoChangerKR( );
+
+    @Query(value = "SELECT * FROM AccPremium.accountchange where running=0 and geo='jp' order by priority desc,id asc limit 1",nativeQuery = true)
+    public List<AccountChange> getGeoChangerJP( );
+
     @Query(value = "SELECT count(*) FROM AccPremium.accountchange where running=1 and name=?1",nativeQuery = true)
     public Integer checkRunningChanger(String name);
     @Query(value = "SELECT * FROM AccPremium.accountchange where running=0 and geo='us' order by priority desc,id asc limit 1",nativeQuery = true)

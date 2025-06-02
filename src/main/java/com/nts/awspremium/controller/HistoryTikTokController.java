@@ -2,6 +2,7 @@ package com.nts.awspremium.controller;
 
 import com.nts.awspremium.GoogleApi;
 import com.nts.awspremium.Openai;
+import com.nts.awspremium.ProxyAPI;
 import com.nts.awspremium.TikTokApi;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
@@ -48,6 +49,8 @@ public class HistoryTikTokController {
     private AccountRegTikTokRepository accountRegTikTokRepository;
     @Autowired
     private AccountTikTokRepository accountTikTokRepository;
+    @Autowired
+    private ProxyController proxyController;
 
     @Autowired
     private Proxy_IPV4_TikTokRepository proxyIpv4TikTokRepository;
@@ -260,6 +263,21 @@ public class HistoryTikTokController {
         JSONObject resp = new JSONObject();
         try{
             historyFollowerTiktok24hRepository.deleteAllByThan24h();
+            resp.put("status", "true");
+            resp.put("message", "Delete follower >24h thành công!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/test", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> test() {
+        JSONObject resp = new JSONObject();
+        try{
+            proxyController.checkproxyMain(1000);
             resp.put("status", "true");
             resp.put("message", "Delete follower >24h thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

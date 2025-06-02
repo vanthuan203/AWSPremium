@@ -756,7 +756,11 @@ public class HistoryViewController {
                             resp.put("video_duration",ran.nextInt(14)+6);
                         }
                     }else{
-                        resp.put("video_duration",(service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60))*60+360);
+                        Integer duration=service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60);
+                        if(duration<10){
+                            duration=10;
+                        }
+                        resp.put("video_duration",duration*60+360);
                     }
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -1073,7 +1077,10 @@ public class HistoryViewController {
                     if(vps_check.getVpsoption().contains("live")){
                         videos = videoViewRepository.getvideoLiveByGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
                     }else{
-                        videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
+                        //videos = videoViewRepository.getvideoLiveByGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
+                        //if(videos.size()==0){
+                            videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
+                        //}
                     }
                 }
                 if (videos.size() > 0) {
@@ -1092,7 +1099,10 @@ public class HistoryViewController {
                         if(vps_check.getVpsoption().contains("live")){
                             videos = videoViewRepository.getvideoLiveRandNotGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
                         }else{
-                            videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
+                            //videos = videoViewRepository.getvideoLiveRandNotGeo(histories.get(0).getGeo().trim(), orderTrue.getValue());
+                            //if(videos.size()==0){
+                                videos = videoViewRepository.getvideoViewRandNotGeo(histories.get(0).getGeo().trim(), histories.get(0).getListvideo(), orderTrue.getValue());
+                            //}
                         }
                         if (videos.size() > 0&&!geo_rand.equals("test1")) {
                             geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
@@ -1561,7 +1571,11 @@ public class HistoryViewController {
                         resp.put("video_duration",ran.nextInt(14)+6);
                     }
                 }else{
-                    resp.put("video_duration",(service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60))*60+360);
+                    Integer duration=service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60);
+                    if(duration<10){
+                        duration=10;
+                    }
+                    resp.put("video_duration",duration*60+360);
                 }
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }

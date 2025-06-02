@@ -113,6 +113,10 @@ public interface VpsRepository extends JpaRepository<Vps,Integer> {
 
     @Query(value = "call changer_account_kr(?1)",nativeQuery = true)
     public Integer changer_account_kr(String geo);
+
+    @Query(value = "call changer_account_jp(?1)",nativeQuery = true)
+    public Integer changer_account_jp(String geo);
+
     @Query(value = "call changer_account_us(?1)",nativeQuery = true)
     public Integer changer_account_us(String geo);
     @Modifying
