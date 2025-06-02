@@ -656,6 +656,7 @@ public class HistoryViewController {
 
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setRunning(1);
+                    histories.get(0).setMax_time(service.getMaxtime());
                     historyViewRepository.save(histories.get(0));
                     resp.put("live", service.getLive() == 1 ? "true" : "fail");
                     resp.put("channel_id", videos.get(0).getChannelid());
@@ -1469,6 +1470,7 @@ public class HistoryViewController {
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setRunning(1);
                 histories.get(0).setFinger_id(finger_id);
+                histories.get(0).setMax_time(service.getMaxtime());
 
                 historyViewRepository.save(histories.get(0));
                 resp.put("live", service.getLive() == 1 ? "true" : "fail");
@@ -2681,6 +2683,24 @@ public class HistoryViewController {
             historyViewRepository.resetThreadcron();
             resp.put("status", "true");
             resp.put("message", "Reset thread error thành công!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "checkLive", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> checkLive(@RequestParam(defaultValue = "") String videoid) {
+        JSONObject resp = new JSONObject();
+        try {
+
+            if(videoViewRepository.getVideoViewByVideoid(videoid.trim())==null){
+                resp.put("status", "fail");
+            }else{
+                resp.put("status", "true");
+            }
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");

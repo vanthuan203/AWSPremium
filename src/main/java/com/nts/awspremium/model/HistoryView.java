@@ -24,13 +24,15 @@ public class HistoryView {
     private Long orderid;
     @Column(columnDefinition = "bigint default 0")
     private Long finger_id=0L;
+    @Column(columnDefinition = "integer default 0")
+    private Integer max_time=0;
 
     private Integer task_done=0;
 
     public HistoryView() {
     }
 
-    public HistoryView(Long id, String username, String listvideo, String proxy, String vps, Integer running, String channelid, Long timeget, Long task_time, String typeproxy, String geo, String geo_rand, String videoid, Long orderid, Long finger_id, Integer task_done) {
+    public HistoryView(Long id, String username, String listvideo, String proxy, String vps, Integer running, String channelid, Long timeget, Long task_time, String typeproxy, String geo, String geo_rand, String videoid, Long orderid, Long finger_id, Integer max_time, Integer task_done) {
         this.id = id;
         this.username = username;
         this.listvideo = listvideo;
@@ -46,6 +48,7 @@ public class HistoryView {
         this.videoid = videoid;
         this.orderid = orderid;
         this.finger_id = finger_id;
+        this.max_time = max_time;
         this.task_done = task_done;
     }
 
@@ -175,5 +178,13 @@ public class HistoryView {
 
     public void setTask_time(Long task_time) {
         this.task_time = task_time;
+    }
+
+    public Integer getMax_time() {
+        return max_time;
+    }
+
+    public void setMax_time(Integer max_time) {
+        this.max_time = max_time;
     }
 }

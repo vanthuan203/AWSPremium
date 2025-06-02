@@ -36,7 +36,7 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update historyview set running=0,videoid='' where running=1 and POSITION(videoid in listvideo)=0 and  round((UNIX_TIMESTAMP()-timeget/1000)/60)>=20",nativeQuery = true)
+    @Query(value = "update historyview set running=0,videoid='',max_time=0 where running=1 and POSITION(videoid in listvideo)=0 and  round((UNIX_TIMESTAMP()-timeget/1000)/60)>=20",nativeQuery = true)
     public Integer resetThreadcron();
 
 
@@ -44,17 +44,17 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
     public Integer PROCESSLISTVIEW();
     @Modifying
     @Transactional
-    @Query(value = "update historyview set running=0 where round((UNIX_TIMESTAMP()-timeget/1000)/60)>=90 and running=1",nativeQuery = true)
+    @Query(value = "update historyview set running=0 where round((UNIX_TIMESTAMP()-timeget/1000)/60)>=(max_time+20) and running=1",nativeQuery = true)
     public Integer resetThreadThan90mcron();
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0,geo='',typeproxy='',vps='',proxy='' where vps=?1",nativeQuery = true)
+    @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0,geo='',typeproxy='',vps='',proxy='',max_time=0 where vps=?1",nativeQuery = true)
     public Integer resetHistoryViewByVps(String vps);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0 where vps=?1",nativeQuery = true)
+    @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0,max_time=0 where vps=?1",nativeQuery = true)
     public Integer resetThreadViewByVps(String vps);
 
     @Modifying
@@ -65,13 +65,13 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE historyview SET running=0,vps='',proxy='',typeproxy='',geo='' where id=?1",nativeQuery = true)
+    @Query(value = "UPDATE historyview SET running=0,vps='',proxy='',typeproxy='',geo='',max_time=0 where id=?1",nativeQuery = true)
     public Integer resetHistoryById(Long id);
 
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0 where id=?1",nativeQuery = true)
+    @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0,max_time=0 where id=?1",nativeQuery = true)
     public Integer resetThreadBuffhById(Long id);
 
     @Query(value = "SELECT count(*) FROM historyview where vps=?1 and running=1",nativeQuery = true)
