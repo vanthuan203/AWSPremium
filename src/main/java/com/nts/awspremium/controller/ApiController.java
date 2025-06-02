@@ -289,6 +289,9 @@ public class ApiController {
                             resp.put("error", "This video is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
+                        if(service.getLive()==1 && contentDetails.get("duration")==null){
+                            contentDetails.put("duration","P0D");
+                        }
                         if (videoViewRepository.getCountVideoId(video.get("id").toString().trim()) > 0) {
                             resp.put("error", "This video in process");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -343,7 +346,6 @@ public class ApiController {
                         }
                         JSONObject statistics = (JSONObject) video.get("statistics");
                         VideoView videoViewhnew = new VideoView();
-
                         //int thread_set_fix = service.getThread() + ((int) (data.getQuantity() / 1000) - 1) * setting.getLevelthread();
                         int duration_min=1+(int)(Duration.parse(contentDetails.get("duration").toString()).getSeconds()/60);
                         int thread_set=50;
