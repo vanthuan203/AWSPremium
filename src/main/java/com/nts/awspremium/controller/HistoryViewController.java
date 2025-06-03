@@ -761,7 +761,7 @@ public class HistoryViewController {
                         if(duration<10){
                             duration=10;
                         }
-                        resp.put("video_duration",duration*60+360);
+                        resp.put("video_duration",duration*60+15*60);
                     }
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -1577,7 +1577,7 @@ public class HistoryViewController {
                     if(duration<10){
                         duration=10;
                     }
-                    resp.put("video_duration",duration*60+360);
+                    resp.put("video_duration",duration*60+15*60);
                 }
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
