@@ -381,7 +381,6 @@ public class ApiController {
                             videoViewhnew.setMaxthreads(data.getQuantity()+(int)(data.getQuantity()*0.15));
                             videoViewhnew.setThreadset(data.getQuantity()+(int)(data.getQuantity()*0.15));
                             videoViewhnew.setTimestart(System.currentTimeMillis());
-                            videoViewhnew.setMinstart(service.getMaxtime());
                         } else if (snippet.get("liveBroadcastContent").toString().equals("upcoming")&& service.getLive()==1) {
                             videoViewhnew.setTimestart(0L);
                             videoViewhnew.setMaxthreads(-2);
@@ -389,8 +388,8 @@ public class ApiController {
                         }else{
                             videoViewhnew.setMaxthreads(0);
                             videoViewhnew.setTimestart(0L);
-                            videoViewhnew.setMinstart(service.getMaxtime());
                         }
+                        videoViewhnew.setMinstart(service.getMaxtime());
                         videoViewhnew.setDuration(Duration.parse(contentDetails.get("duration").toString()).getSeconds());
                         videoViewhnew.setInsertdate(System.currentTimeMillis());
                         videoViewhnew.setView24h(0);
