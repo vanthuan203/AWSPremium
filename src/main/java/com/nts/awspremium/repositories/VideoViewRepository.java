@@ -196,7 +196,7 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE videoview set viewstart=?1,maxthreads=maxthreads*1.15,timestart=?3 where timestart=0 and maxthreads=-2 and videoid=?4",nativeQuery = true)
+    @Query(value = "UPDATE videoview set viewstart=?1,maxthreads=maxthreads*1.15,timestart=?2 where timestart=0 and maxthreads=-2 and videoid=?3",nativeQuery = true)
     public void updateRunningLiveOrderByVideoId(Integer viewstart,Long timestart,String videoid);
 
     @Modifying

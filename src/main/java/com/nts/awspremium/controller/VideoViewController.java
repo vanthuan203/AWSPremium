@@ -654,6 +654,8 @@ public class VideoViewController {
                     videoViewRepository.updateRunningLiveOrderByVideoId(Integer.parseInt(statistics.get("viewCount").toString()), System.currentTimeMillis(), video.get("id").toString());
                 }else if(!snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getTimestart()>0){
                     delete("1",videoView.getVideoid(),0);
+                }else if(snippet.get("liveBroadcastContent").toString().equals("none")&&videoView.getTimestart()==0){
+                    delete("1",videoView.getVideoid(),1);
                 }
             } catch (Exception e) {
                 resp.put("status", e);
