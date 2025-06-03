@@ -63,7 +63,7 @@ public interface DataCommentRepository extends JpaRepository<DataComment,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update datacomment set running=2,vps='',username='' where orderid=?1 and running=0",nativeQuery = true)
+    @Query(value = "update datacomment set running=-1,vps='',username='' where orderid=?1 and running=0",nativeQuery = true)
     public void updateCommentByOrderId(Long orderid);
 
 }
