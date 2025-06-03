@@ -918,7 +918,7 @@ public class VideoCommentController {
                 }else {
                     continue;
                 }
-                dataCommentRepository.deleteCommentByOrderId(videoComments.get(i).getOrderid());
+                dataCommentRepository.updateCommentByOrderId(videoComments.get(i).getOrderid());
                 for (int j = 0; j < comments.length; j++) {
                     if (comments[j].trim().length() == 0) {
                         continue;
