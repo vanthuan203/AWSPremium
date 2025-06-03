@@ -915,7 +915,6 @@ public class VideoCommentController {
                     } else {
                         comments = list_Comment.split("\\R");
                     }
-                    videoComments.get(i).setListcomment("");
                 }else {
                     continue;
                 }
