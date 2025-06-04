@@ -758,8 +758,8 @@ public class HistoryViewController {
                         }
                     }else{
                         Integer duration=service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60);
-                        if(duration<10){
-                            duration=10;
+                        if(duration<0){
+                            duration=0;
                         }else if(duration>60){
                             duration=30+ran.nextInt(30);
                         }
@@ -1576,8 +1576,8 @@ public class HistoryViewController {
                     }
                 }else{
                     Integer duration=service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60);
-                    if(duration<10){
-                        duration=10;
+                    if(duration<0){
+                        duration=0;
                     }else if(duration>60){
                         duration=30+ran.nextInt(30);
                     }
