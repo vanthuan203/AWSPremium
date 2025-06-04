@@ -899,7 +899,7 @@ public class VideoCommentController {
                 Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
                 String[] comments;
                 if(videoComments.get(i).getListcomment().length()==0){
-                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),service.getThread()*5,"youtube","chat",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
+                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),service.getThread()*2,"youtube","chat",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                     if(uuid!=null){
                         videoComments.get(i).setListcomment(uuid);
                         videoCommentRepository.save( videoComments.get(i));
