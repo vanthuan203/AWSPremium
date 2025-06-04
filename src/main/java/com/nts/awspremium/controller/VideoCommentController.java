@@ -899,7 +899,7 @@ public class VideoCommentController {
                 Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
                 String[] comments;
                 if(videoComments.get(i).getListcomment().length()==0){
-                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),50,"youtube","chat",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
+                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),service.getThread()*5,"youtube","chat",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
                     if(uuid!=null){
                         videoComments.get(i).setListcomment(uuid);
                         videoCommentRepository.save( videoComments.get(i));
@@ -933,7 +933,7 @@ public class VideoCommentController {
                     dataCommentRepository.save(dataComment);
                 }
                 if(videoComments.get(i).getMaxthreads()<=0){
-                    if(service.getExpired()==0){
+                    if(service.getExpired()==0&&service.getLive()==0){
                         int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 30)<1?0:(int)(videoComments.get(i).getCommentorder() / 30));
                         if (max_thread <= 50) {
                             videoComments.get(i).setMaxthreads(max_thread);

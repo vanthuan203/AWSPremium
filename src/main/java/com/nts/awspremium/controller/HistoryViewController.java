@@ -763,7 +763,7 @@ public class HistoryViewController {
                         }else if(duration>60){
                             duration=30+ran.nextInt(30);
                         }
-                        resp.put("video_duration",duration*60+10*60);
+                        resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
                     }
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -1581,7 +1581,7 @@ public class HistoryViewController {
                     }else if(duration>60){
                         duration=30+ran.nextInt(30);
                     }
-                    resp.put("video_duration",duration*60+10*60);
+                    resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
                 }
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
