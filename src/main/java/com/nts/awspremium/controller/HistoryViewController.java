@@ -760,8 +760,10 @@ public class HistoryViewController {
                         Integer duration=service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60);
                         if(duration<10){
                             duration=10;
+                        }else if(duration>60){
+                            duration=30+ran.nextInt(30);
                         }
-                        resp.put("video_duration",duration*60+15*60);
+                        resp.put("video_duration",duration*60+10*60);
                     }
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -1576,8 +1578,10 @@ public class HistoryViewController {
                     Integer duration=service.getMintime()-(int)((System.currentTimeMillis()-videos.get(0).getTimestart())/1000/60);
                     if(duration<10){
                         duration=10;
+                    }else if(duration>60){
+                        duration=30+ran.nextInt(30);
                     }
-                    resp.put("video_duration",duration*60+15*60);
+                    resp.put("video_duration",duration*60+10*60);
                 }
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }

@@ -207,12 +207,15 @@ public class ApiController {
                     }
                 }
                 Boolean pending= false;
-                if(service.getChecktime()==0&&(videoViewRepository.getSumThread()!=null?(videoViewRepository.getSumThread()>40000*setting.getMaxorder()):false)){
+                if(service.getChecktime()==0&&(videoViewRepository.getSumThread()!=null?(videoViewRepository.getSumThread()>40000*setting.getMaxorder()):false)&&service.getLive()==0){
                     pending=true;
                     //resp.put("error", "System busy try again");
                     //return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                }else if(videoViewRepository.getCountOrderPending3()>0){
+                }else if(videoViewRepository.getCountOrderPending3()>0&&service.getLive()==0){
                     pending=true;
+                }else if((videoViewRepository.getSumThreadLive()!=null?(videoViewRepository.getSumThreadLive()>40000*setting.getMaxorder()):false)&&service.getLive()==1){
+                    resp.put("error", "System busy try again");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 if (videoViewRepository.getCountOrderByUser(admins.get(0).getUsername().trim()) >= admins.get(0).getMaxorder() || (service.getGeo().equals("vn") && settingRepository.getMaxOrderVN() == 0) ||
                         (service.getGeo().equals("us") && settingRepository.getMaxOrderUS() == 0) || service.getMaxorder() <= videoViewRepository.getCountOrderByService(data.getService())) {

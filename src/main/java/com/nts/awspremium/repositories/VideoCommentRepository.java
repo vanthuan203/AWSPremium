@@ -158,7 +158,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     public void deletevideoByVideoId(String videoid);
 
 
-    @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply=0 and live=0) ",nativeQuery = true)
+    @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply=0) ",nativeQuery = true)
     public List<VideoComment> getOrderFullCmt();
 
     @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply>0 and live=0)",nativeQuery = true)
