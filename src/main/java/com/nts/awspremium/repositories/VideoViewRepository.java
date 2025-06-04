@@ -78,7 +78,7 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Query(value = "SELECT sum(threadset) from videoview where timestart>0 and service in(select service from service where geo=?1)",nativeQuery = true)
     public Integer getSumThreadSetByGeo(String geo);
 
-    @Query(value = "SELECT sum(threadset) from videoview where timestart>0",nativeQuery = true)
+    @Query(value = "SELECT sum(threadset) from videoview where timestart>0 and service in (select service from service where live=0)",nativeQuery = true)
     public Integer getSumThread();
 
     @Query(value = "SELECT sum(threadset) from videoview where timestart>0 and service in (select service from service where live=1)",nativeQuery = true)
