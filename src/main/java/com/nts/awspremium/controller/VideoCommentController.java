@@ -316,6 +316,7 @@ public class VideoCommentController {
                 obj.put("service", orderRunnings.get(i).getService());
                 obj.put("geo", orderRunnings.get(i).getGeo());
                 obj.put("ai", orderRunnings.get(i).getAi());
+                obj.put("live", orderRunnings.get(i).getLive());
                 obj.put("lc_code",  orderRunnings.get(i).getLc_code());
                 jsonArray.add(obj);
             }

@@ -954,6 +954,7 @@ public class VideoViewController {
                 obj.put("service", orderRunnings.get(i).getService());
                 obj.put("geo", orderRunnings.get(i).getGeo());
                 obj.put("ai", orderRunnings.get(i).getAi());
+                obj.put("live", orderRunnings.get(i).getLive());
                 obj.put("user", orderRunnings.get(i).getUser());
                 obj.put("view24h", orderRunnings.get(i).getView24h());
                 obj.put("viewtotal", orderRunnings.get(i).getViewTotal());
@@ -2923,6 +2924,7 @@ public class VideoViewController {
                 obj.put("service", orderRunnings.get(i).getService());
                 obj.put("geo",orderRunnings.get(i).getGeo());
                 obj.put("ai",orderRunnings.get(i).getAi());
+                obj.put("live",orderRunnings.get(i).getLive());
                 jsonArray.add(obj);
             }
             //JSONArray lineItems = jsonObject.getJSONArray("lineItems");

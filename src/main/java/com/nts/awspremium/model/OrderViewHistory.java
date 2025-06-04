@@ -18,4 +18,5 @@ public interface OrderViewHistory {
     Long getTimestart();
     String getGeo();
     Integer getAi();
+    Integer getLive();
 }
