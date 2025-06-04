@@ -666,19 +666,31 @@ public class HistoryViewController {
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
-                    float ran_SL=ran.nextFloat()*100F;
-                    if(ran_SL<=1F){
-                        if(ran.nextInt(100)<=20){
-                            resp.put("sub", "true");
-                            resp.put("like", "fail");
-                        }else{
-                            resp.put("like", "true");
-                            resp.put("sub", "fail");
-                        }
-                    }else{
+
+                    if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
                         resp.put("like", "fail");
                         resp.put("sub", "fail");
+                    }else{
+                        float ran_SL=ran.nextFloat()*100F;
+                        if(ran_SL<service.getBonus_list_percent()){
+                            String [] bonus_list=service.getBonus_list().split(",");
+                            String bonus=bonus_list[ran.nextInt(bonus_list.length)];
+                            if(bonus.equals("sub")){
+                                resp.put("like", "fail");
+                                resp.put("sub", "true");
+                            }else if(bonus.equals("like")){
+                                resp.put("like", "true");
+                                resp.put("sub", "fail");
+                            }else{
+                                resp.put("like", "fail");
+                                resp.put("sub", "fail");
+                            }
+                        }else{
+                            resp.put("like", "fail");
+                            resp.put("sub", "fail");
+                        }
                     }
+
                     if(service.getNiche()==1){
                         String[] nicheArr = service.getKeyniche().split(",");
                         resp.put("niche_key", nicheArr[ran.nextInt(nicheArr.length)]);
@@ -1483,19 +1495,31 @@ public class HistoryViewController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("service_id", service.getService());
                 resp.put("geo", histories.get(0).getGeo());
-                float ran_SL=ran.nextFloat()*100F;
-                if(ran_SL<=1F){
-                    if(ran.nextInt(100)<=20){
-                        resp.put("sub", "true");
-                        resp.put("like", "fail");
-                    }else{
-                        resp.put("like", "true");
-                        resp.put("sub", "fail");
-                    }
-                }else{
+
+                if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
                     resp.put("like", "fail");
                     resp.put("sub", "fail");
+                }else{
+                    float ran_SL=ran.nextFloat()*100F;
+                    if(ran_SL<service.getBonus_list_percent()){
+                        String [] bonus_list=service.getBonus_list().split(",");
+                        String bonus=bonus_list[ran.nextInt(bonus_list.length)];
+                        if(bonus.equals("sub")){
+                            resp.put("like", "fail");
+                            resp.put("sub", "true");
+                        }else if(bonus.equals("like")){
+                            resp.put("like", "true");
+                            resp.put("sub", "fail");
+                        }else{
+                            resp.put("like", "fail");
+                            resp.put("sub", "fail");
+                        }
+                    }else{
+                        resp.put("like", "fail");
+                        resp.put("sub", "fail");
+                    }
                 }
+
                 resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
                 if(service.getNiche()==1){
                     String[] nicheArr = service.getKeyniche().split(",");

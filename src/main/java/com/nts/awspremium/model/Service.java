@@ -1,5 +1,6 @@
 package com.nts.awspremium.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -43,10 +44,17 @@ public class Service {
     private Integer reply=0;
     private String device_type="all";
     private Integer ai=0;
+
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String bonus_list="";
+    @Column(columnDefinition = "integer default 1")
+    private Integer bonus_type=1;
+    @Column(columnDefinition = "integer default 0")
+    private Integer bonus_list_percent=0;
     public Service() {
     }
 
-    public Service(Integer service, String name, String type, String category, Float rate, Integer min, Integer max, Integer thread, String note, String geo, Integer enabled, Integer maxorder, Integer search, Integer suggest, Integer dtn, Integer direct, Integer embed, Integer external, Integer playlists, Integer mintime, Integer maxtime, Integer refill, Integer maxtimerefill, Integer checktime, Integer live, Integer expired, Integer niche, String keyniche, Integer click_web, Integer click_ads, String platform, String task, String device_type) {
+    public Service(Integer service, String name, String type, String category, Float rate, Integer min, Integer max, Integer thread, String note, String geo, Integer enabled, Integer maxorder, Integer search, Integer suggest, Integer dtn, Integer direct, Integer embed, Integer external, Integer playlists, Integer mintime, Integer maxtime, Integer refill, Integer maxtimerefill, Integer checktime, Integer live, Integer expired, Integer niche, String keyniche, Integer click_web, Integer click_ads, String platform, String task, Integer reply, String device_type, Integer ai, String bonus_list, Integer bonus_type, Integer bonus_list_percent) {
         this.service = service;
         this.name = name;
         this.type = type;
@@ -79,7 +87,12 @@ public class Service {
         this.click_ads = click_ads;
         this.platform = platform;
         this.task = task;
+        this.reply = reply;
         this.device_type = device_type;
+        this.ai = ai;
+        this.bonus_list = bonus_list;
+        this.bonus_type = bonus_type;
+        this.bonus_list_percent = bonus_list_percent;
     }
 
     public Integer getReply() {
@@ -359,5 +372,30 @@ public class Service {
 
     public void setAi(Integer ai) {
         this.ai = ai;
+    }
+
+
+    public String getBonus_list() {
+        return bonus_list;
+    }
+
+    public void setBonus_list(String bonus_list) {
+        this.bonus_list = bonus_list;
+    }
+
+    public Integer getBonus_type() {
+        return bonus_type;
+    }
+
+    public void setBonus_type(Integer bonus_type) {
+        this.bonus_type = bonus_type;
+    }
+
+    public Integer getBonus_list_percent() {
+        return bonus_list_percent;
+    }
+
+    public void setBonus_list_percent(Integer bonus_list_percent) {
+        this.bonus_list_percent = bonus_list_percent;
     }
 }
