@@ -10,5 +10,6 @@ public interface BalanceHistory {
     String getGeo();
     String getTask();
     Integer getAi();
+    Integer getLive();
     Integer getService();
 }

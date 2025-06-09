@@ -102,6 +102,7 @@ public class VideoCommentController {
                 obj.put("price", orderRunnings.get(i).getPrice());
                 obj.put("geo",  orderRunnings.get(i).getGeo());
                 obj.put("ai",  orderRunnings.get(i).getAi());
+                obj.put("live",  orderRunnings.get(i).getLive());
                 obj.put("lc_code",  orderRunnings.get(i).getLc_code());
                 jsonArray.add(obj);
             }

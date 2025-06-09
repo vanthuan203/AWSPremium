@@ -451,7 +451,7 @@ public class AuthController {
             obj.put("time", balance.get(i).getTime());
             obj.put("id", balance.get(i).getId());
             obj.put("service", balance.get(i).getService());
-            obj.put("task", balance.get(i).getTask());
+            obj.put("task", balance.get(i).getLive()==0?balance.get(i).getTask():(balance.get(i).getTask().equals("view")?"live":"chat"));
             obj.put("ai", balance.get(i).getAi());
             obj.put("geo", balance.get(i).getGeo()==null?"vn":balance.get(i).getGeo());
             jsonArray.add(obj);
