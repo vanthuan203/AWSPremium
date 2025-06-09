@@ -1171,7 +1171,7 @@ public class VideoViewController {
         try {
             List<VideoView> videoViews=videoViewRepository.getAllOrderCheckCancel();
             for(int i=0;i<videoViews.size();i++){
-
+                Service service =serviceRepository.getInfoService(videoViews.get(i).getService());
                 OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 
                 Request request1 = null;
@@ -1194,7 +1194,11 @@ public class VideoViewController {
                 //System.out.println(items);
                 Iterator k = items.iterator();
                 if (k.hasNext() == false) {
-                    delete("1",videoViews.get(i).getVideoid().trim(),1);
+                    if(service.getLive()==0){
+                        delete("1",videoViews.get(i).getVideoid().trim(),1);
+                    }else{
+                        delete("1",videoViews.get(i).getVideoid().trim(),0);
+                    }
                     continue;
                 }else{
                     while (k.hasNext()) {
@@ -3195,8 +3199,10 @@ public class VideoViewController {
                 videoBuffhnew.setTimecheck(0L);
                 videoBuffhnew.setTimestart(videoBuffh.get(0).getTimestart());
                 //videoBuffhnew.setPrice(videoBuffh.get(0).getPrice());
-                if (cancel == 1) {
-                    Service service = serviceRepository.getInfoService(videoBuffh.get(0).getService());
+
+                Service service =serviceRepository.getInfoService(videoBuffh.get(0).getService());
+
+                if (cancel == 1&&service.getLive()==0) {
                     List<Admin> user = adminRepository.getAdminByUser(videoBuffh.get(0).getUser());
                     //Hoàn tiền những view chưa buff
                     int viewbuff = videoBuffh.get(0).getViewtotal();
