@@ -164,22 +164,22 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply>0 and live=0)",nativeQuery = true)
     public List<VideoComment> getOrderFullReply();
 
-    @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply=0 and live=0) order by insertdate asc limit 15\n",nativeQuery = true)
+    @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply=0 and live=0) order by insertdate asc limit 25\n",nativeQuery = true)
     public List<VideoComment> getOrderThreadNull();
 
-    @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply=0 and ai>0 and live=0) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
+    @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply=0 and ai>0 and live=0) and commentorder>comment_render order by insertdate asc limit 25\n",nativeQuery = true)
     public List<VideoComment> getOrderAIThreadNull();
 
     @Query(value = "SELECT * FROM videocomment where service in(select service from service where live=1) order by insertdate asc limit 25",nativeQuery = true)
     public List<VideoComment> getAllOrderLiveChatRunning();
 
-    @Query(value = "select * from videocomment where service in(select service from service where task='comment' and reply=0 and ai>0 and live=1) and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
+    @Query(value = "select * from videocomment where service in(select service from service where task='comment' and reply=0 and ai>0 and live=1) and commentorder>comment_render order by insertdate asc limit 25\n",nativeQuery = true)
     public List<VideoComment> getOrderLiveAIThreadNull();
 
-    @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply>0 and live=0) order by insertdate asc limit 15\n",nativeQuery = true)
+    @Query(value = "select * from videocomment where maxthreads=0 and service in(select service from service where task='comment' and reply>0 and live=0) order by insertdate asc limit 25\n",nativeQuery = true)
     public List<VideoComment> getOrderReplyThreadNull();
 
-    @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply>0 and ai=1 and live=0)  and commentorder>comment_render order by insertdate asc limit 15\n",nativeQuery = true)
+    @Query(value = "select * from videocomment where maxthreads>0 and service in(select service from service where task='comment' and reply>0 and ai=1 and live=0)  and commentorder>comment_render order by insertdate asc limit 25\n",nativeQuery = true)
     public List<VideoComment> getOrderReplyAIThreadNull();
 
 }
