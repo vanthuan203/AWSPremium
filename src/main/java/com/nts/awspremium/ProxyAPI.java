@@ -1,6 +1,7 @@
 package com.nts.awspremium;
 
 import okhttp3.*;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import java.io.IOException;
 import java.net.*;
 import java.net.Authenticator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ProxyAPI {
@@ -117,6 +120,42 @@ public class ProxyAPI {
             Response response = client.newCall(request).execute();
         } catch (Exception e) {
         }
+    }
+
+    public static List<List<String>> instances_VPS_VULTR(){
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "");
+            Request request = new Request.Builder()
+                    .url("https://api.vultr.com/v2/instances")
+                    .addHeader("Authorization", "Bearer BXAVWAY2QRCMR72RFHSZIDD3N72SU3FNG3QA")
+                    .addHeader("Content-Type", "application/json").get()
+                    .build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()){
+                String resultJson1 = response.body().string();
+                Object obj1 = new JSONParser().parse(resultJson1);
+                JSONObject jsonObject1 = (JSONObject) obj1;
+                JSONArray instances = (JSONArray) jsonObject1.get("instances");
+                List<List<String>> resultList = new ArrayList<>();
+                for (Object obj : instances) {
+                    JSONObject instance = (JSONObject) obj;
+                    String id = (String) instance.get("id");
+                    String mainIp = (String) instance.get("main_ip");
+                    List<String> pair = new ArrayList<>();
+                    pair.add(id);
+                    pair.add(mainIp);
+                    resultList.add(pair);
+                }
+                return  resultList;
+            }else{
+                return null;
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public static boolean checkResponseCode (String link) {

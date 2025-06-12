@@ -775,4 +775,28 @@ public class ProxyController {
         }
 
     }
+
+
+    @GetMapping(value = "/add_Instances", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> test() {
+        JSONObject resp = new JSONObject();
+        try{
+            List<List<String>> instances= ProxyAPI.instances_VPS_VULTR();
+            for (List<String> pair : instances) {
+                IpV4 ipV4 =ipV4Repository.getIpv4(pair.get(1).trim());
+                if(ipV4!=null){
+                    ipV4.setInstance_id(pair.get(0).trim());
+                    ipV4Repository.save(ipV4);
+                }
+            }
+            resp.put("status", "true");
+            resp.put("message", "update thành công!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
