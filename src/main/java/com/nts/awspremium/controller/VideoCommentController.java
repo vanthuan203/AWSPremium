@@ -912,6 +912,7 @@ public class VideoCommentController {
                     String uuid=Openai.createChat(videoComments.get(i).getListcomment(),50);
                     if(uuid!=null){
                         videoComments.get(i).setChat_id(uuid);
+                        videoComments.get(i).setChat_time(System.currentTimeMillis());
                         videoCommentRepository.save( videoComments.get(i));
                     }
                     continue;
@@ -931,6 +932,7 @@ public class VideoCommentController {
 
                 }else if(data!=null&&data[0].equals("failed")) {
                     videoComments.get(i).setChat_id("");
+                    videoComments.get(i).setChat_time(0L);
                     videoCommentRepository.save( videoComments.get(i));
                     continue;
                 }else {

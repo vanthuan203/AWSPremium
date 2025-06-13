@@ -51,6 +51,9 @@ public class Service {
     private Integer bonus_type=1;
     @Column(columnDefinition = "integer default 0")
     private Integer bonus_list_percent=0;
+
+    @Column(columnDefinition = "integer default 50")
+    private Integer max_render=50;
     public Service() {
     }
 
