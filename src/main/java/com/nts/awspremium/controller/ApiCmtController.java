@@ -321,6 +321,8 @@ public class ApiCmtController {
                         videoViewhnew.setNote("");
                         videoViewhnew.setComment_render(0);
                         videoViewhnew.setService(data.getService());
+                        videoViewhnew.setChat_time(0L);
+                        videoViewhnew.setChat_id("");
                         String title="title video: "+snippet.get("title").toString()+"\n";
                         String geo="";
                         if(service.getReply()==0&&service.getAi()==1){
