@@ -901,14 +901,23 @@ public class VideoCommentController {
                 Service service = serviceRepository.getServiceNoCheckEnabled(videoComments.get(i).getService());
                 String[] comments;
                 if(videoComments.get(i).getListcomment().length()==0){
-                    String uuid=Openai.createTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid(),service.getThread()*2,"youtube","chat",0,videoComments.get(i).getVideotitle(),videoComments.get(i).getChanneltitle(),videoComments.get(i).getDescription());
+                    String uuid=Openai.createChatTask("https://www.youtube.com/watch?v="+ videoComments.get(i).getVideoid());
                     if(uuid!=null){
                         videoComments.get(i).setListcomment(uuid);
                         videoCommentRepository.save( videoComments.get(i));
                     }
                     continue;
                 }
-                String status=Openai.statusTask(videoComments.get(i).getListcomment());
+                if((System.currentTimeMillis()-videoComments.get(i).getChat_time())/1000/60>service.getMintime()&&videoComments.get(i).getChat_id().length()==0){
+                    String uuid=Openai.createChat(videoComments.get(i).getListcomment(),50);
+                    if(uuid!=null){
+                        videoComments.get(i).setChat_id(uuid);
+                        videoCommentRepository.save( videoComments.get(i));
+                    }
+                    continue;
+                }
+
+                String status=Openai.getChatTask(videoComments.get(i).getChat_id());
                 if(status!=null&&status.equals("completed")) {
 
                     String list_Comment = Openai.getTask(videoComments.get(i).getListcomment());
@@ -917,6 +926,10 @@ public class VideoCommentController {
                     } else {
                         comments = list_Comment.split("\\R");
                     }
+                }else if(status!=null&&status.equals("failed")) {
+                    videoComments.get(i).setChat_id("");
+                    videoCommentRepository.save( videoComments.get(i));
+                    continue;
                 }else {
                     continue;
                 }

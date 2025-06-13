@@ -31,6 +31,12 @@ public class VideoComment {
     private Float price;
     private Integer valid;
 
+    @Column(columnDefinition = "varchar(555) default ''")
+    private String chat_id;
+
+    @Column(columnDefinition = "bigint default 0")
+    private Long chat_time;
+
     public VideoComment() {
     }
 
@@ -232,5 +238,22 @@ public class VideoComment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    public String getChat_id() {
+        return chat_id;
+    }
+
+    public void setChat_id(String chat_id) {
+        this.chat_id = chat_id;
+    }
+
+    public Long getChat_time() {
+        return chat_time;
+    }
+
+    public void setChat_time(Long chat_time) {
+        this.chat_time = chat_time;
     }
 }

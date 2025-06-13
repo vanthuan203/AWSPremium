@@ -259,6 +259,77 @@ public class Openai {
         }
     }
 
+
+    public static String createChatTask(String link) {
+
+        try {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
+
+            // Tạo JSON body bằng JSONObject
+            JSONObject json = new JSONObject();
+            json.put("youtube_url",link);
+
+            // Request body
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"), json.toString());
+            // Build request
+            Request request = new Request.Builder()
+                    .url("https://ai-comment.yofatik.ai/api/v1/tasks/create")
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer yV)}s%q^m$%$8eFZ}L,sspEa=reI~N7O")
+                    .build();
+            // Gửi request và lấy response
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+            return jsonObject.get("_id").getAsString();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String createChat(String task_id,Integer comment_count) {
+
+        try {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
+
+            // Tạo JSON body bằng JSONObject
+            JSONObject json = new JSONObject();
+            json.put("task_id",task_id);
+            json.put("comment_count",comment_count);
+
+            // Request body
+            RequestBody body = RequestBody.create(MediaType.parse("application/json"), json.toString());
+            // Build request
+            Request request = new Request.Builder()
+                    .url("https://ai-comment.yofatik.ai/api/v1/tasks/create")
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer yV)}s%q^m$%$8eFZ}L,sspEa=reI~N7O")
+                    .build();
+            // Gửi request và lấy response
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+            return jsonObject.get("chat_id").getAsString();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
     public static String statusTask(String uuid) {
 
         try {
@@ -372,6 +443,40 @@ public class Openai {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static String getChatTask(String uuid) {
+
+        try {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
+
+            // Tạo request body rỗng
+            RequestBody emptyBody = RequestBody.create(MediaType.parse("application/json"), "");
+
+            // Gửi POST không có body
+            Request request = new Request.Builder()
+                    .url("https://aicomment.yofatik.ai/api/v1/chat/"+uuid+"/status")
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer yV)}s%q^m$%$8eFZ}L,sspEa=reI~N7O")
+                    .get().build();
+            // Gửi request và lấy response
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+            if(!jsonObject.get("status").getAsString().equals("completed")){
+                return jsonObject.get("status").getAsString();
+            }else if(jsonObject.get("status").getAsString().equals("completed")){
+                return jsonObject.get("comments").getAsString();
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
     }
 
 }
