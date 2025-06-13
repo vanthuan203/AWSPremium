@@ -909,7 +909,7 @@ public class VideoCommentController {
                     continue;
                 }
                 if((System.currentTimeMillis()-videoComments.get(i).getChat_time())/1000/60>service.getMintime()&&videoComments.get(i).getChat_id().length()==0){
-                    String uuid=Openai.createChat(videoComments.get(i).getListcomment(),50);
+                    String uuid=Openai.createChat(videoComments.get(i).getListcomment(),service.getMax_render());
                     if(uuid!=null){
                         videoComments.get(i).setChat_id(uuid);
                         videoComments.get(i).setChat_time(System.currentTimeMillis());

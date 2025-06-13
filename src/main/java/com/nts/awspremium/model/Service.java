@@ -401,4 +401,12 @@ public class Service {
     public void setBonus_list_percent(Integer bonus_list_percent) {
         this.bonus_list_percent = bonus_list_percent;
     }
+
+    public Integer getMax_render() {
+        return max_render;
+    }
+
+    public void setMax_render(Integer max_render) {
+        this.max_render = max_render;
+    }
 }
