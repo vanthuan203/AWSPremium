@@ -917,16 +917,19 @@ public class VideoCommentController {
                     continue;
                 }
 
-                String status=Openai.getChatTask(videoComments.get(i).getChat_id());
-                if(status!=null&&status.equals("completed")) {
+                String[] data=Openai.getChatTask(videoComments.get(i).getChat_id());
+                if(data!=null&&data[0].equals("completed")) {
 
-                    String list_Comment = Openai.getTask(videoComments.get(i).getListcomment());
+                    String list_Comment =data[1];
                     if (list_Comment == null) {
                         continue;
                     } else {
                         comments = list_Comment.split("\\R");
                     }
-                }else if(status!=null&&status.equals("failed")) {
+                    videoComments.get(i).setChat_id("");
+                    videoCommentRepository.save( videoComments.get(i));
+
+                }else if(data!=null&&data[0].equals("failed")) {
                     videoComments.get(i).setChat_id("");
                     videoCommentRepository.save( videoComments.get(i));
                     continue;

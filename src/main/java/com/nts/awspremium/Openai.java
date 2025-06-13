@@ -277,8 +277,8 @@ public class Openai {
             RequestBody body = RequestBody.create(MediaType.parse("application/json"), json.toString());
             // Build request
             Request request = new Request.Builder()
-                    .url("https://ai-comment.yofatik.ai/api/v1/tasks/create")
-                    .post(body)
+                    .url("https://aicomment.yofatik.ai/api/v1/tasks")
+                    .method("POST", body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Authorization", "Bearer yV)}s%q^m$%$8eFZ}L,sspEa=reI~N7O")
                     .build();
@@ -312,8 +312,8 @@ public class Openai {
             RequestBody body = RequestBody.create(MediaType.parse("application/json"), json.toString());
             // Build request
             Request request = new Request.Builder()
-                    .url("https://ai-comment.yofatik.ai/api/v1/tasks/create")
-                    .post(body)
+                    .url("https://aicomment.yofatik.ai/api/v1/chat")
+                    .method("POST", body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Authorization", "Bearer yV)}s%q^m$%$8eFZ}L,sspEa=reI~N7O")
                     .build();
@@ -445,7 +445,7 @@ public class Openai {
         }
     }
 
-    public static String getChatTask(String uuid) {
+    public static String[] getChatTask(String uuid) {
 
         try {
             OkHttpClient client = new OkHttpClient.Builder()
@@ -468,15 +468,10 @@ public class Openai {
             String resultJson = response.body().string();
             response.body().close();
             JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
-            if(!jsonObject.get("status").getAsString().equals("completed")){
-                return jsonObject.get("status").getAsString();
-            }else if(jsonObject.get("status").getAsString().equals("completed")){
-                return jsonObject.get("comments").getAsString();
-            }
+            return new String[] { jsonObject.get("status").getAsString(),jsonObject.get("comments").getAsString() };
         } catch (Exception e) {
             return null;
         }
-        return null;
     }
 
 }
