@@ -252,6 +252,9 @@ public class ApiCmtController {
                             resp.put("error", "This video is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
+                        if(service.getLive()==1 && contentDetails.get("duration")==null){
+                            contentDetails.put("duration","P0D");
+                        }
                         if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() == 0&&service.getLive()==0) {
                             resp.put("error", "This video is a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
