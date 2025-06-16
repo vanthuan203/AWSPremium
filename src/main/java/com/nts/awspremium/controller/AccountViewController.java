@@ -282,6 +282,16 @@ public class AccountViewController {
                         }
 
                         resp.put("status", "true");
+
+                        if(cmt==1){
+                            float ran_SL=ran.nextFloat()*100F;
+                            if(ran_SL<80){
+                                resp.put("avatar", "true");
+                            }else{
+                                resp.put("avatar", "fail");
+                            }
+                        }
+
                         resp.put("username", account.get(0).getUsername());
                         resp.put("geo", account.get(0).getGeo().replace("cmt-","").trim());
                         resp.put("password", account.get(0).getPassword());
@@ -377,6 +387,16 @@ public class AccountViewController {
                     }
 
                     resp.put("status", "true");
+
+                    if(cmt==1){
+                        float ran_SL=ran.nextFloat()*100F;
+                        if(ran_SL<80){
+                            resp.put("avatar", "true");
+                        }else{
+                            resp.put("avatar", "fail");
+                        }
+                    }
+
                     resp.put("username", accountbyVps.get(0).getUsername());
                     resp.put("geo", accountbyVps.get(0).getGeo().replace("cmt-","").trim());
                     resp.put("recover", accountbyVps.get(0).getRecover());
