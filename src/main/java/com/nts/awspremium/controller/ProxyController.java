@@ -689,8 +689,8 @@ public class ProxyController {
                     ipV4Repository.updateIpv4Error(System.currentTimeMillis(),proxys.get(i));
                     String instance_id=ipV4Repository.get_Instance_Error(proxys.get(i));
                     if(instance_id!=null){
-                        ProxyAPI.run_Reboot_VPS(instance_id);
                         ipV4Repository.updateIpv4Error_NumCheck0(System.currentTimeMillis(),proxys.get(i));
+                        ProxyAPI.run_Reboot_VPS(instance_id);
                     }
                 }
             }
