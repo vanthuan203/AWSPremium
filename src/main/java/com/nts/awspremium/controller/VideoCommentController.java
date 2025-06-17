@@ -266,7 +266,7 @@ public class VideoCommentController {
                 if (snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getMaxthreads()==-2) {
                     videoCommentRepository.updateRunningLiveOrderByVideoId(video.get("id").toString());
                 }else if(!snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getMaxthreads()>=0){
-                    delete("1",videoView.getVideoid(),0);
+                    delete("1",videoView.getVideoid(),1);
                 }else if(snippet.get("liveBroadcastContent").toString().equals("none")&&videoView.getMaxthreads()==-2){
                     delete("1",videoView.getVideoid(),1);
                 }
