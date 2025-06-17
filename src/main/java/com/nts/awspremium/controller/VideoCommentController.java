@@ -537,9 +537,6 @@ public class VideoCommentController {
                 videoBuffhnew.setEnddate(enddate);
                 videoBuffhnew.setCommenttotal(videoBuffh.get(0).getCommenttotal());
                 videoCommentHistoryRepository.save(videoBuffhnew);
-                if(service.getLive()==1 && service.getAi()>0){
-                    Openai.stopTask(videoBuffh.get(0).getListcomment().trim());
-                }
                 videoCommentRepository.deletevideoByVideoId(videoidArr[i].trim());
             }
             resp.put("videocomment", "");
@@ -586,9 +583,6 @@ public class VideoCommentController {
                 videoBuffhnew.setPrice(videoBuffh.get(i).getPrice());
                 try {
                     videoCommentHistoryRepository.save(videoBuffhnew);
-                    if(service.getLive()==1 && service.getAi()>0){
-                        Openai.stopTask(videoBuffh.get(0).getListcomment().trim());
-                    }
                     videoCommentRepository.deletevideoByVideoId(videoBuffh.get(i).getVideoid().trim());
                 } catch (Exception e) {
 
