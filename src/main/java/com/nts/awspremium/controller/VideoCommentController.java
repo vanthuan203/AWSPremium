@@ -259,12 +259,10 @@ public class VideoCommentController {
         while (k.hasNext()) {
             try {
                 JSONObject video = (JSONObject) k.next();
-                JSONObject obj = new JSONObject();
-                JSONObject statistics = (JSONObject) video.get("statistics");
                 JSONObject snippet = (JSONObject) video.get("snippet");
                 VideoComment videoView = videoCommentRepository.getVideoCmtByVideoid(video.get("id").toString());
                 if (snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getMaxthreads()==-2) {
-                    videoCommentRepository.updateRunningLiveOrderByVideoId(video.get("id").toString());
+                    videoCommentRepository.updateRunningLiveOrderByVideoId(videoView.getVideoid());
                 }else if(!snippet.get("liveBroadcastContent").toString().equals("live")&&videoView.getMaxthreads()>=0){
                     delete("1",videoView.getVideoid(),1);
                 }else if(snippet.get("liveBroadcastContent").toString().equals("none")&&videoView.getMaxthreads()==-2){

@@ -54,7 +54,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE videocomment set maxthreads=0 where maxthreads=-2 and videoid=?4",nativeQuery = true)
+    @Query(value = "UPDATE videocomment set maxthreads=0 where maxthreads=-2 and videoid=?1",nativeQuery = true)
     public void updateRunningLiveOrderByVideoId(String videoid);
 
     @Query(value = "SELECT * from videocomment where videoid=?1",nativeQuery = true)
