@@ -67,7 +67,7 @@ public interface IpV4Repository extends JpaRepository<IpV4,Long> {
     @Query(value = "SELECT * from ipv4 where ipv4=?1 limit 1",nativeQuery = true)
     public IpV4 getIpv4(String ipv4);
 
-    @Query(value = "SELECT instance_id from ipv4 where ipv4=?1 and instance_id is not null and numcheck>=30 limit 1",nativeQuery = true)
+    @Query(value = "SELECT instance_id from ipv4 where ipv4=?1 and instance_id is not null and numcheck>=15 limit 1",nativeQuery = true)
     public String get_Instance_Error(String ipv4);
 
     @Modifying
