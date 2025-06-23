@@ -186,14 +186,15 @@ public class ApiController {
 
                 }
                 Setting setting = settingRepository.getSettingId1();
-                /*
                 if(service.getLive()==1){
-                    if((int)(vpsRepository.getSumThreadLive()*0.8)+10000<=videoViewRepository.getSumThreadLive()+data.getQuantity()){
+                    TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
+                    Calendar calendar = Calendar.getInstance(timeZone);
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    if(hour>=12){
                         resp.put("error", "System busy try again");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                 }
-                 */
                 Integer limitService=limitServiceRepository.getLimitPendingByServiceAndUser(admins.get(0).getUsername().trim(),service.getService());
                 if(limitService!=null){
                     if((videoViewRepository.getCountOrderByUserAndService(admins.get(0).getUsername().trim(),service.getService())==null?false:videoViewRepository.getCountOrderByUserAndService(admins.get(0).getUsername().trim(),service.getService())>=limitService*service.getMax())||limitService==0){
