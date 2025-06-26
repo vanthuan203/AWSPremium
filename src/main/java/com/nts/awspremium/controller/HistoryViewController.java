@@ -1458,8 +1458,8 @@ public class HistoryViewController {
                         proxy= new String[]{};
                     }
                 }else if(geo_rand.contains("test1")){
-                    if(proxyKRTrue.getValue().size()!=0){
-                        proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                     }else if(proxyUSTrue.getValue().size()!=0){
                         proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                     }else{
