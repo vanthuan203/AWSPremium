@@ -20,6 +20,8 @@ public class AccountViewController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
+    private AccountReg24hRepository accountReg24hRepository;
+    @Autowired
     private AdminRepository adminRepository;
 
     @Autowired
@@ -38,8 +40,12 @@ public class AccountViewController {
     private VpsRepository vpsRepository;
     @Autowired
     private RecoverRepository recoverRepository;
-
     @Autowired
+    private ProxyVNTrue proxyVNTrue;
+    @Autowired
+    private ProxySettingRepository proxySettingRepository;
+    @Autowired
+    private ProxyUSTrue proxyUSTrue;
     private CheckProsetListTrue checkProsetListTrue;
 
     @PostMapping(value = "/create", produces = "application/hal+json;charset=utf8")
@@ -81,6 +87,7 @@ public class AccountViewController {
                 account.setGoogle_suite(newaccount.getGoogle_suite());
                 account.setStatus(false);
                 account.setReg(false);
+                accountRepository.save(account);
                 resp.put("status", "true");
                 resp.put("message", "Insert " + newaccount.getUsername() + " thành công!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -717,9 +724,29 @@ public class AccountViewController {
                         resp.put("message", "Get account không thành công, thử lại sau ít phút!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
+                    String[] proxy = new String[0];
+                    Random rand=new Random();
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        resp.put("status", "fail");
+                        resp.put("message", "Hết proxy thỏa mãn!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                    String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+                    resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
                     //account.get(0).setVps("");
                     account.get(0).setReg(true);
                     accountRepository.save(account.get(0));
+
+                    AccountReg24h accountReg24h =new AccountReg24h();
+                    accountReg24h.setId(account.get(0).getGoogle_suite()+"|"+account.get(0).getUsername().trim());
+                    accountReg24h.setStatus(false);
+                    accountReg24h.setUpdate_time(System.currentTimeMillis());
+                    accountReg24hRepository.save(accountReg24h);
+
 
                     resp.put("status", "true");
                     resp.put("username", account.get(0).getUsername());
@@ -807,6 +834,9 @@ public class AccountViewController {
                 resp.put("message", "Tài khoản không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
             }else{
+
+                //AccountReg24h accountReg24h =accountReg24hRepository.
+
                 if(status==1){
                     account.setReg(true);
                     account.setStatus(true);

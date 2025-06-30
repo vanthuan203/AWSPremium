@@ -14,4 +14,7 @@ public interface AccountReg24hRepository extends JpaRepository<AccountReg24h,Str
     public Integer deleteAllByThan24h();
     @Query(value = "select count(*) from account_reg_24h where id like ?1",nativeQuery = true)
     public Integer count_Reg_24h_By_GoogleSuite(String google_suite);
+
+    @Query(value = "select count(*) from account_reg_24h where id like ?1",nativeQuery = true)
+    public Integer get_Reg_24h_By_Username(String google_suite);
 }
