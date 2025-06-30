@@ -861,11 +861,13 @@ public class AccountViewController {
                     googleSuite.setUpdate_time(System.currentTimeMillis());
                     googleSuiteRepository.save(googleSuite);
                 }
-
-
+            }else if(status>1){
+                account.setReg(false);
+                account.setStatus(false);
+                account.setLive(status);
+                accountRepository.save(account);
+                accountReg24hRepository.delete(accountReg24h);
             }
-
-
             resp.put("status", "true");
             resp.put("message", "update thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
