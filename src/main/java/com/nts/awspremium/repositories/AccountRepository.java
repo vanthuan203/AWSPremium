@@ -29,8 +29,8 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO account(username,password,recover,live,encodefinger,cookie,endtrial,endtrialstring,running,vps,date,geo) VALUES(?1,?2,?3,?4,?5,?6,0,'',?7,?8,?9,?10)",nativeQuery = true)
-    public void insertAccountView(String username,String password,String recover,Integer live,String encodefinger,String cookie,Integer running,String vps,String date,String geo);
+    @Query(value = "INSERT INTO account(username,password,recover,live,running,vps,date,geo) VALUES(?1,?2,?3,?4,?5,?6,?7,?8)",nativeQuery = true)
+    public void insertAccountView(String username,String password,String recover,Integer live,Integer running,String vps,String date,String geo);
 
     @Modifying
     @Transactional
@@ -85,8 +85,11 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "SELECT id  FROM account where (vps is null or vps='' or vps=' ') and running=0 and live=1 and geo=?1 order by rand()  limit 1",nativeQuery = true)
     public Long getAccountView(String geo);
 
-    @Query(value = "SELECT id  FROM account where live=0 and running=0 and round((endtrial/1000-UNIX_TIMESTAMP())/60/60/24) >=1  order by rand()  limit 1",nativeQuery = true)
+    @Query(value = "SELECT id  FROM account where live=1 and running=0 and round((endtrial/1000-UNIX_TIMESTAMP())/60/60/24) >=1  order by rand()  limit 1",nativeQuery = true)
     public Long getAccountNeedLogin();
+
+    @Query(value = "SELECT id  FROM account where live=1 and running=0 and status=0 and google_suite in(select id from google_suite where state=1 and status=1)  order by rand()  limit 1",nativeQuery = true)
+    public Long getAccountREG();
 
     @Query(value = "SELECT id FROM account where vps=?1 and running=0 and live=1 and geo=?2 order by rand() limit 1",nativeQuery = true)
     public Long getaccountByVps(String vps,String geo);

@@ -46,13 +46,8 @@ public class AccountSubController {
             Long id = accountRepository.findIdByUsername(newaccount.getUsername().trim());
             if (id != null) {
                 if (update == 1) {
-                    accountRepository.updateAccountSub(newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), newaccount.getVps()==null?"": newaccount.getVps(),  newaccount.getRunning(), newaccount.getTimeupdateinfo() > 0 ? System.currentTimeMillis() : 0, id);
+                    accountRepository.updateAccountSub(newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), newaccount.getVps()==null?"": newaccount.getVps(),  newaccount.getRunning(),0L, id);
                     Long id_cookie = cookieRepository.findIdSubByUsername(newaccount.getUsername().trim());
-                    if (id_cookie == null) {
-                        cookieRepository.insertCookieSub(newaccount.getUsername(), newaccount.getCookie());
-                    } else {
-                        cookieRepository.updateCookieSub(newaccount.getCookie(), id_cookie);
-                    }
                     resp.put("status", "true");
                     resp.put("message", "Update " + newaccount.getUsername() + " thành công!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -62,13 +57,8 @@ public class AccountSubController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
             } else {
-                accountRepository.insertAccountSub(newaccount.getUsername(), newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(),newaccount.getRunning(),newaccount.getVps()==null?"":newaccount.getVps(), newaccount.getDate(), newaccount.getTimeupdateinfo() > 0 ? System.currentTimeMillis() : 0);
+                accountRepository.insertAccountSub(newaccount.getUsername(), newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(),newaccount.getRunning(),newaccount.getVps()==null?"":newaccount.getVps(), newaccount.getDate(),0L);
                 Long id_cookie = cookieRepository.findIdSubByUsername(newaccount.getUsername().trim());
-                if (id_cookie == null) {
-                    cookieRepository.insertCookieSub(newaccount.getUsername(), newaccount.getCookie());
-                } else {
-                    cookieRepository.updateCookieSub(newaccount.getCookie(), id_cookie);
-                }
                 resp.put("status", "true");
                 resp.put("message", "Insert " + newaccount.getUsername() + " thành công!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -620,23 +610,15 @@ public class AccountSubController {
                 if (account.getPassword().length() > 0) {
                     accounts.get(0).setPassword(account.getPassword().trim());
                 }
-                if (account.getOldpassword().length() > 0) {
-                    accounts.get(0).setOldpassword(account.getOldpassword().trim());
-                }
+
                 if (account.getRecover().length() > 0) {
                     accounts.get(0).setRecover(account.getRecover().trim());
                 }
                 if (account.getVps().length() > 0) {
                     accounts.get(0).setVps(account.getVps().trim());
                 }
-                if (account.getTimeupdateinfo() > 0) {
-                    accounts.get(0).setTimeupdateinfo(System.currentTimeMillis());
-                }
                 accounts.get(0).setLive(account.getLive());
                 accountRepository.save(accounts.get(0));
-                if (account.getCookie().length() > 0) {
-                    cookieRepository.updateCookieByUsername(account.getCookie(), username.trim());
-                }
                 resp.put("status", "true");
                 resp.put("message", "Update info " + username + " thành công!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

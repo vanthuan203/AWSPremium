@@ -66,7 +66,21 @@ public class AccountViewController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
             } else {
-                accountRepository.insertAccountView(newaccount.getUsername(), newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), "", "", 0, "", newaccount.getDate(), newaccount.getGeo());
+                Account account = new Account();
+                account.setUsername(newaccount.getUsername().toLowerCase());
+                account.setPassword(newaccount.getPassword());
+                account.setRecover(newaccount.getRecover().toLowerCase());
+                account.setLive(1);
+                account.setVps("");
+                account.setProxy("");
+                account.setRunning(0);
+                account.setGet_time(0L);
+                account.setEnd_time(0L);
+                account.setDate(newaccount.getDate());
+                account.setGeo(newaccount.getGeo());
+                account.setGoogle_suite(newaccount.getGoogle_suite());
+                account.setStatus(false);
+                account.setReg(false);
                 resp.put("status", "true");
                 resp.put("message", "Insert " + newaccount.getUsername() + " thành công!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -217,7 +231,7 @@ public class AccountViewController {
                         }
                         account.get(0).setVps(vps.trim());
                         account.get(0).setRunning(1);
-                        account.get(0).setTimecheck(System.currentTimeMillis());
+                        account.get(0).setGet_time(System.currentTimeMillis());
                         accountRepository.save(account.get(0));
                         if(cmt==0){
                             Long historieId = historyViewRepository.getId(account.get(0).getUsername());
@@ -326,7 +340,7 @@ public class AccountViewController {
                     }
                     accountbyVps.get(0).setVps(vps.trim());
                     accountbyVps.get(0).setRunning(1);
-                    accountbyVps.get(0).setTimecheck(System.currentTimeMillis());
+                    accountbyVps.get(0).setGet_time(System.currentTimeMillis());
                     accountRepository.save(accountbyVps.get(0));
                     if(cmt==0){
                         Long historieId = historyViewRepository.getId(accountbyVps.get(0).getUsername());
@@ -487,7 +501,7 @@ public class AccountViewController {
                         }
                         account.get(0).setVps(vps.trim());
                         account.get(0).setRunning(1);
-                        account.get(0).setTimecheck(System.currentTimeMillis());
+                        account.get(0).setGet_time(System.currentTimeMillis());
                         accountRepository.save(account.get(0));
                         Long historieId = historyTrafficRepository.getId(account.get(0).getUsername());
                         if (historieId == null) {
@@ -558,7 +572,7 @@ public class AccountViewController {
                     List<Account> accountbyVps = accountRepository.findAccountById(idbyVps);
                     accountbyVps.get(0).setVps(vps.trim());
                     accountbyVps.get(0).setRunning(1);
-                    accountbyVps.get(0).setTimecheck(System.currentTimeMillis());
+                    accountbyVps.get(0).setGet_time(System.currentTimeMillis());
                     accountRepository.save(accountbyVps.get(0));
                     Long historieId = historyTrafficRepository.getId(accountbyVps.get(0).getUsername());
                     if (historieId == null) {
@@ -679,6 +693,145 @@ public class AccountViewController {
         }
 
     }
+
+    @GetMapping(value = "/get_Account_Reg", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> get_Account_Reg(@RequestHeader(defaultValue = "") String Authorization) {
+        JSONObject resp = new JSONObject();
+        Integer checktoken = adminRepository.FindAdminByToken(Authorization);
+        if (checktoken == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Token expired");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Long id = accountRepository.getAccountREG();
+            if (id == null) {
+                resp.put("status", "fail");
+                resp.put("message", "Hết tài khoản thỏa mãn!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            } else {
+                try {
+                    List<Account> account = accountRepository.findAccountById(id);
+                    if (account.size()==0 || account.get(0).getRunning() == 1) {
+                        resp.put("status", "fail");
+                        resp.put("message", "Get account không thành công, thử lại sau ít phút!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                    //account.get(0).setVps("");
+                    account.get(0).setReg(true);
+                    accountRepository.save(account.get(0));
+
+                    resp.put("status", "true");
+                    resp.put("username", account.get(0).getUsername());
+                    resp.put("password", account.get(0).getPassword());
+                    resp.put("recover", account.get(0).getRecover());
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                } catch (Exception e) {
+                    resp.put("status", "fail");
+                    resp.put("message", e.getMessage());
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+                }
+            }
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
+    @GetMapping(value = "/cron_Google_suite", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> cron_Google_suite() {
+        JSONObject resp = new JSONObject();
+        try {
+            Long id = accountRepository.getAccountREG();
+            if (id == null) {
+                resp.put("status", "fail");
+                resp.put("message", "Hết tài khoản thỏa mãn!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            } else {
+                try {
+                    List<Account> account = accountRepository.findAccountById(id);
+                    if (account.size()==0 || account.get(0).getRunning() == 1) {
+                        resp.put("status", "fail");
+                        resp.put("message", "Get account không thành công, thử lại sau ít phút!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                    //account.get(0).setVps("");
+                    account.get(0).setReg(true);
+                    accountRepository.save(account.get(0));
+
+                    resp.put("status", "true");
+                    resp.put("username", account.get(0).getUsername());
+                    resp.put("password", account.get(0).getPassword());
+                    resp.put("recover", account.get(0).getRecover());
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                } catch (Exception e) {
+                    resp.put("status", "fail");
+                    resp.put("message", e.getMessage());
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+                }
+            }
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+
+
+    @GetMapping(value = "/update_Account_Reg", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> update_Account_Reg(@RequestHeader(defaultValue = "") String Authorization,
+                                              @RequestParam(defaultValue = "") String username,
+                                              @RequestParam(defaultValue = "0") Integer status) {
+        JSONObject resp = new JSONObject();
+        Integer checktoken = adminRepository.FindAdminByToken(Authorization);
+        if (checktoken == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Token expired");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        if (username.length() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "username không để trống!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            Account account = accountRepository.findAccountByUsername(username.trim().toLowerCase());
+            if(account==null){
+                resp.put("status", "fail");
+                resp.put("message", "Tài khoản không tồn tại!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            }else{
+                if(status==1){
+                    account.setReg(true);
+                    account.setStatus(true);
+                    accountRepository.save(account);
+                }else if(status==0){
+                    account.setReg(false);
+                    account.setStatus(false);
+                    accountRepository.save(account);
+                }else if(status==-1){
+
+                }
+            }
+
+            resp.put("status", "true");
+            resp.put("message", "update thành công!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
 
 
     @GetMapping(value = "/countgmails", produces = "application/hal+json;charset=utf8")
