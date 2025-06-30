@@ -727,6 +727,7 @@ public class AccountViewController {
             }else{
                 if(googleSuite.getState()==false){
                     resp.put("status", "fail");
+                    resp.put("time", googleSuite.getUpdate_time());
                     resp.put("message", "Đợi 24h nhé!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
@@ -745,6 +746,7 @@ public class AccountViewController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                     account.get(0).setReg(true);
+                    account.get(0).setGet_time(System.currentTimeMillis());
                     accountRepository.save(account.get(0));
 
                     AccountReg24h accountReg24h =new AccountReg24h();
@@ -782,7 +784,9 @@ public class AccountViewController {
     public ResponseEntity<String> cron_Google_suite() {
         JSONObject resp = new JSONObject();
         try {
+            accountReg24hRepository.deleteAllByThan10m();
             accountReg24hRepository.deleteAllByThan24h();
+            accountRepository.resetAccountRegByThan10m();
             googleSuiteRepository.update_State_Google_Suite();
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -821,17 +825,15 @@ public class AccountViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
             }
             AccountReg24h accountReg24h = accountReg24hRepository.get_Reg_24h_By_Username(account.getGoogle_suite().trim()+"|"+account.getUsername().trim());
-            if(accountReg24h==null){
-                resp.put("status", "fail");
-                resp.put("message", "accountReg24h không tồn tại!");
-                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
-            }
+
             GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(account.getGoogle_suite().trim());
 
             if(status==1){
-                accountReg24h.setUpdate_time(System.currentTimeMillis());
-                accountReg24h.setStatus(true);
-                accountReg24hRepository.save(accountReg24h);
+                if(accountReg24h!=null){
+                    accountReg24h.setUpdate_time(System.currentTimeMillis());
+                    accountReg24h.setStatus(true);
+                    accountReg24hRepository.save(accountReg24h);
+                }
 
                 account.setReg(true);
                 account.setStatus(true);
@@ -847,14 +849,17 @@ public class AccountViewController {
                 account.setReg(false);
                 account.setStatus(false);
                 accountRepository.save(account);
-                accountReg24hRepository.delete(accountReg24h);
-
+                if(accountReg24h!=null){
+                    accountReg24hRepository.delete(accountReg24h);
+                }
             }else if(status==-1){
 
                 account.setReg(false);
                 account.setStatus(false);
                 accountRepository.save(account);
-                accountReg24hRepository.delete(accountReg24h);
+                if(accountReg24h!=null){
+                    accountReg24hRepository.delete(accountReg24h);
+                }
 
                 if(googleSuite.getState()==true){
                     googleSuite.setState(false);
@@ -866,7 +871,9 @@ public class AccountViewController {
                 account.setStatus(false);
                 account.setLive(status);
                 accountRepository.save(account);
-                accountReg24hRepository.delete(accountReg24h);
+                if(accountReg24h!=null){
+                    accountReg24hRepository.delete(accountReg24h);
+                }
             }
             resp.put("status", "true");
             resp.put("message", "update thành công!");

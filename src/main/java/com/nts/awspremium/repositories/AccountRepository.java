@@ -113,6 +113,12 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "UPDATE account SET running=0,vps='',proxy='',proxy2='' where vps=?1",nativeQuery = true)
     public Integer resetAccountByVps(String vps);
 
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE account SET reg=0,get_time=0 where geo='reg' and reg=1 and status=0 and round((UNIX_TIMESTAMP()-get_time/1000)/60)>10",nativeQuery = true)
+    public Integer resetAccountRegByThan10m();
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE account SET running=0,vps='',proxy='',proxy2='' where geo not like 'cmt%' and vps=?1",nativeQuery = true)
