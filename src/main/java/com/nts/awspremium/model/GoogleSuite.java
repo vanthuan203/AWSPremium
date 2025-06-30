@@ -13,7 +13,8 @@ import java.io.Serializable;
 public class GoogleSuite implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    private Long id;
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String id;
     @Column(columnDefinition = "TINYINT default 0")
     private Boolean status=false;
     @Column(columnDefinition = "TINYINT default 0")

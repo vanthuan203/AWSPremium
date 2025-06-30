@@ -22,6 +22,8 @@ public class AccountViewController {
     @Autowired
     private AccountReg24hRepository accountReg24hRepository;
     @Autowired
+    private GoogleSuiteRepository googleSuiteRepository;
+    @Autowired
     private AdminRepository adminRepository;
 
     @Autowired
@@ -702,7 +704,8 @@ public class AccountViewController {
     }
 
     @GetMapping(value = "/get_Account_Reg", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> get_Account_Reg(@RequestHeader(defaultValue = "") String Authorization) {
+    ResponseEntity<String> get_Account_Reg(@RequestHeader(defaultValue = "") String Authorization,
+                                           @RequestParam(defaultValue = "") String google_suite) {
         JSONObject resp = new JSONObject();
         Integer checktoken = adminRepository.FindAdminByToken(Authorization);
         if (checktoken == 0) {
@@ -710,8 +713,25 @@ public class AccountViewController {
             resp.put("message", "Token expired");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
+        if (google_suite.length() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "google_suite không để trống!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
         try {
-            Long id = accountRepository.getAccountREG();
+            GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(google_suite.trim());
+            if(googleSuite==null){
+                resp.put("status", "fail");
+                resp.put("message", "google_suite không tồn tại!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            }else{
+                if(googleSuite.getState()==false){
+                    resp.put("status", "fail");
+                    resp.put("message", "Đợi 24h nhé!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+            }
+            Long id = accountRepository.getAccountREG(google_suite.trim());
             if (id == null) {
                 resp.put("status", "fail");
                 resp.put("message", "Hết tài khoản thỏa mãn!");
@@ -719,25 +739,11 @@ public class AccountViewController {
             } else {
                 try {
                     List<Account> account = accountRepository.findAccountById(id);
-                    if (account.size()==0 || account.get(0).getRunning() == 1) {
+                    if (account.size()==0 || account.get(0).getReg() == true) {
                         resp.put("status", "fail");
                         resp.put("message", "Get account không thành công, thử lại sau ít phút!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
-                    String[] proxy = new String[0];
-                    Random rand=new Random();
-                    if(proxyVNTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    }else if(proxyUSTrue.getValue().size()!=0){
-                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                    }else{
-                        resp.put("status", "fail");
-                        resp.put("message", "Hết proxy thỏa mãn!");
-                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                    }
-                    String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
-                    resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
-                    //account.get(0).setVps("");
                     account.get(0).setReg(true);
                     accountRepository.save(account.get(0));
 
@@ -752,6 +758,10 @@ public class AccountViewController {
                     resp.put("username", account.get(0).getUsername());
                     resp.put("password", account.get(0).getPassword());
                     resp.put("recover", account.get(0).getRecover());
+                    resp.put("recover", account.get(0).getRecover());
+                    resp.put("cmt", 0);
+                    resp.put("avatar", 0);
+                    resp.put("geo", "vn");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 } catch (Exception e) {
                     resp.put("status", "fail");
@@ -772,7 +782,7 @@ public class AccountViewController {
     public ResponseEntity<String> cron_Google_suite() {
         JSONObject resp = new JSONObject();
         try {
-            Long id = accountRepository.getAccountREG();
+            Long id = accountRepository.getAccountREG("Fd");
             if (id == null) {
                 resp.put("status", "fail");
                 resp.put("message", "Hết tài khoản thỏa mãn!");
@@ -828,27 +838,58 @@ public class AccountViewController {
         }
 
         try {
+
             Account account = accountRepository.findAccountByUsername(username.trim().toLowerCase());
             if(account==null){
                 resp.put("status", "fail");
                 resp.put("message", "Tài khoản không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
-            }else{
-
-                //AccountReg24h accountReg24h =accountReg24hRepository.
-
-                if(status==1){
-                    account.setReg(true);
-                    account.setStatus(true);
-                    accountRepository.save(account);
-                }else if(status==0){
-                    account.setReg(false);
-                    account.setStatus(false);
-                    accountRepository.save(account);
-                }else if(status==-1){
-
-                }
             }
+            AccountReg24h accountReg24h = accountReg24hRepository.get_Reg_24h_By_Username(account.getGoogle_suite().trim()+"|"+account.getUsername().trim());
+            if(accountReg24h==null){
+                resp.put("status", "fail");
+                resp.put("message", "accountReg24h không tồn tại!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            }
+            GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(account.getGoogle_suite().trim());
+
+            if(status==1){
+                accountReg24h.setUpdate_time(System.currentTimeMillis());
+                accountReg24h.setStatus(true);
+                accountReg24hRepository.save(accountReg24h);
+
+                account.setReg(true);
+                account.setStatus(true);
+                accountRepository.save(account);
+
+                if(googleSuite.getState()==true&&accountReg24hRepository.count_Reg_24h_By_GoogleSuite(account.getGoogle_suite().trim()+"%")>=40){
+                    googleSuite.setState(false);
+                    googleSuite.setUpdate_time(System.currentTimeMillis());
+                    googleSuiteRepository.save(googleSuite);
+                }
+
+            }else if(status==0){
+                account.setReg(false);
+                account.setStatus(false);
+                accountRepository.save(account);
+                accountReg24hRepository.delete(accountReg24h);
+
+            }else if(status==-1){
+
+                account.setReg(false);
+                account.setStatus(false);
+                accountRepository.save(account);
+                accountReg24hRepository.delete(accountReg24h);
+
+                if(googleSuite.getState()==true){
+                    googleSuite.setState(false);
+                    googleSuite.setUpdate_time(System.currentTimeMillis());
+                    googleSuiteRepository.save(googleSuite);
+                }
+
+
+            }
+
 
             resp.put("status", "true");
             resp.put("message", "update thành công!");
@@ -862,6 +903,26 @@ public class AccountViewController {
 
     }
 
+    @GetMapping(value = "/list_Google_Suite", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> list_Google_Suite(@RequestHeader(defaultValue = "") String Authorization) {
+        JSONObject resp = new JSONObject();
+        try {
+            Integer checktoken = adminRepository.FindAdminByToken(Authorization);
+            if (checktoken == 0) {
+                resp.put("status", "fail");
+                resp.put("message", "Token expired");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            }
+
+            resp.put("status", "true");
+            resp.put("list", googleSuiteRepository.get_List_Google_Suite());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     @GetMapping(value = "/countgmails", produces = "application/hal+json;charset=utf8")
