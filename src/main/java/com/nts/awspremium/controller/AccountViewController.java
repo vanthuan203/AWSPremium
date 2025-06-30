@@ -782,40 +782,15 @@ public class AccountViewController {
     public ResponseEntity<String> cron_Google_suite() {
         JSONObject resp = new JSONObject();
         try {
-            Long id = accountRepository.getAccountREG("Fd");
-            if (id == null) {
-                resp.put("status", "fail");
-                resp.put("message", "Hết tài khoản thỏa mãn!");
-                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-            } else {
-                try {
-                    List<Account> account = accountRepository.findAccountById(id);
-                    if (account.size()==0 || account.get(0).getRunning() == 1) {
-                        resp.put("status", "fail");
-                        resp.put("message", "Get account không thành công, thử lại sau ít phút!");
-                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                    }
-                    //account.get(0).setVps("");
-                    account.get(0).setReg(true);
-                    accountRepository.save(account.get(0));
-
-                    resp.put("status", "true");
-                    resp.put("username", account.get(0).getUsername());
-                    resp.put("password", account.get(0).getPassword());
-                    resp.put("recover", account.get(0).getRecover());
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                } catch (Exception e) {
-                    resp.put("status", "fail");
-                    resp.put("message", e.getMessage());
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
-                }
-            }
+            accountReg24hRepository.deleteAllByThan24h();
+            googleSuiteRepository.update_State_Google_Suite();
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");
             resp.put("message", e.getMessage());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
-
     }
 
 
