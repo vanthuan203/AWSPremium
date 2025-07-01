@@ -48,6 +48,7 @@ public class AccountViewController {
     private ProxySettingRepository proxySettingRepository;
     @Autowired
     private ProxyUSTrue proxyUSTrue;
+    @Autowired
     private CheckProsetListTrue checkProsetListTrue;
 
     @PostMapping(value = "/create", produces = "application/hal+json;charset=utf8")
