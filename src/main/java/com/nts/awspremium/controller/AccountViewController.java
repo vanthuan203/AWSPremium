@@ -49,6 +49,8 @@ public class AccountViewController {
     @Autowired
     private ProxyUSTrue proxyUSTrue;
     @Autowired
+    private SettingRepository settingRepository;
+    @Autowired
     private CheckProsetListTrue checkProsetListTrue;
 
     @PostMapping(value = "/create", produces = "application/hal+json;charset=utf8")
@@ -839,8 +841,8 @@ public class AccountViewController {
                 account.setReg(true);
                 account.setStatus(true);
                 accountRepository.save(account);
-
-                if(googleSuite.getState()==true&&accountReg24hRepository.count_Reg_24h_By_GoogleSuite(account.getGoogle_suite().trim()+"%")>=40){
+                Setting setting =settingRepository.getSettingId1();
+                if(googleSuite.getState()==true&&accountReg24hRepository.count_Reg_24h_By_GoogleSuite(account.getGoogle_suite().trim()+"%")>=setting.getPricerate()){
                     googleSuite.setState(false);
                     googleSuite.setUpdate_time(System.currentTimeMillis());
                     googleSuiteRepository.save(googleSuite);
