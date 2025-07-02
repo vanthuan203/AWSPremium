@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 public interface AccountReg24hRepository extends JpaRepository<AccountReg24h,String> {
     @Modifying
     @Transactional
-    @Query(value = "delete from account_reg_24h where round((UNIX_TIMESTAMP()-update_time/1000)/60/60)>12;",nativeQuery = true)
+    @Query(value = "delete from account_reg_24h where round((UNIX_TIMESTAMP()-update_time/1000)/60/60)>=12;",nativeQuery = true)
     public Integer deleteAllByThan24h();
 
     @Modifying

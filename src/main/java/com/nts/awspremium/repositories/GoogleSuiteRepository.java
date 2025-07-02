@@ -15,7 +15,7 @@ public interface GoogleSuiteRepository extends JpaRepository<GoogleSuite,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update google_suite set state=1,update_time=0 where  state=0 and round((UNIX_TIMESTAMP()-update_time/1000)/60/60)>12;",nativeQuery = true)
+    @Query(value = "update google_suite set state=1,update_time=0 where  state=0 and round((UNIX_TIMESTAMP()-update_time/1000)/60/60)>=12;",nativeQuery = true)
     public Integer update_State_Google_Suite();
 
     @Query(value = "SELECT GROUP_CONCAT(id) FROM AccPremium.google_suite;",nativeQuery = true)
