@@ -26,6 +26,8 @@ public class AutoRunProxyTrue {
     @Autowired
     private ProxyKRTrue proxyKRTrue;
     @Autowired
+    private ProxyTestTrue proxyTestTrue;
+    @Autowired
     private ProxyVultrTrue proxyVultrTrue;
     @Autowired
     private Environment env;
@@ -38,6 +40,7 @@ public class AutoRunProxyTrue {
                     while (true) {
                         try {
                             proxyVNTrue.setValue(proxyRepository.getProxyTrue("vn"));
+                            proxyTestTrue.setValue(proxyRepository.getProxyTrue("test1"));
                             proxyUSTrue.setValue(proxyRepository.getProxyTrue("us"));
                             proxyKRTrue.setValue(proxyRepository.getProxyKRTrue());
                             proxyJPTrue.setValue(proxyRepository.getProxyTrue("jp"));

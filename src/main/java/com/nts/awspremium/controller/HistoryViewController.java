@@ -64,6 +64,8 @@ public class HistoryViewController {
     @Autowired
     private ProxyKRTrue proxyKRTrue;
     @Autowired
+    private ProxyTestTrue proxyTestTrue;
+    @Autowired
     private ProxyJPTrue proxyJPTrue;
     @Autowired
     private ServiceRepository serviceRepository;
@@ -1458,10 +1460,8 @@ public class HistoryViewController {
                         proxy= new String[]{};
                     }
                 }else if(geo_rand.contains("test1")){
-                    if(proxyVNTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    }else if(proxyUSTrue.getValue().size()!=0){
-                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    if(proxyTestTrue.getValue().size()!=0){
+                        proxy=proxyTestTrue.getValue().get(rand.nextInt(proxyTestTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
