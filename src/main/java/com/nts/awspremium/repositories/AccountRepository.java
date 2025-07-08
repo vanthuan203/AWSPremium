@@ -34,8 +34,8 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE account SET password=?1,recover=?2,live=?3,encodefinger=?4,cookie=?5,running=0 where id=?6",nativeQuery = true)
-    public void updateAccountView(String password,String recover,Integer live,String encodefinger,String cookie,Long id);
+    @Query(value = "UPDATE account SET password=?1,recover=?2,live=?3 where id=?6",nativeQuery = true)
+    public void updateAccountView(String password,String recover,Integer live,Long id);
 
 
     @Modifying

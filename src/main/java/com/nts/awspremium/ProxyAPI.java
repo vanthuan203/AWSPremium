@@ -97,9 +97,11 @@ public class ProxyAPI {
             }
         } catch (Exception e) {
             //System.out.println(e);
+            /*
             if(e.toString().indexOf("Authentication")>=0){
                 return true;
             }
+             */
             return false;
         }
     }

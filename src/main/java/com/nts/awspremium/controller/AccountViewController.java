@@ -67,7 +67,7 @@ public class AccountViewController {
             Long idUsername = accountRepository.findIdUsername(newaccount.getUsername().trim());
             if (idUsername != null) {
                 if (update == 1) {
-                    accountRepository.updateAccountView(newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), "", "", idUsername);
+                    accountRepository.updateAccountView(newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), idUsername);
                     resp.put("status", "true");
                     resp.put("message", "Update " + newaccount.getUsername() + " thành công!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
