@@ -92,6 +92,7 @@ public class AccountViewController {
                 account.setGoogle_suite(newaccount.getGoogle_suite());
                 account.setStatus(false);
                 account.setReg(false);
+                account.setGroup_mail(newaccount.getGroup_mail()==null?"0":newaccount.getGroup_mail());
                 accountRepository.save(account);
                 resp.put("status", "true");
                 resp.put("message", "Insert " + newaccount.getUsername() + " thành công!");

@@ -41,6 +41,8 @@ public class Account implements Serializable {
     private Boolean status=false;
     @Column(columnDefinition = "TINYINT default 0")
     private Boolean reg=false;
+    @Column(columnDefinition = "varchar(255) default '1'")
+    private  String group_mail="1";
 
     public Account() {
     }
