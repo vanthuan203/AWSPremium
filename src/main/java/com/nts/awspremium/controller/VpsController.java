@@ -301,10 +301,10 @@ public class VpsController {
         }
     }
     @GetMapping(value = "resetBasDailyByCron",produces = "application/hal+json;charset=utf8")
-    public ResponseEntity<String> resetBasDailyByCron(@RequestParam(defaultValue = "0") Integer limit){
+    public ResponseEntity<String> resetBasDailyByCron(@RequestParam(defaultValue = "0") Integer limit, @RequestParam(defaultValue = "0") Integer vpsreset){
         JSONObject resp=new JSONObject();
         try{
-            vpsRepository.resetBasDailyByCron(System.currentTimeMillis(),limit);
+            vpsRepository.resetBasDailyByCron(vpsreset,System.currentTimeMillis(),limit);
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }catch(Exception e){

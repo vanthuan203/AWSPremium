@@ -186,7 +186,7 @@ public class ApiController {
 
                 }
                 Setting setting = settingRepository.getSettingId1();
-                if(service.getLive()==1){
+                if(service.getLive()==1&&admins.get(0).getRole().equals("ROLE_USER")){
                     TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
                     Calendar calendar = Calendar.getInstance(timeZone);
                     int hour = calendar.get(Calendar.HOUR_OF_DAY);

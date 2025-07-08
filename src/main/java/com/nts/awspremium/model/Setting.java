@@ -38,12 +38,24 @@ public class Setting {
     private Integer threadmin;
     private Integer randview;
     private Integer limit_vps_reset=50;
+    private Integer limit_vps_reset_daily=50;
     private Float thread_rate=1.5F;
+
+    private Integer vps_reset_daily=2;
+    private Integer vps_reset=3;
     ;
 
 
 
     public Setting() {
+    }
+
+    public Integer getLimit_vps_reset_daily() {
+        return limit_vps_reset_daily;
+    }
+
+    public void setLimit_vps_reset_daily(Integer limit_vps_reset_daily) {
+        this.limit_vps_reset_daily = limit_vps_reset_daily;
     }
 
     public Integer getMax_acc_smm() {
@@ -244,5 +256,38 @@ public class Setting {
 
     public void setLimit_vps_reset(Integer limit_vps_reset) {
         this.limit_vps_reset = limit_vps_reset;
+    }
+
+
+    public Integer getCheck_threads() {
+        return check_threads;
+    }
+
+    public void setCheck_threads(Integer check_threads) {
+        this.check_threads = check_threads;
+    }
+
+    public Integer getCmtcountuser_jp() {
+        return cmtcountuser_jp;
+    }
+
+    public void setCmtcountuser_jp(Integer cmtcountuser_jp) {
+        this.cmtcountuser_jp = cmtcountuser_jp;
+    }
+
+    public Integer getVps_reset_daily() {
+        return vps_reset_daily;
+    }
+
+    public void setVps_reset_daily(Integer vps_reset_daily) {
+        this.vps_reset_daily = vps_reset_daily;
+    }
+
+    public Integer getVps_reset() {
+        return vps_reset;
+    }
+
+    public void setVps_reset(Integer vps_reset) {
+        this.vps_reset = vps_reset;
     }
 }

@@ -40,13 +40,13 @@ public class ResetBAS {
                                 throw new RuntimeException(e);
                             }
                             Setting setting=settingRepository.getSettingId1();
-                            vpsController.resetBasNoCheckByCron(setting.getLimit_vps_reset(),3);
+                            vpsController.resetBasNoCheckByCron(setting.getLimit_vps_reset(),setting.getVps_reset());
                             try {
                                 Thread.sleep(5000);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            vpsController.resetBasDailyByCron(50);
+                            vpsController.resetBasDailyByCron(setting.getLimit_vps_reset_daily(),setting.getVps_reset_daily());
                         } catch (Exception e) {
                             continue;
                         }
