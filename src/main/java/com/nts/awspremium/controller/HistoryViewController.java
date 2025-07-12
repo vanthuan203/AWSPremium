@@ -730,13 +730,20 @@ public class HistoryViewController {
                     for (int i = 0; i < service.getPlaylists(); i++) {
                         arrSource.add("playlists");
                     }
+                    if(service.getGeo().equals("test1")){
+                        for (int i = 0; i < service.getSearch_real(); i++) {
+                            arrSource.add("search_real");
+                        }
+                    }
                     String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
                     if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                         resp.put("suggest_type", "true");
                     } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
                         resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+                    } else if (source_view.equals("search_real")) {
+                        resp.put("video_title",videos.get(0).getVideotitle()+ " "+videos.get(0).getVideoid());
                     }
-                    resp.put("source", source_view);
+                    resp.put("source", source_view.equals("search_real")?"search":source_view);
                     if(source_view.equals("embed")){
                         resp.put("suggest_video", videos.get(0).getLink());
                     }
@@ -1577,13 +1584,20 @@ public class HistoryViewController {
                 for (int i = 0; i < service.getPlaylists(); i++) {
                     arrSource.add("playlists");
                 }
+                if(service.getGeo().equals("test1")){
+                    for (int i = 0; i < service.getSearch_real(); i++) {
+                        arrSource.add("search_real");
+                    }
+                }
                 String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
                 if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                     resp.put("suggest_type", "true");
                 } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
                     resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+                } else if (source_view.equals("search_real")) {
+                    resp.put("video_title",videos.get(0).getVideotitle()+ " "+videos.get(0).getVideoid());
                 }
-                resp.put("source", source_view);
+                resp.put("source", source_view.equals("search_real")?"search":source_view);
                 if(source_view.equals("embed")){
                     resp.put("suggest_video", videos.get(0).getLink());
                 }
@@ -1880,13 +1894,20 @@ public class HistoryViewController {
             for (int i = 0; i < service.getPlaylists(); i++) {
                 arrSource.add("playlists");
             }
+            if(service.getGeo().equals("test1")){
+                for (int i = 0; i < service.getSearch_real(); i++) {
+                    arrSource.add("search_real");
+                }
+            }
             String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
             if (source_view.equals("suggest") && service.getType().equals("Special")) {
                 resp.put("suggest_type", "true");
             } else if (source_view.equals("search") && service.getType().equals("Special")) {
                 resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+            } else if (source_view.equals("search_real")) {
+                resp.put("video_title",videos.get(0).getVideotitle()+ " "+videos.get(0).getVideoid());
             }
-            resp.put("source", source_view);
+            resp.put("source", source_view.equals("search_real")?"search":source_view);
             if(source_view.equals("embed")){
                 resp.put("suggest_video", videos.get(0).getLink());
             }

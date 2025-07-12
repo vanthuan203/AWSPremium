@@ -60,6 +60,18 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
     @Query(value = "SELECT * FROM service where service=?1 limit 1",nativeQuery = true)
     public Service getInfoService(Integer service);
 
+    @Query(value = "SELECT\n" +
+            "  TRIM(BOTH ',' FROM CONCAT(\n" +
+            "    IF(search > 0, 'search,', ''),\n" +
+            "    IF(suggest > 0, 'suggest,', ''),\n" +
+            "    IF(direct > 0, 'direct,', ''),\n" +
+            "    IF(external > 0, 'external,', ''),\n" +
+            "    IF(embed > 0, 'embed,', ''),\n" +
+            "    IF(dtn > 0, 'dtn,', '')\n" +
+            "  ))\n" +
+            "FROM service  where service=?1 limit 1",nativeQuery = true)
+    public String getSourceService(Integer service);
+
     @Query(value = "Select count(*) from admin where token=?1",nativeQuery = true)
     public Integer FindAdminByToken(String Authorization);
 

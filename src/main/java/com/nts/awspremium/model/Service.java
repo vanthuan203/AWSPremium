@@ -28,6 +28,9 @@ public class Service {
     private Integer embed;
     private Integer external;
     private Integer playlists;
+    @Column(columnDefinition = "integer default 15")
+    private Integer search_real=15;
+
     private Integer mintime;
     private Integer maxtime;
     private Integer refill;
@@ -96,6 +99,14 @@ public class Service {
         this.bonus_list = bonus_list;
         this.bonus_type = bonus_type;
         this.bonus_list_percent = bonus_list_percent;
+    }
+
+    public Integer getSearch_real() {
+        return search_real;
+    }
+
+    public void setSearch_real(Integer search_real) {
+        this.search_real = search_real;
     }
 
     public Integer getReply() {
