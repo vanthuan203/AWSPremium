@@ -24,6 +24,8 @@ public class Service {
     private Integer search;
     private Integer suggest;
     private Integer dtn;
+    @Column(columnDefinition = "integer default 15")
+    private Integer home=15;
     private Integer direct;
     private Integer embed;
     private Integer external;
@@ -99,6 +101,14 @@ public class Service {
         this.bonus_list = bonus_list;
         this.bonus_type = bonus_type;
         this.bonus_list_percent = bonus_list_percent;
+    }
+
+    public Integer getHome() {
+        return home;
+    }
+
+    public void setHome(Integer home) {
+        this.home = home;
     }
 
     public Integer getSearch_real() {
