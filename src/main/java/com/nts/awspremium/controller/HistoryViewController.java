@@ -730,13 +730,11 @@ public class HistoryViewController {
                     for (int i = 0; i < service.getPlaylists(); i++) {
                         arrSource.add("playlists");
                     }
-                    if(service.getGeo().equals("test1")){
-                        for (int i = 0; i < service.getSearch_real(); i++) {
-                            arrSource.add("search_real");
-                        }
-                        for (int i = 0; i < service.getHome(); i++) {
-                            arrSource.add("home");
-                        }
+                    for (int i = 0; i < service.getSearch_real(); i++) {
+                        arrSource.add("search_real");
+                    }
+                    for (int i = 0; i < service.getHome(); i++) {
+                        arrSource.add("home");
                     }
                     String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
                     if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
@@ -1587,13 +1585,11 @@ public class HistoryViewController {
                 for (int i = 0; i < service.getPlaylists(); i++) {
                     arrSource.add("playlists");
                 }
-                if(service.getGeo().equals("test1")){
-                    for (int i = 0; i < service.getSearch_real(); i++) {
-                        arrSource.add("search_real");
-                    }
-                    for (int i = 0; i < service.getHome(); i++) {
-                        arrSource.add("home");
-                    }
+                for (int i = 0; i < service.getSearch_real(); i++) {
+                    arrSource.add("search_real");
+                }
+                for (int i = 0; i < service.getHome(); i++) {
+                    arrSource.add("home");
                 }
                 String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
                 if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
@@ -1900,10 +1896,8 @@ public class HistoryViewController {
             for (int i = 0; i < service.getPlaylists(); i++) {
                 arrSource.add("playlists");
             }
-            if(service.getGeo().equals("test1")){
-                for (int i = 0; i < service.getSearch_real(); i++) {
-                    arrSource.add("search_real");
-                }
+            for (int i = 0; i < service.getSearch_real(); i++) {
+                arrSource.add("search_real");
             }
             String source_view = arrSource.get(ran.nextInt(arrSource.size())).trim();
             if (source_view.equals("suggest") && service.getType().equals("Special")) {
