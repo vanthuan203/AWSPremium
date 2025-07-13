@@ -68,6 +68,11 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
     @Query(value = "UPDATE historyview SET running=0,vps='',proxy='',typeproxy='',geo='',max_time=0 where id=?1",nativeQuery = true)
     public Integer resetHistoryById(Long id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "Delete from historyview where id=?1",nativeQuery = true)
+    public Integer deleteHistoryById(Long id);
+
 
     @Modifying
     @Transactional

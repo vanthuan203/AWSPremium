@@ -976,7 +976,7 @@ public class AccountViewController {
             if(accountRepository.getProxyByUsername(username.trim().trim()).length()>4){
                 proxyRepository.updaterunningProxy(accountRepository.getProxyByUsername(username.trim()));
             }
-            historyViewRepository.resetHistoryById(idHistory);
+            historyViewRepository.deleteHistoryById(idHistory);
             accountRepository.resetAccountByUsername(live, idUsername);
             resp.put("status", "true");
             resp.put("message", "Reset Account thành công!");
