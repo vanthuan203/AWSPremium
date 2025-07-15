@@ -198,7 +198,7 @@ public class AccountViewController {
                 Thread.sleep(ran.nextInt(500));
                 Long id=null;
                 if(cmt==0){
-                    id = accountRepository.getAccountView(geo.trim());
+                    id = accountRepository.getAccountView("view");
                 }else{
                     if(geo.equals("vn")){
                         if(check_geo==1){
@@ -227,6 +227,7 @@ public class AccountViewController {
                         }
                         if(cmt==0){
                             account.get(0).setProxy("");
+                            account.get(0).setGeo(geo.trim());
                             /*
                             if(account.get(0).getProxy()== null|| account.get(0).getProxy().length()==0){
                                 List<Proxy> proxies=proxyRepository.getProxyFixAccountByGeo(geo.trim());
