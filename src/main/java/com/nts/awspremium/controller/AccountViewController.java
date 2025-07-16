@@ -198,7 +198,11 @@ public class AccountViewController {
                 Thread.sleep(ran.nextInt(500));
                 Long id=null;
                 if(cmt==0){
-                    id = accountRepository.getAccountView("view");
+                    if(geo.equals("test1")){
+                        id = accountRepository.getAccountView("test1");
+                    }else{
+                        id = accountRepository.getAccountView("view");
+                    }
                 }else{
                     if(geo.equals("vn")){
                         if(check_geo==1){
