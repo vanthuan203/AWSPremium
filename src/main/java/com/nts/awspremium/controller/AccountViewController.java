@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -447,6 +449,126 @@ public class AccountViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(value = "/getAcc28", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<Map<String, Object>> getAcc28(@RequestParam(defaultValue = "") String vps) throws InterruptedException {
+        Map<String, Object> resp = new LinkedHashMap<>();
+        Map<String, Object> data = new LinkedHashMap<>();
+        Random ran = new Random();
+        if (vps.length() == 0) {
+            resp.put("status", false);
+            data.put("message", "VPS không để trống");
+            resp.put("data", data);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+        try {
+            Integer check_get = vpsRepository.checkGetAccount5ByThreadVps(vps.trim(),"test28");
+            if (check_get == 0) {
+                resp.put("status", false);
+                data.put("message", "Đã đủ account cho VPS");
+                resp.put("data", data);
+                return new ResponseEntity<>(resp, HttpStatus.OK);
+            }
+
+            Thread.sleep(ran.nextInt(500));
+            Thread.sleep(ran.nextInt(500));
+            Long id=null;
+            id = accountRepository.getAccountView("test28");
+            if (id == null) {
+                resp.put("status", false);
+                data.put("message", "Hết tài khoản thoải mãn");
+                resp.put("data", data);
+                return new ResponseEntity<>(resp, HttpStatus.OK);
+            } else {
+                try {
+
+                    List<Account> account = accountRepository.findAccountById(id);
+                    account.get(0).setGeo("test28");
+                    account.get(0).setVps(vps.trim());
+                    account.get(0).setRunning(1);
+                    account.get(0).setGet_time(System.currentTimeMillis());
+                    accountRepository.save(account.get(0));
+                    Long historieId = historyViewRepository.getId(account.get(0).getUsername());
+                    if (historieId == null) {
+                        try{
+                            HistoryView history = new HistoryView();
+                            history.setUsername(account.get(0).getUsername());
+                            history.setListvideo("");
+                            history.setProxy(account.get(0).getProxy());
+                            history.setTypeproxy((account.get(0).getProxy().split(":"))[0]);
+                            history.setRunning(0);
+                            history.setTask_done(0);
+                            history.setVps(vps);
+                            history.setVideoid("");
+                            history.setOrderid(0L);
+                            history.setChannelid("");
+                            history.setGeo(account.get(0).getGeo());
+                            history.setFinger_id(0L);
+                            history.setTask_time(0L);
+                            history.setMax_time(0);
+                            history.setTimeget(System.currentTimeMillis());
+                            historyViewRepository.save(history);
+                        }catch (Exception e){
+                            Thread.sleep(10+ran.nextInt(1000));
+                            HistoryView history = new HistoryView();
+                            history.setUsername(account.get(0).getUsername());
+                            history.setListvideo("");
+                            history.setProxy(account.get(0).getProxy());
+                            history.setTypeproxy((account.get(0).getProxy().split(":"))[0]);
+                            history.setRunning(0);
+                            history.setTask_done(0);
+                            history.setVps(vps);
+                            history.setVideoid("");
+                            history.setOrderid(0L);
+                            history.setChannelid("");
+                            history.setGeo(account.get(0).getGeo());
+                            history.setFinger_id(0L);
+                            history.setTask_time(0L);
+                            history.setMax_time(0);
+                            history.setTimeget(System.currentTimeMillis());
+                            historyViewRepository.save(history);
+                        }
+
+                    }else {
+                        List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
+                        histories.get(0).setListvideo("");
+                        histories.get(0).setProxy(account.get(0).getProxy());
+                        histories.get(0).setTypeproxy((account.get(0).getProxy().split(":"))[0]);
+                        histories.get(0).setRunning(0);
+                        histories.get(0).setTask_done(0);
+                        histories.get(0).setVps(vps);
+                        histories.get(0).setVideoid("");
+                        histories.get(0).setOrderid(0L);
+                        histories.get(0).setChannelid("");
+                        histories.get(0).setGeo(account.get(0).getGeo());
+                        histories.get(0).setFinger_id(0L);
+                        histories.get(0).setTask_time(0L);
+                        histories.get(0).setMax_time(0);
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        historyViewRepository.save(histories.get(0));
+                    }
+
+                    resp.put("status", true);
+                    data.put("username", account.get(0).getUsername());
+                    data.put("password", account.get(0).getPassword());
+                    data.put("recover", account.get(0).getRecover());
+                    resp.put("data",data);
+                    return new ResponseEntity<>(resp, HttpStatus.OK);
+                } catch (Exception e) {
+                    resp.put("status", false);
+                    data.put("message", "Error System!!!");
+                    resp.put("data", data);
+                    return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+                }
+            }
+        } catch (Exception e) {
+            resp.put("status", false);
+            data.put("message", "Error System!!!");
+            resp.put("data", data);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @GetMapping(value = "/gettraffic", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> gettraffic(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "") String geo,@RequestHeader(defaultValue = "") String Authorization) throws InterruptedException {
