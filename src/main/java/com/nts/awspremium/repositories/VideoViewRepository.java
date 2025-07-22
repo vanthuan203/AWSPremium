@@ -14,12 +14,18 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Query(value = "SELECT * FROM videoview where service in(select service from service where geo=?1 and checktime=0  and live=0) and timestart>0 and INSTR(?2,videoid)=0 and orderid in (?3) order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoViewByGeo(String geo, String listvideo, List<String> orderid);
 
+    @Query(value = "SELECT * FROM videoview where service in(select service from service where checktime=0  and live=0) and timestart>0 and INSTR(?1,videoid)=0 and orderid in (?2) order by rand() limit 1",nativeQuery = true)
+    public List<VideoView> getvideoViewRand(String listvideo, List<String> orderid);
+
 
     @Query(value = "SELECT * FROM videoview where service in(select service from service where geo=?1 and checktime=0  and live=0 and type='Default') and timestart>0 and INSTR(?2,videoid)=0 and orderid in (?3) order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoViewByGeoBAS28(String geo, String listvideo, List<String> orderid);
 
     @Query(value = "SELECT * FROM videoview where service in(select service from service where geo=?1 and checktime=0  and live=1) and timestart>0  and orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoLiveByGeo(String geo,List<String> orderid);
+
+    @Query(value = "SELECT * FROM videoview where service in(select service from service where checktime=0  and live=1) and timestart>0  and orderid in (?1) order by rand() limit 1",nativeQuery = true)
+    public List<VideoView> getvideoLiveRand(List<String> orderid);
 
     @Query(value = "SELECT * FROM videoview where service in(select service from service where device_type='mobile' ) and INSTR(?1,videoid)=0 and orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoViewByMobile(String listvideo, List<String> orderid);
@@ -35,6 +41,9 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Query(value = "SELECT * FROM videoview where service in(select service from service where geo=?1 and checktime=1 and live=0) and timestart>0 and INSTR(?2,videoid)=0 and orderid in (?3) order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoBuffHByGeo(String geo, String listvideo, List<String> orderid);
+
+    @Query(value = "SELECT * FROM videoview where service in(select service from service where checktime=1 and live=0) and timestart>0 and INSTR(?1,videoid)=0 and orderid in (?2) order by rand() limit 1",nativeQuery = true)
+    public List<VideoView> getvideoBuffHRand(String listvideo, List<String> orderid);
 
     @Query(value = "SELECT * FROM videoview where service in(select service from service where geo=\"random\") order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoByGeoTraffic();
