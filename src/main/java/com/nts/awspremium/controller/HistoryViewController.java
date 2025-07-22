@@ -341,8 +341,8 @@ public class HistoryViewController {
         }
     }
      */
-     @GetMapping(value = "getOFF", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> getOFF(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
+     @GetMapping(value = "get", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> get(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
         JSONObject resp = new JSONObject();
         if (username.length() == 0) {
             resp.put("status", "fail");
@@ -531,7 +531,7 @@ public class HistoryViewController {
                 }else{
                     if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
                         resp.put("status", "fail");
-                        resp.put("message", "Bỏ qua nhiệm vụ");
+                        resp.put("message", "off_profile");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                     String geo_rand=histories.get(0).getGeo().trim();
@@ -809,8 +809,8 @@ public class HistoryViewController {
     }
 
 
-    @GetMapping(value = "get", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> get(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
+    @GetMapping(value = "getOFF", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> getOFF(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
         JSONObject resp = new JSONObject();
         if (username.length() == 0) {
             resp.put("status", "fail");
