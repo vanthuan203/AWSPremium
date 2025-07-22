@@ -855,7 +855,6 @@ public class HistoryViewController {
                 else
 
                  */
-                Map<String, Object> get_task =null;
                 if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
                     resp.put("status", "fail");
                     resp.put("message", "off_profile");
@@ -3338,11 +3337,11 @@ public class HistoryViewController {
                 char target = ',';
                 long count = historyView.getListvideo().trim().chars().filter(ch -> ch == target).count();
 
-                if(count>=4){
+                if(count>=6){
                     //int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
                     OptionalInt position = IntStream.range(0, historyView.getListvideo().trim().length())
                             .filter(i -> historyView.getListvideo().trim().charAt(i) == target)
-                            .skip(count-4)//occurrence-1
+                            .skip(count-6)//occurrence-1
                             .findFirst();
                     historyView.setListvideo(historyView.getListvideo().trim().substring(position.getAsInt()+1)+videoid.trim()+",");
                 }else{
