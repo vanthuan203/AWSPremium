@@ -531,7 +531,8 @@ public class HistoryViewController {
                 }else{
                     if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
                         resp.put("status", "fail");
-                        resp.put("message", "off_profile");
+                        //resp.put("message", "off_profile");
+                        resp.put("message", "bỏ qua nhiệm vụ");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                     String geo_rand=histories.get(0).getGeo().trim();
