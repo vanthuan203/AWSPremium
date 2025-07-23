@@ -1344,8 +1344,8 @@ public class HistoryViewController {
     }
 
 
-    @GetMapping(value = "getviewOFF", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> getviewOFF(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
+    @GetMapping(value = "getview", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> getview(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
         JSONObject resp = new JSONObject();
         if (vps.length() == 0) {
             resp.put("status", "fail");
@@ -2067,8 +2067,8 @@ public class HistoryViewController {
         }
     }
 
-    @GetMapping(value = "getview", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> getview(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
+    @GetMapping(value = "getviewOFF", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> getviewOFF(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
         JSONObject resp = new JSONObject();
         if (vps.length() == 0) {
             resp.put("status", "fail");
