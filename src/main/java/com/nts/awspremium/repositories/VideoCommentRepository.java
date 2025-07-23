@@ -64,6 +64,10 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
             "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoComment> getvideoCommentKRTest(String listvideo,List<String> orderid);
 
+    @Query(value = "SELECT * FROM videocomment where service in(select service from service where (geo='test1' or geo='go') and task='comment') and INSTR(?1,videoid)=0 and\n" +
+            "            orderid in (?2) order by rand() limit 1",nativeQuery = true)
+    public List<VideoComment> getvideoCommentTESTTest(String listvideo,List<String> orderid);
+
 
     @Query(value = "SELECT * FROM videocomment where service in(select service from service where geo=?1 and task='comment' and live=1) and INSTR(?2,videoid)=0 and\n" +
             "            orderid in (?3) order by rand() limit 1",nativeQuery = true)

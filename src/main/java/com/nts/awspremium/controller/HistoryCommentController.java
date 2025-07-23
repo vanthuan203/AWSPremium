@@ -758,6 +758,8 @@ public class HistoryCommentController {
                     videos = videoCommentRepository.getvideoCommentJPTest("",orderCommentTrue.getValue());
                 }else if (history.getGeo().contains("live")) {
                     videos = videoCommentRepository.getvideoChatLiveByGeo(history.getGeo(),"",orderCommentTrue.getValue());
+                }else if (history.getGeo().contains("cmt-test1")) {
+                    videos = videoCommentRepository.getvideoCommentTESTTest("",orderCommentTrue.getValue());
                 }else{
                     fail_resp.put("status", "fail");
                     fail_resp.put("message", "Username không cmt!");
@@ -846,6 +848,12 @@ public class HistoryCommentController {
                         }else{
                             proxy= new String[]{};
                         }
+                    }else if(history.getGeo().contains("test1")){
+                        if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
                     }
                     if(proxy.length==0){
                         history.setRunning(0);
@@ -916,6 +924,9 @@ public class HistoryCommentController {
                 }else if (histories.get(0).getGeo().contains("live")) {
                     //videos=videoViewRepository.getvideoViewNoCheckMaxThreadUS(histories.get(0).getListvideo());
                     videos = videoCommentRepository.getvideoChatLiveByGeo(histories.get(0).getGeo(),histories.get(0).getListvideo(),orderCommentTrue.getValue());
+                }else if (histories.get(0).getGeo().equals("cmt-test1")) {
+                    //videos=videoViewRepository.getvideoViewNoCheckMaxThreadUS(histories.get(0).getListvideo());
+                    videos = videoCommentRepository.getvideoCommentTESTTest(histories.get(0).getListvideo(),orderCommentTrue.getValue());
                 }else{
                     fail_resp.put("status", "fail");
                     fail_resp.put("message", "Username không cmt!");
@@ -1029,6 +1040,12 @@ public class HistoryCommentController {
                 }else if(histories.get(0).getGeo().contains("jp")){
                     if(proxyVultrTrue.getValue().size()!=0){
                         proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
+                }else if(histories.get(0).getGeo().contains("test1")){
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
