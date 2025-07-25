@@ -181,7 +181,7 @@ public class AccountViewController {
                     check_get= vpsRepository.checkGetAccountCmtByVps(vps.trim(),"cmt-"+geo.trim());
                 }else if(geo.trim().contains("live")){
                     check_get= vpsRepository.checkGetAccount5ByThreadVps(vps.trim(),"cmt-"+geo.trim());
-                }else if(geo.trim().contains("test1")){
+                }else if(geo.trim().contains("test")){
                     check_get= vpsRepository.checkGetAccountCmtByVpsJP(vps.trim(),"cmt-"+geo.trim());
                 }
                 if (check_get == 0) {
@@ -204,8 +204,8 @@ public class AccountViewController {
                 Thread.sleep(ran.nextInt(500));
                 Long id=null;
                 if(cmt==0){
-                    if(geo.equals("test1")){
-                        id = accountRepository.getAccountView("test1");
+                    if(geo.contains("test")){
+                        id = accountRepository.getAccountView(geo.trim());
                     }else{
                         id = accountRepository.getAccountView("view");
                     }

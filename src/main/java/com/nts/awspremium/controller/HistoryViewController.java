@@ -2116,7 +2116,7 @@ public class HistoryViewController {
 
             Map<String, Object> get_task =null;
 
-            if(!histories.get(0).getGeo().equals("test1")){
+            if(!histories.get(0).getGeo().contains("test")){
                 videos = videoViewRepository.getvideoLiveRand(orderTrue.getValue());
                 if(videos.size()==0){
                     videos = videoViewRepository.getvideoViewRand( histories.get(0).getListvideo(), orderTrue.getValue());
@@ -2293,7 +2293,7 @@ public class HistoryViewController {
                 }else{
                     proxy= new String[]{};
                 }
-            }else if(geo_rand.contains("test1")){
+            }else if(geo_rand.contains("test")){
                 if(proxyTestTrue.getValue().size()!=0){
                     proxy=proxyTestTrue.getValue().get(rand.nextInt(proxyTestTrue.getValue().size())).split(":");
                 }else{

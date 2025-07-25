@@ -848,7 +848,7 @@ public class HistoryCommentController {
                         }else{
                             proxy= new String[]{};
                         }
-                    }else if(history.getGeo().contains("test1")){
+                    }else if(history.getGeo().contains("test")){
                         if(proxyVNTrue.getValue().size()!=0){
                             proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                         }else{
@@ -1043,7 +1043,7 @@ public class HistoryCommentController {
                     }else{
                         proxy= new String[]{};
                     }
-                }else if(histories.get(0).getGeo().contains("test1")){
+                }else if(histories.get(0).getGeo().contains("test")){
                     if(proxyVNTrue.getValue().size()!=0){
                         proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size())).split(":");
                     }else{
