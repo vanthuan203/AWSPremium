@@ -2161,7 +2161,7 @@ public class HistoryViewController {
                     }
                 }
             }else{
-                videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(),histories.get(0).getListvideo(),orderSpeedTimeTrue.getValue());
+                videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(),histories.get(0).getListvideo(),orderTrue.getValue());
                 if (videos.size() > 0) {
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid(videos.get(0).getVideoid());
