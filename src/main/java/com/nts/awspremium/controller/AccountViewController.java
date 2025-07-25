@@ -53,6 +53,8 @@ public class AccountViewController {
     @Autowired
     private SettingRepository settingRepository;
     @Autowired
+    private SettingSystemRepository settingSystemRepository;
+    @Autowired
     private CheckProsetListTrue checkProsetListTrue;
 
     @PostMapping(value = "/create", produces = "application/hal+json;charset=utf8")
@@ -865,7 +867,13 @@ public class AccountViewController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
             }
-            Long id = accountRepository.getAccountREG(google_suite.trim());
+            SettingSystem settingSystem =settingSystemRepository.get_Setting_System();
+            Long id=null;
+            if(settingSystem.getClear_data_package().equals("cmt")){
+                id = accountRepository.getAccountCmtREG(google_suite.trim());
+            }else{
+                id = accountRepository.getAccountREG(google_suite.trim());
+            }
             if (id == null) {
                 resp.put("status", "fail");
                 resp.put("message", "Hết tài khoản thỏa mãn!");
@@ -893,10 +901,19 @@ public class AccountViewController {
                     resp.put("username", account.get(0).getUsername());
                     resp.put("password", account.get(0).getPassword());
                     resp.put("recover", account.get(0).getRecover());
-                    resp.put("recover", account.get(0).getRecover());
                     resp.put("cmt", 0);
-                    resp.put("avatar",  "true");
-                    resp.put("geo", "vn");
+                    resp.put("avatar", 0);
+                    resp.put("geo", "none");
+                    if(account.get(0).getCmt()>=1){
+                        resp.put("cmt", 1);
+                        if(account.get(0).getCmt()==1){
+                            resp.put("avatar",1);
+                        }else{
+                            resp.put("avatar",0);
+                        }
+                        resp.put("geo",account.get(0).getName_geo().trim());
+                    }
+
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 } catch (Exception e) {
                     resp.put("status", "fail");

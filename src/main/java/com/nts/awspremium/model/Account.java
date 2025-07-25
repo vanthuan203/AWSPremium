@@ -44,6 +44,10 @@ public class Account implements Serializable {
     @Column(columnDefinition = "varchar(255) default '1'")
     private  String group_mail="1";
 
+    @Column(columnDefinition = "varchar(255) default 'none'")
+    private  String name_geo="none";
+    @Column(columnDefinition = "integer default 0")
+    private Integer cmt=0;
     public Account() {
     }
 }

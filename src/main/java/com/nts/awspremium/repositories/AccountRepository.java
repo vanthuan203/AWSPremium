@@ -91,6 +91,9 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "SELECT id  FROM account where live=1 and reg=0 and status=0 and google_suite=?1  order by group_mail asc, rand()  limit 1",nativeQuery = true)
     public Long getAccountREG(String google_suite);
 
+    @Query(value = "SELECT id  FROM account where live=1 and reg=0 and status=0 and google_suite=?1 and cmt>0 order by group_mail asc, rand()  limit 1",nativeQuery = true)
+    public Long getAccountCmtREG(String google_suite);
+
     @Query(value = "SELECT id FROM account where vps=?1 and running=0 and live=1 and geo=?2 order by rand() limit 1",nativeQuery = true)
     public Long getaccountByVps(String vps,String geo);
 
