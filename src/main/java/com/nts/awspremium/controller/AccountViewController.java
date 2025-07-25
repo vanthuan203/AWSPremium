@@ -895,7 +895,7 @@ public class AccountViewController {
                     resp.put("recover", account.get(0).getRecover());
                     resp.put("recover", account.get(0).getRecover());
                     resp.put("cmt", 0);
-                    resp.put("avatar", 0);
+                    resp.put("avatar",  "true");
                     resp.put("geo", "vn");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 } catch (Exception e) {
