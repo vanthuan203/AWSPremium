@@ -1344,6 +1344,64 @@ public class HistoryViewController {
     }
 
 
+    @GetMapping(value = "getViewEXT", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> getViewEXT() {
+        JSONObject resp = new JSONObject();
+
+        Random ran = new Random();
+        try {
+            List<VideoView> videos = videoViewRepository.getvideoViewEXT();
+            if(videos.size()==0) {
+                resp.put("status", false);
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+            Service service = serviceRepository.getInfoService(videos.get(0).getService());
+            resp.put("status", true);
+            resp.put("video_id", videos.get(0).getVideoid());
+            if (service.getMintime() != service.getMaxtime() && service.getLive() == 0) {
+                if (videos.get(0).getDuration() > service.getMaxtime() * 60) {
+                    resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() < service.getMaxtime() ? (ran.nextInt((service.getMaxtime() - service.getMintime()) * 45) + (service.getMaxtime() >= 10 ? 30 : 0)) : 0));
+                } else {
+                    resp.put("video_duration", service.getMintime() * 60 < videos.get(0).getDuration() ? (service.getMintime() * 60 + ran.nextInt((int)(videos.get(0).getDuration() - service.getMintime() * 60))) : videos.get(0).getDuration());
+                }
+            } else if (service.getLive() == 1) {
+                int min_check = (int) ((service.getMintime() * 0.15) > 30 ? 30 : (service.getMintime() * 0.15));
+                if ((System.currentTimeMillis() - videos.get(0).getTimestart()) / 1000 / 60 < min_check) {
+                    resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() >= 15 ? 120 : 0));
+                } else {
+                    int time_live = videos.get(0).getMinstart() - (int) ((System.currentTimeMillis() - videos.get(0).getTimestart()) / 1000 / 60);
+                    resp.put("video_duration", (time_live > 0 ? time_live : 0) * 60 + (service.getMintime() >= 15 ? 120 : 0));
+                }
+            } else {
+                if (videos.get(0).getDuration() > service.getMaxtime() * 60) {
+                    resp.put("video_duration", service.getMintime() * 60 + (service.getMintime() < service.getMaxtime() ? (ran.nextInt((service.getMaxtime() - service.getMintime()) * 60 + service.getMaxtime() >= 10 ? 60 : 0)) : 0));
+                } else {
+                    resp.put("video_duration", videos.get(0).getDuration());
+                }
+            }
+            if(((Integer.parseInt(resp.get("video_duration").toString())<10||Integer.parseInt(resp.get("video_duration").toString())>45))&&service.getMaxtime()==1){
+                resp.put("video_duration",ran.nextInt(30)+10);
+            }
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+
+        } catch (Exception e) {
+            //show line error
+            /*
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+
+            System.out.println(stackTraceElement.getMethodName());
+            System.out.println(stackTraceElement.getLineNumber());
+            System.out.println(stackTraceElement.getClassName());
+            System.out.println(stackTraceElement.getFileName());
+
+            System.out.println("Error : " + e.getMessage());
+             */
+            resp.put("status", false);
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @GetMapping(value = "getviewOFF", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getviewOFF(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
         JSONObject resp = new JSONObject();
