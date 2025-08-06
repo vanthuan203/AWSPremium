@@ -52,6 +52,15 @@ public class ProxyController {
     @Autowired
     private ProxyVNTrue proxyVNTrue;
     @Autowired
+    private ProxyUSTrue proxyUSTrue;
+    @Autowired
+    private ProxyKRTrue proxyKRTrue;
+    @Autowired
+    private ProxyTestTrue proxyTestTrue;
+    @Autowired
+    private ProxyJPTrue proxyJPTrue;
+
+    @Autowired
     private OpenAiKeyRepository openAiKeyRepository;
     @Autowired
     private Proxy_IPV4_TikTokRepository proxyIpv4TikTokRepository;
@@ -105,12 +114,90 @@ public class ProxyController {
     }
 
     @GetMapping(value="/get_Rand_Proxy",produces = "application/hal_json;charset=utf8")
-    ResponseEntity<String> get_Rand_Proxy(){
+    ResponseEntity<String> get_Rand_Proxy(@RequestParam(defaultValue = "vn") String geo){
         JSONObject resp = new JSONObject();
         try{
-            Random ran = new Random();
-            String proxy=proxyVNTrue.getValue().get(ran.nextInt(proxyVNTrue.getValue().size()));
-            resp.put("proxy",proxy);
+            String geo_rand=geo.trim();
+            String[] proxy = new String[0];
+            Random rand=new Random();
+
+            if(geo_rand.contains("vn")){
+                if(proxyVNTrue.getValue().size()!=0){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                }else{
+                    proxy= new String[]{};
+                }
+            }else if(geo_rand.contains("us")){
+                if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                }else if(proxyVNTrue.getValue().size()!=0){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else{
+                    proxy= new String[]{};
+                }
+            }else if(geo_rand.contains("kr")){
+                if(proxyKRTrue.getValue().size()>=20000){
+                    if(proxyKRTrue.getValue().size()>10000){
+                        proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                    }else if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
+                }else{
+                    Integer check_rand=rand.nextInt(100);
+                    if(check_rand<50){
+                        if(proxyKRTrue.getValue().size()>10000){
+                            proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                        }else if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        }else if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
+                    }else if(check_rand<75){
+                        if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
+                    }else{
+                        if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                        }else if(proxyVNTrue.getValue().size()!=0){
+                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                        }else{
+                            proxy= new String[]{};
+                        }
+                    }
+                }
+            }else if(geo_rand.contains("jp")){
+                if(proxyJPTrue.getValue().size()!=0){
+                    proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
+                }else if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                }else{
+                    proxy= new String[]{};
+                }
+            }else if(geo_rand.contains("test")){
+                if(proxyVNTrue.getValue().size()!=0){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else{
+                    proxy= new String[]{};
+                }
+            }
+            if(proxy.length==0){
+                resp.put("proxy","");
+            }
+            String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+            resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
         }catch (Exception e){
             resp.put("status","fail");
