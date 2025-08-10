@@ -2181,6 +2181,7 @@ public class HistoryViewController {
                 }
                 if (videos.size() > 0) {
                     geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
+                    histories.get(0).setGeo_rand(geo_rand);
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setVideoid(videos.get(0).getVideoid());
                     histories.get(0).setOrderid(videos.get(0).getOrderid());
@@ -2198,6 +2199,7 @@ public class HistoryViewController {
                         videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTimeTrue.getValue());
                         if (videos.size() > 0) {
                             geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
+                            histories.get(0).setGeo_rand(geo_rand);
                             histories.get(0).setTimeget(System.currentTimeMillis());
                             histories.get(0).setVideoid(videos.get(0).getVideoid());
                             histories.get(0).setOrderid(videos.get(0).getOrderid());
@@ -2226,17 +2228,28 @@ public class HistoryViewController {
                     histories.get(0).setOrderid(videos.get(0).getOrderid());
                     histories.get(0).setChannelid(videos.get(0).getChannelid());
                 } else {
-                    histories.get(0).setTimeget(System.currentTimeMillis());
-                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
-                    historyViewRepository.save(histories.get(0));
+                    videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTimeTrue.getValue());
+                    if (videos.size() > 0) {
+                        geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
+                        histories.get(0).setGeo_rand(geo_rand);
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setVideoid(videos.get(0).getVideoid());
+                        histories.get(0).setOrderid(videos.get(0).getOrderid());
+                        histories.get(0).setChannelid(videos.get(0).getChannelid());
+                    } else {
 
-                    vps_check.setTask_time(System.currentTimeMillis());
-                    vpsRepository.save(vps_check);
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
 
-                    resp.put("status", "fail");
-                    resp.put("fail", "video");
-                    resp.put("message", "Không còn video để view!");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
                 }
             }
 
