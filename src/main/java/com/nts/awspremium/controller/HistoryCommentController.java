@@ -791,11 +791,7 @@ public class HistoryCommentController {
                         if(dataReplyCommentRepository.checkReplyByCommentId(Long.parseLong(comment.split(",")[0]))>0){
                             resp.put("device_type","pc");
                         }else{
-                            if(history.getGeo().contains("cmt-test")){
-                                resp.put("device_type","mobile");
-                            }else{
-                                resp.put("device_type","pc");
-                            }
+                            resp.put("device_type","mobile");
                         }
                         resp.put("comment_id", comment.split(",")[0]);
                         resp.put("comment", comment.substring(comment.indexOf(",")+1));
@@ -982,11 +978,7 @@ public class HistoryCommentController {
                     if(dataReplyCommentRepository.checkReplyByCommentId(Long.parseLong(comment.split(",")[0]))>0){
                         resp.put("device_type","pc");
                     }else{
-                        if(histories.get(0).getGeo().contains("cmt-test")){
-                            resp.put("device_type","mobile");
-                        }else{
-                            resp.put("device_type","pc");
-                        }
+                        resp.put("device_type","mobile");
                     }
                     resp.put("comment_id", comment.split(",")[0]);
                     resp.put("comment", comment.substring(comment.indexOf(",")+1));
