@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/app")
 public class UpdateController {
 
-    private final String appDirectory = "C:\\Users\\PC1\\Documents\\autoView\\autoView\\dist"; // thư mục chứa các file .exe
+    private final String appDirectory = "/root/autoView"; // thư mục chứa các file .exe
 
     @GetMapping("/check-update")
     public ResponseEntity<?> checkForUpdate(@RequestParam String currentVersion) {
