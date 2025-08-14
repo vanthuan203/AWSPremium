@@ -22,6 +22,10 @@ public interface HistoryCommentRepository extends JpaRepository<HistoryComment,L
     @Query(value = "SELECT id FROM historycomment where username=?1 limit 1",nativeQuery = true)
     public Long getId(String username);
 
+    @Modifying
+    @Transactional
+    @Query(value = "Delete from historycomment where id=?1",nativeQuery = true)
+    public Integer deleteHistoryById(Long id);
 
     @Query(value = "SELECT * FROM historycomment where username=?1 limit 1",nativeQuery = true)
     public HistoryComment getHistoryCmtByUsername(String username);

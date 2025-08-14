@@ -1150,7 +1150,7 @@ public class AccountViewController {
     }
 
     @GetMapping(value = "/resetaccountbyusername", produces = "application/hal_json;charset=utf8")
-    ResponseEntity<String> resetaccountbyusername(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "0") Integer live,@RequestHeader(defaultValue = "") String Authorization) {
+    ResponseEntity<String> resetaccountbyusername(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "0") Integer live, @RequestParam(defaultValue = "0") Integer cmt,@RequestHeader(defaultValue = "") String Authorization) {
         JSONObject resp = new JSONObject();
         Integer checktoken = adminRepository.FindAdminByToken(Authorization);
         if (checktoken == 0) {
@@ -1166,11 +1166,16 @@ public class AccountViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
             }
             Long idUsername = accountRepository.findIdUsername(username.trim());
-            Long idHistory=historyViewRepository.getId(username.trim());
             if(accountRepository.getProxyByUsername(username.trim().trim()).length()>4){
                 proxyRepository.updaterunningProxy(accountRepository.getProxyByUsername(username.trim()));
             }
-            historyViewRepository.deleteHistoryById(idHistory);
+            if(cmt==1){
+                Long idHistory=historyCommentRepository.getId(username.trim());
+                historyCommentRepository.deleteHistoryById(idHistory);
+            }else{
+                Long idHistory=historyViewRepository.getId(username.trim());
+                historyViewRepository.deleteHistoryById(idHistory);
+            }
             accountRepository.resetAccountByUsername(live, idUsername);
             resp.put("status", "true");
             resp.put("message", "Reset Account thành công!");
