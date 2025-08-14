@@ -383,20 +383,23 @@ public class ProxyController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
         try{
-            Integer proxyCheck=proxyRepository.checkproxynull(proxy.getProxy().trim());
-            if(proxyCheck>0){
-                resp.put("status","true");
-                return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
+            Proxy proxyCheck=proxyRepository.checkproxy(proxy.getProxy().trim());
+            if(proxyCheck!=null){
+                proxyCheck.setProxy_ha(proxy.getProxy_ha()!=null?proxy.getProxy_ha().trim():"");
+                proxyCheck.setGeo(proxy.getGeo().trim());
+                proxyRepository.save(proxyCheck);
+            }else{
+                Proxy proxynew =new Proxy();
+                proxynew.setProxy(proxy.getProxy().trim());
+                proxynew.setProxy_ha(proxy.getProxy_ha()!=null?proxy.getProxy_ha().trim():"");
+                proxynew.setIpv4(proxy.getIpv4().trim());
+                proxynew.setState(1);
+                proxynew.setGeo(proxy.getGeo().trim());
+                proxynew.setTimeget(System.currentTimeMillis());
+                proxynew.setTypeproxy(proxy.getTypeproxy().trim());
+                proxynew.setRunning(0);
+                proxyRepository.save(proxynew);
             }
-            Proxy proxynew =new Proxy();
-            proxynew.setProxy(proxy.getProxy().trim());
-            proxynew.setIpv4(proxy.getIpv4().trim());
-            proxynew.setState(1);
-            proxynew.setGeo(proxy.getGeo().trim());
-            proxynew.setTimeget(System.currentTimeMillis());
-            proxynew.setTypeproxy(proxy.getTypeproxy().trim());
-            proxynew.setRunning(0);
-            proxyRepository.save(proxynew);
             resp.put("status","true");
             return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.OK);
         }catch (Exception e){

@@ -23,6 +23,16 @@ public interface HistoryCommentRepository extends JpaRepository<HistoryComment,L
     public Long getId(String username);
 
 
+    @Query(value = "SELECT * FROM historycomment where username=?1 limit 1",nativeQuery = true)
+    public HistoryComment getHistoryCmtByUsername(String username);
+
+
+    @Query(value = "SELECT id FROM AccPremium.historycomment where running=0 and vps=?1 order by task_count asc,rand() limit 1;",nativeQuery = true)
+    public Long getAccToCmtNoCheckProxy(String vps);
+
+    @Query(value = "SELECT id FROM AccPremium.historycomment where running=0 and vps=?1 and geo=?2 order by task_count asc,rand() limit 1;",nativeQuery = true)
+    public Long getAccToCmtNoCheckProxy_By_Geo(String vps,String geo);
+
     @Modifying
     @Transactional
     @Query(value = "update historycomment set running=0 where round((UNIX_TIMESTAMP()-timeget/1000)/60)>=40 and running=1",nativeQuery = true)
@@ -41,11 +51,11 @@ public interface HistoryCommentRepository extends JpaRepository<HistoryComment,L
 
     @Modifying
     @Transactional
-    @Query(value = "update historycomment set listvideo=CONCAT(listvideo,\",\",?1) where id=?2",nativeQuery = true)
+    @Query(value = "update historycomment set listvideo=CONCAT(listvideo,\",\",?1),,task_count=task_count+1 where id=?2",nativeQuery = true)
     public Integer updateListVideo(String videoid,Long id);
 
     @Modifying
     @Transactional
-    @Query(value = "update historycomment set listvideo=?1 where id=?2",nativeQuery = true)
+    @Query(value = "update historycomment set listvideo=?1,task_count=task_count+1 where id=?2",nativeQuery = true)
     public Integer updateListVideoNew(String videoid,Long id);
 }

@@ -317,6 +317,54 @@ public class AccountViewController {
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
                             }
+                        }else{
+                            Long historieId = historyCommentRepository.getId(account.get(0).getUsername());
+                            if (historieId == null) {
+                                try{
+                                    HistoryComment history = new HistoryComment();
+                                    history.setUsername(account.get(0).getUsername());
+                                    history.setListvideo("");
+                                    history.setRunning(0);
+                                    history.setTask_count(0);
+                                    history.setTask_index(0);
+                                    history.setVps(vps);
+                                    history.setVideoid("");
+                                    history.setOrderid(0L);
+                                    history.setGeo(account.get(0).getGeo());
+                                    history.setTask_time(0L);
+                                    history.setTimeget(System.currentTimeMillis());
+                                    historyCommentRepository.save(history);
+                                }catch (Exception e){
+                                    Thread.sleep(10+ran.nextInt(1000));
+                                    HistoryComment history = new HistoryComment();
+                                    history.setUsername(account.get(0).getUsername());
+                                    history.setListvideo("");
+                                    history.setRunning(0);
+                                    history.setTask_count(0);
+                                    history.setTask_index(0);
+                                    history.setVps(vps);
+                                    history.setVideoid("");
+                                    history.setOrderid(0L);
+                                    history.setGeo(account.get(0).getGeo());
+                                    history.setTask_time(0L);
+                                    history.setTimeget(System.currentTimeMillis());
+                                    historyCommentRepository.save(history);
+                                }
+
+                            }else {
+                                List<HistoryComment> histories = historyCommentRepository.getHistoriesById(historieId);
+                                histories.get(0).setListvideo("");
+                                histories.get(0).setRunning(0);
+                                histories.get(0).setTask_count(0);
+                                histories.get(0).setTask_index(0);
+                                histories.get(0).setVps(vps);
+                                histories.get(0).setVideoid("");
+                                histories.get(0).setOrderid(0L);
+                                histories.get(0).setGeo(account.get(0).getGeo());
+                                histories.get(0).setTask_time(0L);
+                                histories.get(0).setTimeget(System.currentTimeMillis());
+                                historyCommentRepository.save(histories.get(0));
+                            }
                         }
 
                         resp.put("status", "true");

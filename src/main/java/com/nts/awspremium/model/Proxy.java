@@ -9,6 +9,9 @@ public class Proxy {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String proxy;
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String proxy_ha="";
+
     private Integer state;
     private Long timeget;
     private String ipv4;
@@ -20,9 +23,10 @@ public class Proxy {
     public Proxy() {
     }
 
-    public Proxy(Integer id, String proxy, Integer state, Long timeget, String ipv4, Integer running, String typeproxy, String geo, String vps, String code) {
+    public Proxy(Integer id, String proxy, String proxy_ha, Integer state, Long timeget, String ipv4, Integer running, String typeproxy, String geo, String vps, String code) {
         this.id = id;
         this.proxy = proxy;
+        this.proxy_ha = proxy_ha;
         this.state = state;
         this.timeget = timeget;
         this.ipv4 = ipv4;
@@ -111,5 +115,13 @@ public class Proxy {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getProxy_ha() {
+        return proxy_ha;
+    }
+
+    public void setProxy_ha(String proxy_ha) {
+        this.proxy_ha = proxy_ha;
     }
 }

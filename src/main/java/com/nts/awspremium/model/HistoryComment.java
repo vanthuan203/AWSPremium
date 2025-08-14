@@ -15,6 +15,15 @@ public class HistoryComment {
     private Long timeget;
     @Column(columnDefinition = "bigint default 0")
     private Long task_time=0L;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer task_index=0;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer max_task=0;
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer task_count=0;
     private String geo;
     private String videoid;
     private Long orderid;
@@ -22,7 +31,7 @@ public class HistoryComment {
     public HistoryComment() {
     }
 
-    public HistoryComment(Long id, String username, String listvideo, String vps, Integer running, Long timeget, Long task_time, String geo, String videoid, Long orderid) {
+    public HistoryComment(Long id, String username, String listvideo, String vps, Integer running, Long timeget, Long task_time, Integer task_index, Integer max_task, Integer task_count, String geo, String videoid, Long orderid) {
         this.id = id;
         this.username = username;
         this.listvideo = listvideo;
@@ -30,6 +39,9 @@ public class HistoryComment {
         this.running = running;
         this.timeget = timeget;
         this.task_time = task_time;
+        this.task_index = task_index;
+        this.max_task = max_task;
+        this.task_count = task_count;
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
@@ -113,5 +125,29 @@ public class HistoryComment {
 
     public void setTask_time(Long task_time) {
         this.task_time = task_time;
+    }
+
+    public Integer getTask_count() {
+        return task_count;
+    }
+
+    public void setTask_count(Integer task_count) {
+        this.task_count = task_count;
+    }
+
+    public Integer getTask_index() {
+        return task_index;
+    }
+
+    public void setTask_index(Integer task_index) {
+        this.task_index = task_index;
+    }
+
+    public Integer getMax_task() {
+        return max_task;
+    }
+
+    public void setMax_task(Integer max_task) {
+        this.max_task = max_task;
     }
 }
