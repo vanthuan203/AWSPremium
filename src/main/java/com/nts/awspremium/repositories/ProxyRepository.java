@@ -84,14 +84,9 @@ public interface ProxyRepository extends JpaRepository<Proxy, Integer> {
     @Query(value = "SELECT * FROM proxy where proxy=?1",nativeQuery = true)
     public Proxy checkproxy(String proxy);
 
-    @Query(value = "SELECT \n" +
-            "    CASE \n" +
-            "        WHEN proxy_ha IS NULL OR LENGTH(proxy_ha) = 0 THEN NULL \n" +
-            "        ELSE proxy_ha \n" +
-            "    END AS proxy_ha\n" +
-            "FROM proxy\n" +
-            "WHERE proxy = ?1;",nativeQuery = true)
-    public String get_Proxy_HA(String proxy);
+    @Query(value = "SELECT CASE WHEN proxy_ha IS NULL OR LENGTH(proxy_ha) = 0 THEN NULL ELSE proxy_ha END AS proxy_ha " +
+            "FROM proxy WHERE proxy = ?1", nativeQuery = true)
+    String get_Proxy_HA(String proxy);
 
 
     @Query(value = "SELECT id FROM proxy where proxy=?1 and vps=?2 limit 1 ",nativeQuery = true)

@@ -863,8 +863,8 @@ public class HistoryCommentController {
                 String[] proxy =new String[0];
                 if(histories.get(0).getGeo().contains("vn")){
                     if(service.getGeo().equals("go")){
-                        if(proxyVultrTrue.getValue().size()!=0){
-                            proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                        if(proxyUSTrue.getValue().size()!=0){
+                            proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                         }else{
                             proxy= new String[]{};
                         }
@@ -876,20 +876,20 @@ public class HistoryCommentController {
                         }
                     }
                 }else if(histories.get(0).getGeo().contains("us")){
-                    if(proxyVultrTrue.getValue().size()!=0){
-                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
                 }else if(histories.get(0).getGeo().contains("kr")){
-                    if(proxyVultrTrue.getValue().size()!=0){
-                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
                 }else if(histories.get(0).getGeo().contains("jp")){
-                    if(proxyVultrTrue.getValue().size()!=0){
-                        proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                    if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                     }else{
                         proxy= new String[]{};
                     }
@@ -921,12 +921,10 @@ public class HistoryCommentController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
 
-                /*
-                String proxy_ha= proxyRepository.get_Proxy_HA(proxy[0].trim());
+                String proxy_ha= proxyRepository.get_Proxy_HA(String.join(":", proxy));
                 if(proxy_ha!=null){
                     proxy=proxy_ha.trim().split(":");
                 }
-                 */
                 resp.put("proxy", proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
                 if(ran.nextInt(1000)<300){
                     resp.put("like", 1);

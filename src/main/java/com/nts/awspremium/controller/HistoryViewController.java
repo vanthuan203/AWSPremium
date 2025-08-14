@@ -2316,8 +2316,8 @@ public class HistoryViewController {
                     proxy= new String[]{};
                 }
             }else if(geo_rand.contains("kr")){
-                if(proxyKRTrue.getValue().size()>=20000){
-                    if(proxyKRTrue.getValue().size()>10000){
+                if(proxyKRTrue.getValue().size()>=10000){
+                    if(proxyKRTrue.getValue().size()>5000){
                         proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
                     }else if(proxyVNTrue.getValue().size()!=0){
                         proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
@@ -2329,7 +2329,7 @@ public class HistoryViewController {
                 }else{
                     Integer check_rand=ran.nextInt(100);
                     if(check_rand<50){
-                        if(proxyKRTrue.getValue().size()>10000){
+                        if(proxyKRTrue.getValue().size()>5000){
                             proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
                         }else if(proxyUSTrue.getValue().size()!=0){
                             proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
@@ -2443,12 +2443,10 @@ public class HistoryViewController {
                     resp.put("sub", "fail");
                 }
             }
-            /*
-            String proxy_ha= proxyRepository.get_Proxy_HA(proxy[0].trim());
+            String proxy_ha= proxyRepository.get_Proxy_HA(String.join(":", proxy));
             if(proxy_ha!=null){
                 proxy=proxy_ha.trim().split(":");
             }
-             */
             resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             if(service.getNiche()==1){
                 String[] nicheArr = service.getKeyniche().split(",");
