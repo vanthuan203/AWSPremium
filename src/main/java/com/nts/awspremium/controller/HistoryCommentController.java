@@ -921,11 +921,12 @@ public class HistoryCommentController {
                 resp.put("username", histories.get(0).getUsername());
                 resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
 
+                /*
                 String proxy_ha= proxyRepository.get_Proxy_HA(proxy[0].trim());
                 if(proxy_ha!=null){
                     proxy=proxy_ha.trim().split(":");
                 }
-
+                 */
                 resp.put("proxy", proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
                 if(ran.nextInt(1000)<300){
                     resp.put("like", 1);
