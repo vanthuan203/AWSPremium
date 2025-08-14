@@ -1129,20 +1129,20 @@ public class HistoryCommentController {
                     }
                 }
             }else if(histories.get(0).getGeo().contains("us")){
-                if(proxyVultrTrue.getValue().size()!=0){
-                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else{
                     proxy= new String[]{};
                 }
             }else if(histories.get(0).getGeo().contains("kr")){
-                if(proxyVultrTrue.getValue().size()!=0){
-                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else{
                     proxy= new String[]{};
                 }
             }else if(histories.get(0).getGeo().contains("jp")){
-                if(proxyVultrTrue.getValue().size()!=0){
-                    proxy=proxyVultrTrue.getValue().get(ran.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(ran.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else{
                     proxy= new String[]{};
                 }
