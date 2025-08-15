@@ -32,6 +32,9 @@ public class VideoComment {
     private Integer valid;
 
     @Column(columnDefinition = "varchar(555) default ''")
+    private String blocked_list="";
+
+    @Column(columnDefinition = "varchar(555) default ''")
     private String chat_id;
 
     @Column(columnDefinition = "bigint default 0")
@@ -40,7 +43,7 @@ public class VideoComment {
     public VideoComment() {
     }
 
-    public VideoComment(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer commentstart, Long insertdate, Integer maxthreads, Long duration, Integer service, String note, String user, Integer enddate, Integer commentorder, Integer commenttotal, Integer comment_render, String listcomment, String lc_code, Long timeupdate, Float price, Integer valid) {
+    public VideoComment(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer commentstart, Long insertdate, Integer maxthreads, Long duration, Integer service, String note, String user, Integer enddate, Integer commentorder, Integer commenttotal, Integer comment_render, String listcomment, String description, String lc_code, Long timeupdate, Float price, Integer valid, String blocked_list, String chat_id, Long chat_time) {
         this.orderid = orderid;
         this.videoid = videoid;
         this.videotitle = videotitle;
@@ -58,10 +61,14 @@ public class VideoComment {
         this.commenttotal = commenttotal;
         this.comment_render = comment_render;
         this.listcomment = listcomment;
+        this.description = description;
         this.lc_code = lc_code;
         this.timeupdate = timeupdate;
         this.price = price;
         this.valid = valid;
+        this.blocked_list = blocked_list;
+        this.chat_id = chat_id;
+        this.chat_time = chat_time;
     }
 
     public String getListcomment() {
@@ -255,5 +262,13 @@ public class VideoComment {
 
     public void setChat_time(Long chat_time) {
         this.chat_time = chat_time;
+    }
+
+    public String getBlocked_list() {
+        return blocked_list;
+    }
+
+    public void setBlocked_list(String blocked_list) {
+        this.blocked_list = blocked_list;
     }
 }

@@ -216,7 +216,7 @@ public class ApiCmtController {
                 Random ran = new Random();
                 Request request1 = null;
                 String[] key={"AIzaSyDU89b2Gk7nMVj-SPZh8Waq7TasA6KWoWQ","AIzaSyDeJlPN5niDYaHVCbaWyB0kE2cf4--dWS8","AIzaSyAlfEOjSy3smUK2_X0bJatd_tzmuj5tbWQ"};
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,channelTitle,liveBroadcastContent),statistics(commentCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,channelTitle,liveBroadcastContent),statistics(commentCount),contentDetails(duration,regionRestriction(blocked)))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
 
 
                 Response response1 = client1.newCall(request1).execute();
@@ -302,6 +302,17 @@ public class ApiCmtController {
                             videoViewhnew.setDescription("");
                         }
 
+
+                        //block List
+                        JSONObject regionRestriction = (JSONObject) contentDetails.get("regionRestriction");
+                        if (regionRestriction != null && regionRestriction.containsKey("blocked")) {
+                            JSONArray blockedArray = (JSONArray) regionRestriction.get("blocked");
+                            String blockedCountries = String.join(",", blockedArray).toLowerCase();
+                            videoViewhnew.setBlocked_list(blockedCountries);
+                        }else{
+                            videoViewhnew.setBlocked_list("");
+                        }
+
                         //int max_thread = service.getThread() + ((int) (data.getQuantity() / 1000) - 1) * setting.getLevelthread();
                         //int max_thread = (int)(data.getQuantity() / 2);
                         /*
@@ -359,8 +370,8 @@ public class ApiCmtController {
                             }
                         }else if(service.getType().equals("Default")&&service.getAi()==2&&service.getLive()==0){
                             String description="";
-                            if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
-                                description=snippet.get("description").toString();
+
+                                if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){                   description=snippet.get("description").toString();
                             }
                             String uuid=Openai.createTask("https://www.youtube.com/watch?v="+video.get("id").toString(),data.getQuantity()>100?100:data.getQuantity(),"youtube","comment",0,snippet.get("title").toString(),snippet.get("channelTitle").toString(),description);
                             if(uuid!=null){
