@@ -260,9 +260,9 @@ public class ApiController {
                 for (int i=0;i<10;i++){
 
                     if(service.getAi()==0){
-                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked)))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                     }else{
-                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked)))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                     }
 
 
@@ -289,6 +289,13 @@ public class ApiController {
                         JSONObject video = (JSONObject) k.next();
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                         JSONObject snippet = (JSONObject) video.get("snippet");
+
+
+                        JSONObject regionRestriction = (JSONObject) contentDetails.get("regionRestriction");
+                        if (regionRestriction != null && regionRestriction.isEmpty()) {
+                            resp.put("error", "This video is not eligible for service");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
                         if(contentDetails.get("duration")==null&&service.getLive()==0){
                             resp.put("error", "This video is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -308,8 +315,8 @@ public class ApiController {
                             resp.put("error", "This video is not a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
-                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() <= 60&&service.getLive()==0) {
-                            resp.put("error", "Video must be longer than 60 seconds");
+                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() <= 90&&service.getLive()==0) {
+                            resp.put("error", "Video must be longer than 90 seconds");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() < 600&&service.getLive()==0 &&service.getChecktime()==1&&service.getMaxtime()==10) {
