@@ -315,8 +315,8 @@ public class ApiController {
                             resp.put("error", "This video is not a livestream video");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
-                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() <= 90&&service.getLive()==0) {
-                            resp.put("error", "Video must be longer than 90 seconds");
+                        if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() <= 60&&service.getLive()==0) {
+                            resp.put("error", "Video must be longer than 60 seconds");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         if (Duration.parse(contentDetails.get("duration").toString()).getSeconds() < 600&&service.getLive()==0 &&service.getChecktime()==1&&service.getMaxtime()==10) {
