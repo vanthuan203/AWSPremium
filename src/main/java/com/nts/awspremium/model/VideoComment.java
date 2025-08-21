@@ -23,6 +23,9 @@ public class VideoComment {
     private Integer commentorder;
     private Integer commenttotal;
 
+    @Column(columnDefinition = "integer default -1")
+    private Integer currenttotal=-1;
+
     private Integer comment_render=0;
     private String listcomment;
     private String description="";
@@ -43,7 +46,7 @@ public class VideoComment {
     public VideoComment() {
     }
 
-    public VideoComment(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer commentstart, Long insertdate, Integer maxthreads, Long duration, Integer service, String note, String user, Integer enddate, Integer commentorder, Integer commenttotal, Integer comment_render, String listcomment, String description, String lc_code, Long timeupdate, Float price, Integer valid, String blocked_list, String chat_id, Long chat_time) {
+    public VideoComment(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer commentstart, Long insertdate, Integer maxthreads, Long duration, Integer service, String note, String user, Integer enddate, Integer commentorder, Integer commenttotal, Integer currenttotal, Integer comment_render, String listcomment, String description, String lc_code, Long timeupdate, Float price, Integer valid, String blocked_list, String chat_id, Long chat_time) {
         this.orderid = orderid;
         this.videoid = videoid;
         this.videotitle = videotitle;
@@ -59,6 +62,7 @@ public class VideoComment {
         this.enddate = enddate;
         this.commentorder = commentorder;
         this.commenttotal = commenttotal;
+        this.currenttotal = currenttotal;
         this.comment_render = comment_render;
         this.listcomment = listcomment;
         this.description = description;
@@ -270,5 +274,13 @@ public class VideoComment {
 
     public void setBlocked_list(String blocked_list) {
         this.blocked_list = blocked_list;
+    }
+
+    public Integer getCurrenttotal() {
+        return currenttotal;
+    }
+
+    public void setCurrenttotal(Integer currenttotal) {
+        this.currenttotal = currenttotal;
     }
 }

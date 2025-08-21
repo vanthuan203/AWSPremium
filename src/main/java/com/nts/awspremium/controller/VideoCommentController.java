@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -165,6 +162,65 @@ public class VideoCommentController {
             resp.put("message", e.getMessage());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value = "/updateCurrentTotalCheck", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateCurrentTotalCheck() throws IOException, ParseException {
+        JSONObject resp = new JSONObject();
+        List<String> listvideo = videoCommentRepository.getVideoByTotalCheck(50);
+        if (listvideo.size() == 0) {
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+        String s_videoid = "";
+        List<String> videofale =  new ArrayList<String>();
+        for (int i = 0; i < listvideo.size(); i++) {
+            if (i == 0) {
+                s_videoid = listvideo.get(i);
+            } else {
+                s_videoid = s_videoid + "," + listvideo.get(i);
+            }
+            videofale.add(listvideo.get(i).toString());
+        }
+        System.out.println(s_videoid);
+        //VIDEOOOOOOOOOOOOOOO
+        OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+
+        Request request1 = null;
+        List<GoogleAPIKey> keys = googleAPIKeyRepository.getAllByState();
+        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=" + keys.get(0).getKey().trim() + "&fields=items(id,statistics(commentCount))&part=statistics&id=" + s_videoid).get().build();
+        keys.get(0).setCount(keys.get(0).getCount() + 1L);
+        googleAPIKeyRepository.save(keys.get(0));
+        Response response1 = client1.newCall(request1).execute();
+
+        String resultJson1 = response1.body().string();
+
+        Object obj1 = new JSONParser().parse(resultJson1);
+
+        JSONObject jsonObject1 = (JSONObject) obj1;
+        JSONArray items = (JSONArray) jsonObject1.get("items");
+        if(items==null){
+            resp.put("status", "false");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+        JSONArray jsonArray = new JSONArray();
+        Iterator k = items.iterator();
+
+        while (k.hasNext()) {
+            try {
+                JSONObject video = (JSONObject) k.next();
+                JSONObject obj = new JSONObject();
+                JSONObject statistics = (JSONObject) video.get("statistics");
+                Integer current_count =Integer.parseInt(statistics.get("commentCount").toString());
+                videoCommentRepository.updateNote(current_count, video.get("id").toString());
+                videofale.remove(video.get("id").toString());
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        videoCommentRepository.updateValid(videofale);
+        resp.put("status", "true");
+        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
     }
 
     @GetMapping(path = "updateorderviewcron", produces = "application/hal+json;charset=utf8")

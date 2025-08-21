@@ -1,5 +1,6 @@
 package com.nts.awspremium.crons;
 
+import com.nts.awspremium.controller.VideoCommentController;
 import com.nts.awspremium.controller.VideoViewController;
 import com.nts.awspremium.controller.WebTrafficController;
 import com.nts.awspremium.model.OrderSpeedTrue;
@@ -17,6 +18,8 @@ public class CheckViewEnd {
     private WebTrafficController webTrafficController;
     @Autowired
     private VideoViewController videoViewController;
+    @Autowired
+    private VideoCommentController videoCommentController;
     @Autowired
     private OrderTrue orderTrue;
     @Autowired
@@ -49,6 +52,12 @@ public class CheckViewEnd {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateViewTotalAllServiceCron(8);
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            videoCommentController.updateCurrentTotalCheck();
                         } catch (Exception e) {
                             continue;
                         }

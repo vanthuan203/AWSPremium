@@ -156,10 +156,23 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "SELECT * from videocomment  where videoid=?1 limit 1",nativeQuery = true)
     public List<VideoComment> getVideoBuffhById(String videoid);
 
+    @Query(value = "SELECT videoid from videocomment  where commenttotal>=5 and currenttotal=-1 and valid=1 order by timeupdate desc limit ?1",nativeQuery = true)
+    public List<String> getVideoByTotalCheck(Integer limit);
+
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM videocomment where videoid=?1",nativeQuery = true)
     public void deletevideoByVideoId(String videoid);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE videocomment set note=CONCAT(ROUND((?1 - commentstart) / commenttotal * 100, 0), '%'),currenttotal=?1 where videoid=?2",nativeQuery = true)
+    public void updateNote(Integer currenttotal,String videoid);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE videocomment set valid=0 where videoid in(?1)",nativeQuery = true)
+    public void updateValid(List<String> a);
 
 
     @Query(value = "select * from videocomment where commenttotal>=commentorder and service in(select service from service where task='comment' and reply=0) ",nativeQuery = true)
