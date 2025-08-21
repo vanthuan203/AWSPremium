@@ -182,7 +182,6 @@ public class VideoCommentController {
             }
             videofale.add(listvideo.get(i).toString());
         }
-        System.out.println(s_videoid);
         //VIDEOOOOOOOOOOOOOOO
         OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 
