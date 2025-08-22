@@ -406,6 +406,7 @@ public class ApiController {
                         videoViewhnew.setView24h(0);
                         videoViewhnew.setViewtotal(0);
                         videoViewhnew.setTimetotal(0);
+                        videoViewhnew.setTimeupdate(0L);
                         videoViewhnew.setVieworder(data.getQuantity());
                         videoViewhnew.setUser(admins.get(0).getUsername());
                         videoViewhnew.setChannelid(snippet.get("channelId").toString());
