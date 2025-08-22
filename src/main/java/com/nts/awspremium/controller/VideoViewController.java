@@ -1134,7 +1134,9 @@ public class VideoViewController {
                     }
                 }
                 try {
-                    videoViewRepository.updateTimeViewOrderByVideoId(timebufftotal, viewbufftotal,System.currentTimeMillis(), videoBuffhList.get(i).getVideoid());
+                    if(viewbufftotal>videoBuffhList.get(i).getViewtotal()){
+                        videoViewRepository.updateTimeViewOrderByVideoId(timebufftotal, viewbufftotal,System.currentTimeMillis(), videoBuffhList.get(i).getVideoid());
+                    }
                 } catch (Exception e) {
 
                 }
