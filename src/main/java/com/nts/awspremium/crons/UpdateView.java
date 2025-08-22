@@ -78,6 +78,12 @@ public class UpdateView {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateRunningOrderPending();
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            videoViewController.updateOrderCheckCancelCron();
                         } catch (Exception e) {
                             continue;
                         }

@@ -49,6 +49,12 @@ public class UpdateCmt {
                                 throw new RuntimeException(e);
                             }
                             videoCommentController.updateVideoReplyDoneCron();
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            videoCommentController.updateOrderCheckCancelCron();
                         } catch (Exception e) {
                             continue;
                         }

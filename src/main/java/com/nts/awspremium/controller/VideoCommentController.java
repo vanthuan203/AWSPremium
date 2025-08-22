@@ -239,7 +239,9 @@ public class VideoCommentController {
                     }
                 }
                 try {
-                    videoCommentRepository.updateViewOrderByVideoId(viewtotal, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                    if(viewtotal>videoViewList.get(i).getCommenttotal()){
+                        videoCommentRepository.updateViewOrderByVideoId(viewtotal, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                    }
                 } catch (Exception e) {
 
                 }
@@ -256,11 +258,11 @@ public class VideoCommentController {
         }
     }
 
-    @GetMapping(path = "updateordercheckcancelcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateordercheckcancelcron() {
+    @GetMapping(path = "updateOrderCheckCancelCron", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateOrderCheckCancelCron() {
         JSONObject resp = new JSONObject();
         try {
-            videoViewRepository.updateOrderCheckCancel();
+            videoCommentRepository.updateOrderCheckCancel();
             resp.put("status", true);
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
@@ -1362,6 +1364,8 @@ public class VideoCommentController {
                                 } else if (regionRestriction.get("blocked").toString().indexOf("US") > 0 && videoCommentRepository.getServiceByVideoId(videoComments.get(i).getVideoid().trim(), "us") > 0) {
                                     delete("1", videoComments.get(i).getVideoid().trim(), 1);
                                 }else if (regionRestriction.get("blocked").toString().indexOf("KR") > 0 && videoCommentRepository.getServiceByVideoId(videoComments.get(i).getVideoid().trim(), "kr") > 0) {
+                                    delete("1", videoComments.get(i).getVideoid().trim(), 1);
+                                }else if (regionRestriction.get("blocked").toString().indexOf("JP") > 0 && videoCommentRepository.getServiceByVideoId(videoComments.get(i).getVideoid().trim(), "jp") > 0) {
                                     delete("1", videoComments.get(i).getVideoid().trim(), 1);
                                 } else {
                                     videoCommentRepository.updateOrderCheck(videoComments.get(i).getVideoid().trim());

@@ -135,6 +135,11 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     public List<String> getTotalCommentBuffByDataCommentAndDataReply();
 
 
+    @Modifying
+    @Transactional
+    @Query(value = "update videocomment set valid=0 where videoid not in (select videoid from historycommentsum where round((UNIX_TIMESTAMP()-time/1000)/60)<=10  group by videoid ) and round((UNIX_TIMESTAMP()-insertdate/1000)/60)>10",nativeQuery = true)
+    public void updateOrderCheckCancel();
+
 
     @Modifying
     @Transactional

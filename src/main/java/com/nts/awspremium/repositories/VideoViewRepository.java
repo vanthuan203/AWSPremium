@@ -225,7 +225,7 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update videoview set valid=0 where videoid not in (select videoid from historyviewsum where round((UNIX_TIMESTAMP()-time/1000)/60)<=20  group by videoid ) and round((UNIX_TIMESTAMP()-insertdate/1000)/60)>20",nativeQuery = true)
+    @Query(value = "update videoview set valid=0 where videoid not in (select videoid from historyviewsum where round((UNIX_TIMESTAMP()-time/1000)/60)<=30  group by videoid ) and round((UNIX_TIMESTAMP()-insertdate/1000)/60)>30",nativeQuery = true)
     public void updateOrderCheckCancel();
 
     @Modifying

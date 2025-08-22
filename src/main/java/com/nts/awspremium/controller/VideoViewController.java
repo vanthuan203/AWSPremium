@@ -1153,8 +1153,8 @@ public class VideoViewController {
         }
     }
 
-    @GetMapping(path = "updateordercheckcancelcron", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateordercheckcancelcron() {
+    @GetMapping(path = "updateOrderCheckCancelCron", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateOrderCheckCancelCron() {
         JSONObject resp = new JSONObject();
         try {
             videoViewRepository.updateOrderCheckCancel();
