@@ -1621,7 +1621,8 @@ public class HistoryCommentController {
     ResponseEntity<String> updatevideoid(@RequestParam(defaultValue = "") String username,
                                          @RequestParam(defaultValue = "") String videoid,
                                          @RequestParam(defaultValue = "0") Long comment_id,
-                                         @RequestParam(defaultValue = "") String lc
+                                         @RequestParam(defaultValue = "") String lc,
+                                         @RequestParam(defaultValue = "") String channel_id
                                          ) {
         JSONObject resp = new JSONObject();
         if (username.length() == 0) {
