@@ -260,9 +260,9 @@ public class ApiController {
                 for (int i=0;i<10;i++){
 
                     if(service.getAi()==0){
-                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked)))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked),licensedContent))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                     }else{
-                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked)))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked),licensedContent))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                     }
 
 
@@ -400,6 +400,23 @@ public class ApiController {
                             videoViewhnew.setMaxthreads(0);
                             videoViewhnew.setTimestart(0L);
                         }
+
+
+                        //block List
+                        if (regionRestriction != null && regionRestriction.containsKey("blocked")) {
+                            JSONArray blockedArray = (JSONArray) regionRestriction.get("blocked");
+                            String blockedCountries = String.join(",", blockedArray).toLowerCase();
+                            videoViewhnew.setBlocked_list(blockedCountries);
+                        }else{
+                            videoViewhnew.setBlocked_list("");
+                        }
+
+                        if(contentDetails.get("licensedContent")!=null && contentDetails.get("licensedContent").toString().equals("true")){
+                            videoViewhnew.setLicensed(1);
+                        }else{
+                            videoViewhnew.setLicensed(0);
+                        }
+
                         videoViewhnew.setMinstart(service.getMaxtime());
                         videoViewhnew.setDuration(Duration.parse(contentDetails.get("duration").toString()).getSeconds());
                         videoViewhnew.setInsertdate(System.currentTimeMillis());

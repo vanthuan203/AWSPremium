@@ -35,10 +35,16 @@ public class VideoView {
 
     private String link="";
 
+    @Column(columnDefinition = "varchar(555) default ''")
+    private String blocked_list="";
+
+    @Column(columnDefinition = "integer default 0")
+    private Integer licensed=0;
+
     public VideoView() {
     }
 
-    public VideoView(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer viewstart, Long insertdate, Long timestart, Integer minstart, Integer maxthreads, Integer threadset, Long duration, Integer service, String note, String user, Integer enddate, Integer vieworder, Integer viewtotal, Integer timetotal, Integer view24h, Long timeupdate, Float price, Integer valid, Integer priority, Integer speedup, String link) {
+    public VideoView(Long orderid, String videoid, String videotitle, String channelid, String channeltitle, Integer viewstart, Long insertdate, Long timestart, Integer minstart, Integer maxthreads, Integer threadset, Long duration, Integer service, String note, String user, Integer enddate, Integer vieworder, Integer viewtotal, Integer timetotal, Integer view24h, Long timeupdate, Float price, Integer valid, Integer priority, Integer speedup, String link, String blocked_list, Integer licensed) {
         this.orderid = orderid;
         this.videoid = videoid;
         this.videotitle = videotitle;
@@ -65,6 +71,8 @@ public class VideoView {
         this.priority = priority;
         this.speedup = speedup;
         this.link = link;
+        this.blocked_list = blocked_list;
+        this.licensed = licensed;
     }
 
     public Integer getTimetotal() {
@@ -273,5 +281,21 @@ public class VideoView {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getBlocked_list() {
+        return blocked_list;
+    }
+
+    public void setBlocked_list(String blocked_list) {
+        this.blocked_list = blocked_list;
+    }
+
+    public Integer getLicensed() {
+        return licensed;
+    }
+
+    public void setLicensed(Integer licensed) {
+        this.licensed = licensed;
     }
 }
