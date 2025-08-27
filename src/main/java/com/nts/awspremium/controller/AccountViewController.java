@@ -919,8 +919,14 @@ public class AccountViewController {
             Long id=null;
             if(settingSystem.getClear_data_package().equals("cmt")){
                 id = accountRepository.getAccountCmtREG(google_suite.trim());
+                if(id==null){
+                    id = accountRepository.getAccountREG(google_suite.trim());
+                }
             }else{
                 id = accountRepository.getAccountREG(google_suite.trim());
+                if(id==null){
+                    id = accountRepository.getAccountCmtREG(google_suite.trim());
+                }
             }
             if (id == null) {
                 resp.put("status", "fail");
