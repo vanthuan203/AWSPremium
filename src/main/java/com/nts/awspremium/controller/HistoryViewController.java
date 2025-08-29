@@ -2172,11 +2172,12 @@ public class HistoryViewController {
 
             List<VideoView> videos = null;
             List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
-
+            /*
             if(histories.get(0).getFinger_id()>0){
                 fingerprintsPCRepository.update_Running_Finger_PC(histories.get(0).getFinger_id(),histories.get(0).getUsername().trim()+"%");
                 histories.get(0).setFinger_id(0L);
             }
+             */
             histories.get(0).setMax_task(3+ran.nextInt(4));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
@@ -2264,7 +2265,7 @@ public class HistoryViewController {
                 }
             }
 
-
+            /*
             Long finger_id=0L;
             try{
                 String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
@@ -2303,6 +2304,8 @@ public class HistoryViewController {
                 resp.put("message", "Không còn video để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+
+             */
 
 
             String[] proxy = new String[0];
@@ -2418,10 +2421,11 @@ public class HistoryViewController {
 
             histories.get(0).setTimeget(System.currentTimeMillis());
             histories.get(0).setRunning(1);
-            histories.get(0).setFinger_id(finger_id);
+            //histories.get(0).setFinger_id(finger_id);
             histories.get(0).setMax_time(service.getMaxtime());
             histories.get(0).setTask_index(1);
             historyViewRepository.save(histories.get(0));
+            resp.put("finger_id", 0);
             resp.put("live", service.getLive() == 1 ? "true" : "fail");
             resp.put("channel_id", videos.get(0).getChannelid());
             resp.put("status", "true");
