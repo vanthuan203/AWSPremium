@@ -1174,6 +1174,7 @@ public class HistoryCommentController {
             resp.put("video_title", videos.get(0).getVideotitle());
             resp.put("username", histories.get(0).getUsername());
             resp.put("geo", histories.get(0).getGeo().trim());
+            resp.put("channel_index", histories.get(0).getChannel_index());
 
             /*
             String proxy_ha= proxyRepository.get_Proxy_HA(proxy[0].trim());

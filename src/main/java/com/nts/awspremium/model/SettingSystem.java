@@ -41,6 +41,10 @@ public class SettingSystem {
     private Integer time_get_task;
     @Column(columnDefinition = "integer default 0")
     private Integer time_waiting_task=0;
+
+    @Column(columnDefinition = "integer default 1")
+    private Integer channel_cmt=1;
+
     public SettingSystem() {
     }
 

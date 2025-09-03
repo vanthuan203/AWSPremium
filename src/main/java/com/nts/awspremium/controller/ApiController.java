@@ -56,6 +56,9 @@ public class ApiController {
     @Autowired
     private VpsRepository vpsRepository;
 
+    @Autowired
+    private ChannelYoutubeBlackListRepository channelYoutubeBlackListRepository;
+
 
     @PostMapping(value = "/view", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> view(DataRequest data) throws IOException, ParseException {
@@ -298,6 +301,10 @@ public class ApiController {
                         }
                         if(contentDetails.get("duration")==null&&service.getLive()==0){
                             resp.put("error", "This video is not eligible for service");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
+                        if(channelYoutubeBlackListRepository.getCountByChannelId(snippet.get("channelId").toString().trim())>0){
+                            resp.put("error", "This channel is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         if(service.getLive()==1 && contentDetails.get("duration")==null){

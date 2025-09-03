@@ -24,6 +24,10 @@ public class HistoryComment {
 
     @Column(columnDefinition = "integer default 0")
     private Integer task_count=0;
+
+    @Column(columnDefinition = "integer default 1")
+    private Integer channel_index=1;
+
     private String geo;
     private String videoid;
     private Long orderid;
@@ -31,7 +35,7 @@ public class HistoryComment {
     public HistoryComment() {
     }
 
-    public HistoryComment(Long id, String username, String listvideo, String vps, Integer running, Long timeget, Long task_time, Integer task_index, Integer max_task, Integer task_count, String geo, String videoid, Long orderid) {
+    public HistoryComment(Long id, String username, String listvideo, String vps, Integer running, Long timeget, Long task_time, Integer task_index, Integer max_task, Integer task_count, Integer channel_index, String geo, String videoid, Long orderid) {
         this.id = id;
         this.username = username;
         this.listvideo = listvideo;
@@ -42,6 +46,7 @@ public class HistoryComment {
         this.task_index = task_index;
         this.max_task = max_task;
         this.task_count = task_count;
+        this.channel_index = channel_index;
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
@@ -149,5 +154,13 @@ public class HistoryComment {
 
     public void setMax_task(Integer max_task) {
         this.max_task = max_task;
+    }
+
+    public Integer getChannel_index() {
+        return channel_index;
+    }
+
+    public void setChannel_index(Integer channel_index) {
+        this.channel_index = channel_index;
     }
 }

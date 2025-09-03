@@ -332,6 +332,7 @@ public class AccountViewController {
                                     history.setOrderid(0L);
                                     history.setGeo(account.get(0).getGeo());
                                     history.setTask_time(0L);
+                                    history.setChannel_index(1);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyCommentRepository.save(history);
                                 }catch (Exception e){
@@ -347,6 +348,7 @@ public class AccountViewController {
                                     history.setOrderid(0L);
                                     history.setGeo(account.get(0).getGeo());
                                     history.setTask_time(0L);
+                                    history.setChannel_index(1);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyCommentRepository.save(history);
                                 }
@@ -362,6 +364,7 @@ public class AccountViewController {
                                 histories.get(0).setOrderid(0L);
                                 histories.get(0).setGeo(account.get(0).getGeo());
                                 histories.get(0).setTask_time(0L);
+                                histories.get(0).setChannel_index(1);
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyCommentRepository.save(histories.get(0));
                             }
