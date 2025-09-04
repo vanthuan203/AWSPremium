@@ -1648,9 +1648,9 @@ public class HistoryCommentController {
                 //check cmt
                 if(channel_id.trim().length()!=0){
                     String data_Check=GoogleApi.checkComment(videoid.trim());
-                    if(data_Check!=null&&data_Check.contains(videoid.trim())){
+                    if(data_Check!=null&&data_Check.contains(channel_id.trim())){
                         historyCmt.setTask_success(historyCmt.getTask_success()+1);
-                    }else if(data_Check!=null&&!data_Check.contains(videoid.trim())){
+                    }else if(data_Check!=null&&!data_Check.contains(channel_id.trim())){
                         historyCmt.setTask_false(historyCmt.getTask_false()+1);
                     }
                 }
