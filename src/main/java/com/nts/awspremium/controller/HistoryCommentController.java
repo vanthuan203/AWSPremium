@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -1618,6 +1621,7 @@ public class HistoryCommentController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+    ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     @GetMapping(value = "/updatevideoid", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> updatevideoid(@RequestParam(defaultValue = "") String username,
@@ -1647,12 +1651,15 @@ public class HistoryCommentController {
 
                 //check cmt
                 if(channel_id.trim().length()!=0){
-                    String data_Check=GoogleApi.checkComment(videoid.trim());
-                    if(data_Check!=null&&data_Check.contains(channel_id.trim())){
-                        historyCmt.setTask_success(historyCmt.getTask_success()+1);
-                    }else if(data_Check!=null&&!data_Check.contains(channel_id.trim())){
-                        historyCmt.setTask_false(historyCmt.getTask_false()+1);
-                    }
+                    scheduler.schedule(() -> {
+                        String data_Check = GoogleApi.checkComment(videoid.trim());
+                        if (data_Check != null && data_Check.contains(channel_id.trim())) {
+                            historyCmt.setTask_success(historyCmt.getTask_success() + 1);
+                        } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
+                            historyCmt.setTask_false(historyCmt.getTask_false() + 1);
+                        }
+                        historyCommentRepository.save(historyCmt);
+                    }, 15, TimeUnit.SECONDS);  // Delay 15 giây
                 }
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
