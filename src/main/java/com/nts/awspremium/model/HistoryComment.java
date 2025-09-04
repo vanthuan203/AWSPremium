@@ -25,6 +25,11 @@ public class HistoryComment {
     @Column(columnDefinition = "integer default 0")
     private Integer task_count=0;
 
+    @Column(columnDefinition = "integer default 0")
+    private Integer task_false=0;
+    @Column(columnDefinition = "integer default 0")
+    private Integer task_success=0;
+
     @Column(columnDefinition = "integer default 1")
     private Integer channel_index=1;
 
@@ -162,5 +167,21 @@ public class HistoryComment {
 
     public void setChannel_index(Integer channel_index) {
         this.channel_index = channel_index;
+    }
+
+    public Integer getTask_false() {
+        return task_false;
+    }
+
+    public void setTask_false(Integer task_false) {
+        this.task_false = task_false;
+    }
+
+    public Integer getTask_success() {
+        return task_success;
+    }
+
+    public void setTask_success(Integer task_success) {
+        this.task_success = task_success;
     }
 }

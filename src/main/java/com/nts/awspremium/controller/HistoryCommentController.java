@@ -1,5 +1,6 @@
 package com.nts.awspremium.controller;
 
+import com.nts.awspremium.GoogleApi;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONArray;
@@ -1643,6 +1644,17 @@ public class HistoryCommentController {
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
+
+                //check cmt
+                if(channel_id.trim().length()!=0){
+                    String data_Check=GoogleApi.checkComment(videoid.trim());
+                    if(data_Check!=null&&data_Check.contains(videoid.trim())){
+                        historyCmt.setTask_success(historyCmt.getTask_success()+1);
+                    }else if(data_Check!=null&&!data_Check.contains(videoid.trim())){
+                        historyCmt.setTask_false(historyCmt.getTask_false()+1);
+                    }
+                }
+
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
                     if(historyCommentSumRepository.checkCommentIdTrue(comment_id)==0){
                         dataCommentRepository.updateRunningCommentDone(comment_id);
@@ -2000,6 +2012,20 @@ public class HistoryCommentController {
         JSONObject resp = new JSONObject();
         try {
             historyViewRepository.deleteAllViewThan24h();
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(path = "test", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> test() {
+        JSONObject resp = new JSONObject();
+        try {
+            GoogleApi.checkComment("hO2nQFCp9pE");
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {

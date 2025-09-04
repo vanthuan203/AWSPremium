@@ -227,6 +227,50 @@ public class GoogleApi {
         }
 
     }
+
+
+    public static String checkComment(String video_id) {
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            Request request = new Request.Builder()
+                    .url("https://yt-api.p.rapidapi.com/comments?id="+video_id)
+                    .addHeader("x-rapidapi-host", "yt-api.p.rapidapi.com")
+                    .addHeader("x-rapidapi-key","4010c38bfamsh398346af7e9f654p1492c2jsn20af8f084b5a")
+                    .get().build();
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+
+            // Kiểm tra nếu msg là "success"
+            if (!jsonObject.get("commentsCount").isJsonNull()) {
+                // Lấy followerCount từ data.stats
+                JsonArray jsonData = jsonObject.getAsJsonArray("data");
+                if(jsonData.isJsonNull()){
+                    return null;
+                }else{
+                    StringBuilder sb = new StringBuilder();
+                    int limit = Math.min(10, jsonData.size()); // lấy tối đa 10
+                    for (int i = 0; i < limit; i++) {
+                        JsonObject item = jsonData.get(i).getAsJsonObject();
+                        if (sb.length() > 0) sb.append(",");
+                        sb.append(item.get("authorText").getAsString());
+                    }
+                    System.out.println("Authors: " + sb.toString());
+                    return sb.toString();
+
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
+
     public static Integer getCountLikeCurrent(String order_key){
         try {
             OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
