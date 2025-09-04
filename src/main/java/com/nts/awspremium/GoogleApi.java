@@ -239,6 +239,7 @@ public class GoogleApi {
                     .url("https://yt-api.p.rapidapi.com/comments?id="+video_id)
                     .addHeader("x-rapidapi-host", "yt-api.p.rapidapi.com")
                     .addHeader("x-rapidapi-key","4010c38bfamsh398346af7e9f654p1492c2jsn20af8f084b5a")
+                    .addHeader("X-CACHEBYPASS", "1")
                     .get().build();
             Response response = client.newCall(request).execute();
             String resultJson = response.body().string();
@@ -259,7 +260,7 @@ public class GoogleApi {
                         if (sb.length() > 0) sb.append(",");
                         sb.append(item.get("authorText").getAsString());
                     }
-                    System.out.println("Authors: " + sb.toString());
+                    //System.out.println("Authors: " + sb.toString());
                     return sb.toString();
 
                 }
