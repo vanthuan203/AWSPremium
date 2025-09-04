@@ -253,7 +253,7 @@ public class GoogleApi {
                     return null;
                 }else{
                     StringBuilder sb = new StringBuilder();
-                    int limit = Math.min(10, jsonData.size()); // lấy tối đa 10
+                    int limit = Math.min(30, jsonData.size()); // lấy tối đa 30
                     for (int i = 0; i < limit; i++) {
                         JsonObject item = jsonData.get(i).getAsJsonObject();
                         if (sb.length() > 0) sb.append(",");

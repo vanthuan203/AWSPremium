@@ -1652,14 +1652,16 @@ public class HistoryCommentController {
                 //check cmt
                 if(channel_id.trim().length()!=0){
                     scheduler.schedule(() -> {
+                        HistoryComment historyCmtCheck = historyCmt;
                         String data_Check = GoogleApi.checkComment(videoid.trim());
                         if (data_Check != null && data_Check.contains(channel_id.trim())) {
-                            historyCmt.setTask_success(historyCmt.getTask_success() + 1);
+                            historyCmtCheck.setTask_success(historyCmtCheck.getTask_success() + 1);
+                            historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
-                            historyCmt.setTask_false(historyCmt.getTask_false() + 1);
+                            historyCmtCheck.setTask_false(historyCmtCheck.getTask_false() + 1);
+                            historyCommentRepository.save(historyCmtCheck);
                         }
-                        historyCommentRepository.save(historyCmt);
-                    }, 15, TimeUnit.SECONDS);  // Delay 15 giây
+                    }, 25, TimeUnit.SECONDS);  // Delay 15 giây
                 }
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
