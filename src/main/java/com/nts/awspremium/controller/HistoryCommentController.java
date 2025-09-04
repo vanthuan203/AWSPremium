@@ -1671,7 +1671,7 @@ public class HistoryCommentController {
                                 historyCommentRepository.save(historyCmtCheck);
                             }
                         }
-                    }, 30, TimeUnit.SECONDS);  // Delay 15 giây
+                    }, 30, TimeUnit.SECONDS);  // Delay 30 giây
                 }
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
