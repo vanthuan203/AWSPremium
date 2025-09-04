@@ -1652,7 +1652,7 @@ public class HistoryCommentController {
                 //check cmt
                 if(channel_id.trim().length()!=0){
                     scheduler.schedule(() -> {
-                        HistoryComment historyCmtCheck = historyCmt;
+                        HistoryComment historyCmtCheck = historyCommentRepository.getHistoryCmtByUsername(username);
                         String data_Check = GoogleApi.checkComment(videoid.trim());
                         if (data_Check != null && data_Check.contains(channel_id.trim())) {
                             historyCmtCheck.setTask_success(historyCmtCheck.getTask_success() + 1);
