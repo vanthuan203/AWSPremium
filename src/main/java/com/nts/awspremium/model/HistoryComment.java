@@ -33,6 +33,9 @@ public class HistoryComment {
     @Column(columnDefinition = "integer default 1")
     private Integer channel_index=1;
 
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String user_id="";
+
     private String geo;
     private String videoid;
     private Long orderid;
@@ -183,5 +186,13 @@ public class HistoryComment {
 
     public void setTask_success(Integer task_success) {
         this.task_success = task_success;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

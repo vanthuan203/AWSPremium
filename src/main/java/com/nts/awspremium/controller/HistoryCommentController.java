@@ -1656,9 +1656,11 @@ public class HistoryCommentController {
                         String data_Check = GoogleApi.checkComment(videoid.trim());
                         if (data_Check != null && data_Check.contains(channel_id.trim())) {
                             historyCmtCheck.setTask_success(historyCmtCheck.getTask_success() + 1);
+                            historyCmtCheck.setUser_id(channel_id.trim());
                             historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
                             historyCmtCheck.setTask_false(historyCmtCheck.getTask_false() + 1);
+                            historyCmtCheck.setUser_id(channel_id.trim());
                             historyCommentRepository.save(historyCmtCheck);
                         }
                     }, 25, TimeUnit.SECONDS);  // Delay 15 giây
@@ -2034,7 +2036,7 @@ public class HistoryCommentController {
     ResponseEntity<String> test() {
         JSONObject resp = new JSONObject();
         try {
-            GoogleApi.checkComment("hO2nQFCp9pE");
+            GoogleApi.checkComment("2PYSXDWsF_Y");
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
