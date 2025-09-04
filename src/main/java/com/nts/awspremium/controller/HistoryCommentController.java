@@ -1662,6 +1662,7 @@ public class HistoryCommentController {
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
                             if(historyCmtCheck.getTask_false()>5){
                                 historyCmtCheck.setTask_time(System.currentTimeMillis()+25*60* 60 * 1000);
+                                historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
                             }else{
