@@ -31,10 +31,10 @@ public interface HistoryCommentRepository extends JpaRepository<HistoryComment,L
     public HistoryComment getHistoryCmtByUsername(String username);
 
 
-    @Query(value = "SELECT id FROM AccPremium.historycomment where running=0 and vps=?1 and (UNIX_TIMESTAMP()-task_time/1000)>0 order by task_count asc,rand() limit 1;",nativeQuery = true)
+    @Query(value = "SELECT id FROM AccPremium.historycomment where running=0 and vps=?1 and (UNIX_TIMESTAMP()-task_time/1000)>0 order by timeget asc,rand() limit 1;",nativeQuery = true)
     public Long getAccToCmtNoCheckProxy(String vps);
 
-    @Query(value = "SELECT id FROM AccPremium.historycomment where running=0 and vps=?1 and geo=?2 and (UNIX_TIMESTAMP()-task_time/1000)>0 order by task_count asc,rand() limit 1;",nativeQuery = true)
+    @Query(value = "SELECT id FROM AccPremium.historycomment where running=0 and vps=?1 and geo=?2 and (UNIX_TIMESTAMP()-task_time/1000)>0 order by timeget asc,rand() limit 1;",nativeQuery = true)
     public Long getAccToCmtNoCheckProxy_By_Geo(String vps,String geo);
 
     @Modifying
