@@ -33,6 +33,9 @@ public class HistoryView {
     @Column(columnDefinition = "integer default 0")
     private Integer max_task=0;
 
+    @Column(columnDefinition = "integer default 2")
+    private Integer channel_index=2;
+
     private Integer task_done=0;
 
     public HistoryView() {
@@ -56,6 +59,14 @@ public class HistoryView {
         this.finger_id = finger_id;
         this.max_time = max_time;
         this.task_done = task_done;
+    }
+
+    public Integer getChannel_index() {
+        return channel_index;
+    }
+
+    public void setChannel_index(Integer channel_index) {
+        this.channel_index = channel_index;
     }
 
     public Integer getTask_index() {

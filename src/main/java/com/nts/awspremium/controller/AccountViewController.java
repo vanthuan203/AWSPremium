@@ -276,6 +276,7 @@ public class AccountViewController {
                                     history.setFinger_id(0L);
                                     history.setTask_time(0L);
                                     history.setMax_time(0);
+                                    history.setChannel_index(2);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }catch (Exception e){
@@ -295,6 +296,7 @@ public class AccountViewController {
                                     history.setFinger_id(0L);
                                     history.setTask_time(0L);
                                     history.setMax_time(0);
+                                    history.setChannel_index(2);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }
@@ -314,6 +316,7 @@ public class AccountViewController {
                                 histories.get(0).setFinger_id(0L);
                                 histories.get(0).setTask_time(0L);
                                 histories.get(0).setMax_time(0);
+                                histories.get(0).setChannel_index(2);
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
                             }
