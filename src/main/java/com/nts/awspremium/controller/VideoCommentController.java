@@ -216,8 +216,9 @@ public class VideoCommentController {
                 if(videoComment!=null && current_count<=videoComment.getCommentstart()){
                     videoCommentRepository.updateCommentTotal(videoComment.getVideoid());
                     delete("1",videoComment.getVideoid(),1);
+                }else{
+                    videoCommentRepository.updateNote(current_count, video.get("id").toString());
                 }
-                videoCommentRepository.updateNote(current_count, video.get("id").toString());
                 videofale.remove(video.get("id").toString());
             } catch (Exception e) {
                 continue;
