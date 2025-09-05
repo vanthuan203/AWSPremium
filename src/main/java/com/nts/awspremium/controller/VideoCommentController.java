@@ -211,7 +211,7 @@ public class VideoCommentController {
                 JSONObject obj = new JSONObject();
                 JSONObject statistics = (JSONObject) video.get("statistics");
                 Integer current_count =Integer.parseInt(statistics.get("commentCount").toString());
-
+                /*
                 VideoComment videoComment =videoCommentRepository.getVideoCmtByVideoid(video.get("id").toString());
                 if(videoComment!=null && current_count<=videoComment.getCommentstart()){
                     videoCommentRepository.updateCommentTotal(videoComment.getVideoid());
@@ -219,6 +219,9 @@ public class VideoCommentController {
                 }else{
                     videoCommentRepository.updateNote(current_count, video.get("id").toString());
                 }
+
+                 */
+                videoCommentRepository.updateNote(current_count, video.get("id").toString());
                 videofale.remove(video.get("id").toString());
             } catch (Exception e) {
                 continue;
