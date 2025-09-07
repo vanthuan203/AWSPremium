@@ -2181,7 +2181,7 @@ public class VideoViewController {
                     videoViewHistory.setViewend(viewcount);
                     videoViewHistory.setTimecheckbh(System.currentTimeMillis());
                     videoViewHistory.setViewtotal(viewFix - viewthan);
-                    if(serviceRepository.checkGuaranteeByTime(videoViewHistory.getEnddate(),1)==0){
+                    if(serviceRepository.checkGuarantee(videoViewHistory.getEnddate(),1)==0){
                         videoViewHistory.setRefund(1);
                     }else{
                         videoViewHistory.setRefund(2);
@@ -3989,7 +3989,7 @@ public class VideoViewController {
                     status="Đơn mới đang chạy";
                 }else if(video.getCancel()==1){
                     status="Được hủy trước đó";
-                }else if(serviceRepository.checkGuaranteeByTime(video.getEnddate(),service.getMaxtimerefill())==0&&check_time==1){
+                }else if(serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0&&check_time==1){
                     status="Quá hạn "+service.getMaxtimerefill()+" ngày";
                 }
                 /*
