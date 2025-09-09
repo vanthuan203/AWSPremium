@@ -1098,7 +1098,9 @@ public class VideoViewController {
                     }
                 }
                 try {
-                    videoViewRepository.updateViewOrderByVideoId(viewtotal, view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                    if(viewtotal>videoViewList.get(i).getViewtotal()) {
+                        videoViewRepository.updateViewOrderByVideoId(viewtotal, view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                    }
                 } catch (Exception e) {
 
                 }
