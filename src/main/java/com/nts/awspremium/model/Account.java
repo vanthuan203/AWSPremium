@@ -31,6 +31,8 @@ public class Account implements Serializable {
     @Column(columnDefinition = "bigint default 0")
     private Long get_time=0L;
     @Column(columnDefinition = "bigint default 0")
+    private Long start_time=0L;
+    @Column(columnDefinition = "bigint default 0")
     private Long end_time=0L;
     @Column(columnDefinition = "varchar(255) default ''")
     private  String date="";
