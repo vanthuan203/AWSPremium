@@ -1589,8 +1589,8 @@ public class AccountViewController {
                 Long idHistory=historyViewRepository.getId(username.trim());
                 historyViewRepository.deleteHistoryById(idHistory);
             }
+            Account account =accountRepository.getAccountById(idUsername);
             if(live==-1){
-                Account account =accountRepository.getAccountById(idUsername);
                 if(account!=null){
                     GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
                     if(googleSuite!=null){
@@ -1600,7 +1600,7 @@ public class AccountViewController {
                     }
                 }
             }
-            if((live==-1 || live==1) && cmt==0){
+            if((live==-1 || live==1) && cmt==0 && account.getDate().contains("duphong")){
                 accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
             }else{
                 accountRepository.resetAccountByUsername(live, idUsername);
