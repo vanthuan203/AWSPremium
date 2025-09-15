@@ -141,6 +141,11 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE account SET running=0,vps='',live=?1,proxy='',geo=?2 where id=?3",nativeQuery = true)
+    public Integer resetAccountGeoByUsername(Integer live,String geo,Long id);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE account SET proxy=?1,proxy2=?2 where id=?3",nativeQuery = true)
     public Integer updateProxyById(String proxy,String proxy2,Long id);
 

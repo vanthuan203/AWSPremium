@@ -531,7 +531,7 @@ public class AccountViewController {
         }
         if(checkProsetListTrue.getValue()>=50){
             resp.put("status", "fail");
-            resp.put("message", "Get account không thành công, thử lại sau ítp phút!");
+            resp.put("message", "Get account không thành công, thử lại sau ít phút!");
             Thread.sleep(ran.nextInt(1000));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
@@ -607,7 +607,7 @@ public class AccountViewController {
                     if(geo.contains("test")){
                         id = accountRepository.getAccountView(geo.trim());
                     }else{
-                        id = accountRepository.getAccountViewByGoogleSuite("view");
+                        id = accountRepository.getAccountViewByGoogleSuite("duphong");
                     }
                 }else{
                     if(geo.equals("vn")){
@@ -656,6 +656,7 @@ public class AccountViewController {
                         account.get(0).setVps(vps.trim());
                         account.get(0).setRunning(1);
                         account.get(0).setGet_time(System.currentTimeMillis());
+                        account.get(0).setStart_time(System.currentTimeMillis());
                         accountRepository.save(account.get(0));
                         if(cmt==0){
                             Long historieId = historyViewRepository.getId(account.get(0).getUsername());
@@ -1588,7 +1589,22 @@ public class AccountViewController {
                 Long idHistory=historyViewRepository.getId(username.trim());
                 historyViewRepository.deleteHistoryById(idHistory);
             }
-            accountRepository.resetAccountByUsername(live, idUsername);
+            if(live==-1){
+                Account account =accountRepository.getAccountById(idUsername);
+                if(account!=null){
+                    GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
+                    if(googleSuite!=null){
+                        googleSuite.setState(false);
+                        googleSuite.setUpdate_time(System.currentTimeMillis());
+                        googleSuiteRepository.save(googleSuite);
+                    }
+                }
+            }
+            if((live==-1 || live==1) && cmt==0){
+                accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
+            }else{
+                accountRepository.resetAccountByUsername(live, idUsername);
+            }
             resp.put("status", "true");
             resp.put("message", "Reset Account thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -1649,6 +1665,55 @@ public class AccountViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    @GetMapping(value = "/check_Login", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> check_Login(@RequestParam(defaultValue = "") String username) {
+        JSONObject resp = new JSONObject();
+        try {
+            //Thread.sleep((long)(Math.random() * 10000));
+            if (username.length() == 0) {
+                resp.put("status", "fail");
+                resp.put("message", "Username không được để trống!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            }
+            Account account = accountRepository.findAccountByUsername(username.trim());
+            if (account == null) {
+                resp.put("status", "fail");
+                resp.put("message", "Username không tồn tại!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }else{
+                GoogleSuite googleSuite=googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
+                if(googleSuite!=null){
+                    if(googleSuite.getState()==true){
+                        resp.put("status", "true");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }else{
+                        resp.put("status", "fail");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                }else if(account.getGoogle_suite().length()!=0 && !account.getGoogle_suite().contains("gmail") && googleSuite==null ){
+                    GoogleSuite googleSuite_New=new GoogleSuite();
+                    googleSuite_New.setId(account.getGoogle_suite().trim());
+                    googleSuite_New.setStatus(true);
+                    googleSuite_New.setState(true);
+                    googleSuite_New.setUpdate_time(0L);
+                    googleSuiteRepository.save(googleSuite_New);
+                    resp.put("status", "true");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }else{
+                    resp.put("status", "true");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
+            }
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @GetMapping(value = "/getinfo", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getinfo(@RequestParam(defaultValue = "") String username,@RequestHeader(defaultValue = "") String Authorization) {
