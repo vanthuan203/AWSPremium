@@ -76,7 +76,7 @@ public class AccountViewController {
                     resp.put("message", "Update " + newaccount.getUsername() + " thành công!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 } else {
-                    resp.put("status", "fail");
+                    resp.put("status", "true");
                     resp.put("message", "Account " + newaccount.getUsername() + " đã tồn tại");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
