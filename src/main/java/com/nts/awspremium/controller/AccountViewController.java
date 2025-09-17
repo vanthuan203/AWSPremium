@@ -678,6 +678,7 @@ public class AccountViewController {
                                     history.setTask_time(0L);
                                     history.setMax_time(0);
                                     history.setChannel_index(2);
+                                    history.setState(true);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }catch (Exception e){
@@ -698,6 +699,7 @@ public class AccountViewController {
                                     history.setTask_time(0L);
                                     history.setMax_time(0);
                                     history.setChannel_index(2);
+                                    history.setState(true);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }
@@ -718,6 +720,7 @@ public class AccountViewController {
                                 histories.get(0).setTask_time(0L);
                                 histories.get(0).setMax_time(0);
                                 histories.get(0).setChannel_index(2);
+                                histories.get(0).setState(true);
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
                             }
@@ -1395,9 +1398,13 @@ public class AccountViewController {
     public ResponseEntity<String> cron_Google_suite() {
         JSONObject resp = new JSONObject();
         try {
+            Setting setting =settingRepository.getSettingId1();
+
             accountReg24hRepository.deleteAllByThan10m();
             accountReg24hRepository.deleteAllByThan24h();
             accountRepository.resetAccountRegByThan10m();
+            accountRepository.resetAccountViewByThanDay(setting.getRandview()*24);
+            historyViewRepository.resetStateAccount();
             googleSuiteRepository.update_State_Google_Suite();
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -1600,8 +1607,12 @@ public class AccountViewController {
                     }
                 }
             }
-            if((live==-1 || live==1) && cmt==0 && account.getDate().contains("duphong")){
+            if(live==1 && cmt==0){
                 accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
+            }else if(live==-1 && cmt==0){
+                accountRepository.resetAccountGeoStartTimeByUsername(1,"duphong",idUsername);
+            }else if(cmt==0){
+                accountRepository.resetAccountGeoStartTimeByUsername(live,"duphong",idUsername);
             }else{
                 accountRepository.resetAccountByUsername(live, idUsername);
             }

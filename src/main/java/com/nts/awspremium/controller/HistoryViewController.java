@@ -2172,6 +2172,16 @@ public class HistoryViewController {
 
             List<VideoView> videos = null;
             List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
+
+            if(histories.get(0).getState()==false){
+                resp.put("status", "fail");
+                resp.put("username", histories.get(0).getUsername().trim());
+                resp.put("message", "detete_account");
+                //resp.put("message", "bỏ qua nhiệm vụ");
+                accountRepository.resetAccountByUsernameThanDay("duphongdone",System.currentTimeMillis(),histories.get(0).getUsername().trim());
+                historyViewRepository.deleteHistoryById(historieId);
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
             /*
             if(histories.get(0).getFinger_id()>0){
                 fingerprintsPCRepository.update_Running_Finger_PC(histories.get(0).getFinger_id(),histories.get(0).getUsername().trim()+"%");

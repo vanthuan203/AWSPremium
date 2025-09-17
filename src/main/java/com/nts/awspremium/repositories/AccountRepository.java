@@ -127,8 +127,14 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE account set running=2 where  running!=2 and round((UNIX_TIMESTAMP()-start_time/1000)/60/60)>=?1 and start_time!=0",nativeQuery = true)
+    public Integer resetAccountViewByThanDay(Integer hour);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE account SET running=0,vps='',proxy='' where geo not like 'cmt%' and vps=?1",nativeQuery = true)
     public Integer resetAccountViewByVps(String vps);
+
 
     @Modifying
     @Transactional
@@ -143,6 +149,16 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Transactional
     @Query(value = "UPDATE account SET running=0,vps='',live=?1,proxy='',geo=?2 where id=?3",nativeQuery = true)
     public Integer resetAccountGeoByUsername(Integer live,String geo,Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE account SET running=2,vps='',proxy='',geo=?1,end_time=?2 where username=?2",nativeQuery = true)
+    public Integer resetAccountByUsernameThanDay(String geo,Long end_time,String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE account SET running=0,vps='',live=?1,proxy='',start_time=0,geo=?2 where id=?3",nativeQuery = true)
+    public Integer resetAccountGeoStartTimeByUsername(Integer live,String geo,Long id);
 
     @Modifying
     @Transactional

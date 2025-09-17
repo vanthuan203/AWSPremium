@@ -36,6 +36,9 @@ public class HistoryView {
     @Column(columnDefinition = "integer default 2")
     private Integer channel_index=2;
 
+    @Column(columnDefinition = "TINYINT default 1")
+    private Boolean state=true;
+
     private Integer task_done=0;
 
     public HistoryView() {
@@ -59,6 +62,14 @@ public class HistoryView {
         this.finger_id = finger_id;
         this.max_time = max_time;
         this.task_done = task_done;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 
     public Integer getChannel_index() {

@@ -54,6 +54,11 @@ public interface HistoryViewRepository extends JpaRepository<HistoryView,Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "update historyview set state=0 where state=1 and username in (SELECT username FROM AccPremium.account where  running=2)",nativeQuery = true)
+    public Integer resetStateAccount();
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE historyview SET running=0,videoid='',orderid=0,max_time=0 where vps=?1",nativeQuery = true)
     public Integer resetThreadViewByVps(String vps);
 
