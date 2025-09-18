@@ -667,7 +667,11 @@ public class AccountViewController {
 
                              */
                         }else{
-                            account.get(0).setGeo("cmt-"+geo.trim());
+                            if(check_geo==2&&geo.equals("vn")){
+                                account.get(0).setGeo("cmt-us");
+                            }else{
+                                account.get(0).setGeo("cmt-"+geo.trim());
+                            }
                             account.get(0).setName_geo(geo.trim());
                         }
                         account.get(0).setProxy("");
