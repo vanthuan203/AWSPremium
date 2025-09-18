@@ -626,7 +626,7 @@ public class AccountViewController {
                     }
                      */
                     if(geo.contains("test")){
-                        id = accountRepository.getAccountView(geo.trim());
+                        id = accountRepository.getAccountView("cmt-"+geo.trim());
                     }else if(geo.equals("vn")){
                         if(check_geo==1){
                             id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt","vn");
