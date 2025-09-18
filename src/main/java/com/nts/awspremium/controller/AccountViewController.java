@@ -625,7 +625,11 @@ public class AccountViewController {
                         id = accountRepository.getAccountViewByGoogleSuite("cmt-"+geo.trim());
                     }
                      */
-                    id = accountRepository.getAccountViewByGoogleSuite("duphongcmt");
+                    if(geo.contains("test")){
+                        id = accountRepository.getAccountView(geo.trim());
+                    }else{
+                        id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt",geo.trim());
+                    }
                 }
                 if (id == null) {
                     resp.put("status", "fail");
@@ -658,6 +662,7 @@ public class AccountViewController {
                              */
                         }else{
                             account.get(0).setGeo("cmt-"+geo.trim());
+                            account.get(0).setName_geo(geo.trim());
                         }
                         account.get(0).setProxy("");
                         account.get(0).setVps(vps.trim());
