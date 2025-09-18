@@ -93,7 +93,11 @@ public class AccountViewController {
                 account.setEnd_time(0L);
                 account.setDate(newaccount.getDate());
                 account.setGeo(newaccount.getGeo());
-                account.setGoogle_suite(newaccount.getGoogle_suite());
+                if(newaccount.getUsername().contains("gmail")){
+                    account.setGoogle_suite("");
+                }else{
+                    account.setGoogle_suite(newaccount.getUsername().substring(newaccount.getUsername().indexOf("@") + 1).trim());
+                }
                 account.setStatus(false);
                 account.setReg(false);
                 account.setGroup_mail(newaccount.getGroup_mail()==null?"0":newaccount.getGroup_mail());
@@ -610,15 +614,18 @@ public class AccountViewController {
                         id = accountRepository.getAccountViewByGoogleSuite("duphong");
                     }
                 }else{
+                    /*
                     if(geo.equals("vn")){
                         if(check_geo==1){
-                            id = accountRepository.getAccountView("cmt-vn");
+                            id = accountRepository.getAccountViewByGoogleSuite("cmt-vn");
                         }else if(check_geo==2){
-                            id = accountRepository.getAccountView("cmt-us");
+                            id = accountRepository.getAccountViewByGoogleSuite("cmt-us");
                         }
                     }else{
-                        id = accountRepository.getAccountView("cmt-"+geo.trim());
+                        id = accountRepository.getAccountViewByGoogleSuite("cmt-"+geo.trim());
                     }
+                     */
+                    id = accountRepository.getAccountViewByGoogleSuite("duphongcmt");
                 }
                 if (id == null) {
                     resp.put("status", "fail");
@@ -636,7 +643,6 @@ public class AccountViewController {
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         if(cmt==0){
-                            account.get(0).setProxy("");
                             account.get(0).setGeo(geo.trim());
                             /*
                             if(account.get(0).getProxy()== null|| account.get(0).getProxy().length()==0){
@@ -651,12 +657,18 @@ public class AccountViewController {
 
                              */
                         }else{
-                            account.get(0).setProxy("");
+                            account.get(0).setGeo("cmt-"+geo.trim());
                         }
+                        account.get(0).setProxy("");
                         account.get(0).setVps(vps.trim());
                         account.get(0).setRunning(1);
                         account.get(0).setGet_time(System.currentTimeMillis());
-                        account.get(0).setStart_time(System.currentTimeMillis());
+                        if(cmt==0){
+                            account.get(0).setStart_time(System.currentTimeMillis());
+                        }else{
+                            account.get(0).setStart_time(0L);
+                        }
+
                         accountRepository.save(account.get(0));
                         if(cmt==0){
                             Long historieId = historyViewRepository.getId(account.get(0).getUsername());
@@ -1613,8 +1625,12 @@ public class AccountViewController {
                 accountRepository.resetAccountGeoStartTimeByUsername(1,"duphong",idUsername);
             }else if(cmt==0){
                 accountRepository.resetAccountGeoStartTimeByUsername(live,"duphong",idUsername);
-            }else{
-                accountRepository.resetAccountByUsername(live, idUsername);
+            }if(live==1 && cmt==1){
+                accountRepository.resetAccountGeoByUsername(1,"duphongcmt",idUsername);
+            }else if(live==-1 && cmt==1){
+                accountRepository.resetAccountGeoStartTimeByUsername(1,"duphongcmt",idUsername);
+            }else if(cmt==1){
+                accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongcmt",idUsername);
             }
             resp.put("status", "true");
             resp.put("message", "Reset Account thành công!");
@@ -1694,6 +1710,10 @@ public class AccountViewController {
                 resp.put("message", "Username không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }else{
+                if(!account.getGeo().contains("cmt")){
+                    resp.put("status", "fail");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
                 GoogleSuite googleSuite=googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
                 if(googleSuite!=null){
                     if(googleSuite.getState()==true){
