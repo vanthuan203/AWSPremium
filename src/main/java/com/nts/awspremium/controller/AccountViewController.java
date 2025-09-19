@@ -1725,10 +1725,6 @@ public class AccountViewController {
                 resp.put("message", "Username không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }else{
-                if(!account.getGeo().contains("cmt")){
-                    resp.put("status", "fail");
-                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                }
                 GoogleSuite googleSuite=googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
                 if(googleSuite!=null){
                     if(googleSuite.getState()==true){
