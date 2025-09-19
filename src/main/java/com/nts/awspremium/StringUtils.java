@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StringUtils {
@@ -27,7 +28,7 @@ public class StringUtils {
                 .mapToObj(i -> String.join(" ", Arrays.copyOfRange(
                         parts, i * chunkSize, Math.min(parts.length, (i + 1) * chunkSize)
                 )))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public static String convertMMMtoMM(String mmm){
