@@ -2,7 +2,10 @@ package com.nts.awspremium;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class StringUtils {
     public static long getLongTimeFromString(String dateTimeString,String format){
@@ -16,6 +19,17 @@ public class StringUtils {
         }
         return 0;
     }
+
+    public static List<String> splitByWords(String input, int chunkSize) {
+        String[] parts = input.split(" ");
+
+        return IntStream.range(0, (parts.length + chunkSize - 1) / chunkSize)
+                .mapToObj(i -> String.join(" ", Arrays.copyOfRange(
+                        parts, i * chunkSize, Math.min(parts.length, (i + 1) * chunkSize)
+                )))
+                .toList();
+    }
+
     public static String convertMMMtoMM(String mmm){
         try {
             if(mmm.contains("Jul")){

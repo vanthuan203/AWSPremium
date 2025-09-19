@@ -671,7 +671,8 @@ public class HistoryViewController {
                     resp.put("channel_id", videos.get(0).getChannelid());
                     resp.put("status", "true");
                     resp.put("video_id", videos.get(0).getVideoid());
-                    resp.put("video_title", videos.get(0).getVideotitle());
+                    List<String> list_Keyword=StringUtils.splitByWords(videos.get(0).getVideotitle(),2+ran.nextInt(3));
+                    resp.put("video_title", list_Keyword.get(ran.nextInt(list_Keyword.size())));
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
@@ -747,7 +748,7 @@ public class HistoryViewController {
                     if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                         resp.put("suggest_type", "true");
                     } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
-                        resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+                        resp.put("video_title", key.length() == 0 ? list_Keyword.get(ran.nextInt(list_Keyword.size())) : key);
                     } else if (source_view.equals("search_real")) {
                         resp.put("video_title",videos.get(0).getVideotitle()+ " "+videos.get(0).getVideoid());
                     }
@@ -2440,7 +2441,8 @@ public class HistoryViewController {
             resp.put("channel_id", videos.get(0).getChannelid());
             resp.put("status", "true");
             resp.put("video_id", videos.get(0).getVideoid());
-            resp.put("video_title", videos.get(0).getVideotitle());
+            List<String> list_Keyword=StringUtils.splitByWords(videos.get(0).getVideotitle(),2+rand.nextInt(3));
+            resp.put("video_title", list_Keyword.get(rand.nextInt(list_Keyword.size())));
             resp.put("username", histories.get(0).getUsername());
             resp.put("service_id", service.getService());
             resp.put("geo", histories.get(0).getGeo());
@@ -2487,7 +2489,7 @@ public class HistoryViewController {
                 key = keyArr[ran.nextInt(keyArr.length)];
             }
             resp.put("suggest_type", "fail");
-            resp.put("suggest_key", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+            resp.put("suggest_key", key.length() == 0 ? list_Keyword.get(rand.nextInt(list_Keyword.size())) : key);
             resp.put("suggest_video", "");
             List<String> arrSource = new ArrayList<>();
             for (int i = 0; i < service.getSuggest(); i++) {
@@ -2521,7 +2523,7 @@ public class HistoryViewController {
             if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                 resp.put("suggest_type", "true");
             } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
-                resp.put("video_title", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+                resp.put("video_title", key.length() == 0 ? list_Keyword.get(rand.nextInt(list_Keyword.size())) : key);
             } else if (source_view.equals("search_real")) {
                 resp.put("video_title",videos.get(0).getVideotitle()+ " "+videos.get(0).getVideoid());
             }
