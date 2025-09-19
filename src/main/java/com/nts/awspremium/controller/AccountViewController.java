@@ -669,10 +669,16 @@ public class AccountViewController {
                         }else{
                             if(check_geo==2&&geo.equals("vn")){
                                 account.get(0).setGeo("cmt-us");
+                                if(account.get(0).getName_geo().equals("none")){
+                                    account.get(0).setName_geo("us");
+                                }
                             }else{
                                 account.get(0).setGeo("cmt-"+geo.trim());
+                                if(account.get(0).getName_geo().equals("none")){
+                                    account.get(0).setName_geo(geo.trim());
+                                }
                             }
-                            account.get(0).setName_geo(geo.trim());
+
                         }
                         account.get(0).setProxy("");
                         account.get(0).setVps(vps.trim());
