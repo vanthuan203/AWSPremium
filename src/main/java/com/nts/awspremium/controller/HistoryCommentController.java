@@ -919,6 +919,7 @@ public class HistoryCommentController {
                 historyCommentRepository.save(histories.get(0));
                 resp.put("channel_id", videos.get(0).getChannelid());
                 resp.put("status", "true");
+                resp.put("type_view", service.getType_view());
                 resp.put("video_id", videos.get(0).getVideoid());
                 resp.put("live", service.getLive() == 1 ? "true" : "fail");
                 resp.put("video_title", videos.get(0).getVideotitle());
@@ -1174,6 +1175,7 @@ public class HistoryCommentController {
             resp.put("channel_id", videos.get(0).getChannelid());
             resp.put("status", "true");
             resp.put("video_id", videos.get(0).getVideoid());
+            resp.put("type_view", service.getType_view());
             resp.put("live", service.getLive() == 1 ? "true" : "fail");
             resp.put("video_title", videos.get(0).getVideotitle());
             resp.put("username", histories.get(0).getUsername());

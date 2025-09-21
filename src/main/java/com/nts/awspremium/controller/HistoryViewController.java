@@ -675,6 +675,7 @@ public class HistoryViewController {
                     resp.put("video_title", list_Keyword.get(ran.nextInt(list_Keyword.size())));
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
+                    resp.put("type_view", service.getType_view());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
 
                     if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
@@ -2445,6 +2446,7 @@ public class HistoryViewController {
             resp.put("video_title", list_Keyword.get(rand.nextInt(list_Keyword.size())));
             resp.put("username", histories.get(0).getUsername());
             resp.put("service_id", service.getService());
+            resp.put("type_view", service.getType_view());
             resp.put("geo", histories.get(0).getGeo());
             resp.put("channel_index", histories.get(0).getChannel_index());
 

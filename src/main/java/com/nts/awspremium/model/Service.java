@@ -33,6 +33,9 @@ public class Service {
     @Column(columnDefinition = "integer default 15")
     private Integer search_real=15;
 
+    @Column(columnDefinition = "integer default 1")
+    private Integer type_view=1;
+
     private Integer mintime;
     private Integer maxtime;
     private Integer refill;
@@ -101,6 +104,14 @@ public class Service {
         this.bonus_list = bonus_list;
         this.bonus_type = bonus_type;
         this.bonus_list_percent = bonus_list_percent;
+    }
+
+    public Integer getType_view() {
+        return type_view;
+    }
+
+    public void setType_view(Integer type_view) {
+        this.type_view = type_view;
     }
 
     public Integer getHome() {
