@@ -773,6 +773,7 @@ public class AccountViewController {
                                     history.setGeo(account.get(0).getGeo());
                                     history.setTask_time(0L);
                                     history.setChannel_index(1);
+                                    history.setState(true);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyCommentRepository.save(history);
                                 }catch (Exception e){
@@ -789,6 +790,7 @@ public class AccountViewController {
                                     history.setGeo(account.get(0).getGeo());
                                     history.setTask_time(0L);
                                     history.setChannel_index(1);
+                                    history.setState(true);
                                     history.setTimeget(System.currentTimeMillis());
                                     historyCommentRepository.save(history);
                                 }
@@ -805,6 +807,7 @@ public class AccountViewController {
                                 histories.get(0).setGeo(account.get(0).getGeo());
                                 histories.get(0).setTask_time(0L);
                                 histories.get(0).setChannel_index(1);
+                                histories.get(0).setState(true);
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyCommentRepository.save(histories.get(0));
                             }
@@ -1645,13 +1648,13 @@ public class AccountViewController {
             }else if(live==-1 && cmt==0){
                 accountRepository.resetAccountGeoStartTimeByUsername(1,"duphong",idUsername);
             }else if(cmt==0){
-                accountRepository.resetAccountGeoStartTimeByUsername(live,"duphong",idUsername);
+                accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongdone",idUsername);
             }if(live==1 && cmt==1){
                 accountRepository.resetAccountGeoByUsername(1,"duphongcmt",idUsername);
             }else if(live==-1 && cmt==1){
                 accountRepository.resetAccountGeoStartTimeByUsername(1,"duphongcmt",idUsername);
             }else if(cmt==1){
-                accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongcmt",idUsername);
+                accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongcmtdone",idUsername);
             }
             resp.put("status", "true");
             resp.put("message", "Reset Account thành công!");

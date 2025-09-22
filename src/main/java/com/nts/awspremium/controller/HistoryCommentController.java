@@ -1004,6 +1004,17 @@ public class HistoryCommentController {
             List<VideoComment> videos = null;
             List<HistoryComment> histories = historyCommentRepository.getHistoriesById(historieId);
 
+
+            if(histories.get(0).getState()==false){
+                resp.put("status", "fail");
+                resp.put("username", histories.get(0).getUsername().trim());
+                resp.put("message", "detete_account");
+                //resp.put("message", "bỏ qua nhiệm vụ");
+                accountRepository.resetAccountByUsernameThanDay("duphongcmtdone",System.currentTimeMillis(),histories.get(0).getUsername().trim());
+                historyCommentRepository.deleteHistoryById(historieId);
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+
             if (System.currentTimeMillis() - histories.get(0).getTimeget() < (30000L + (long) ran.nextInt(60000))) {
                 //histories.get(0).setTimeget(System.currentTimeMillis());
                 //historyViewRepository.save(histories.get(0));
@@ -1749,6 +1760,7 @@ public class HistoryCommentController {
                         historyCmt.setListvideo(historyCmt.getListvideo()+videoid.trim()+",");
                     }
                     historyCmt.setTask_count(historyCmt.getTask_count()+1);
+                    historyCmt.setUser_id(channel_id.trim());
                     historyCommentRepository.save(historyCmt);
 
                     if(dataReplyCommentRepository.checkCheckDoneByCommentId(comment_id)>0){

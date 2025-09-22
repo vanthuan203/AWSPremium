@@ -35,7 +35,8 @@ public class HistoryComment {
 
     @Column(columnDefinition = "varchar(255) default ''")
     private String user_id="";
-
+    @Column(columnDefinition = "TINYINT default 1")
+    private Boolean state=true;
     private String geo;
     private String videoid;
     private Long orderid;
@@ -58,6 +59,14 @@ public class HistoryComment {
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 
     public Long getId() {
