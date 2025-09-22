@@ -1211,6 +1211,7 @@ public class VideoViewController {
                             JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                             JSONObject regionRestriction = (JSONObject) contentDetails.get("regionRestriction");
                             if(regionRestriction!=null){
+                                /*              //chan theo quoc gia
                                 if(regionRestriction.get("blocked").toString().indexOf("VN")>0&&videoViewRepository.getServiceByVideoId(videoViews.get(i).getVideoid().trim(),"vn")>0){
                                     delete("1",videoViews.get(i).getVideoid().trim(),1);
                                 }else if(regionRestriction.get("blocked").toString().indexOf("US")>0&&videoViewRepository.getServiceByVideoId(videoViews.get(i).getVideoid().trim(),"us")>0){
@@ -1218,6 +1219,8 @@ public class VideoViewController {
                                 }else{
                                     videoViewRepository.updateOrderCheck(videoViews.get(i).getVideoid().trim());
                                 }
+                                 */
+                                delete("1",videoViews.get(i).getVideoid().trim(),1);
                             }else{
                                 videoViewRepository.updateOrderCheck(videoViews.get(i).getVideoid().trim());
                             }
