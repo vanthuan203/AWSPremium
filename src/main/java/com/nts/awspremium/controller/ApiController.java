@@ -295,7 +295,7 @@ public class ApiController {
 
 
                         JSONObject regionRestriction = (JSONObject) contentDetails.get("regionRestriction");
-                        if (regionRestriction != null && regionRestriction.isEmpty()) {
+                        if (regionRestriction != null) {
                             resp.put("error", "This video is not eligible for service");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
