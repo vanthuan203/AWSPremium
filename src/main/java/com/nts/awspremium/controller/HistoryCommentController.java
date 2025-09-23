@@ -1673,10 +1673,11 @@ public class HistoryCommentController {
                             historyCmtCheck.setUser_id(channel_id.trim());
                             historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
-                            if(historyCmtCheck.getTask_false()>10 && historyCmtCheck.getTask_success()==0){
+                            if(historyCmtCheck.getTask_false()>=15 && historyCmtCheck.getTask_success()==0){
                                 historyCmtCheck.setTask_time(System.currentTimeMillis()+2500*60* 60 * 1000);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
+                                historyCmtCheck.setState(false);
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
                             }else if(historyCmtCheck.getTask_false()>5 && historyCmtCheck.getTask_success()>0){
