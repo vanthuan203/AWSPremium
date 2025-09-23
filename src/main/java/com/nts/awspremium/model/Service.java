@@ -36,6 +36,9 @@ public class Service {
     @Column(columnDefinition = "integer default 1")
     private Integer type_view=1;
 
+    @Column(columnDefinition = "integer default 0")
+    private Integer ext=0;
+
     private Integer mintime;
     private Integer maxtime;
     private Integer refill;
@@ -104,6 +107,14 @@ public class Service {
         this.bonus_list = bonus_list;
         this.bonus_type = bonus_type;
         this.bonus_list_percent = bonus_list_percent;
+    }
+
+    public Integer getExt() {
+        return ext;
+    }
+
+    public void setExt(Integer ext) {
+        this.ext = ext;
     }
 
     public Integer getType_view() {

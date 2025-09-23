@@ -678,6 +678,8 @@ public class HistoryViewController {
                     resp.put("type_view", service.getType_view());
                     resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
 
+                    resp.put("ext",service.getExt());
+
                     if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
                         resp.put("like", "fail");
                         resp.put("sub", "fail");
@@ -2190,7 +2192,7 @@ public class HistoryViewController {
                 histories.get(0).setFinger_id(0L);
             }
              */
-            histories.get(0).setMax_task(3+ran.nextInt(4));
+            histories.get(0).setMax_task(1+ran.nextInt(6));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
@@ -2459,6 +2461,7 @@ public class HistoryViewController {
             }else{
                 resp.put("device_type",service.getDevice_type().trim());
             }
+            resp.put("ext",service.getExt());
 
 
             if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
