@@ -114,9 +114,9 @@ public class VideoViewController {
             Request request1 = null;
 
             if(service.getAi()==0){
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key= AIzaSyDjmKi4nQp5J7H9hHWNONenTSDoc9YzGLM&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyAagA0S3FA0L3PW4Jd0uDwRqia2QPhWb_I&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
             }else{
-                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key= AIzaSyDjmKi4nQp5J7H9hHWNONenTSDoc9YzGLM&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
+                request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key=AIzaSyAagA0S3FA0L3PW4Jd0uDwRqia2QPhWb_I&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration),liveStreamingDetails(scheduledStartTime))&part=liveStreamingDetails,snippet,statistics,contentDetails&id=" + videolist).get().build();
             }
 
             Response response1 = client1.newCall(request1).execute();
