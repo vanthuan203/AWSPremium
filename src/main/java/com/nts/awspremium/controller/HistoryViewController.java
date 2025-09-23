@@ -2450,11 +2450,16 @@ public class HistoryViewController {
             resp.put("geo", histories.get(0).getGeo());
             resp.put("channel_index", histories.get(0).getChannel_index());
 
-            if(rand.nextInt(100)>30){
-                resp.put("device_type","mobile");
+            if(service.getDevice_type().equals("random")){
+                if(rand.nextInt(100)>40){
+                    resp.put("device_type","mobile");
+                }else{
+                    resp.put("device_type","pc");
+                }
             }else{
-                resp.put("device_type","pc");
+                resp.put("device_type",service.getDevice_type().trim());
             }
+
 
             if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
                 resp.put("like", "fail");
