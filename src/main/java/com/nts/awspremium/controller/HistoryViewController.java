@@ -2192,7 +2192,7 @@ public class HistoryViewController {
                 histories.get(0).setFinger_id(0L);
             }
              */
-            histories.get(0).setMax_task(1+ran.nextInt(6));
+            histories.get(0).setMax_task(3+ran.nextInt(4));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
@@ -2453,7 +2453,7 @@ public class HistoryViewController {
             resp.put("channel_index", histories.get(0).getChannel_index());
 
             if(service.getDevice_type().equals("random")){
-                if(rand.nextInt(100)>40){
+                if(rand.nextInt(100)>20){
                     resp.put("device_type","mobile");
                 }else{
                     resp.put("device_type","pc");
