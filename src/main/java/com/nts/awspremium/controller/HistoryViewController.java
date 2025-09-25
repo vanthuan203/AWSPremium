@@ -671,7 +671,7 @@ public class HistoryViewController {
                     resp.put("channel_id", videos.get(0).getChannelid());
                     resp.put("status", "true");
                     resp.put("video_id", videos.get(0).getVideoid());
-                    List<String> list_Keyword=StringUtils.splitByWords(videos.get(0).getVideotitle(),2+ran.nextInt(3));
+                    List<String> list_Keyword=StringUtils.splitByWords(videos.get(0).getVideotitle(),5+ran.nextInt(5));
                     resp.put("video_title", list_Keyword.get(ran.nextInt(list_Keyword.size())));
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
@@ -2444,7 +2444,7 @@ public class HistoryViewController {
             resp.put("channel_id", videos.get(0).getChannelid());
             resp.put("status", "true");
             resp.put("video_id", videos.get(0).getVideoid());
-            List<String> list_Keyword=StringUtils.splitByWords(videos.get(0).getVideotitle(),2+rand.nextInt(3));
+            List<String> list_Keyword=StringUtils.splitByWords(videos.get(0).getVideotitle(),5+rand.nextInt(5));
             resp.put("video_title", list_Keyword.get(rand.nextInt(list_Keyword.size())));
             resp.put("username", histories.get(0).getUsername());
             resp.put("service_id", service.getService());
