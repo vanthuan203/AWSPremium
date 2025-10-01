@@ -2255,7 +2255,7 @@ public class HistoryViewController {
                     histories.get(0).setChannelid(videos.get(0).getChannelid());
                 } else {
                     videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTrue.getValue());
-                    if (1==2) {
+                    if (videos.size() > 0) {
                         geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
                         histories.get(0).setGeo_rand(geo_rand);
                         histories.get(0).setTimeget(System.currentTimeMillis());
