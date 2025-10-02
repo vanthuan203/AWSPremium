@@ -1674,7 +1674,7 @@ public class HistoryCommentController {
                             historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
                             if(historyCmtCheck.getTask_false()>=15 && historyCmtCheck.getTask_success()==0){
-                                historyCmtCheck.setTask_time(System.currentTimeMillis()+2500*60* 60 * 1000);
+                                historyCmtCheck.setTask_time(0L);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
                                 historyCmtCheck.setState(false);
