@@ -13,5 +13,5 @@ public interface YoutubeView24hRepository extends JpaRepository<YoutubeView24h,S
     @Query(value = "delete from youtube_view_24h where round((UNIX_TIMESTAMP()-update_time/1000)/60/60)>=1;",nativeQuery = true)
     public Integer deleteAllByThan24h();
     @Query(value = "select count(*) from youtube_view_24h where id like ?1",nativeQuery = true)
-    public Integer count_View_24h_By_Channel_Video(String id);
+    public Integer count_View_1h_By_Channel_Video(String id);
 }
