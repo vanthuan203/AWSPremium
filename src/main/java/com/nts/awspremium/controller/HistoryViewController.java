@@ -1221,6 +1221,16 @@ public class HistoryViewController {
                 video_list=channelView.getVideo_list().split("#end");
                 video_info=video_list[ran.nextInt(video_list.length)].split("#video");
 
+                if(youtubeView24hRepository.count_View_24h_By_Channel_Video(channel_Rand.trim()+video_info[0].trim()+"%")>10){
+                    historyView.setTimeget(System.currentTimeMillis());
+                    historyView.setTask_time(System.currentTimeMillis());
+                    historyViewRepository.save(historyView);
+                    resp.put("status", "fail");
+                    resp.put("username", historyView.getUsername());
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
                 historyView.setTimeget(System.currentTimeMillis());
                 historyView.setVideoid(video_info[0]);
                 historyView.setOrderid(-1L);
