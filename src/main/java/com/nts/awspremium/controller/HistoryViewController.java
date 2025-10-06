@@ -1274,6 +1274,17 @@ public class HistoryViewController {
             historyView.setMax_time(service.getMaxtime());
             historyView.setTask_index(historyView.getTask_index()+1);
             historyViewRepository.save(historyView);
+
+            try{
+                YoutubeView24h youtubeView24h=new YoutubeView24h();
+                youtubeView24h.setId(channel_Rand+video_info[0]+System.currentTimeMillis());
+                youtubeView24h.setUpdate_time(System.currentTimeMillis());
+                youtubeView24hRepository.save(youtubeView24h);
+            }catch (Exception e){
+
+            }
+
+
             resp.put("live", service.getLive() == 1 ? "true" : "fail");
             resp.put("channel_id", channel_Rand.trim());
             resp.put("status", "true");
@@ -3983,33 +3994,26 @@ public class HistoryViewController {
                     }
 
                 }else{
-                    if(service_id!=0){
-                        if (duration > 0) {
-                            HistoryViewSum historySum = new HistoryViewSum();
-                            historySum.setVideoid(videoid.trim());
-                            historySum.setUsername(username);
-                            historySum.setTime(System.currentTimeMillis());
-                            historySum.setChannelid(channelid);
-                            historySum.setDuration(duration);
+                    if (duration > 0) {
+                        HistoryViewSum historySum = new HistoryViewSum();
+                        historySum.setVideoid(videoid.trim());
+                        historySum.setUsername(username);
+                        historySum.setTime(System.currentTimeMillis());
+                        historySum.setChannelid(channelid);
+                        historySum.setDuration(duration);
+                        try {
+                            historyViewSumRepository.save(historySum);
+                        } catch (Exception e) {
                             try {
                                 historyViewSumRepository.save(historySum);
-                            } catch (Exception e) {
-                                try {
-                                    historyViewSumRepository.save(historySum);
-                                } catch (Exception f) {
-                                }
+                            } catch (Exception f) {
                             }
-                        }else{
-                            //historyViewRepository.updateduration(duration,username,videoid);
-                            resp.put("status", "fail");
-                            resp.put("message", "Không update duration !");
-                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                     }else{
-                        YoutubeView24h youtubeView24h=new YoutubeView24h();
-                        youtubeView24h.setId(channelid+videoid+System.currentTimeMillis());
-                        youtubeView24h.setUpdate_time(System.currentTimeMillis());
-                        youtubeView24hRepository.save(youtubeView24h);
+                        //historyViewRepository.updateduration(duration,username,videoid);
+                        resp.put("status", "fail");
+                        resp.put("message", "Không update duration !");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
 
                 }
