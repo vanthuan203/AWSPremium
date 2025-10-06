@@ -303,7 +303,7 @@ public class GoogleApi {
                     int limit = Math.min(30, jsonData.size()); // lấy tối đa 30
                     for (int i = 0; i < limit; i++) {
                         JsonObject item = jsonData.get(i).getAsJsonObject();
-                        if (System.currentTimeMillis() - Instant.parse(item.get("publishedAt").getAsString()).toEpochMilli() < 7L * 24 * 60 * 60 * 1000) {
+                        if (System.currentTimeMillis() - Instant.parse(item.get("publishedAt").getAsString()).toEpochMilli() < 3L * 24 * 60 * 60 * 1000) {
                             continue;
                         }
                         if (sb.length() > 0) sb.append("#end");
