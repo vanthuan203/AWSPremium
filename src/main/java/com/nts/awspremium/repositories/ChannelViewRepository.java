@@ -14,6 +14,12 @@ public interface ChannelViewRepository extends JpaRepository<ChannelView,String>
     @Transactional
     @Query(value = "delete from channel_view",nativeQuery = true)
     public void deleteAll();
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from channel_view where channel_id=?1",nativeQuery = true)
+    public void deleteChannelViewById(String channel_id);
+
     @Query(value = "select count(*) from channel_view where channel_id=?1",nativeQuery = true)
     public Integer getCountByChannelId(String channel_id);
 

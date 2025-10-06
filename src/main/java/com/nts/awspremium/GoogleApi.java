@@ -293,6 +293,9 @@ public class GoogleApi {
             if (!jsonObject.get("data").isJsonNull()) {
                 // Lấy followerCount từ data.stats
                 JsonArray jsonData = jsonObject.getAsJsonArray("data");
+                if(jsonObject.get("msg").toString().length()!=0 &&jsonData.size()==0){
+                    return "del";
+                }
                 if(jsonData.isJsonNull()){
                     return null;
                 }else{

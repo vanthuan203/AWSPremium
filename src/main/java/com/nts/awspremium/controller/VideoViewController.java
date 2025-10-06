@@ -1131,6 +1131,10 @@ public class VideoViewController {
                 try {
                     String video_List=GoogleApi.getListVideo(channelViewList.get(i).getChannel_id().trim());
                     if(video_List!=null){
+                        if(video_List.equals("del")){
+                            channelViewRepository.deleteChannelViewById(channelViewList.get(i).getChannel_id().trim());
+                            continue;
+                        }
                         channelViewList.get(i).setVideo_list(video_List.trim());
                         channelViewList.get(i).setUpdate_time(System.currentTimeMillis());
                         channelViewRepository.save(channelViewList.get(i));
