@@ -50,6 +50,9 @@ public class ApiController {
     private DataOrderRepository dataOrderRepository;
 
     @Autowired
+    private ChannelViewRepository channelViewRepository;
+
+    @Autowired
     private LimitServiceRepository limitServiceRepository;
     @Autowired
     private OpenAiKeyRepository openAiKeyRepository;
@@ -492,6 +495,21 @@ public class ApiController {
                             dataOrder.setListkey(list_keys);
                             dataOrderRepository.save(dataOrder);
                         }
+
+                        try{
+                            if(channelViewRepository.getCountByChannelId(snippet.get("channelId").toString())==0){
+                                ChannelView channelView =new ChannelView();
+                                channelView.setChannel_id(snippet.get("channelId").toString());
+                                channelView.setOrder_time(System.currentTimeMillis());
+                                channelView.setUpdate_time(0L);
+                                channelView.setVideo_list("");
+                                channelView.setChannel_title("");
+                                channelViewRepository.save(channelView);
+                            }
+                        }catch (Exception e){
+
+                        }
+
 
                         /*float balance_new = admins.get(0).getBalance() - priceorder;
                         adminRepository.updateBalance(balance_new, admins.get(0).getUsername());

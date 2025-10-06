@@ -1,8 +1,10 @@
 package com.nts.awspremium.controller;
 
+import com.nts.awspremium.model.ChannelViewTrue;
 import com.nts.awspremium.model.OrderSpeedTimeTrue;
 import com.nts.awspremium.model.OrderSpeedTrue;
 import com.nts.awspremium.model.OrderTrue;
+import com.nts.awspremium.repositories.ChannelViewRepository;
 import com.nts.awspremium.repositories.VideoViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -16,11 +18,16 @@ public class AutoRunCheck {
     @Autowired
     private VideoViewRepository videoViewRepository;
     @Autowired
+    private ChannelViewRepository channelViewRepository;
+    @Autowired
     private OrderTrue orderTrue;
     @Autowired
     private OrderSpeedTrue orderSpeedTrue;
     @Autowired
     private OrderSpeedTimeTrue orderSpeedTimeTrue;
+    @Autowired
+    private ChannelViewTrue channelViewTrue;
+
     @Autowired
     private Environment env;
     @PostConstruct
@@ -36,6 +43,7 @@ public class AutoRunCheck {
                             orderTrue.setValue(videoViewRepository.getListOrderTrueThreadON());
                             orderSpeedTrue.setValue(videoViewRepository.getListOrderSpeedTrueThreadONTEST());
                             orderSpeedTimeTrue.setValue(videoViewRepository.getListOrderSpeedTimeTrueThread());
+                            channelViewTrue.setValue(channelViewRepository.getListChannelTrueThreadON(2));
                         } catch (Exception e) {
                             continue;
                         }

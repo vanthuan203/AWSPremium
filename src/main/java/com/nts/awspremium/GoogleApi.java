@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -259,6 +260,52 @@ public class GoogleApi {
                         JsonObject item = jsonData.get(i).getAsJsonObject();
                         if (sb.length() > 0) sb.append(",");
                         sb.append(item.get("authorText").getAsString());
+                    }
+                    //System.out.println("Authors: " + sb.toString());
+                    return sb.toString();
+
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
+    public static String getListVideo(String channel_id) {
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            Request request = new Request.Builder()
+                    .url("https://yt-api.p.rapidapi.com/channel/videos?id="+channel_id+"&sort_by=oldest")
+                    .addHeader("x-rapidapi-host", "yt-api.p.rapidapi.com")
+                    .addHeader("x-rapidapi-key","4010c38bfamsh398346af7e9f654p1492c2jsn20af8f084b5a")
+                    .addHeader("X-CACHEBYPASS", "1")
+                    .get().build();
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+
+            // Kiểm tra nếu msg là "success"
+            if (!jsonObject.get("data").isJsonNull()) {
+                // Lấy followerCount từ data.stats
+                JsonArray jsonData = jsonObject.getAsJsonArray("data");
+                if(jsonData.isJsonNull()){
+                    return null;
+                }else{
+                    StringBuilder sb = new StringBuilder();
+                    int limit = Math.min(30, jsonData.size()); // lấy tối đa 30
+                    for (int i = 0; i < limit; i++) {
+                        JsonObject item = jsonData.get(i).getAsJsonObject();
+                        if (System.currentTimeMillis() - Instant.parse(item.get("publishedAt").getAsString()).toEpochMilli() < 7L * 24 * 60 * 60 * 1000) {
+                            continue;
+                        }
+                        if (sb.length() > 0) sb.append("#end");
+                        String video_info=item.get("videoId").getAsString()+"#video"+item.get("title").getAsString();
+                        sb.append(video_info);
                     }
                     //System.out.println("Authors: " + sb.toString());
                     return sb.toString();

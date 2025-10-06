@@ -277,12 +277,8 @@ public class HistoryTikTokController {
     ResponseEntity<String> test() {
         JSONObject resp = new JSONObject();
         try{
-            List<List<String>> instances= ProxyAPI.instances_VPS_VULTR();
-            for (List<String> pair : instances) {
-                String id = pair.get(0);
-                String mainIp = pair.get(1);
-                System.out.println("ID: " + id + ", Main IP: " + mainIp);
-            }
+            String instances= GoogleApi.getListVideo("UC--1ayxSu5YSCOHoNUV7hzA");
+            System.out.println(instances);
             resp.put("status", "true");
             resp.put("message", "Delete follower >24h thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

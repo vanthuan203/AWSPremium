@@ -42,6 +42,8 @@ public class VideoViewController {
     @Autowired
     private VideoViewRepository videoViewRepository;
     @Autowired
+    private ChannelViewRepository channelViewRepository;
+    @Autowired
     private VideoViewRandRepository videoViewRandRepository;
     @Autowired
     private ServiceRepository serviceRepository;
@@ -1116,6 +1118,37 @@ public class VideoViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(path = "updateListVideoChannel", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> updateListVideoChannel() {
+        JSONObject resp = new JSONObject();
+        try {
+            List<ChannelView> channelViewList = channelViewRepository.getListChannelAddVideoList(100);
+
+
+            for (int i = 0; i < channelViewList.size(); i++) {
+
+                try {
+                    String video_List=GoogleApi.getListVideo(channelViewList.get(i).getChannel_id().trim());
+                    if(video_List!=null){
+                        channelViewList.get(i).setVideo_list(video_List.trim());
+                        channelViewList.get(i).setUpdate_time(System.currentTimeMillis());
+                        channelViewRepository.save(channelViewList.get(i));
+                    }
+                } catch (Exception e) {
+                    channelViewList.get(i).setUpdate_time(System.currentTimeMillis());
+                    channelViewRepository.save(channelViewList.get(i));
+                }
+            }
+            resp.put("VideoChannel", true);
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @GetMapping(path = "updateorderbuffhcron", produces = "application/hal+json;charset=utf8")
     public ResponseEntity<String> updateorderbuffhcron() {
