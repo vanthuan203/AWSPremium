@@ -47,7 +47,7 @@ public class YoutubeTask {
         Map<String, Object> data = new LinkedHashMap<>();
         try{
             SettingYoutube setting=settingYoutubeRepository.get_Setting();
-            if(youtubeView24hRepository.count_View_24h_By_Username(account_id.trim()+"%")>=setting.getMax_view()){
+            if(youtubeView24hRepository.count_View_24h_By_Channel_Video(account_id.trim()+"%")>=setting.getMax_view()){
                 resp.put("status", false);
                 return resp;
             }
