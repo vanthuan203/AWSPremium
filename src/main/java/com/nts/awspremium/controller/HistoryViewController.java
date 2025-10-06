@@ -1248,6 +1248,24 @@ public class HistoryViewController {
 
             }
 
+
+            Thread.sleep(150+ran.nextInt(250));
+            if(!channelViewTrue.getValue().contains(channel_Rand.trim())){
+                historyView.setTimeget(System.currentTimeMillis());
+                historyView.setTask_time(System.currentTimeMillis());
+                historyView.setVideoid("");
+                historyView.setOrderid(0L);
+                historyView.setChannelid("");
+                historyView.setRunning(0);
+                historyViewRepository.save(historyView);
+                resp.put("status", "fail");
+                resp.put("username", historyView.getUsername());
+                resp.put("fail", "video");
+                resp.put("message", "Không còn video để view!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+
+
             Service service = serviceRepository.getInfoService(0);
 
             historyView.setTimeget(System.currentTimeMillis());
