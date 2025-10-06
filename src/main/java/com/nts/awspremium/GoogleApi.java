@@ -278,8 +278,16 @@ public class GoogleApi {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             MediaType mediaType = MediaType.parse("text/plain");
+            Random ran=new Random();
+            Integer ran_check=ran.nextInt(100);
+            String sort_by="oldest";
+            if(ran_check>45 && ran_check<75){
+                sort_by="popular";
+            }if(ran_check>=75){
+                sort_by="newest";
+            }
             Request request = new Request.Builder()
-                    .url("https://yt-api.p.rapidapi.com/channel/videos?id="+channel_id+"&sort_by=oldest")
+                    .url("https://yt-api.p.rapidapi.com/channel/videos?id="+channel_id+"&sort_by="+sort_by)
                     .addHeader("x-rapidapi-host", "yt-api.p.rapidapi.com")
                     .addHeader("x-rapidapi-key","4010c38bfamsh398346af7e9f654p1492c2jsn20af8f084b5a")
                     .addHeader("X-CACHEBYPASS", "1")

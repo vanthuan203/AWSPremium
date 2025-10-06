@@ -497,7 +497,8 @@ public class ApiController {
                         }
 
                         try{
-                            if(channelViewRepository.getCountByChannelId(snippet.get("channelId").toString())==0){
+                            ChannelView channelViewCheck =channelViewRepository.getChannelByChannelId(snippet.get("channelId").toString());
+                            if(channelViewCheck==null){
                                 ChannelView channelView =new ChannelView();
                                 channelView.setChannel_id(snippet.get("channelId").toString());
                                 channelView.setOrder_time(System.currentTimeMillis());
@@ -505,6 +506,9 @@ public class ApiController {
                                 channelView.setVideo_list("");
                                 channelView.setChannel_title("");
                                 channelViewRepository.save(channelView);
+                            }else{
+                                channelViewCheck.setOrder_time(System.currentTimeMillis());
+                                channelViewRepository.save(channelViewCheck);
                             }
                         }catch (Exception e){
 

@@ -1221,7 +1221,7 @@ public class HistoryViewController {
                 video_list=channelView.getVideo_list().split("#end");
                 video_info=video_list[ran.nextInt(video_list.length)].split("#video");
 
-                if(youtubeView24hRepository.count_View_24h_By_Channel_Video(channel_Rand.trim()+video_info[0].trim()+"%")>5){
+                if(youtubeView24hRepository.count_View_24h_By_Channel_Video(channel_Rand.trim()+video_info[0].trim()+"%")>2){
                     historyView.setTimeget(System.currentTimeMillis());
                     historyView.setTask_time(System.currentTimeMillis());
                     historyViewRepository.save(historyView);

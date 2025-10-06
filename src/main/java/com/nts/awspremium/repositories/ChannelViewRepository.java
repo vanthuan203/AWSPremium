@@ -26,7 +26,7 @@ public interface ChannelViewRepository extends JpaRepository<ChannelView,String>
     @Query(value = "select * from channel_view where channel_id=?1 limit 1",nativeQuery = true)
     public ChannelView getChannelByChannelId(String channel_id);
 
-    @Query(value = "SELECT * FROM AccPremium.channel_view where video_list='' order by update_time asc limit ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM AccPremium.channel_view where round((UNIX_TIMESTAMP()-update_time/1000)/60/60)>=8 order by update_time asc limit ?1",nativeQuery = true)
     public List<ChannelView> getListChannelAddVideoList(Integer limit);
 
     @Query(value = "select channel_id from (select channel_view.channel_id,count(running) as total\n" +
