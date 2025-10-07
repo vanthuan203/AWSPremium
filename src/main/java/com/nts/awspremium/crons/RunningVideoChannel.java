@@ -23,7 +23,7 @@ public class RunningVideoChannel {
     private OrderSpeedTrue orderSpeedTrue;
     @Autowired
     private Environment env;
-    @PostConstruct
+    //@PostConstruct
     public void init() throws InterruptedException {
         try{
             if(Integer.parseInt(env.getProperty("server.port"))==8000){
