@@ -207,8 +207,8 @@ public class ProxyController {
     }
 
 
-    @GetMapping(value="/get_Rand_Proxy_Geo",produces = "application/hal_json;charset=utf8")
-    ResponseEntity<String> get_Rand_Proxy_Geo(@RequestHeader(defaultValue = "") String Authorization,@RequestParam(defaultValue = "vn") String geo){
+    @GetMapping(value="/getRandProxyByGeo",produces = "application/hal_json;charset=utf8")
+    ResponseEntity<String> getRandProxyByGeo(@RequestHeader(defaultValue = "") String Authorization,@RequestParam(defaultValue = "vn") String geo){
         JSONObject resp = new JSONObject();
         try{
             List<Admin> check=adminRepository.FindByToken(Authorization.trim());
