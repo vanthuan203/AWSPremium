@@ -114,9 +114,15 @@ public class ProxyController {
     }
 
     @GetMapping(value="/get_Rand_Proxy",produces = "application/hal_json;charset=utf8")
-    ResponseEntity<String> get_Rand_Proxy(@RequestParam(defaultValue = "vn") String geo){
+    ResponseEntity<String> get_Rand_Proxy(@RequestHeader(defaultValue = "") String Authorization,@RequestParam(defaultValue = "vn") String geo){
         JSONObject resp = new JSONObject();
         try{
+            List<Admin> check=adminRepository.FindByToken(Authorization.trim());
+            if(Authorization.length()==0|| check.size()==0){
+                resp.put("status","fail");
+                resp.put("message", "Token expired");
+                return new ResponseEntity<String>(resp.toJSONString(),HttpStatus.BAD_REQUEST);
+            }
             String geo_rand=geo.trim();
             String[] proxy = new String[0];
             Random rand=new Random();
