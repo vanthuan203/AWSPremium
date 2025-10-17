@@ -2467,6 +2467,19 @@ public class HistoryViewController {
                     histories.get(0).setOrderid(videos.get(0).getOrderid());
                     histories.get(0).setChannelid(videos.get(0).getChannelid());
                 } else {
+
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    /*
                     videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTrue.getValue());
                     if (videos.size() > 0) {
                         geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
@@ -2489,6 +2502,8 @@ public class HistoryViewController {
                         resp.put("message", "Không còn video để view!");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
+                     */
+
                 }
             }
 
