@@ -2613,13 +2613,16 @@ public class HistoryViewController {
                     }
                 }
             }else if(geo_rand.contains("jp")){
-                if(proxyJPTrue.getValue().size()!=0){
+                /*
+                 if(proxyJPTrue.getValue().size()!=0){
                     proxy=proxyJPTrue.getValue().get(rand.nextInt(proxyJPTrue.getValue().size())).split(":");
                 }else if(proxyUSTrue.getValue().size()!=0){
                     proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else{
                     proxy= new String[]{};
                 }
+                 */
+
             }else if(geo_rand.contains("test")){
                 if(proxyTestTrue.getValue().size()!=0){
                     proxy=proxyTestTrue.getValue().get(rand.nextInt(proxyTestTrue.getValue().size())).split(":");
@@ -2714,11 +2717,16 @@ public class HistoryViewController {
                     resp.put("sub", "fail");
                 }
             }
-            String proxy_ha= proxyRepository.get_Proxy_HA(String.join(":", proxy));
-            if(proxy_ha!=null){
-                proxy=proxy_ha.trim().split(":");
+            if(geo_rand.contains("jp")){
+                resp.put("proxy","42.96.35.58:13000:user-2n1l2zm92rpg-region-jp:OsKr7B4XrriRp");
+            }else{
+                String proxy_ha= proxyRepository.get_Proxy_HA(String.join(":", proxy));
+                if(proxy_ha!=null){
+                    proxy=proxy_ha.trim().split(":");
+                }
+                resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             }
-            resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
+
             if(service.getNiche()==1){
                 String[] nicheArr = service.getKeyniche().split(",");
                 resp.put("niche_key", nicheArr[ran.nextInt(nicheArr.length)]);
