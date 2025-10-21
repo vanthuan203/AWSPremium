@@ -2630,7 +2630,7 @@ public class HistoryViewController {
                     proxy= new String[]{};
                 }
             }
-            if(proxy.length==0){
+            if(proxy.length==0&&!geo_rand.contains("jp")){
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 historyViewRepository.save(histories.get(0));
 
@@ -2643,7 +2643,7 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
 
-            String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+
             Service service = serviceRepository.getInfoService(videos.get(0).getService());
 
             if(service.getLive()==1){
@@ -2724,6 +2724,7 @@ public class HistoryViewController {
                 if(proxy_ha!=null){
                     proxy=proxy_ha.trim().split(":");
                 }
+                String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                 resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             }
 
