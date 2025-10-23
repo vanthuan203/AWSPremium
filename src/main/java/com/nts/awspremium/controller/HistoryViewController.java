@@ -2566,12 +2566,22 @@ public class HistoryViewController {
                     proxy= new String[]{};
                 }
             }else if(geo_rand.contains("us")){
-                if(proxyUSTrue.getValue().size()!=0){
-                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                }else if(proxyVNTrue.getValue().size()!=0){
-                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                if(rand.nextInt(100)<35){
+                    if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }else{
-                    proxy= new String[]{};
+                    if(proxyVNTrue.getValue().size()!=0){
+                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    }else if(proxyUSTrue.getValue().size()!=0){
+                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                    }else{
+                        proxy= new String[]{};
+                    }
                 }
             }else if(geo_rand.contains("kr")){
                 if(proxyKRTrue.getValue().size()>=10000){
