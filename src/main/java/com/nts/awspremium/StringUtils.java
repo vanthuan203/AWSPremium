@@ -21,6 +21,19 @@ public class StringUtils {
         return 0;
     }
 
+    public static String cleanTitle(String title) {
+        if (title == null) return null;
+
+        // 1️⃣ Xóa toàn bộ ký tự không phải chữ, số hoặc khoảng trắng
+        // Bao gồm emoji, icon, ký tự đặc biệt, ký hiệu tiền tệ, dấu câu, vv.
+        title = title.replaceAll("[^\\p{L}\\p{N}\\s]", "");
+
+        // 2️⃣ Xóa khoảng trắng dư thừa
+        title = title.replaceAll("\\s{2,}", " ").trim();
+
+        return title;
+    }
+
     public static List<String> splitByWords(String input, int chunkSize) {
         String[] parts = input.split(" ");
 
