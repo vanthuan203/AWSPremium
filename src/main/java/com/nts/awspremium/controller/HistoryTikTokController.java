@@ -274,8 +274,7 @@ public class HistoryTikTokController {
     ResponseEntity<String> test() {
         JSONObject resp = new JSONObject();
         try{
-            String instances= StringUtils.cleanTitle("[아반티스 코인 전망]\uD83D\uDD25단독!!\uD83D\uDD2510월 말.. 이건 꼭 알고 가셔야 합니다!!\uD83D\uDD25'여기까지' 필수 홀딩!!\uD83D\uDD25");
-            System.out.println(instances);
+            System.out.println(GoogleApi.getCountViewCurrent("_9GLhK81NJk"));
             resp.put("status", "true");
             resp.put("message", "Delete follower >24h thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

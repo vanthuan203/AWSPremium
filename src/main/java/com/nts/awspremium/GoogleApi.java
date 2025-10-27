@@ -361,6 +361,54 @@ public class GoogleApi {
             return -2;
         }
     }
+
+
+    public static Integer getCountViewCurrent(String videoid){
+        try {
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+
+            String jsonBody = "{\n" +
+                    "  \"context\": {\n" +
+                    "    \"client\": {\n" +
+                    "      \"clientName\": \"ANDROID\",\n" +
+                    "      \"clientVersion\": \"19.20.33\"\n" +
+                    "    }\n" +
+                    "  },\n" +
+                    "  \"videoId\": \"" + videoid + "\"\n" +
+                    "}";
+
+            RequestBody body = RequestBody.create(mediaType, jsonBody);
+
+            Request request = new Request.Builder()
+                    .url("https://www.youtube.com/youtubei/v1/player")
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("User-Agent", "okhttp/3.14.9")
+                    .build();
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+            // Kiểm tra nếu msg là "success"
+            if(response.isSuccessful()){
+                // Lấy followerCount từ data.stats
+                JsonObject check_jsonObject = jsonObject
+                        .getAsJsonObject("videoDetails");
+
+                if (check_jsonObject == null || check_jsonObject.isJsonNull()) {
+                    return 0;
+                }else{
+                    return check_jsonObject.get("viewCount").getAsInt();
+                }
+            }else{
+                return 0;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     public static String getChannelId(String channelUrl) {
         try {
             // Kết nối tới trang YouTube và lấy nội dung trang

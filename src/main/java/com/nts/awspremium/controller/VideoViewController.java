@@ -1093,7 +1093,7 @@ public class VideoViewController {
 
             for (int i = 0; i < videoViewList.size(); i++) {
                 int viewtotal = 0;
-                int view24h = 0;
+                int view24h = GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid());
                 for (int j = 0; j < viewBuff.size(); j++) {
                     if (videoViewList.get(i).getVideoid().equals(viewBuff.get(j).split(",")[0])) {
                         viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
