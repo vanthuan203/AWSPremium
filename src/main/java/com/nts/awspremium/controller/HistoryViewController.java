@@ -541,6 +541,7 @@ public class HistoryViewController {
                        //resp.put("message", "bỏ qua nhiệm vụ");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
+                    histories.get(0).setTask_index(histories.get(0).getTask_index()+1);
                     String geo_rand=histories.get(0).getGeo().trim();
                     if(histories.get(0).getGeo_rand()!=null){
                         if(histories.get(0).getGeo_rand().length()!=0){
@@ -672,7 +673,6 @@ public class HistoryViewController {
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setRunning(1);
                     histories.get(0).setMax_time(service.getMaxtime());
-                    histories.get(0).setTask_index(histories.get(0).getTask_index()+1);
                     historyViewRepository.save(histories.get(0));
                     resp.put("live", service.getLive() == 1 ? "true" : "fail");
                     resp.put("channel_id", videos.get(0).getChannelid());
@@ -952,7 +952,6 @@ public class HistoryViewController {
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setRunning(1);
                 histories.get(0).setMax_time(service.getMaxtime());
-                histories.get(0).setTask_index(histories.get(0).getTask_index()+1);
                 historyViewRepository.save(histories.get(0));
                 resp.put("live", service.getLive() == 1 ? "true" : "fail");
                 resp.put("channel_id", videos.get(0).getChannelid());
@@ -2407,7 +2406,7 @@ public class HistoryViewController {
                 histories.get(0).setFinger_id(0L);
             }
              */
-            histories.get(0).setMax_task(5+ran.nextInt(5));
+            histories.get(0).setMax_task(10+ran.nextInt(10));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
