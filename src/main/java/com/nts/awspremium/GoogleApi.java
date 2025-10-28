@@ -448,13 +448,23 @@ public class GoogleApi {
                     JsonObject videoDetails = json.getAsJsonObject("videoDetails");
 
                     if (videoDetails == null || videoDetails.isJsonNull()) {
-                        return 0;
+                        JsonObject playabilityStatus = json.getAsJsonObject("playabilityStatus");
+                        if (playabilityStatus == null || playabilityStatus.isJsonNull()) {
+                            return 0;
+                        }
+                        if (playabilityStatus.has("reason")) {
+                            if(playabilityStatus.get("reason").getAsString().contains("removed") || playabilityStatus.get("reason").getAsString().contains("private")){
+                                return -1;
+                            }
+                        } else  {
+                            return 0;
+                        }
                     }
 
                     // Lấy viewCount
                     if (videoDetails.has("viewCount")) {
                         return videoDetails.get("viewCount").getAsInt();
-                    } else {
+                    } else  {
                         return 0;
                     }
                 } else {

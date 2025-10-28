@@ -1114,6 +1114,8 @@ public class VideoViewController {
                     view24h=GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                     if(view24h==0){
                         view24h=videoViewList.get(i).getView24h();
+                    }else if(view24h==-1){
+                        videoViewRepository.updateCheckCancel(videoViewList.get(i).getVideoid());
                     }
                 }else{
                     view24h=videoViewList.get(i).getView24h();
