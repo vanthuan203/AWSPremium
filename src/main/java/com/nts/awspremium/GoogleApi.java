@@ -16,8 +16,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +27,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 public class GoogleApi {
 
@@ -363,46 +366,110 @@ public class GoogleApi {
     }
 
 
-    public static Integer getCountViewCurrent(String videoid){
+    public static Integer getCountViewCurrent(String videoid,String[] proxyH){
         try {
-            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
-            MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+            System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+            HttpURLConnection conn = null;
+            BufferedReader reader = null;
 
-            String jsonBody = "{\n" +
-                    "  \"context\": {\n" +
-                    "    \"client\": {\n" +
-                    "      \"clientName\": \"ANDROID\",\n" +
-                    "      \"clientVersion\": \"19.20.33\"\n" +
-                    "    }\n" +
-                    "  },\n" +
-                    "  \"videoId\": \"" + videoid + "\"\n" +
-                    "}";
+            try {
+                // proxyH = [ip, port, user, pass]
+                String host = proxyH[0];
+                int port = Integer.parseInt(proxyH[1]);
 
-            RequestBody body = RequestBody.create(mediaType, jsonBody);
-
-            Request request = new Request.Builder()
-                    .url("https://www.youtube.com/youtubei/v1/player")
-                    .post(body)
-                    .addHeader("Content-Type", "application/json")
-                    .addHeader("User-Agent", "okhttp/3.14.9")
-                    .build();
-            Response response = client.newCall(request).execute();
-            String resultJson = response.body().string();
-            response.body().close();
-            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
-            // Kiểm tra nếu msg là "success"
-            if(response.isSuccessful()){
-                // Lấy followerCount từ data.stats
-                JsonObject check_jsonObject = jsonObject
-                        .getAsJsonObject("videoDetails");
-
-                if (check_jsonObject == null || check_jsonObject.isJsonNull()) {
-                    return 0;
-                }else{
-                    return check_jsonObject.get("viewCount").getAsInt();
+                // Nếu là IPv6 thì tự động bọc bằng []
+                if (host.contains(":") && !host.startsWith("[")) {
+                    host = "[" + host + "]";
                 }
-            }else{
+
+                Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+
+                // Nếu có user/pass → gán Authenticator
+                if (proxyH.length > 2) {
+                    java.net.Authenticator authenticator = new java.net.Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            if (getRequestorType() == RequestorType.PROXY) {
+                                return new PasswordAuthentication(proxyH[2], proxyH[3].toCharArray());
+                            }
+                            return null;
+                        }
+                    };
+                    java.net.Authenticator.setDefault(authenticator);
+                }
+
+                // URL API YouTube
+                URL url = new URL("https://www.youtube.com/youtubei/v1/player");
+
+                conn = (HttpURLConnection) url.openConnection(proxy);
+                conn.setRequestMethod("POST");
+                conn.setConnectTimeout(1000);
+                conn.setReadTimeout(1000);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                conn.setRequestProperty("User-Agent", "okhttp/3.14.9");
+
+                // Tạo JSON body
+                String jsonBody = "{\n" +
+                        "  \"context\": {\n" +
+                        "    \"client\": {\n" +
+                        "      \"clientName\": \"ANDROID\",\n" +
+                        "      \"clientVersion\": \"19.20.33\"\n" +
+                        "    }\n" +
+                        "  },\n" +
+                        "  \"videoId\": \"" + videoid + "\"\n" +
+                        "}";
+
+                // Gửi body
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                // Nhận phản hồi
+                int responseCode = conn.getResponseCode();
+                InputStream is = (responseCode >= 200 && responseCode < 300)
+                        ? conn.getInputStream()
+                        : conn.getErrorStream();
+
+                reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
+
+                String responseText = responseBuilder.toString();
+
+                if (responseCode == 200) {
+                    JsonObject json = JsonParser.parseString(responseText).getAsJsonObject();
+                    JsonObject videoDetails = json.getAsJsonObject("videoDetails");
+
+                    if (videoDetails == null || videoDetails.isJsonNull()) {
+                        return 0;
+                    }
+
+                    // Lấy viewCount
+                    if (videoDetails.has("viewCount")) {
+                        return videoDetails.get("viewCount").getAsInt();
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
+                    return 0;
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error: " + e.getMessage());
                 return 0;
+            } finally {
+                try {
+                    if (reader != null) reader.close();
+                    if (conn != null) conn.disconnect();
+                } catch (IOException ignored) {}
             }
         } catch (Exception e) {
             return 0;

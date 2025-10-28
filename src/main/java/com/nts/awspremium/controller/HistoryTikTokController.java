@@ -23,7 +23,10 @@ public class HistoryTikTokController {
     private ChannelTikTokRepository channelTikTokRepository;
     @Autowired
     private HistoryTiktokRepository historyTiktokRepository;
-
+    @Autowired
+    private ProxyVNTrue proxyVNTrue;
+    @Autowired
+    private ProxySettingRepository proxySettingRepository;
     @Autowired
     private HistoryFollowerTiktokRepository historyFollowerTiktokRepository;
 
@@ -271,10 +274,13 @@ public class HistoryTikTokController {
     }
 
     @GetMapping(value = "/test", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> test() {
+    ResponseEntity<String> test(@RequestParam(defaultValue = "") String videoid) {
         JSONObject resp = new JSONObject();
         try{
-            System.out.println(GoogleApi.getCountViewCurrent("_9GLhK81NJk"));
+            Random random=new Random();
+            String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
+            String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+            System.out.println(GoogleApi.getCountViewCurrent(videoid, new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]}));
             resp.put("status", "true");
             resp.put("message", "Delete follower >24h thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

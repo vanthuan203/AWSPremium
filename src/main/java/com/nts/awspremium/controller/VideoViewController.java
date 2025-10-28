@@ -63,6 +63,10 @@ public class VideoViewController {
     private OpenAiKeyRepository openAiKeyRepository;
     @Autowired
     private VpsRepository vpsRepository;
+    @Autowired
+    private ProxyVNTrue proxyVNTrue;
+    @Autowired
+    private ProxySettingRepository proxySettingRepository;
 
     @Autowired
     private ChannelYoutubeBlackListRepository channelYoutubeBlackListRepository;
@@ -1092,8 +1096,11 @@ public class VideoViewController {
             viewBuff = videoViewRepository.getTotalViewBuff();
 
             for (int i = 0; i < videoViewList.size(); i++) {
+                Random random=new Random();
+                String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
+                String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                 int viewtotal = 0;
-                int view24h = 0;
+                int view24h = GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                 for (int j = 0; j < viewBuff.size(); j++) {
                     if (videoViewList.get(i).getVideoid().equals(viewBuff.get(j).split(",")[0])) {
                         viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
