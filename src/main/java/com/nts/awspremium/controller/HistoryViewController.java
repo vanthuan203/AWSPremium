@@ -2406,7 +2406,7 @@ public class HistoryViewController {
                 histories.get(0).setFinger_id(0L);
             }
              */
-            histories.get(0).setMax_task(1+ran.nextInt(5));
+            histories.get(0).setMax_task(3+ran.nextInt(8));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
