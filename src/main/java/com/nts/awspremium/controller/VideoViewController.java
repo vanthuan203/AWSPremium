@@ -1094,6 +1094,10 @@ public class VideoViewController {
             List<String> viewBuff24h;
             List<VideoView> videoViewList = videoViewRepository.getAllOrderView();
             viewBuff = videoViewRepository.getTotalViewBuff();
+            Boolean check_current=false;
+            if(LocalTime.now().getMinute()%10==0){
+                check_current=true;
+            }
 
             for (int i = 0; i < videoViewList.size(); i++) {
                 /*
@@ -1103,6 +1107,17 @@ public class VideoViewController {
                  */
                 int viewtotal = 0;
                 int view24h =0;
+                if(check_current){
+                    Random random=new Random();
+                    String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+                    view24h=GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
+                    if(view24h==0){
+                        view24h=videoViewList.get(i).getView24h();
+                    }
+                }else{
+                    view24h=videoViewList.get(i).getView24h();
+                }
                 for (int j = 0; j < viewBuff.size(); j++) {
                     if (videoViewList.get(i).getVideoid().equals(viewBuff.get(j).split(",")[0])) {
                         viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
