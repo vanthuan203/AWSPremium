@@ -1185,10 +1185,11 @@ public class VideoViewController {
         JSONObject resp = new JSONObject();
         //Integer checktoken= adminRepository.FindAdminByToken(Authorization.split(",")[0]);
         try {
-            List<String> timeTotal;
+            List<String> timeTotal = null;
             List<VideoView> videoBuffhList = videoViewRepository.getAllOrderBuffh();
-            timeTotal = videoViewRepository.getTimeBuffVideo();
-
+            if(videoBuffhList.size()>0){
+                timeTotal = videoViewRepository.getTimeBuffVideo();
+            }
             for (int i = 0; i < videoBuffhList.size(); i++) {
                 int timebufftotal = 0;
                 int viewbufftotal = 0;
