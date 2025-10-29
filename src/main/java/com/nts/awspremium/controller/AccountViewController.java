@@ -1740,13 +1740,16 @@ public class AccountViewController {
                         resp.put("status", "true");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }else{
-
+                        HistoryComment historyComment=historyCommentRepository.getHistoryCmtByUsername(username.trim());
+                        if(historyComment!=null){
+                            historyComment.setStatus(false);
+                            historyCommentRepository.save(historyComment);
+                        }
                         HistoryView historyView=historyViewRepository.getHistoryViewByUsername(username.trim());
                         if(historyView!=null){
-                            historyView.setRunning(2);
+                            historyView.setStatus(false);
                             historyViewRepository.save(historyView);
                         }
-
                         resp.put("status", "fail");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }

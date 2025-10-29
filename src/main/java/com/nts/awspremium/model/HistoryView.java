@@ -39,6 +39,9 @@ public class HistoryView {
     @Column(columnDefinition = "TINYINT default 1")
     private Boolean state=true;
 
+    @Column(columnDefinition = "TINYINT default 1")
+    private Boolean status=true;
+
     private Integer task_done=0;
 
     public HistoryView() {
@@ -62,6 +65,14 @@ public class HistoryView {
         this.finger_id = finger_id;
         this.max_time = max_time;
         this.task_done = task_done;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Boolean getState() {

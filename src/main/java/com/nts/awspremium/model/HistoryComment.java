@@ -37,6 +37,9 @@ public class HistoryComment {
     private String user_id="";
     @Column(columnDefinition = "TINYINT default 1")
     private Boolean state=true;
+
+    @Column(columnDefinition = "TINYINT default 1")
+    private Boolean status=true;
     private String geo;
     private String videoid;
     private Long orderid;
@@ -59,6 +62,14 @@ public class HistoryComment {
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Boolean getState() {
