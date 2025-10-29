@@ -24,7 +24,7 @@ public class HistoryTikTokController {
     @Autowired
     private HistoryTiktokRepository historyTiktokRepository;
     @Autowired
-    private ProxyVNTrue proxyVNTrue;
+    private ProxyRepository proxyRepository;
     @Autowired
     private ProxySettingRepository proxySettingRepository;
     @Autowired
@@ -274,13 +274,18 @@ public class HistoryTikTokController {
     }
 
     @GetMapping(value = "/test", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> test(@RequestParam(defaultValue = "") String videoid) {
+    ResponseEntity<String> test(@RequestParam(defaultValue = "") String proxy1) {
         JSONObject resp = new JSONObject();
         try{
-            Random random=new Random();
-            String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
+            String[] proxy = proxy1.split(":");
             String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
-            System.out.println(GoogleApi.getCountViewCurrent(videoid, new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]}));
+            String proxy_ha= proxyRepository.get_Proxy_HA(proxy1);
+            if(proxy_ha!=null){
+                proxy=proxy_ha.trim().split(":");
+            }else{
+                proxy=proxy1.split(":");
+            }
+            resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
             resp.put("status", "true");
             resp.put("message", "Delete follower >24h thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

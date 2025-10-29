@@ -2736,11 +2736,11 @@ public class HistoryViewController {
                     resp.put("sub", "fail");
                 }
             }
+            String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
             String proxy_ha= proxyRepository.get_Proxy_HA(String.join(":", proxy));
             if(proxy_ha!=null){
                 proxy=proxy_ha.trim().split(":");
             }
-            String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
             resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
 
             if(service.getNiche()==1){
