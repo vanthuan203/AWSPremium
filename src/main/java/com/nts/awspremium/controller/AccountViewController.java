@@ -1743,14 +1743,21 @@ public class AccountViewController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }else{
                         HistoryComment historyComment=historyCommentRepository.getHistoryCmtByUsername(username.trim());
-                        if(historyComment!=null){
+                        if(historyComment!=null && historyComment.getListvideo().length()==0){
                             historyComment.setStatus(false);
                             historyCommentRepository.save(historyComment);
+                        }else if(historyComment!=null && historyComment.getListvideo().length()>0){
+                            resp.put("status", "true");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
+
                         HistoryView historyView=historyViewRepository.getHistoryViewByUsername(username.trim());
-                        if(historyView!=null){
+                        if(historyView!=null && historyView.getListvideo().length()==0){
                             historyView.setStatus(false);
                             historyViewRepository.save(historyView);
+                        }else if(historyView!=null && historyView.getListvideo().length()>0){
+                            resp.put("status", "true");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                         }
                         resp.put("status", "fail");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
