@@ -1099,7 +1099,7 @@ public class VideoViewController {
             Calendar calendar = Calendar.getInstance(timeZone);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int min = calendar.get(Calendar.HOUR_OF_DAY);
-            if(min%10==0){
+            if(min%30==0){
                 check_current=true;
             }
             if(hour>=0 && hour<13 && setting.getBonus()!=300) {
