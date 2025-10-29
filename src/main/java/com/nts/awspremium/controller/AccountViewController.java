@@ -1740,6 +1740,13 @@ public class AccountViewController {
                         resp.put("status", "true");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }else{
+
+                        HistoryView historyView=historyViewRepository.getHistoryViewByUsername(username.trim());
+                        if(historyView!=null){
+                            historyView.setRunning(2);
+                            historyViewRepository.save(historyView);
+                        }
+
                         resp.put("status", "fail");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
