@@ -816,7 +816,7 @@ public class HistoryViewController {
                         resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
                     }
                     int videoDuration = Integer.parseInt(resp.get("video_duration").toString());
-                    resp.put("video_duration", (int)(videoDuration / 2.5));
+                    resp.put("video_duration", (int)(videoDuration / 2));
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
@@ -2565,7 +2565,7 @@ public class HistoryViewController {
                     proxy= new String[]{};
                 }
             }else if(geo_rand.contains("us")){
-                if(rand.nextInt(100)<20){
+                if(rand.nextInt(100)<70){
                     if(proxyUSTrue.getValue().size()!=0){
                         proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                     }else if(proxyVNTrue.getValue().size()!=0){
@@ -2583,7 +2583,7 @@ public class HistoryViewController {
                     }
                 }
             }else if(geo_rand.contains("kr")){
-                if(rand.nextInt(100)<60){
+                if(rand.nextInt(100)<70){
                     if(proxyKRTrue.getValue().size()>=10000){
                         if(proxyKRTrue.getValue().size()>5000){
                             proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
@@ -2849,7 +2849,7 @@ public class HistoryViewController {
                 resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
             }
             int videoDuration = Integer.parseInt(resp.get("video_duration").toString());
-            resp.put("video_duration", (int)(videoDuration / 2.5));
+            resp.put("video_duration", (int)(videoDuration / 2));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
         } catch (InterruptedException ex) {
