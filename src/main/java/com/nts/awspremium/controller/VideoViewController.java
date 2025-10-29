@@ -1098,7 +1098,7 @@ public class VideoViewController {
             TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
             Calendar calendar = Calendar.getInstance(timeZone);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int min = calendar.get(Calendar.HOUR_OF_DAY);
+            int min = calendar.get(Calendar.MINUTE);
             if(min%10==0){
                 check_current=true;
             }
