@@ -1442,6 +1442,8 @@ public class AccountViewController {
             accountRepository.resetAccountViewByThanDay(setting.getRandview()*24);
             historyViewRepository.resetStateAccount();
             googleSuiteRepository.update_State_Google_Suite();
+            historyCommentRepository.resetStatusAccount();
+            historyViewRepository.resetStatusAccount();
             resp.put("status", "true");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {

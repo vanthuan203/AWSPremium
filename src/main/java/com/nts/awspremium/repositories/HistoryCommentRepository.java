@@ -55,6 +55,11 @@ public interface HistoryCommentRepository extends JpaRepository<HistoryComment,L
 
     @Modifying
     @Transactional
+    @Query(value = "update historycomment set status=1 where status=0 and username in (SELECT username FROM AccPremium.account where running=1 and google_suite in (select id from google_suite where state=1)) order by rand() limit 500",nativeQuery = true)
+    public Integer resetStatusAccount();
+
+    @Modifying
+    @Transactional
     @Query(value = "update historycomment set listvideo=CONCAT(listvideo,\",\",?1),,task_count=task_count+1 where id=?2",nativeQuery = true)
     public Integer updateListVideo(String videoid,Long id);
 
