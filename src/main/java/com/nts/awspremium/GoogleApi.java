@@ -525,8 +525,8 @@ public class GoogleApi {
 
                 conn = (HttpURLConnection) url.openConnection(proxy);
                 conn.setRequestMethod("POST");
-                conn.setConnectTimeout(1000);
-                conn.setReadTimeout(1000);
+                conn.setConnectTimeout(2500);
+                conn.setReadTimeout(2500);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
@@ -609,12 +609,12 @@ public class GoogleApi {
                         return 0;
                     }
                 } else {
-                    System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
+                    //System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
                     return 0;
                 }
 
             } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
+                //System.err.println("Error: " + e.getMessage());
                 return 0;
             } finally {
                 try {
