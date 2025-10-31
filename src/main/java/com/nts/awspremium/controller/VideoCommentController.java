@@ -61,7 +61,7 @@ public class VideoCommentController {
     private GoogleAPIKeyRepository googleAPIKeyRepository;
 
     @Autowired
-    private ProxyVNTrue proxyVNTrue;
+    private ProxyUSTrue proxyVNTrue;
     @Autowired
     private ProxySettingRepository proxySettingRepository;
 
