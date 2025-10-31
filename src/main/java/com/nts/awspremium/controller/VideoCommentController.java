@@ -60,6 +60,11 @@ public class VideoCommentController {
     @Autowired
     private GoogleAPIKeyRepository googleAPIKeyRepository;
 
+    @Autowired
+    private ProxyVNTrue proxyVNTrue;
+    @Autowired
+    private ProxySettingRepository proxySettingRepository;
+
     @GetMapping(path = "getorderview", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getorderview(@RequestHeader(defaultValue = "") String Authorization, @RequestParam(defaultValue = "") String user) {
         JSONObject resp = new JSONObject();
@@ -240,9 +245,27 @@ public class VideoCommentController {
             List<String> viewBuff;
             List<VideoComment> videoViewList = videoCommentRepository.getAllOrder();
             viewBuff = videoCommentRepository.getTotalCommentBuffByDataComment();
-
+            Boolean check_current=false;
+            TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
+            Calendar calendar = Calendar.getInstance(timeZone);
+            int min = calendar.get(Calendar.MINUTE);
+            if(min%5==0){
+                check_current=true;
+            }
             for (int i = 0; i < videoViewList.size(); i++) {
                 int viewtotal = 0;
+                int view24h =0;
+                if(check_current){
+                    Random random=new Random();
+                    String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
+                    String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+                    view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
+                    if(view24h==0){
+                        view24h=videoViewList.get(i).getComment24h();
+                    }
+                }else{
+                    view24h=videoViewList.get(i).getComment24h();
+                }
                 for (int j = 0; j < viewBuff.size(); j++) {
                     if (videoViewList.get(i).getVideoid().equals(viewBuff.get(j).split(",")[0])) {
                         viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
@@ -250,7 +273,7 @@ public class VideoCommentController {
                 }
                 try {
                     if(viewtotal>videoViewList.get(i).getCommenttotal()){
-                        videoCommentRepository.updateViewOrderByVideoId(viewtotal, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                        videoCommentRepository.updateViewOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
                     }
                 } catch (Exception e) {
 

@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.net.*;
+import java.net.Authenticator;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -486,6 +487,147 @@ public class GoogleApi {
         }
     }
 
+
+    public static Integer getCountCommentCurrent(String videoid,String[] proxyH){
+        try {
+            System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+            HttpURLConnection conn = null;
+            BufferedReader reader = null;
+
+            try {
+                // proxyH = [ip, port, user, pass]
+                String host = proxyH[0];
+                int port = Integer.parseInt(proxyH[1]);
+
+                // Nếu là IPv6 thì tự động bọc bằng []
+                if (host.contains(":") && !host.startsWith("[")) {
+                    host = "[" + host + "]";
+                }
+
+                Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+
+                // Nếu có user/pass → gán Authenticator
+                if (proxyH.length > 2) {
+                    Authenticator authenticator = new Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            if (getRequestorType() == RequestorType.PROXY) {
+                                return new PasswordAuthentication(proxyH[2], proxyH[3].toCharArray());
+                            }
+                            return null;
+                        }
+                    };
+                    Authenticator.setDefault(authenticator);
+                }
+
+                // URL API YouTube
+                URL url = new URL("https://www.youtube.com/youtubei/v1/next");
+
+                conn = (HttpURLConnection) url.openConnection(proxy);
+                conn.setRequestMethod("POST");
+                conn.setConnectTimeout(1000);
+                conn.setReadTimeout(1000);
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+
+                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                conn.setRequestProperty("User-Agent", "okhttp/3.14.9");
+
+                // Tạo JSON body
+                String jsonBody = "{\n" +
+                        "  \"context\": {\n" +
+                        "    \"client\": {\n" +
+                        "      \"clientName\": \"WEB\",\n" +
+                        "      \"clientVersion\": \"2.20251030.01.00\"\n" +
+                        "    }\n" +
+                        "  },\n" +
+                        "  \"videoId\": \"" + videoid + "\"\n" +
+                        "}";
+
+                // Gửi body
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonBody.getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                // Nhận phản hồi
+                int responseCode = conn.getResponseCode();
+                InputStream is = (responseCode >= 200 && responseCode < 300)
+                        ? conn.getInputStream()
+                        : conn.getErrorStream();
+
+                reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line);
+                }
+
+                String responseText = responseBuilder.toString();
+
+                if (responseCode == 200) {
+                    JsonObject json = JsonParser.parseString(responseText).getAsJsonObject();
+
+                    JsonArray engagementPanels = json.getAsJsonArray("engagementPanels");
+                    String commentStr = null;
+
+                    if (engagementPanels != null) {
+                        for (JsonElement panelEl : engagementPanels) {
+                            JsonObject panelObj = panelEl.getAsJsonObject();
+
+                            if (panelObj.has("engagementPanelSectionListRenderer")) {
+
+                                JsonObject section = panelObj.getAsJsonObject("engagementPanelSectionListRenderer");
+
+                                if (!section.has("header")) continue;
+                                JsonObject header = section.getAsJsonObject("header");
+
+                                if (!header.has("engagementPanelTitleHeaderRenderer")) continue;
+                                JsonObject titleHeader = header.getAsJsonObject("engagementPanelTitleHeaderRenderer");
+
+                                if (!titleHeader.has("contextualInfo")) continue;
+                                JsonObject contextualInfo = titleHeader.getAsJsonObject("contextualInfo");
+
+                                if (!contextualInfo.has("runs")) continue;
+                                JsonArray runs = contextualInfo.getAsJsonArray("runs");
+
+                                if (runs.size() == 0) continue;
+
+                                commentStr = runs.get(0)
+                                        .getAsJsonObject()
+                                        .get("text").getAsString();
+                                break;
+                            }
+                        }
+                    }
+
+                    if(commentStr==null){
+                        return 0;
+                    }else if (commentStr != null && commentStr.matches("\\d+")) {
+                        return Integer.parseInt(commentStr);
+                    }else{
+                        return 0;
+                    }
+                } else {
+                    System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
+                    return 0;
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error: " + e.getMessage());
+                return 0;
+            } finally {
+                try {
+                    if (reader != null) reader.close();
+                    if (conn != null) conn.disconnect();
+                } catch (IOException ignored) {}
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+
     public static String getChannelId(String channelUrl) {
         try {
             // Kết nối tới trang YouTube và lấy nội dung trang
@@ -556,6 +698,53 @@ public class GoogleApi {
             return null;
         }
     }
+
+    public static String getComment(String link) {
+        try {
+            // Replace video_id here
+            String videoId = "dQw4w9WgXcQ";
+
+            // JSON body để gửi lên youtubei
+            String body = "{\n" +
+                    "  \"videoId\": \"" + videoId + "\",\n" +
+                    "  \"context\": {\n" +
+                    "    \"client\": {\n" +
+                    "      \"clientName\": \"WEB\",\n" +
+                    "      \"clientVersion\": \"2.20240723.00.00\"\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}";
+
+            // Gửi POST request
+            Document doc = Jsoup.connect("https://www.youtube.com/youtubei/v1/next")
+                    .header("Content-Type", "application/json")
+                    .header("Origin", "https://www.youtube.com")
+                    .userAgent("Mozilla/5.0")
+                    .ignoreContentType(true)
+                    .requestBody(body)
+                    .timeout(10000)
+                    .post();
+
+            String json = doc.text();
+
+            // Regex parse "xx,xxx Comments"
+            Pattern pattern = Pattern.compile("\"simpleText\":\"([0-9,\\.]+) Comments\"");
+            Matcher matcher = pattern.matcher(json);
+
+            if (matcher.find()) {
+                String count = matcher.group(1);
+                System.out.println("Comment count: " + count);
+            } else {
+                System.out.println("Không tìm thấy comment count (YouTube đổi layout?)");
+                System.out.println("Đoạn JSON debug:");
+                System.out.println(json.substring(0, 1000));
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     public static List<String> getVideoLinks(String channelUrl) {
         List<String> videoList = new ArrayList<>();

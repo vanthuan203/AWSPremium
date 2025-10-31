@@ -143,8 +143,8 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE videocomment set commenttotal=?1,timeupdate=?2 where videoid=?3",nativeQuery = true)
-    public void updateViewOrderByVideoId(Integer viewtotal,Long timeupdate,String videoid);
+    @Query(value = "UPDATE videocomment set commenttotal=?1,comment24h=?2,timeupdate=?3 where videoid=?4",nativeQuery = true)
+    public void updateViewOrderByVideoId(Integer viewtotal,Integer comment24h,Long timeupdate,String videoid);
 
     @Query(value = "SELECT count(*) FROM videocomment where videoid=?1 and service in(select service from service where geo=?2)",nativeQuery = true)
     public Integer getServiceByVideoId(String videoid,String geo);

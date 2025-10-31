@@ -26,6 +26,9 @@ public class VideoComment {
     @Column(columnDefinition = "integer default -1")
     private Integer currenttotal=-1;
 
+    @Column(columnDefinition = "integer default 0")
+    private Integer comment24h=0;
+
     private Integer comment_render=0;
     private String listcomment;
     private String description="";
@@ -73,6 +76,14 @@ public class VideoComment {
         this.blocked_list = blocked_list;
         this.chat_id = chat_id;
         this.chat_time = chat_time;
+    }
+
+    public Integer getComment24h() {
+        return comment24h;
+    }
+
+    public void setComment24h(Integer comment24h) {
+        this.comment24h = comment24h;
     }
 
     public String getListcomment() {

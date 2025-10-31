@@ -24,7 +24,7 @@ public class HistoryTikTokController {
     @Autowired
     private HistoryTiktokRepository historyTiktokRepository;
     @Autowired
-    private ProxyRepository proxyRepository;
+    private ProxyVNTrue proxyVNTrue;
     @Autowired
     private ProxySettingRepository proxySettingRepository;
     @Autowired
@@ -277,16 +277,10 @@ public class HistoryTikTokController {
     ResponseEntity<String> test(@RequestParam(defaultValue = "") String proxy1) {
         JSONObject resp = new JSONObject();
         try{
-            String[] proxy = proxy1.split(":");
+            Random random=new Random();
+            String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
             String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
-            String proxy_ha= proxyRepository.get_Proxy_HA(proxy1);
-            if(proxy_ha!=null){
-                proxy=proxy_ha.trim().split(":");
-            }else{
-                proxy=proxy1.split(":");
-            }
-            resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
-            resp.put("status", "true");
+            GoogleApi.getCountCommentCurrent("cNkVGSozWYY", new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
             resp.put("message", "Delete follower >24h thành công!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
