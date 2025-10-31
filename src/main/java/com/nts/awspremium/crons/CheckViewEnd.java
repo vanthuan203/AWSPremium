@@ -52,12 +52,6 @@ public class CheckViewEnd {
                                 throw new RuntimeException(e);
                             }
                             videoViewController.updateViewTotalAllServiceCron(8);
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            videoCommentController.updateCurrentTotalCheck();
                         } catch (Exception e) {
                             continue;
                         }
