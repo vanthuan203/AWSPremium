@@ -262,7 +262,11 @@ public class VideoCommentController {
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                     view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid(), new String[]{"na.lunaproxy.com","12233","user-2n1l2zm92rpg-region-us","OsKr7B4XrriRp"});
                     if(view24h==-1){
-                        view24h=videoViewList.get(i).getComment24h();
+                        if(videoViewList.get(i).getComment24h()==0){
+                            view24h=-1;
+                        }else{
+                            view24h=videoViewList.get(i).getComment24h();
+                        }
                     }
                 }else{
                     view24h=videoViewList.get(i).getComment24h();
