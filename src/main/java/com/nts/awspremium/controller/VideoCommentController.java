@@ -256,10 +256,7 @@ public class VideoCommentController {
             for (int i = 0; i < videoViewList.size(); i++) {
                 int viewtotal = 0;
                 int view24h =0;
-                if(check_current){
-                    Random random=new Random();
-                    String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+                if(viewtotal>videoViewList.get(i).getCommenttotal()&&check_current){
                     view24h=GoogleApi.checkCommentCount(videoViewList.get(i).getVideoid().trim());
                     if(view24h==-1){
                         if(videoViewList.get(i).getComment24h()==0){
