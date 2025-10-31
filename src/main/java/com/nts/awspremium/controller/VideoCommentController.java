@@ -265,7 +265,9 @@ public class VideoCommentController {
                             view24h=videoViewList.get(i).getComment24h();
                         }
                     }
-                }else{
+                }else if(videoViewList.get(i).getComment24h()==0){
+                    view24h=-1;
+                }else {
                     view24h=videoViewList.get(i).getComment24h();
                 }
                 for (int j = 0; j < viewBuff.size(); j++) {
