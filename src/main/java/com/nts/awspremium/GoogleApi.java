@@ -276,6 +276,34 @@ public class GoogleApi {
         return null;
     }
 
+    public static Integer checkCommentCount(String video_id) {
+
+        try {
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            MediaType mediaType = MediaType.parse("text/plain");
+            Request request = new Request.Builder()
+                    .url("https://yt-api.p.rapidapi.com/comments?id="+video_id)
+                    .addHeader("x-rapidapi-host", "yt-api.p.rapidapi.com")
+                    .addHeader("x-rapidapi-key","4010c38bfamsh398346af7e9f654p1492c2jsn20af8f084b5a")
+                    .addHeader("X-CACHEBYPASS", "1")
+                    .get().build();
+            Response response = client.newCall(request).execute();
+            String resultJson = response.body().string();
+            response.body().close();
+            JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+
+            // Kiểm tra nếu msg là "success"
+            if (!jsonObject.get("commentsCount").isJsonNull()) {
+                // Lấy followerCount từ data.stats
+                return jsonObject.get("commentsCount").getAsInt();
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+        return -1;
+    }
+
     public static String getListVideo(String channel_id) {
 
         try {

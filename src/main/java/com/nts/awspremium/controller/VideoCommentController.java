@@ -250,7 +250,7 @@ public class VideoCommentController {
             TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
             Calendar calendar = Calendar.getInstance(timeZone);
             int min = calendar.get(Calendar.MINUTE);
-            if(min%10==0){
+            if(min%5==0){
                 check_current=true;
             }
             for (int i = 0; i < videoViewList.size(); i++) {
@@ -260,7 +260,7 @@ public class VideoCommentController {
                     Random random=new Random();
                     String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
-                    view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
+                    view24h=GoogleApi.checkCommentCount(videoViewList.get(i).getVideoid().trim());
                     if(view24h==-1){
                         if(videoViewList.get(i).getComment24h()==0){
                             view24h=-1;
