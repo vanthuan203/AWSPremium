@@ -256,6 +256,11 @@ public class VideoCommentController {
             for (int i = 0; i < videoViewList.size(); i++) {
                 int viewtotal = 0;
                 int view24h =0;
+                for (int j = 0; j < viewBuff.size(); j++) {
+                    if (videoViewList.get(i).getVideoid().equals(viewBuff.get(j).split(",")[0])) {
+                        viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
+                    }
+                }
                 if((viewtotal>videoViewList.get(i).getCommenttotal() || videoViewList.get(i).getComment24h()==-1)&&check_current){
                     view24h=GoogleApi.checkCommentCount(videoViewList.get(i).getVideoid().trim());
                     if(view24h==-1){
@@ -269,11 +274,6 @@ public class VideoCommentController {
                     view24h=-1;
                 }else {
                     view24h=videoViewList.get(i).getComment24h();
-                }
-                for (int j = 0; j < viewBuff.size(); j++) {
-                    if (videoViewList.get(i).getVideoid().equals(viewBuff.get(j).split(",")[0])) {
-                        viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
-                    }
                 }
                 try {
                     if(viewtotal>videoViewList.get(i).getCommenttotal()&&check_current){
