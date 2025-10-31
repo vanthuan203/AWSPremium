@@ -282,7 +282,7 @@ public class HistoryTikTokController {
             Random random=new Random();
             String[] proxy=proxyUSTrue.getValue().get(random.nextInt(proxyUSTrue.getValue().size())).split(":");
             String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
-            resp.put("message", GoogleApi.getCountCommentCurrent(videoid, new String[]{"na.lunaproxy.com","12233","user-2n1l2zm92rpg-region-us","OsKr7B4XrriRp"}));
+            resp.put("message", GoogleApi.getCountCommentCurrent(videoid, new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]}));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");

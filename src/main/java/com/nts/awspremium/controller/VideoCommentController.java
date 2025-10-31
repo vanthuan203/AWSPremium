@@ -260,7 +260,7 @@ public class VideoCommentController {
                     Random random=new Random();
                     String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
-                    view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid(), new String[]{"na.lunaproxy.com","12233","user-2n1l2zm92rpg-region-us","OsKr7B4XrriRp"});
+                    view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                     if(view24h==-1){
                         if(videoViewList.get(i).getComment24h()==0){
                             view24h=-1;
