@@ -101,6 +101,7 @@ public class VideoCommentController {
                 obj.put("service", orderRunnings.get(i).getService());
                 obj.put("user", orderRunnings.get(i).getUser());
                 obj.put("commenttotal", orderRunnings.get(i).getCommentTotal());
+                obj.put("comment24h", orderRunnings.get(i).getComment24h());
                 obj.put("price", orderRunnings.get(i).getPrice());
                 obj.put("geo",  orderRunnings.get(i).getGeo());
                 obj.put("ai",  orderRunnings.get(i).getAi());
@@ -249,7 +250,7 @@ public class VideoCommentController {
             TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
             Calendar calendar = Calendar.getInstance(timeZone);
             int min = calendar.get(Calendar.MINUTE);
-            if(min%5==0){
+            if(min%2==0){
                 check_current=true;
             }
             for (int i = 0; i < videoViewList.size(); i++) {
