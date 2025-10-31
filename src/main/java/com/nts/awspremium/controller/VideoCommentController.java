@@ -250,7 +250,7 @@ public class VideoCommentController {
             TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
             Calendar calendar = Calendar.getInstance(timeZone);
             int min = calendar.get(Calendar.MINUTE);
-            if(min%2==0){
+            if(min%3==0){
                 check_current=true;
             }
             for (int i = 0; i < videoViewList.size(); i++) {
@@ -261,7 +261,7 @@ public class VideoCommentController {
                     String[] proxy=proxyVNTrue.getValue().get(random.nextInt(proxyVNTrue.getValue().size())).split(":");
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                     view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
-                    if(view24h==0){
+                    if(view24h==-1){
                         view24h=videoViewList.get(i).getComment24h();
                     }
                 }else{
@@ -273,7 +273,9 @@ public class VideoCommentController {
                     }
                 }
                 try {
-                    if(viewtotal>videoViewList.get(i).getCommenttotal()){
+                    if(viewtotal>videoViewList.get(i).getCommenttotal()&&check_current){
+                        videoCommentRepository.updateViewAndCurrentOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                    }else if(viewtotal>videoViewList.get(i).getCommenttotal()&&!check_current){
                         videoCommentRepository.updateViewOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
                     }
                 } catch (Exception e) {

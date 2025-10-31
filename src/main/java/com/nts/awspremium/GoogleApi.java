@@ -602,20 +602,20 @@ public class GoogleApi {
                     }
 
                     if(commentStr==null){
-                        return 0;
+                        return -1;
                     }else if (commentStr != null && commentStr.matches("\\d+")) {
                         return Integer.parseInt(commentStr);
                     }else{
-                        return 0;
+                        return -1;
                     }
                 } else {
                     //System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
-                    return 0;
+                    return -1;
                 }
 
             } catch (Exception e) {
                 //System.err.println("Error: " + e.getMessage());
-                return 0;
+                return -1;
             } finally {
                 try {
                     if (reader != null) reader.close();
@@ -623,7 +623,7 @@ public class GoogleApi {
                 } catch (IOException ignored) {}
             }
         } catch (Exception e) {
-            return 0;
+            return -1;
         }
     }
 
