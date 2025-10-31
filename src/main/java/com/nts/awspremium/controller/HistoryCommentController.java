@@ -1673,15 +1673,15 @@ public class HistoryCommentController {
                             historyCmtCheck.setUser_id(channel_id.trim());
                             historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
-                            if(historyCmtCheck.getTask_false()>=15 && historyCmtCheck.getTask_success()==0){
+                            if(historyCmtCheck.getTask_false()>=5 && historyCmtCheck.getTask_success()==0){
                                 historyCmtCheck.setTask_time(0L);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
                                 historyCmtCheck.setState(false);
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
-                            }else if(historyCmtCheck.getTask_false()>5 && historyCmtCheck.getTask_success()>0){
-                                historyCmtCheck.setTask_time(System.currentTimeMillis()+6*60* 60 * 1000);
+                            }else if(historyCmtCheck.getTask_false()>=1 && historyCmtCheck.getTask_success()>0){
+                                historyCmtCheck.setTask_time(System.currentTimeMillis()+2*60* 60 * 1000);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
                                 historyCmtCheck.setUser_id(channel_id.trim());
@@ -1692,7 +1692,7 @@ public class HistoryCommentController {
                                 historyCommentRepository.save(historyCmtCheck);
                             }
                         }
-                    }, 60, TimeUnit.SECONDS);  // Delay 30 giây
+                    }, 90, TimeUnit.SECONDS);  // Delay 30 giây
                 }
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
