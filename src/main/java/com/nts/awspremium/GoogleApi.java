@@ -525,8 +525,8 @@ public class GoogleApi {
 
                 conn = (HttpURLConnection) url.openConnection(proxy);
                 conn.setRequestMethod("POST");
-                conn.setConnectTimeout(2500);
-                conn.setReadTimeout(2500);
+                conn.setConnectTimeout(5000);
+                conn.setReadTimeout(5000);
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
 
