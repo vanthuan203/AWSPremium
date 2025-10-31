@@ -1127,6 +1127,18 @@ public class VideoViewController {
                         if((view24h-videoViewList.get(i).getViewstart()>=1*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.9*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.8*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.5*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.7*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.6*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3.5*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
                         }
                     }else if(view24h==0){
                         view24h=videoViewList.get(i).getView24h();
