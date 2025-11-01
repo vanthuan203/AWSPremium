@@ -102,6 +102,7 @@ public class VideoCommentController {
                 obj.put("user", orderRunnings.get(i).getUser());
                 obj.put("commenttotal", orderRunnings.get(i).getCommentTotal());
                 obj.put("comment24h", orderRunnings.get(i).getComment24h());
+                obj.put("comment_risk", orderRunnings.get(i).getComment_risk().intValue());
                 obj.put("price", orderRunnings.get(i).getPrice());
                 obj.put("geo",  orderRunnings.get(i).getGeo());
                 obj.put("ai",  orderRunnings.get(i).getAi());

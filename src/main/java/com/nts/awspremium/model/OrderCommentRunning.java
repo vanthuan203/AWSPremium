@@ -20,5 +20,6 @@ public interface OrderCommentRunning {
     Integer getAi();
     Integer getLive();
     String getLc_code();
+    Byte getComment_risk();
     Long getTimeUpdate();
 }
