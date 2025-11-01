@@ -1124,7 +1124,7 @@ public class VideoViewController {
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                     view24h=GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                     if(view24h>0){
-                        if((view24h-videoViewList.get(i).getViewstart()>=1*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
+                        if((view24h-videoViewList.get(i).getViewstart()>=1.05*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=0.9*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
