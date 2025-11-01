@@ -337,6 +337,12 @@ public class ApiCmtController {
                         videoViewhnew.setChat_id("");
                         String title="title video: "+snippet.get("title").toString()+"\n";
                         String geo="";
+                        String comment_risk="false";
+
+                        String prompt_comment_risk = "Chỉ trả lời một từ: true hoặc false. Nếu tiêu đề hoặc mô tả liên quan đến crypto/coin/blockchain/Web3/airdrop/token/đầu tư/chứng khoán/stock/forex/tài chính/cược/casino/betting/cá cược/lô đề/game đổi thưởng/chính trị/bầu cử/biểu tình/chính phủ/chiến tranh/xung đột thì trả true, nếu không thì false. Không giải thích.\\nTiêu đề: " + snippet.get("title").toString() + "\\nMô tả: " + snippet.get("description").toString();
+                        comment_risk=Openai.chatGPT(prompt_comment_risk,openAiKeyRepository.get_OpenAI_Key());
+                        videoViewhnew.setComment_risk(Boolean.parseBoolean(comment_risk));
+
                         if(service.getReply()==0&&service.getAi()==1){
                             geo=Openai.chatGPT("Xin hãy xác định ngôn ngữ của đoạn văn sau: \""+snippet.get("title").toString()+"\"\n\nChỉ trả lời bằng tên của ngôn ngữ.",openAiKeyRepository.get_OpenAI_Key());
                         }

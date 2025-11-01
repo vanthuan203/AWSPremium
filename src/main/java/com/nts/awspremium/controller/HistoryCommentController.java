@@ -1663,7 +1663,7 @@ public class HistoryCommentController {
             } else {
 
                 //check cmt
-                if(channel_id.trim().length()!=0){
+                if(channel_id.trim().length()!=0 && videoCommentRepository.checkCommentRisk(videoid.trim())>0){
                     scheduler.schedule(() -> {
                         HistoryComment historyCmtCheck = historyCommentRepository.getHistoryCmtByUsername(username);
                         String data_Check = GoogleApi.checkComment(videoid.trim());

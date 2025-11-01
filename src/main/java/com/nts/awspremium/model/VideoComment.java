@@ -46,6 +46,9 @@ public class VideoComment {
     @Column(columnDefinition = "bigint default 0")
     private Long chat_time;
 
+    @Column(columnDefinition = "TINYINT default 0")
+    private Boolean comment_risk=false;
+
     public VideoComment() {
     }
 
@@ -76,6 +79,14 @@ public class VideoComment {
         this.blocked_list = blocked_list;
         this.chat_id = chat_id;
         this.chat_time = chat_time;
+    }
+
+    public Boolean getComment_risk() {
+        return comment_risk;
+    }
+
+    public void setComment_risk(Boolean comment_risk) {
+        this.comment_risk = comment_risk;
     }
 
     public Integer getComment24h() {
