@@ -262,7 +262,7 @@ public class VideoCommentController {
                         viewtotal = Integer.parseInt(viewBuff.get(j).split(",")[1]);
                     }
                 }
-                if((viewtotal>videoViewList.get(i).getCommenttotal() || videoViewList.get(i).getComment24h()==-1)&&check_current){
+                if(check_current){
                     view24h=GoogleApi.checkCommentCount(videoViewList.get(i).getVideoid().trim());
                     if(view24h==-1){
                         if(videoViewList.get(i).getComment24h()==0){
@@ -277,7 +277,7 @@ public class VideoCommentController {
                     view24h=videoViewList.get(i).getComment24h();
                 }
                 try {
-                    if(viewtotal>videoViewList.get(i).getCommenttotal()&&check_current){
+                    if(check_current){
                         videoCommentRepository.updateViewAndCurrentOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
                     }else if(viewtotal>videoViewList.get(i).getCommenttotal()&&!check_current){
                         videoCommentRepository.updateViewOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
