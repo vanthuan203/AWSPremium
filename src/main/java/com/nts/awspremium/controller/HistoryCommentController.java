@@ -1673,11 +1673,12 @@ public class HistoryCommentController {
                         String data_Check = GoogleApi.checkComment(videoid.trim());
                         if (data_Check != null && data_Check.contains(channel_id.trim())) {
                             historyCmtCheck.setTask_success(historyCmtCheck.getTask_success() + 1);
+                            historyCmtCheck.setTask_success_sum(historyCmtCheck.getTask_success_sum() + 1);
                             historyCmtCheck.setTask_false(0);
                             historyCmtCheck.setUser_id(channel_id.trim());
                             historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
-                            if(historyCmtCheck.getTask_false()>=10 && historyCmtCheck.getTask_success()==0&&historyCmtCheck.getTask_count()>15){
+                            if(historyCmtCheck.getTask_false()>=10 && historyCmtCheck.getTask_success()==0&&historyCmtCheck.getTask_count()>20){
                                 historyCmtCheck.setTask_time(0L);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
@@ -1685,7 +1686,7 @@ public class HistoryCommentController {
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
                             }else if(historyCmtCheck.getTask_false()>=1 && historyCmtCheck.getTask_success()>0){
-                                historyCmtCheck.setTask_time(System.currentTimeMillis()+2*60* 60 * 1000);
+                                historyCmtCheck.setTask_time(System.currentTimeMillis()+3*60* 60 * 1000);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
                                 historyCmtCheck.setUser_id(channel_id.trim());
@@ -1696,7 +1697,7 @@ public class HistoryCommentController {
                                 historyCommentRepository.save(historyCmtCheck);
                             }
                         }
-                    }, 90, TimeUnit.SECONDS);  // Delay 30 giây
+                    }, 120, TimeUnit.SECONDS);  // Delay 30 giây
                 }
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){

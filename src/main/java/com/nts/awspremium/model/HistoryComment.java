@@ -30,6 +30,9 @@ public class HistoryComment {
     @Column(columnDefinition = "integer default 0")
     private Integer task_success=0;
 
+    @Column(columnDefinition = "integer default 0")
+    private Integer task_success_sum=0;
+
     @Column(columnDefinition = "integer default 1")
     private Integer channel_index=1;
 
@@ -62,6 +65,14 @@ public class HistoryComment {
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
+    }
+
+    public Integer getTask_success_sum() {
+        return task_success_sum;
+    }
+
+    public void setTask_success_sum(Integer task_success_sum) {
+        this.task_success_sum = task_success_sum;
     }
 
     public Boolean getStatus() {
