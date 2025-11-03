@@ -251,7 +251,7 @@ public class VideoCommentController {
             TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
             Calendar calendar = Calendar.getInstance(timeZone);
             int min = calendar.get(Calendar.MINUTE);
-            if(min%5==0){
+            if(min%3==0){
                 check_current=true;
             }
             for (int i = 0; i < videoViewList.size(); i++) {
