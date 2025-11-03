@@ -26,8 +26,8 @@ public class VideoComment {
     @Column(columnDefinition = "integer default -1")
     private Integer currenttotal=-1;
 
-    @Column(columnDefinition = "integer default 0")
-    private Integer comment24h=0;
+    @Column(columnDefinition = "integer default -1")
+    private Integer comment24h=-1;
 
     private Integer comment_render=0;
     private String listcomment;

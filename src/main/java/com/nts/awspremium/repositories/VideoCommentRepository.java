@@ -97,7 +97,7 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
     @Query(value = "SELECT count(*) from videocomment where videoid=?1",nativeQuery = true)
     public Integer getCountVideoId(String videoid);
 
-    @Query(value = "SELECT count(*) FROM AccPremium.videocomment where videoid=?1 and comment_risk=0",nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM videocomment WHERE videoid=?1 AND (comment_risk IN (0) OR (comment_risk=1 AND commenttotal>=2 AND comment24h!=-1 AND comment24h>commentstart))",nativeQuery = true)
     public Integer checkCommentRisk(String videoid);
 
     @Query(value = "SELECT * FROM videocomment order by timeupdate asc",nativeQuery = true)
