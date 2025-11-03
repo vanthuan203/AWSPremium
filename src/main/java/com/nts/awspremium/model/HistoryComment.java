@@ -16,6 +16,9 @@ public class HistoryComment {
     @Column(columnDefinition = "bigint default 0")
     private Long task_time=0L;
 
+    @Column(columnDefinition = "bigint default 0")
+    private Long done_time=0L;
+
     @Column(columnDefinition = "integer default 0")
     private Integer task_index=0;
 
@@ -65,6 +68,14 @@ public class HistoryComment {
         this.geo = geo;
         this.videoid = videoid;
         this.orderid = orderid;
+    }
+
+    public Long getDone_time() {
+        return done_time;
+    }
+
+    public void setDone_time(Long done_time) {
+        this.done_time = done_time;
     }
 
     public Integer getTask_success_sum() {

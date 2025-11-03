@@ -1766,6 +1766,7 @@ public class HistoryCommentController {
                         historyCmt.setListvideo(historyCmt.getListvideo()+videoid.trim()+",");
                     }
                     historyCmt.setTask_count(historyCmt.getTask_count()+1);
+                    historyCmt.setDone_time(System.currentTimeMillis());
                     historyCmt.setUser_id(channel_id.trim());
                     historyCommentRepository.save(historyCmt);
 
