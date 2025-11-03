@@ -1204,7 +1204,11 @@ public class HistoryCommentController {
             }
 
              */
-            resp.put("proxy", proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
+            if(histories.get(0).getGeo().contains("us")){
+                resp.put("proxy", "na.lunaproxy.com:12233:user-2n1l2zm92rpg-region-us:OsKr7B4XrriRp");
+            }else{
+                resp.put("proxy", proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
+            }
             if(ran.nextInt(1000)<300){
                 resp.put("like", 1);
             }else{
