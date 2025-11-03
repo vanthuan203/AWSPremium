@@ -1732,6 +1732,7 @@ public class AccountViewController {
             }
             Account account = accountRepository.findAccountByUsername(username.trim());
             if (account == null) {
+                historyCommentRepository.deleteHistoryByUsername(username.trim());
                 resp.put("status", "fail");
                 resp.put("message", "Username không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
