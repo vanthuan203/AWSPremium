@@ -1732,6 +1732,7 @@ public class HistoryCommentController {
                             historyCmt.setListvideo(historyCmt.getListvideo()+videoid.trim()+",");
                         }
                         historyCmt.setTask_count(historyCmt.getTask_count()+1);
+                        historyCmt.setDone_time(System.currentTimeMillis());
                         historyCommentRepository.save(historyCmt);
 
                         dataReplyCommentRepository.resetRunningReply(lc,comment_id);
