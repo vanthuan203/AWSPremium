@@ -1124,19 +1124,31 @@ public class VideoViewController {
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                     view24h=GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                     if(view24h>0){
-                        if((view24h-videoViewList.get(i).getViewstart()>=1.275*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
+                        if((view24h-videoViewList.get(i).getViewstart()>=1.25*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.175*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.75*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.05*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.5*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.065*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.905*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.05*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.25*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.805*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3.5*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.955*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.5*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.895*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.75*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.835*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.775*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3.25*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.715*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }
