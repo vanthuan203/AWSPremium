@@ -1693,7 +1693,7 @@ public class HistoryCommentController {
                                 historyCommentRepository.save(historyCmtCheck);
                             }else{
                                 if(historyCmtCheck.getTask_success_sum()>0){
-                                    //historyCmtCheck.setTask_time(System.currentTimeMillis()+1*60* 60 * 1000);
+                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+30* 60 * 1000);
                                     historyCmtCheck.setTask_false(historyCmtCheck.getTask_false() + 1);
                                     historyCmtCheck.setUser_id(channel_id.trim());
                                     historyCommentRepository.save(historyCmtCheck);
@@ -1705,7 +1705,7 @@ public class HistoryCommentController {
                                 }
                             }
                         }
-                    }, 120, TimeUnit.SECONDS);  // Delay 30 giây
+                    }, 240, TimeUnit.SECONDS);  // Delay 30 giây
                 }
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
