@@ -1698,7 +1698,7 @@ public class HistoryCommentController {
                                     historyCmtCheck.setUser_id(channel_id.trim());
                                     historyCommentRepository.save(historyCmtCheck);
                                 }else{
-                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+4*60* 60 * 1000);
+                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+1*60* 60 * 1000);
                                     historyCmtCheck.setTask_false(historyCmtCheck.getTask_false() + 1);
                                     historyCmtCheck.setUser_id(channel_id.trim());
                                     historyCommentRepository.save(historyCmtCheck);
