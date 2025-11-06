@@ -270,12 +270,14 @@ public class VideoCommentController {
                         }else{
                             view24h=videoViewList.get(i).getComment24h();
                         }
-                    }else{
+                    }
+                    /*else{
                         if(videoViewList.get(i).getCommenttotal()>=5&&(view24h-videoViewList.get(i).getCommentstart())<=0){
                             delete("1",videoViewList.get(i).getVideoid(),1);
                             continue;
                         }
                     }
+                     */
                 }else if(videoViewList.get(i).getComment24h()==0){
                     view24h=-1;
                 }else {
