@@ -45,7 +45,8 @@ public class Account implements Serializable {
     private Boolean reg=false;
     @Column(columnDefinition = "varchar(255) default '1'")
     private  String group_mail="1";
-
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String auth_2fa="";
     @Column(columnDefinition = "varchar(255) default 'none'")
     private  String name_geo="none";
     @Column(columnDefinition = "integer default 0")

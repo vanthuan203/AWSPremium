@@ -1685,20 +1685,20 @@ public class HistoryCommentController {
                                 historyCmtCheck.setState(false);
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
-                            }else if(historyCmtCheck.getTask_false()>=3 && historyCmtCheck.getTask_success()>0){
-                                historyCmtCheck.setTask_time(System.currentTimeMillis()+2*60* 60 * 1000);
+                            }else if(historyCmtCheck.getTask_false()>=2 && historyCmtCheck.getTask_success()>0){
+                                historyCmtCheck.setTask_time(System.currentTimeMillis()+4*60* 60 * 1000);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
                             }else{
                                 if(historyCmtCheck.getTask_success_sum()>0){
-                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+30* 60 * 1000);
+                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+2* 60 * 1000);
                                     historyCmtCheck.setTask_false(historyCmtCheck.getTask_false() + 1);
                                     historyCmtCheck.setUser_id(channel_id.trim());
                                     historyCommentRepository.save(historyCmtCheck);
                                 }else{
-                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+1*60* 60 * 1000);
+                                    historyCmtCheck.setTask_time(System.currentTimeMillis()+6*60* 60 * 1000);
                                     historyCmtCheck.setTask_false(historyCmtCheck.getTask_false() + 1);
                                     historyCmtCheck.setUser_id(channel_id.trim());
                                     historyCommentRepository.save(historyCmtCheck);

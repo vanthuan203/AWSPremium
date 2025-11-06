@@ -89,6 +89,7 @@ public class AccountViewController {
                 account.setVps("");
                 account.setProxy("");
                 account.setRunning(0);
+                account.setAuth_2fa(newaccount.getAuth_2fa().trim().replaceAll("\\s+", ""));
                 account.setGet_time(0L);
                 account.setEnd_time(0L);
                 account.setDate(newaccount.getDate());
@@ -932,6 +933,7 @@ public class AccountViewController {
                     resp.put("username", accountbyVps.get(0).getUsername());
                     resp.put("geo", accountbyVps.get(0).getGeo().replace("cmt-","").trim());
                     resp.put("recover", accountbyVps.get(0).getRecover());
+                    resp.put("2fa", accountbyVps.get(0).getAuth_2fa());
                     resp.put("cookie", "");
                     resp.put("password", accountbyVps.get(0).getPassword());
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
