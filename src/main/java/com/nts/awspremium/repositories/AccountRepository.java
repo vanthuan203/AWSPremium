@@ -160,6 +160,11 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE account SET running=2,vps='',proxy='',geo=?1,end_time=0 where username=?2",nativeQuery = true)
+    public Integer resetAccountByUsernameThanDayFalse(String geo,String username);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE account SET running=0,vps='',live=?1,proxy='',start_time=0,geo=?2 where id=?3",nativeQuery = true)
     public Integer resetAccountGeoStartTimeByUsername(Integer live,String geo,Long id);
 

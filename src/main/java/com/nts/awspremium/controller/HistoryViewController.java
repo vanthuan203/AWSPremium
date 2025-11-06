@@ -2396,7 +2396,11 @@ public class HistoryViewController {
                 resp.put("username", histories.get(0).getUsername().trim());
                 resp.put("message", "detete_account");
                 //resp.put("message", "bỏ qua nhiệm vụ");
-                accountRepository.resetAccountByUsernameThanDay("duphongdone",System.currentTimeMillis(),histories.get(0).getUsername().trim());
+                if(histories.get(0).getListvideo().length()==0){
+                    accountRepository.resetAccountByUsernameThanDayFalse("duphongdone",histories.get(0).getUsername().trim());
+                }else{
+                    accountRepository.resetAccountByUsernameThanDay("duphongdone",System.currentTimeMillis(),histories.get(0).getUsername().trim());
+                }
                 historyViewRepository.deleteHistoryById(historieId);
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
