@@ -1127,19 +1127,21 @@ public class VideoViewController {
                         if((view24h-videoViewList.get(i).getViewstart()>=1.25*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.75*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.175*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.75*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.065*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.05*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.25*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.075*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.25*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.955*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.5*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=1.025*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.895*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.75*videoViewList.get(i).getVieworder()){
+                        }
+                        /*
+                        else  if((view24h-videoViewList.get(i).getViewstart()>=0.895*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.75*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=0.835*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3*videoViewList.get(i).getVieworder()){
@@ -1152,6 +1154,8 @@ public class VideoViewController {
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }
+
+                         */
                     }else if(view24h==0){
                         view24h=videoViewList.get(i).getView24h();
                     }else if(view24h==-1){
