@@ -92,7 +92,7 @@ public class Openai {
             JsonObject jsonRequest = new JsonObject();
             jsonRequest.addProperty("model", "gpt-5-mini");
             JsonObject reasoning = new JsonObject();
-            reasoning.addProperty("effort", "medium");
+            reasoning.addProperty("effort", "minimal");
             jsonRequest.add("reasoning", reasoning);
 
             // Create the messages array
