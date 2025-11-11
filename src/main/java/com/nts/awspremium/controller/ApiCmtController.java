@@ -243,10 +243,10 @@ public class ApiCmtController {
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                         JSONObject snippet = (JSONObject) video.get("snippet");
 
-                        if(videoCheckRepository.checkVideoByVideoId(videolist)>0){
+                        if(setting.getVideo_check()==1&&videoCheckRepository.checkVideoByVideoId(videolist)>0){
                             resp.put("error", "This video violates our service policy");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                        }else{
+                        }else if(setting.getVideo_check()==1){
                             String title_="Title: "+snippet.get("title").toString()+"\n";
                             String description_="";
                             if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){

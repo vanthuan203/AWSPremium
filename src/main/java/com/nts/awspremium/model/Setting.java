@@ -43,11 +43,21 @@ public class Setting {
 
     private Integer vps_reset_daily=2;
     private Integer vps_reset=3;
+
+    private Integer video_check=0;
     ;
 
 
 
     public Setting() {
+    }
+
+    public Integer getVideo_check() {
+        return video_check;
+    }
+
+    public void setVideo_check(Integer video_check) {
+        this.video_check = video_check;
     }
 
     public Integer getLimit_vps_reset_daily() {
