@@ -1101,7 +1101,15 @@ public class HistoryCommentController {
                 if(dataReplyCommentRepository.checkReplyByCommentId(Long.parseLong(comment.split(",")[0]))>0){
                     resp.put("device_type","pc");
                 }else{
-                    resp.put("device_type",service.getDevice_type().trim());
+                    if(service.getDevice_type().equals("random")){
+                        if(ran.nextInt(100)<=50){
+                            resp.put("device_type","mobile");
+                        }else{
+                            resp.put("device_type","pc");
+                        }
+                    }else{
+                        resp.put("device_type",service.getDevice_type().trim());
+                    }
                 }
                 resp.put("comment_id", comment.split(",")[0]);
                 resp.put("comment", comment.substring(comment.indexOf(",")+1));
