@@ -45,6 +45,8 @@ public class ApiCmtController {
     private ServiceRepository serviceRepository;
     @Autowired
     private OpenAiKeyRepository openAiKeyRepository;
+    @Autowired
+    private VideoCheckRepository videoCheckRepository;
 
     @PostMapping(value = "/cmt", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> cmt(DataRequest data) throws IOException, ParseException {
@@ -240,6 +242,28 @@ public class ApiCmtController {
                         JSONObject video = (JSONObject) k.next();
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                         JSONObject snippet = (JSONObject) video.get("snippet");
+
+                        String title_="Title: "+snippet.get("title").toString()+"\n";
+                        String description_="";
+                        if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
+                            description_="Description: "+snippet.get("description").toString()+"\n";
+                        }
+                        String check = Openai.checkVideo(title_+description_,openAiKeyRepository.get_OpenAI_Key2());
+                        if(check!=null&&check.contains("True")){
+                            VideoCheck videoCheck =new VideoCheck();
+                            videoCheck.setVideo_id(videolist);
+                            videoCheck.setCharge((data.getQuantity() / 1000F) * service.getRate() * ((float) (admins.get(0).getRate()) / 100) * ((float) (100 - admins.get(0).getDiscount()) / 100));
+                            videoCheck.setVideo_title(snippet.get("title").toString());
+                            videoCheck.setVideo_description(snippet.get("description").toString());
+                            videoCheck.setOrder_time(System.currentTimeMillis());
+                            videoCheck.setTask("cmt");
+                            videoCheckRepository.save(videoCheck);
+
+                            resp.put("error", "This video violates our service policy");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
+
+
                         if (videoCommentRepository.getCountVideoId(video.get("id").toString().trim()) > 0) {
                             resp.put("error", "This video in process");
                             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);

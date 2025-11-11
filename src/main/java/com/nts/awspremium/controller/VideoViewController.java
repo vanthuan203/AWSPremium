@@ -1102,11 +1102,11 @@ public class VideoViewController {
             if(min%3==0){
                 check_current=true;
             }
-            if(hour>=0 && hour<12 && setting.getBonus()!=300) {
-                setting.setBonus(300);
+            if(hour>=0 && hour<12 && setting.getBonus()!=50) {
+                setting.setBonus(50);
                 settingRepository.save(setting);
-            }else if(hour>=12 && setting.getBonus()!=200){
-                setting.setBonus(200);
+            }else if(hour>=12 && setting.getBonus()!=30){
+                setting.setBonus(30);
                 settingRepository.save(setting);
             }
 

@@ -80,6 +80,84 @@ public class Openai {
         }
     }
 
+    public static String checkVideo(String message,String key) {
+
+        try {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            JsonObject jsonRequest = new JsonObject();
+            jsonRequest.addProperty("model", "gpt-5-mini");
+            JsonObject reasoning = new JsonObject();
+            reasoning.addProperty("effort", "medium");
+            jsonRequest.add("reasoning", reasoning);
+
+            // Create the messages array
+            JsonArray messagesArray = new JsonArray();
+
+            // First message (developer role)
+            JsonObject developerMessage = new JsonObject();
+            developerMessage.addProperty("role", "developer");
+            developerMessage.addProperty("content", "Task:\n" +
+                    "Based on the “Title” and “Description”, determine whether the content violates the law or encourages, promotes, or instructs others to violate the law.\n" +
+                    "Rules:\n" +
+                    "• Return True (violation) if the content encourages, promotes, instructs, or advertises illegal activities, such as:\n" +
+                    "– Lottery, gambling, or betting.\n" +
+                    "– Drugs (use, trade, or production).\n" +
+                    "– Alcohol or tobacco (advertising, promotion, or inducement).\n" +
+                    "– Politics (distortion, anti-government propaganda, or calls for overthrow).\n" +
+                    "– Any form of invitation, instruction, or coded language intended to lure or recruit illegal behavior.\n" +
+                    "Do not treat official state lottery content (e.g., “Xổ số kiến thiết”, “KQXS”, “XS miền Bắc/Nam/Trung”, or broadcasts of legal lottery results) as a violation, unless it explicitly invites, guides, or encourages people to engage in illegal “lô đề” or betting activities.\n" +
+                    "• Return False (not a violation) if the content conveys reports, prevention, awareness campaigns, positive propaganda, praise of the government, or neutral information.\n" +
+                    "Processing:\n" +
+                    "• Analyze both Title and Description together.\n" +
+                    "• If either one expresses intent to encourage illegal behavior → return True.\n" +
+                    "• If the language is ambiguous, infer intent from context (default toward prevention or educational meaning).\n" +
+                    "Output:\n" +
+                    "Return only one word:\n" +
+                    "True or False for each case.");
+            messagesArray.add(developerMessage);
+
+            // Second message (user role)
+            JsonObject userMessage = new JsonObject();
+            userMessage.addProperty("role", "user");
+            userMessage.addProperty("content", message);
+            messagesArray.add(userMessage);
+
+            // Add the messages array to the main JSON object
+            jsonRequest.add("input", messagesArray);
+
+            RequestBody body = RequestBody.create(mediaType, jsonRequest.toString());
+            Request request = new Request.Builder()
+                    .url("https://api.openai.com/v1/responses")
+                    .method("POST", body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer "+key)
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String resultJson = response.body().string();
+                response.body().close();
+                Object obj = new JsonParser().parse(resultJson);
+                JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+                String result = jsonObject.getAsJsonArray("output")
+                        .get(1).getAsJsonObject()
+                        .getAsJsonArray("content")
+                        .get(0).getAsJsonObject()
+                        .get("text").getAsString();
+                return result;
+            }
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+
+
     public static String getCaptions(String video_id) {
 
         try {

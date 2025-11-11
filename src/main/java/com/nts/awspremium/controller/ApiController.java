@@ -58,6 +58,8 @@ public class ApiController {
     private OpenAiKeyRepository openAiKeyRepository;
     @Autowired
     private VpsRepository vpsRepository;
+    @Autowired
+    private VideoCheckRepository videoCheckRepository;
 
     @Autowired
     private ChannelYoutubeBlackListRepository channelYoutubeBlackListRepository;
@@ -266,7 +268,7 @@ public class ApiController {
                 for (int i=0;i<10;i++){
 
                     if(service.getAi()==0){
-                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked),licensedContent))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
+                        request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked),licensedContent))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                     }else{
                         request1 = new Request.Builder().url("https://www.googleapis.com/youtube/v3/videos?key="+key[ran.nextInt(key.length)]+"&fields=items(id,snippet(title,description,tags,channelId,liveBroadcastContent),statistics(viewCount),contentDetails(duration,regionRestriction(blocked),licensedContent))&part=snippet,statistics,contentDetails&id=" + videolist).get().build();
                     }
@@ -295,6 +297,28 @@ public class ApiController {
                         JSONObject video = (JSONObject) k.next();
                         JSONObject contentDetails = (JSONObject) video.get("contentDetails");
                         JSONObject snippet = (JSONObject) video.get("snippet");
+
+
+                        String title_="Title: "+snippet.get("title").toString()+"\n";
+                        String description_="";
+                        if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
+                            description_="Description: "+snippet.get("description").toString()+"\n";
+                        }
+                        String check = Openai.checkVideo(title_+description_,openAiKeyRepository.get_OpenAI_Key2());
+                        if(check!=null&&check.contains("True")){
+                            VideoCheck videoCheck =new VideoCheck();
+                            videoCheck.setVideo_id(videolist);
+                            videoCheck.setCharge((data.getQuantity() / 1000F) * service.getRate() * ((float) (admins.get(0).getRate()) / 100) * ((float) (100 - admins.get(0).getDiscount()) / 100));
+                            videoCheck.setVideo_title(snippet.get("title").toString());
+                            videoCheck.setVideo_description(snippet.get("description").toString());
+                            videoCheck.setOrder_time(System.currentTimeMillis());
+                            videoCheck.setTask("view");
+                            videoCheckRepository.save(videoCheck);
+
+                            resp.put("error", "This video violates our service policy");
+                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                        }
+
 
 
                         JSONObject regionRestriction = (JSONObject) contentDetails.get("regionRestriction");
