@@ -2706,7 +2706,7 @@ public class HistoryViewController {
             resp.put("channel_index", histories.get(0).getChannel_index());
 
             if(service.getDevice_type().equals("random")){
-                if(rand.nextInt(100)>50){
+                if(rand.nextInt(100)<=65){
                     resp.put("device_type","mobile");
                 }else{
                     resp.put("device_type","pc");
