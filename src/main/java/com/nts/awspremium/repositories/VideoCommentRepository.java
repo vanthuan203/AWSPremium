@@ -149,8 +149,8 @@ public interface VideoCommentRepository extends JpaRepository<VideoComment,Long>
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE videocomment set commenttotal=?1,comment24h=?2,note=CONCAT(ROUND((?2 - commentstart) / commenttotal * 100, 0), '%'),timeupdate=?3 where videoid=?4",nativeQuery = true)
-    public void updateViewAndCurrentOrderByVideoId(Integer viewtotal,Integer comment24h,Long timeupdate,String videoid);
+    @Query(value = "UPDATE videocomment set commenttotal=?1,comment24h=?2,note=CONCAT(ROUND((?2 - commentstart) / commenttotal * 100, 0), '%') where videoid=?4",nativeQuery = true)
+    public void updateViewAndCurrentOrderByVideoId(Integer viewtotal,Integer comment24h,String videoid);
 
     @Modifying
     @Transactional

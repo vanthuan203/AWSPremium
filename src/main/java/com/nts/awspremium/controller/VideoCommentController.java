@@ -285,7 +285,7 @@ public class VideoCommentController {
                 }
                 try {
                     if(check_current&&videoViewList.get(i).getCommenttotal()>0){
-                        videoCommentRepository.updateViewAndCurrentOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
+                        videoCommentRepository.updateViewAndCurrentOrderByVideoId(viewtotal,view24h, videoViewList.get(i).getVideoid());
                     }else if(viewtotal>videoViewList.get(i).getCommenttotal()){
                         videoCommentRepository.updateViewOrderByVideoId(viewtotal,view24h, System.currentTimeMillis(), videoViewList.get(i).getVideoid());
                     }
