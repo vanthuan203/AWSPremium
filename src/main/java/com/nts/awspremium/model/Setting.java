@@ -45,11 +45,21 @@ public class Setting {
     private Integer vps_reset=3;
 
     private Integer video_check=0;
+
+    private String device_type="mobile";
     ;
 
 
 
     public Setting() {
+    }
+
+    public String getDevice_type() {
+        return device_type;
+    }
+
+    public void setDevice_type(String device_type) {
+        this.device_type = device_type;
     }
 
     public Integer getVideo_check() {

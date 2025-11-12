@@ -37,6 +37,10 @@ public interface ServiceRepository extends JpaRepository<Service,Integer> {
 
     @Query(value = "SELECT geo FROM service where service=?1 limit 1",nativeQuery = true)
     public String getGeoByService(Integer service);
+    @Modifying
+    @Transactional
+    @Query(value = "update service set device_type=?1 where task='view'",nativeQuery = true)
+    public Integer updateDeviceTypeService(String device_type);
 
     @Query(value = "SELECT * FROM service where service=?1 limit 1",nativeQuery = true)
     public Service getServiceNoCheckEnabled(Integer service);

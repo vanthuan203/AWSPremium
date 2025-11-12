@@ -51,6 +51,25 @@ public class ServiceController {
         }
     }
 
+    @GetMapping(value = "setService",produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> setService(){
+        JSONObject resp=new JSONObject();
+        try{
+            Setting setting=settingRepository.getSettingId1();
+            if(setting.getDevice_type().equals("mobile")){
+                    serviceRepository.updateDeviceTypeService("pc");
+            }else if(setting.getDevice_type().equals("pc")){
+                serviceRepository.updateDeviceTypeService("mobile");
+            }
+            resp.put("status", "true");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }catch(Exception e){
+            resp.put("status","fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(path = "get_Option_Service",produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getOptionService(){
         JSONObject resp = new JSONObject();
