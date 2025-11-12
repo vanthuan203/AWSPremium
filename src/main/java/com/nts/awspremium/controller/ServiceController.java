@@ -57,11 +57,15 @@ public class ServiceController {
         try{
             Setting setting=settingRepository.getSettingId1();
             if(setting.getDevice_type().equals("mobile")){
-                    serviceRepository.updateDeviceTypeService("pc");
+                serviceRepository.updateDeviceTypeService("pc");
+                setting.setDevice_type("pc");
+                settingRepository.save(setting);
             }else if(setting.getDevice_type().equals("pc")){
                 serviceRepository.updateDeviceTypeService("mobile");
+                setting.setDevice_type("mobile");
+                settingRepository.save(setting);
             }
-            resp.put("status", "true");
+            resp.put("status", setting.getDevice_type());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }catch(Exception e){
             resp.put("status","fail");
