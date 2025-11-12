@@ -1374,7 +1374,10 @@ public class VideoCommentController {
             }
             List<VideoComment> videoComments=videoCommentRepository.getAllOrderCheckCancel();
             for(int i=0;i<videoComments.size();i++){
-
+                if(dataCommentRepository.checkCommentIdNotDone(videoComments.get(i).getOrderid())==0){ // het cmt đê chay
+                    delete("1",orderRunnings.get(i).getVideoId(),1);
+                    continue;
+                }
                 OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
 
                 Request request1 = null;
