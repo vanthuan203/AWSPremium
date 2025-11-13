@@ -885,6 +885,12 @@ public class AccountViewController {
                         resp.put("geo", account.get(0).getGeo().replace("cmt-","").trim());
                         resp.put("password", account.get(0).getPassword());
                         resp.put("recover", account.get(0).getRecover());
+                        String cookie=cookieRepository.getCookieByUsername(account.get(0).getUsername().trim());
+                        if(cookie==null) {
+                            resp.put("cookie", "");
+                        }else{
+                            resp.put("cookie", cookie.trim());
+                        }
                         resp.put("cookie", "");
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     } catch (Exception e) {
