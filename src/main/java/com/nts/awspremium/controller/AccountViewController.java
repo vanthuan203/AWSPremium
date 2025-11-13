@@ -57,6 +57,9 @@ public class AccountViewController {
     @Autowired
     private CheckProsetListTrue checkProsetListTrue;
 
+    @Autowired
+    private CookieRepository cookieRepository;
+
     @PostMapping(value = "/create", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> createaccount(@RequestBody Account newaccount, @RequestHeader(defaultValue = "") String Authorization,
                                          @RequestParam(defaultValue = "1") Integer update) {
@@ -72,6 +75,13 @@ public class AccountViewController {
             if (idUsername != null) {
                 if (update == 1) {
                     accountRepository.updateAccountView(newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), idUsername);
+                    if(newaccount.getCookie()!=null&&newaccount.getCookie().trim().length()>10){
+                        if(cookieRepository.checkCookieByUsername(newaccount.getUsername().toLowerCase())>0){
+                            cookieRepository.updateCookieByUsername(newaccount.getCookie().trim(),newaccount.getUsername().toLowerCase());
+                        }else{
+                            cookieRepository.insertCookie(newaccount.getUsername().toLowerCase(),newaccount.getCookie().trim());
+                        }
+                    }
                     resp.put("status", "true");
                     resp.put("message", "Update " + newaccount.getUsername() + " thành công!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -103,6 +113,14 @@ public class AccountViewController {
                 account.setReg(false);
                 account.setGroup_mail(newaccount.getGroup_mail()==null?"0":newaccount.getGroup_mail());
                 accountRepository.save(account);
+
+                if(newaccount.getCookie()!=null&&newaccount.getCookie().trim().length()>10){
+                    if(cookieRepository.checkCookieByUsername(newaccount.getUsername().toLowerCase())>0){
+                        cookieRepository.updateCookieByUsername(newaccount.getCookie().trim(),newaccount.getUsername().toLowerCase());
+                    }else{
+                        cookieRepository.insertCookie(newaccount.getUsername().toLowerCase(),newaccount.getCookie().trim());
+                    }
+                }
                 resp.put("status", "true");
                 resp.put("message", "Insert " + newaccount.getUsername() + " thành công!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -113,6 +131,44 @@ public class AccountViewController {
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    @PostMapping(value = "/updateCookie", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> updateCookie(@RequestBody Cookie cookie, @RequestHeader(defaultValue = "") String Authorization) {
+        JSONObject resp = new JSONObject();
+        Integer checktoken = adminRepository.FindAdminByToken(Authorization);
+        if (checktoken == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Token expired");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        if (cookie.getCookie()==null ||cookie.getUsername().trim().length() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "username không để trống");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        if (cookie.getCookie().trim().length()<10) {
+            resp.put("status", "fail");
+            resp.put("message", "cookie không để trống");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            if(cookieRepository.checkCookieByUsername(cookie.getUsername().trim().toLowerCase())>0){
+                cookieRepository.updateCookieByUsername(cookie.getCookie().trim(),cookie.getUsername().trim().toLowerCase());
+            }else{
+                cookieRepository.insertCookie(cookie.getUsername().toLowerCase(),cookie.getCookie().trim());
+            }
+            resp.put("status", "true");
+            resp.put("message", "Update cookie " + cookie.getUsername().trim() + " thành công!");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
     @GetMapping(value = "/get", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getAccount(@RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "vn") String geo,@RequestParam(defaultValue = "0") Integer cmt,@RequestHeader(defaultValue = "") String Authorization) throws InterruptedException {
@@ -1950,6 +2006,43 @@ public class AccountViewController {
 
 
     }
+
+    @GetMapping(value = "/getCookie", produces = "application/hal_json;charset=utf8")
+    ResponseEntity<String> getCookie(@RequestParam(defaultValue = "") String username,@RequestHeader(defaultValue = "") String Authorization) {
+        JSONObject resp = new JSONObject();
+        Integer checktoken = adminRepository.FindAdminByToken(Authorization);
+        if (checktoken == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Token expired");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        try {
+            if (username.length() == 0) {
+                resp.put("status", "fail");
+                resp.put("message", "Username không được để trống!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            }
+                String cookie=cookieRepository.getCookieByUsername(username.trim());
+                if(cookie==null) {
+                    resp.put("status", "fail");
+                    resp.put("message", "Cookie không tồn tại");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+                }else{
+
+                    resp.put("status", "true");
+                    resp.put("cookie", cookie.trim());
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+
+    }
+
 
     @PostMapping(value = "/resetaccnotinvps", produces = "application/hal_json;charset=utf8")
     ResponseEntity<String> resetaccnotinvps(@RequestBody String listacc, @RequestHeader(defaultValue = "") String Authorization, @RequestParam(defaultValue = "") String vps) {

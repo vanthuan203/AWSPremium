@@ -36,6 +36,8 @@ public class YoutubeUpdate {
     @Autowired
     private YoutubeView24hRepository youtubeView24hRepository;
     @Autowired
+    private YoutubeComment24hRepository youtubeComment24hRepository;
+    @Autowired
     private YoutubeSubscriber24hRepository youtubeSubscribe24hRepository;
     @Autowired
     private AccountTaskRepository accountTaskRepository;
@@ -237,6 +239,7 @@ public class YoutubeUpdate {
             youtubeView24hRepository.deleteAllByThan24h();
             youtubeLike24hRepository.deleteAllByThan24h();
             youtubeSubscribe24hRepository.deleteAllByThan24h();
+            youtubeComment24hRepository.deleteAllByThan24h();
             return true;
         }catch (Exception e){
             StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);

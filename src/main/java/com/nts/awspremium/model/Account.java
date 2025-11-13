@@ -49,6 +49,8 @@ public class Account implements Serializable {
     private String auth_2fa="";
     @Column(columnDefinition = "varchar(255) default 'none'")
     private  String name_geo="none";
+    @Column(columnDefinition = "varchar(255) default ''")
+    private  String cookie="";
     @Column(columnDefinition = "integer default 0")
     private Integer cmt=0;
     public Account() {

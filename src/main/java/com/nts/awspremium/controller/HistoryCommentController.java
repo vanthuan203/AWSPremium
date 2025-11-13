@@ -24,7 +24,8 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping(path = "/historycomment")
 public class HistoryCommentController {
-
+    @Autowired
+    private YoutubeComment24hRepository youtubeComment24hRepository;
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
@@ -1018,6 +1019,16 @@ public class HistoryCommentController {
                 historyCommentRepository.deleteHistoryById(historieId);
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+            if(youtubeComment24hRepository.count_Comment_24h_By_Username(histories.get(0).getUsername().trim()+"%")>=10){
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setRunning(0);
+                historyCommentRepository.save(histories.get(0));
+                fail_resp.put("status", "fail");
+                fail_resp.put("username", histories.get(0).getUsername());
+                fail_resp.put("fail", "video");
+                fail_resp.put("message", "Không còn video để comment!");
+                return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
+            }
 
             if (System.currentTimeMillis() - histories.get(0).getTimeget() < (30000L + (long) ran.nextInt(60000))) {
                 //histories.get(0).setTimeget(System.currentTimeMillis());
@@ -1715,6 +1726,11 @@ public class HistoryCommentController {
                         }
                     }, 120, TimeUnit.SECONDS);  // Delay 30 giây
                 }
+
+                YoutubeComment24h youtubeComment24h =new YoutubeComment24h();
+                youtubeComment24h.setId(username.trim()+videoid.trim()+System.currentTimeMillis());
+                youtubeComment24h.setUpdate_time(System.currentTimeMillis());
+                youtubeComment24hRepository.save(youtubeComment24h);
 
                 if(dataCommentRepository.checkByCommentId(comment_id)>0){
                     if(historyCommentSumRepository.checkCommentIdTrue(comment_id)==0){
