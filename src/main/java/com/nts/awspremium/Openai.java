@@ -80,6 +80,82 @@ public class Openai {
         }
     }
 
+    public static String checkVideo4(String message,String key) {
+
+        try {
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(300, TimeUnit.SECONDS) // Time to establish the connection
+                    .readTimeout(600, TimeUnit.SECONDS)    // Time to read the response
+                    .writeTimeout(600, TimeUnit.SECONDS)   // Time to write data to the server
+                    .build();
+            MediaType mediaType = MediaType.parse("application/json");
+            JsonObject jsonRequest = new JsonObject();
+            jsonRequest.addProperty("model", "gpt-4.1");
+
+            // Create the messages array
+            JsonArray messagesArray = new JsonArray();
+
+            // First message (developer role)
+            JsonObject developerMessage = new JsonObject();
+            developerMessage.addProperty("role", "system");
+            developerMessage.addProperty("content", "TASK:\n" +
+                    "You are a video topic analyst.\n" +
+                    "Based on the provided \"Title\" and \"Description\", analyze and determine the topic of the video according to the following rules:\n" +
+                    "SCOPE OF APPLICATION:\n" +
+                    "• Return True (violation) if the video has a topic that encourages, promotes or advertises ONLY the following activities:\n" +
+                    "– Lottery, gambling or betting. Do not filter content such as: “Xổ số kien thiet”, “KQXS”, “XS miền Bắc/Nam/Trung”, or lottery results broadcasts, as they are legal.\n" +
+                    "– Drugs (use, trade or production).\n" +
+                    "– Politics (defamation of politicians and celebrities).\n" +
+                    "• Return False (not a violation) for the remaining topics or for the above topics but with good purposes (entertainment, education, drug prevention propaganda...).\n" +
+                    "OUTPUT FORMAT:\n" +
+                    "Returns only one word: True or False for each case. Does not return any other information.");
+            messagesArray.add(developerMessage);
+
+            // Second message (user role)
+            JsonObject userMessage = new JsonObject();
+            userMessage.addProperty("role", "user");
+            userMessage.addProperty("content", message);
+            messagesArray.add(userMessage);
+
+            // Add the messages array to the main JSON object
+            jsonRequest.add("messages", messagesArray);
+
+            RequestBody body = RequestBody.create(mediaType, jsonRequest.toString());
+            Request request = new Request.Builder()
+                    .url("https://api.openai.com/v1/chat/completions")
+                    .method("POST", body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer "+key)
+                    .build();
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String resultJson = response.body().string();
+                response.body().close();
+                Object obj = new JsonParser().parse(resultJson);
+                JsonObject jsonObject = JsonParser.parseString(resultJson).getAsJsonObject();
+                JsonArray choicesArray = jsonObject.getAsJsonArray("choices");
+                if (choicesArray != null && choicesArray.size() > 0) {
+                    // Lấy phần tử đầu tiên trong mảng "choices"
+                    JsonObject firstChoice = choicesArray.get(0).getAsJsonObject();
+
+                    // Truy cập đối tượng "message"
+                    JsonObject messageObject = firstChoice.getAsJsonObject("message");
+                    if (messageObject != null) {
+                        // Lấy giá trị của trường "content"
+                        String content = messageObject.get("content").getAsString();
+                        return content;
+                    } else {
+                        return null;
+                    }
+                }
+                // Iterate through the table array to find the Like Count
+            }
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     public static String checkVideo(String message,String key) {
 
         try {
