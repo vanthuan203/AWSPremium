@@ -51,6 +51,8 @@ public class Account implements Serializable {
     private  String name_geo="none";
     @Column(columnDefinition = "varchar(255) default ''")
     private  String cookie="";
+    @Column(columnDefinition = "varchar(255) default ''")
+    private  String backup_code="";
     @Column(columnDefinition = "integer default 0")
     private Integer cmt=0;
     public Account() {

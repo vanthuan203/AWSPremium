@@ -74,7 +74,7 @@ public class AccountViewController {
             Long idUsername = accountRepository.findIdUsername(newaccount.getUsername().trim());
             if (idUsername != null) {
                 if (update == 1) {
-                    accountRepository.updateAccountView(newaccount.getPassword(), newaccount.getRecover(), newaccount.getLive(), idUsername);
+                    accountRepository.updateAccountView(newaccount.getPassword(), newaccount.getRecover(), 1, idUsername);
                     if(newaccount.getCookie()!=null&&newaccount.getCookie().trim().length()>10){
                         if(cookieRepository.checkCookieByUsername(newaccount.getUsername().toLowerCase())>0){
                             cookieRepository.updateCookieByUsername(newaccount.getCookie().trim(),newaccount.getUsername().toLowerCase());
@@ -99,11 +99,12 @@ public class AccountViewController {
                 account.setVps("");
                 account.setProxy("");
                 account.setRunning(0);
-                account.setAuth_2fa(newaccount.getAuth_2fa().trim().replaceAll("\\s+", ""));
+                account.setAuth_2fa(newaccount.getAuth_2fa()==null?"":newaccount.getAuth_2fa().trim().replaceAll("\\s+", ""));
                 account.setGet_time(0L);
                 account.setEnd_time(0L);
                 account.setDate(newaccount.getDate());
                 account.setGeo(newaccount.getGeo());
+                account.setBackup_code(newaccount.getBackup_code()==null?"":newaccount.getBackup_code().trim());
                 if(newaccount.getUsername().contains("gmail")){
                     account.setGoogle_suite("");
                 }else{
