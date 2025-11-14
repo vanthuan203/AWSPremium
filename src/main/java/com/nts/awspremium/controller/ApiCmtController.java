@@ -252,7 +252,7 @@ public class ApiCmtController {
                             if(snippet.get("description")!=null&&snippet.get("description").toString().length()>0){
                                 description_="Description: "+snippet.get("description").toString()+"\n";
                             }
-                            String check = Openai.checkVideo4(title_+description_,openAiKeyRepository.get_OpenAI_Key());
+                            String check = Openai.checkVideo(title_+description_,openAiKeyRepository.get_OpenAI_Key());
                             if(check!=null&&check.contains("True")){
                                 VideoCheck videoCheck =new VideoCheck();
                                 videoCheck.setVideo_id(videolist);

@@ -114,7 +114,8 @@ public class Openai {
             // Second message (user role)
             JsonObject userMessage = new JsonObject();
             userMessage.addProperty("role", "user");
-            userMessage.addProperty("content", message);
+            String antiCache = "\n\nRequest-ID: " + System.currentTimeMillis();
+            userMessage.addProperty("content", message + antiCache);
             messagesArray.add(userMessage);
 
             // Add the messages array to the main JSON object
@@ -126,6 +127,9 @@ public class Openai {
                     .method("POST", body)
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Authorization", "Bearer "+key)
+                    .addHeader("Cache-Control", "no-cache, no-store, must-revalidate")
+                    .addHeader("Pragma", "no-cache")
+                    .addHeader("Expires", "0")
                     .build();
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
@@ -166,7 +170,7 @@ public class Openai {
                     .build();
             MediaType mediaType = MediaType.parse("application/json");
             JsonObject jsonRequest = new JsonObject();
-            jsonRequest.addProperty("model", "gpt-5-mini");
+            jsonRequest.addProperty("model", "gpt-5");
             JsonObject reasoning = new JsonObject();
             reasoning.addProperty("effort", "minimal");
             jsonRequest.add("reasoning", reasoning);
@@ -177,31 +181,17 @@ public class Openai {
             // First message (developer role)
             JsonObject developerMessage = new JsonObject();
             developerMessage.addProperty("role", "developer");
-            developerMessage.addProperty("content", "Task:\n" +
-                    "Based on the “Title” and “Description”, determine whether the content violates the law or encourages, promotes, or instructs others to violate the law.\n" +
-                    "\n" +
-                    "Rules:\n" +
-                    "• Return True (violation) if the content encourages, promotes, instructs, or advertises illegal activities, such as:\n" +
-                    "– Lottery, gambling, or betting.\n" +
-                    "– Drugs (use, trade, or production).\n" +
-                    "– Alcohol or tobacco (advertising, promotion, or inducement).\n" +
-                    "– Politics (distortion, anti-government propaganda, or calls for overthrow).\n" +
-                    "– Any form of invitation, instruction, or coded language intended to lure or recruit illegal behavior.\n" +
-                    "\n" +
-                    "• Do NOT treat content about investment, stocks, trading, or cryptocurrency (including promotions or invitations to invest) as violations, unless they explicitly involve illegal activities such as fraud, scams, or Ponzi schemes.\n" +
-                    "\n" +
-                    "• Do not treat official state lottery content (e.g., “Xổ số kiến thiết”, “KQXS”, “XS miền Bắc/Nam/Trung”, or broadcasts of legal lottery results) as a violation, unless it explicitly invites, guides, or encourages people to engage in illegal “lô đề” or betting activities.\n" +
-                    "\n" +
-                    "• Return False (not a violation) if the content conveys reports, prevention, awareness campaigns, positive propaganda, praise of the government, neutral information, or financial/investment discussions that do not involve explicitly illegal acts.\n" +
-                    "\n" +
-                    "Processing:\n" +
-                    "• Analyze both Title and Description together.\n" +
-                    "• If either one expresses intent to encourage illegal behavior → return True.\n" +
-                    "• If the language is ambiguous, infer intent from context (default toward prevention or educational meaning).\n" +
-                    "\n" +
-                    "Output:\n" +
-                    "Return only one word:\n" +
-                    "True or False for each case.");
+            developerMessage.addProperty("content", "TASK:\\n\" +\n" +
+                    "                    \"You are a video topic analyst.\\n\" +\n" +
+                    "                    \"Based on the provided \\\"Title\\\" and \\\"Description\\\", analyze and determine the topic of the video according to the following rules:\\n\" +\n" +
+                    "                    \"SCOPE OF APPLICATION:\\n\" +\n" +
+                    "                    \"• Return True (violation) if the video has a topic that encourages, promotes or advertises ONLY the following activities:\\n\" +\n" +
+                    "                    \"– Lottery, gambling or betting. Do not filter content such as: “Xổ số kien thiet”, “KQXS”, “XS miền Bắc/Nam/Trung”, or lottery results broadcasts, as they are legal.\\n\" +\n" +
+                    "                    \"– Drugs (use, trade or production).\\n\" +\n" +
+                    "                    \"– Politics (defamation of politicians and celebrities).\\n\" +\n" +
+                    "                    \"• Return False (not a violation) for the remaining topics or for the above topics but with good purposes (entertainment, education, drug prevention propaganda...).\\n\" +\n" +
+                    "                    \"OUTPUT FORMAT:\\n\" +\n" +
+                    "                    \"Returns only one word: True or False for each case. Does not return any other information.");
             messagesArray.add(developerMessage);
 
             // Second message (user role)
