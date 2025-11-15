@@ -1136,9 +1136,6 @@ public class VideoViewController {
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=1.075*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }else if((view24h-videoViewList.get(i).getViewstart()<=0) && videoViewList.get(i).getViewtotal()>=2*videoViewList.get(i).getVieworder()){
-                            delete("1",videoViewList.get(i).getVideoid(),0);
-                            continue;
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=1.05*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.25*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
