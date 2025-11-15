@@ -1102,11 +1102,11 @@ public class VideoViewController {
             if(min%3==0){
                 check_current=true;
             }
-            if(hour>=0 && hour<12 && setting.getBonus()!=300) {
-                setting.setBonus(300);
-                settingRepository.save(setting);
-            }else if(hour>=12 && setting.getBonus()!=200){
+            if(hour>=0 && hour<12 && setting.getBonus()!=200) {
                 setting.setBonus(200);
+                settingRepository.save(setting);
+            }else if(hour>=12 && setting.getBonus()!=150){
+                setting.setBonus(150);
                 settingRepository.save(setting);
             }
 
@@ -1124,7 +1124,10 @@ public class VideoViewController {
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                     view24h=GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                     if(view24h>0){
-                        if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
+                        if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.3*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else if((view24h-videoViewList.get(i).getViewstart()>=1.115*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=1.1*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.75*videoViewList.get(i).getVieworder()){
