@@ -29,6 +29,8 @@ public class HistoryCommentController {
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
+    private SettingYoutubeRepository settingYoutubeRepository;
+    @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private ProxySettingRepository proxySettingRepository;
@@ -1019,7 +1021,8 @@ public class HistoryCommentController {
                 historyCommentRepository.deleteHistoryById(historieId);
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
-            if(youtubeComment24hRepository.count_Comment_24h_By_Username(histories.get(0).getUsername().trim()+"%")>=10){
+            SettingYoutube settingYoutube =settingYoutubeRepository.get_Setting();
+            if(youtubeComment24hRepository.count_Comment_24h_By_Username(histories.get(0).getUsername().trim()+"%")>=settingYoutube.getMax_comment()){
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setRunning(0);
                 historyCommentRepository.save(histories.get(0));
