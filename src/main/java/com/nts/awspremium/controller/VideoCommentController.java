@@ -1693,8 +1693,10 @@ public class VideoCommentController {
                     status="Đơn mới đang chạy";
                 }else if(video.getCancel()==1){
                     status="Được hủy trước đó";
-                }else if(serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0){
+                }else if(video.getEnddate()>=1762275600000L&&serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0){
                     status="Quá hạn "+service.getMaxtimerefill()+" ngày";
+                }else if(serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0){
+                    status="Quá hạn 30 ngày";
                 }else{
                     status=refundCMTByVideoComment(video);
                     video_refil= videoCommentHistoryRepository.getVideoViewHisById(Long.parseLong(videoidIdArr[i].trim()));
