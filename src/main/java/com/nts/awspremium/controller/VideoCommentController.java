@@ -1695,7 +1695,7 @@ public class VideoCommentController {
                     status="Được hủy trước đó";
                 }else if(video.getEnddate()>=1762275600000L&&serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0){
                     status="Quá hạn "+service.getMaxtimerefill()+" ngày";
-                }else if(serviceRepository.checkGuarantee(video.getEnddate(),service.getMaxtimerefill())==0){
+                }else if(serviceRepository.checkGuarantee(video.getEnddate(),30)==0){
                     status="Quá hạn 30 ngày";
                 }else{
                     status=refundCMTByVideoComment(video);
