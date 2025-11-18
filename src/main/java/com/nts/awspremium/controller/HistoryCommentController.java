@@ -1022,7 +1022,16 @@ public class HistoryCommentController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
             SettingYoutube settingYoutube =settingYoutubeRepository.get_Setting();
-            if(youtubeComment24hRepository.count_Comment_24h_By_Username(histories.get(0).getUsername().trim()+"%")>=settingYoutube.getMax_comment()){
+            if(youtubeComment24hRepository.count_Comment_24h_By_Username(histories.get(0).getUsername().trim()+"%")>=settingYoutube.getMax_comment()&&histories.get(0).getUsername().trim().equals("gmail")){
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setRunning(0);
+                historyCommentRepository.save(histories.get(0));
+                fail_resp.put("status", "fail");
+                fail_resp.put("username", histories.get(0).getUsername());
+                fail_resp.put("fail", "video");
+                fail_resp.put("message", "Không còn video để comment!");
+                return new ResponseEntity<String>(fail_resp.toJSONString(), HttpStatus.OK);
+            }else if(youtubeComment24hRepository.count_Comment_24h_By_Username(histories.get(0).getUsername().trim()+"%")>=settingYoutube.getMax_comment_domain()){
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setRunning(0);
                 historyCommentRepository.save(histories.get(0));
