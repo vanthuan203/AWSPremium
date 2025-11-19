@@ -2,9 +2,7 @@ package com.nts.awspremium;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,6 +40,32 @@ public class StringUtils {
                         parts, i * chunkSize, Math.min(parts.length, (i + 1) * chunkSize)
                 )))
                 .collect(Collectors.toList());
+    }
+
+    public static String splitRandomClean(String input, int chunkSize) {
+        // 1. Bỏ ký tự đặc biệt (chỉ giữ chữ, số, khoảng trắng)
+        String cleaned = input.replaceAll("[^\\p{L}\\p{N}\\s]+", "").trim();
+
+        // 2. Tách từ
+        String[] parts = cleaned.split("\\s+");
+        List<String> chunks = new ArrayList<>();
+
+        // 3. Chia theo chunkSize
+        for (int i = 0; i < parts.length; i += chunkSize) {
+            int end = Math.min(i + chunkSize, parts.length);
+            int wordCount = end - i;
+
+            // Chỉ lấy nhóm từ >= 3 từ
+            if (wordCount >= 3) {
+                chunks.add(String.join(" ", Arrays.copyOfRange(parts, i, end)));
+            }
+        }
+
+        // 4. Nếu không có nhóm nào hợp lệ
+        if (chunks.isEmpty()) return cleaned;
+
+        // 5. Random trả về 1 nhóm
+        return chunks.get(new Random().nextInt(chunks.size()));
     }
 
     public static String convertMMMtoMM(String mmm){
