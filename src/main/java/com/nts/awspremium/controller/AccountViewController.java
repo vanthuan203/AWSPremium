@@ -772,6 +772,11 @@ public class AccountViewController {
                                     history.setMax_time(0);
                                     history.setChannel_index(2);
                                     history.setState(true);
+                                    if(ran.nextInt(100)<=75){
+                                        history.setDevice(true);
+                                    }else{
+                                        history.setDevice(false);
+                                    }
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }catch (Exception e){
@@ -793,6 +798,11 @@ public class AccountViewController {
                                     history.setMax_time(0);
                                     history.setChannel_index(2);
                                     history.setState(true);
+                                    if(ran.nextInt(100)<=75){
+                                        history.setDevice(true);
+                                    }else{
+                                        history.setDevice(false);
+                                    }
                                     history.setTimeget(System.currentTimeMillis());
                                     historyViewRepository.save(history);
                                 }

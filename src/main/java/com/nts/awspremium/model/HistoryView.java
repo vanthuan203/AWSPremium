@@ -42,6 +42,9 @@ public class HistoryView {
     @Column(columnDefinition = "TINYINT default 1")
     private Boolean status=true;
 
+    @Column(columnDefinition = "TINYINT default 1")
+    private Boolean device=true;
+
     private Integer task_done=0;
 
     public HistoryView() {
@@ -69,6 +72,14 @@ public class HistoryView {
 
     public Boolean getStatus() {
         return status;
+    }
+
+    public Boolean getDevice() {
+        return device;
+    }
+
+    public void setDevice(Boolean device) {
+        this.device = device;
     }
 
     public void setStatus(Boolean status) {

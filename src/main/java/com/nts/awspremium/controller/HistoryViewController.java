@@ -2705,6 +2705,12 @@ public class HistoryViewController {
             resp.put("geo", histories.get(0).getGeo());
             resp.put("channel_index", histories.get(0).getChannel_index());
 
+            if(histories.get(0).getDevice()){
+                resp.put("device_type","mobile");
+            }else{
+                resp.put("device_type","pc");
+            }
+            /*
             if(service.getDevice_type().equals("random")){
                 if(rand.nextInt(100)<=80){
                     resp.put("device_type","mobile");
@@ -2714,6 +2720,7 @@ public class HistoryViewController {
             }else{
                 resp.put("device_type",service.getDevice_type().trim());
             }
+             */
             resp.put("ext",service.getExt());
 
 
