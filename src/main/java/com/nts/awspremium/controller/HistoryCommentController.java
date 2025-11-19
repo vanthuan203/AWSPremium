@@ -1709,7 +1709,7 @@ public class HistoryCommentController {
                             historyCmtCheck.setUser_id(channel_id.trim());
                             historyCommentRepository.save(historyCmtCheck);
                         } else if (data_Check != null && !data_Check.contains(channel_id.trim())) {
-                            if(historyCmtCheck.getTask_false()>=5 && historyCmtCheck.getTask_success()==0){
+                            if(historyCmtCheck.getTask_false()>=35 && historyCmtCheck.getTask_success()==0){
                                 historyCmtCheck.setTask_time(0L);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);

@@ -743,7 +743,9 @@ public class AccountViewController {
                         account.get(0).setRunning(1);
                         account.get(0).setGet_time(System.currentTimeMillis());
                         if(cmt==0){
-                            account.get(0).setStart_time(System.currentTimeMillis());
+                            if(account.get(0).getStart_time()==0){
+                                account.get(0).setStart_time(System.currentTimeMillis());
+                            }
                         }else{
                             account.get(0).setStart_time(0L);
                         }
