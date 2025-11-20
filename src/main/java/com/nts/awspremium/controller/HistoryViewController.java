@@ -2569,73 +2569,22 @@ public class HistoryViewController {
                     proxy= new String[]{};
                 }
             }else if(geo_rand.contains("us")){
-                if(rand.nextInt(100)<70){
-                    if(proxyUSTrue.getValue().size()!=0){
-                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                    }else if(proxyVNTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    }else{
-                        proxy= new String[]{};
-                    }
+                if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
+                }else if(proxyVNTrue.getValue().size()!=0){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
                 }else{
-                    if(proxyVNTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    }else if(proxyUSTrue.getValue().size()!=0){
-                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                    }else{
-                        proxy= new String[]{};
-                    }
+                    proxy= new String[]{};
                 }
             }else if(geo_rand.contains("kr")){
-                if(rand.nextInt(100)<70){
-                    if(proxyKRTrue.getValue().size()>=10000){
-                        if(proxyKRTrue.getValue().size()>5000){
-                            proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
-                        }else if(proxyVNTrue.getValue().size()!=0){
-                            proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                        }else if(proxyUSTrue.getValue().size()!=0){
-                            proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                        }else{
-                            proxy= new String[]{};
-                        }
-                    }else{
-                        Integer check_rand=ran.nextInt(100);
-                        if(check_rand<50){
-                            if(proxyKRTrue.getValue().size()>5000){
-                                proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
-                            }else if(proxyUSTrue.getValue().size()!=0){
-                                proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                            }else if(proxyVNTrue.getValue().size()!=0){
-                                proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                            }else{
-                                proxy= new String[]{};
-                            }
-                        }else if(check_rand<75){
-                            if(proxyVNTrue.getValue().size()!=0){
-                                proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                            }else if(proxyUSTrue.getValue().size()!=0){
-                                proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                            }else{
-                                proxy= new String[]{};
-                            }
-                        }else{
-                            if(proxyUSTrue.getValue().size()!=0){
-                                proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                            }else if(proxyVNTrue.getValue().size()!=0){
-                                proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                            }else{
-                                proxy= new String[]{};
-                            }
-                        }
-                    }
+                if(proxyKRTrue.getValue().size()>3000){
+                    proxy=proxyKRTrue.getValue().get(rand.nextInt(proxyKRTrue.getValue().size())).split(":");
+                }else if(proxyVNTrue.getValue().size()!=0){
+                    proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else if(proxyUSTrue.getValue().size()!=0){
+                    proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
                 }else{
-                    if(proxyVNTrue.getValue().size()!=0){
-                        proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
-                    }else if(proxyUSTrue.getValue().size()!=0){
-                        proxy=proxyUSTrue.getValue().get(rand.nextInt(proxyUSTrue.getValue().size())).split(":");
-                    }else{
-                        proxy= new String[]{};
-                    }
+                    proxy= new String[]{};
                 }
             }else if(geo_rand.contains("jp")){
                  if(proxyJPTrue.getValue().size()!=0){
