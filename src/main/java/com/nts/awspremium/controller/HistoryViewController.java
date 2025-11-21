@@ -83,6 +83,8 @@ public class HistoryViewController {
     @Autowired
     private SettingRepository settingRepository;
     @Autowired
+    private SettingYoutubeRepository settingYoutubeRepository;
+    @Autowired
     private OrderThreadCheck orderThreadCheck;
     @Autowired
     private VpsRepository vpsRepository;
@@ -2660,8 +2662,9 @@ public class HistoryViewController {
                 resp.put("device_type","pc");
             }
              */
+            SettingYoutube settingYoutube =settingYoutubeRepository.get_Setting();
             if(service.getDevice_type().equals("random")){
-                if(rand.nextInt(100)<=50){
+                if(rand.nextInt(100)<=settingYoutube.getMax_view()){
                     resp.put("device_type","mobile");
                 }else{
                     resp.put("device_type","pc");
