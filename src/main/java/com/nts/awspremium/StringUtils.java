@@ -68,6 +68,32 @@ public class StringUtils {
         return chunks.get(new Random().nextInt(chunks.size()));
     }
 
+    public static int calcMobilePercent(long lastUpdateMillis) {
+
+        long now = System.currentTimeMillis();
+        long hours = (now - lastUpdateMillis) / (1000 * 60 * 60);
+
+        long h = hours % 10; // chu kỳ 10 giờ
+
+        // 0–1h → 100%
+        if (h < 2) return 100;
+
+        // 2h → 95%
+        if (h == 2) return 95;
+
+        // 3–5h → giảm từ 90 → 85 → 80
+        if (h >= 3 && h <= 5) {
+            return 95 - (int)((h - 2) * 5); // 90, 85, 80
+        }
+
+        // 6–9h → tăng từ 85 → 90 → 95 → 100
+        if (h >= 6 && h <= 9) {
+            return 80 + (int)((h - 5) * 5); // 85, 90, 95, 100
+        }
+
+        return 100;
+    }
+
     public static String convertMMMtoMM(String mmm){
         try {
             if(mmm.contains("Jul")){

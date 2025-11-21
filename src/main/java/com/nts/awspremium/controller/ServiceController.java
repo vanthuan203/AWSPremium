@@ -1,5 +1,6 @@
 package com.nts.awspremium.controller;
 
+import com.nts.awspremium.StringUtils;
 import com.nts.awspremium.model.*;
 import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONArray;
@@ -21,6 +22,8 @@ public class ServiceController {
     AdminRepository adminRepository;
     @Autowired
     SettingRepository settingRepository;
+    @Autowired
+    SettingYoutubeRepository settingYoutubeRepository;
     @Autowired
     BalanceRepository balanceRepository;
     @Autowired
@@ -51,8 +54,8 @@ public class ServiceController {
         }
     }
 
-    @GetMapping(value = "setService",produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> setService(){
+    @GetMapping(value = "setServiceOFF",produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> setServiceOFF(){
         JSONObject resp=new JSONObject();
         try{
             Setting setting=settingRepository.getSettingId1();
@@ -66,6 +69,23 @@ public class ServiceController {
                 settingRepository.save(setting);
             }
             resp.put("status", setting.getDevice_type());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }catch(Exception e){
+            resp.put("status","fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "setService",produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<String> setService(){
+        JSONObject resp=new JSONObject();
+        try{
+            SettingYoutube setting=settingYoutubeRepository.get_Setting();
+            setting.setMax_view(StringUtils.calcMobilePercent(setting.getUpdate_time()));
+            setting.setUpdate_time(System.currentTimeMillis());
+            settingYoutubeRepository.save(setting);
+            resp.put("status", setting.getMax_view());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }catch(Exception e){
             resp.put("status","fail");
