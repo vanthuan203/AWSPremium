@@ -32,7 +32,7 @@ public class UpdatePrecentView {
                     while (true) {
                         try {
                             try {
-                                Thread.sleep(1000*60*10);
+                                Thread.sleep(1000*60*5);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }

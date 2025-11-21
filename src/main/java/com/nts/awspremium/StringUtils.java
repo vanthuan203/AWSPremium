@@ -131,6 +131,37 @@ public class StringUtils {
         return 100; // fallback
     }
 
+    public static int calcMobilePercent3(long lastUpdateMillis, int currentPercent) {
+        long now = System.currentTimeMillis();
+        long minutesElapsed = (now - lastUpdateMillis) / (1000 * 60);
+
+        // Thời gian giữ từng mốc
+        int holdMinutes;
+        if (currentPercent == 100) {
+            holdMinutes = 60; // giữ 100% 60 phút
+        } else {
+            holdMinutes = 15; // các mốc khác giữ 15 phút
+        }
+
+        if (minutesElapsed < holdMinutes) {
+            // Chưa đủ thời gian giữ -> trả về % hiện tại
+            return currentPercent;
+        }
+
+        // Chuyển sang mốc tiếp theo theo chu kỳ
+        int nextPercent;
+        switch (currentPercent) {
+            case 100: nextPercent = 95; break;
+            case 95:  nextPercent = 100; break;
+            case 90:  nextPercent = 100; break;
+            case 85:  nextPercent = 100; break;
+            case 80:  nextPercent = 100; break;
+            default:  nextPercent = 100; break;
+        }
+
+        return nextPercent;
+    }
+
     public static String convertMMMtoMM(String mmm){
         try {
             if(mmm.contains("Jul")){
