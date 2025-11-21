@@ -113,6 +113,24 @@ public class StringUtils {
         return 100; // fallback
     }
 
+    public static int calcMobilePercent2(long lastUpdateMillis) {
+        long now = System.currentTimeMillis();
+        long minutes = (now - lastUpdateMillis) / (1000 * 60); // tổng phút trôi qua
+        long m = minutes % 420; // chu kỳ 420 phút = 7 giờ
+
+        if (m < 60) return 100;       // 0–59 → 100%
+        if (m < 90) return 95;        // 60–89 → 95%
+        if (m < 150) return 100;      // 90–149 → 100%
+        if (m < 180) return 90;       // 150–179 → 90%
+        if (m < 240) return 100;      // 180–239 → 100%
+        if (m < 270) return 85;       // 240–269 → 85%
+        if (m < 330) return 100;      // 270–329 → 100%
+        if (m < 360) return 80;       // 330–359 → 80%
+        if (m < 420) return 100;      // 360–419 → 100%
+
+        return 100; // fallback
+    }
+
     public static String convertMMMtoMM(String mmm){
         try {
             if(mmm.contains("Jul")){
