@@ -162,6 +162,33 @@ public class StringUtils {
         return nextPercent;
     }
 
+    public static int calcMobilePercent4(long lastUpdateMillis, int currentPercent, int cycleIndex) {
+        long now = System.currentTimeMillis();
+        long minutesElapsed = (now - lastUpdateMillis) / (1000 * 60);
+
+        // Thời gian giữ từng mốc
+        int holdMinutes = (currentPercent == 100) ? 60 : 15;
+
+        if (minutesElapsed < holdMinutes) {
+            // Chưa đủ thời gian giữ -> trả về % hiện tại
+            return currentPercent;
+        }
+
+        // Mảng chu kỳ: 100 → 95 → 100 → 90 → 100 → 85 → 100 → 80
+        int[] cycle = {100, 95, 100, 90, 100, 85, 100, 80};
+
+        // Tính index tiếp theo
+        int nextIndex = (cycleIndex + 1) % cycle.length;
+        int nextPercent = cycle[nextIndex];
+
+        // **Sau này bạn lưu vào DB**:
+        // setting.setMax_view(nextPercent);
+        // setting.setUpdate_time(System.currentTimeMillis());
+        // setting.setCycleIndex(nextIndex);
+
+        return nextPercent;
+    }
+
     public static String convertMMMtoMM(String mmm){
         try {
             if(mmm.contains("Jul")){

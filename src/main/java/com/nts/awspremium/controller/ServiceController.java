@@ -81,11 +81,14 @@ public class ServiceController {
     public ResponseEntity<String> setService(){
         JSONObject resp=new JSONObject();
         try{
+
             SettingYoutube setting = settingYoutubeRepository.get_Setting();
-            int percent = StringUtils.calcMobilePercent3(setting.getUpdate_time(), setting.getMax_view());
+            int percent = StringUtils.calcMobilePercent4(setting.getUpdate_time(), setting.getMax_view(), setting.getCycle_index());
+
             if (percent != setting.getMax_view()) {
                 setting.setMax_view(percent);
                 setting.setUpdate_time(System.currentTimeMillis());
+                setting.setCycle_index((setting.getCycle_index() + 1) % 8); // update vòng chu kỳ
                 settingYoutubeRepository.save(setting);
             }
             resp.put("status", setting.getMax_view());
