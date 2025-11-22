@@ -5,11 +5,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -51,4 +53,34 @@ public class FingerController {
             throw new RuntimeException("Không thể đọc file.", e);
         }
     }
+
+
+    @PostMapping(value = "upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadTxt(
+            @RequestParam("file") MultipartFile file) {
+
+        try {
+            // Kiểm tra định dạng txt
+            if (file.isEmpty() || !file.getOriginalFilename().toLowerCase().endsWith(".txt")) {
+                return ResponseEntity.badRequest().body("Chỉ được upload file .txt");
+            }
+
+            // Thư mục lưu
+            Path uploadDir = Paths.get("/root/data").toAbsolutePath().normalize();
+            Files.createDirectories(uploadDir);
+
+            // Đường dẫn file lưu
+            Path targetFile = uploadDir.resolve(file.getOriginalFilename());
+
+            // Lưu file
+            Files.copy(file.getInputStream(), targetFile, StandardCopyOption.REPLACE_EXISTING);
+
+            return ResponseEntity.ok("Upload thành công: " + file.getOriginalFilename());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Không thể upload file.");
+        }
+    }
+
 }
