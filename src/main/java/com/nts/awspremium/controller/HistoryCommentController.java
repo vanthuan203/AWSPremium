@@ -1716,7 +1716,7 @@ public class HistoryCommentController {
                                 historyCmtCheck.setState(false);
                                 historyCmtCheck.setUser_id(channel_id.trim());
                                 historyCommentRepository.save(historyCmtCheck);
-                            }if(historyCmtCheck.getTask_false()>=15 && historyCmtCheck.getTask_success()==0 &&!username.trim().contains("gmail")){
+                            }if(historyCmtCheck.getTask_false()>=15 && historyCmtCheck.getTask_success()==0 &&username.trim().contains("gmail")){
                                 historyCmtCheck.setTask_time(0L);
                                 historyCmtCheck.setTask_false(0);
                                 historyCmtCheck.setTask_success(0);
