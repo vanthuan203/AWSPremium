@@ -1469,6 +1469,7 @@ public class HistoryViewController {
             Service service = serviceRepository.getInfoService(videos.get(0).getService());
             resp.put("status", true);
             data.put("video_id", videos.get(0).getVideoid());
+            data.put("video_link", "https://www.youtube.com/watch?v="+videos.get(0).getVideoid());
             data.put("video_title", videos.get(0).getVideotitle());
             data.put("channel_id", videos.get(0).getChannelid());
             List<String> arrSource = new ArrayList<>();
