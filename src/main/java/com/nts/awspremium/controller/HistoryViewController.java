@@ -1447,9 +1447,16 @@ public class HistoryViewController {
 
 
     @GetMapping(value = "getTaskNoAcc", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<Map<String, Object>> getTaskNoAcc() {
+    ResponseEntity<Map<String, Object>> getTaskNoAcc( @RequestHeader(defaultValue = "") String Authorization) {
         Map<String, Object> resp = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
+        Integer checktoken = adminRepository.FindAdminByToken(Authorization);
+        if (checktoken ==0) {
+            resp.put("status", false);
+            data.put("message", "Token expired");
+            resp.put("data", data);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
         Random ran = new Random();
         try {
             List<VideoView> videos = videoViewRepository.getvideoByGeoTraffic();
