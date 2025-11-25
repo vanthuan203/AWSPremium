@@ -1717,6 +1717,17 @@ public class AccountViewController {
                     GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
                     if(googleSuite!=null){
                         googleSuite.setState(false);
+                        googleSuite.setStatus(true);
+                        googleSuite.setUpdate_time(System.currentTimeMillis());
+                        googleSuiteRepository.save(googleSuite);
+                    }
+                }
+            }else if(live==-2){
+                if(account!=null){
+                    GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
+                    if(googleSuite!=null){
+                        googleSuite.setState(false);
+                        googleSuite.setStatus(false);
                         googleSuite.setUpdate_time(System.currentTimeMillis());
                         googleSuiteRepository.save(googleSuite);
                     }
