@@ -832,7 +832,7 @@ public class VideoCommentController {
                     }
                 }
                 if(service.getExpired()==0){
-                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 100)<1?0:(int)(videoComments.get(i).getCommentorder() / 100));
+                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 300)<1?0:(int)(videoComments.get(i).getCommentorder() / 300));
                     if (max_thread <= 50) {
                         videoComments.get(i).setMaxthreads(max_thread);
                     } else {
