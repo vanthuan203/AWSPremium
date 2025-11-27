@@ -24,6 +24,8 @@ public class AccountViewController {
     @Autowired
     private AccountReg24hRepository accountReg24hRepository;
     @Autowired
+    private YoutubeView24hRepository youtubeView24hRepository;
+    @Autowired
     private GoogleSuiteRepository googleSuiteRepository;
     @Autowired
     private AdminRepository adminRepository;
@@ -893,7 +895,12 @@ public class AccountViewController {
                                 resp.put("avatar", "fail");
                             }
                         }
-
+                        if(account.get(0).getGoogle_suite().length()!=0){
+                            YoutubeView24h youtubeView24h = new YoutubeView24h();
+                            youtubeView24h.setId(account.get(0).getGoogle_suite()+account.get(0).getUsername()+System.currentTimeMillis());
+                            youtubeView24h.setUpdate_time(System.currentTimeMillis());
+                            youtubeView24hRepository.save(youtubeView24h);
+                        }
                         resp.put("username", account.get(0).getUsername());
                         resp.put("geo", account.get(0).getGeo().replace("cmt-","").trim());
                         resp.put("password", account.get(0).getPassword());
