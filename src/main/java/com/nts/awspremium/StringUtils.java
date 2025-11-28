@@ -55,8 +55,8 @@ public class StringUtils {
             int end = Math.min(i + chunkSize, parts.length);
             int wordCount = end - i;
 
-            // Chỉ lấy nhóm từ >= 3 từ
-            if (wordCount >= 3) {
+            // Chỉ lấy nhóm từ >= 5 từ
+            if (wordCount >= 5) {
                 chunks.add(String.join(" ", Arrays.copyOfRange(parts, i, end)));
             }
         }
