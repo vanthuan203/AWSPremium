@@ -682,7 +682,7 @@ public class HistoryViewController {
                     resp.put("channel_id", videos.get(0).getChannelid());
                     resp.put("status", "true");
                     resp.put("video_id", videos.get(0).getVideoid());
-                    resp.put("video_title",  StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),3+ran.nextInt(3)));
+                    resp.put("video_title",  StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),5+ran.nextInt(3)));
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("type_view", service.getType_view());
@@ -761,7 +761,7 @@ public class HistoryViewController {
                     if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                         resp.put("suggest_type", "true");
                     } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
-                        resp.put("video_title", key.length() == 0 ?  StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),3+ran.nextInt(3)) : key);
+                        resp.put("video_title", key.length() == 0 ?  StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),5+ran.nextInt(3)) : key);
                     } else if (source_view.equals("search_real")) {
                         resp.put("video_title",StringUtils.cleanTitle(videos.get(0).getVideotitle())+ " "+videos.get(0).getVideoid());
                     }
@@ -2676,7 +2676,7 @@ public class HistoryViewController {
             resp.put("channel_id", videos.get(0).getChannelid());
             resp.put("status", "true");
             resp.put("video_id", videos.get(0).getVideoid());
-            resp.put("video_title", StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),3+ran.nextInt(3)));
+            resp.put("video_title", StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),5+ran.nextInt(3)));
             resp.put("username", histories.get(0).getUsername());
             resp.put("service_id", service.getService());
             resp.put("type_view", service.getType_view());
@@ -2779,7 +2779,7 @@ public class HistoryViewController {
             if (source_view.equals("suggest") &&( service.getType().equals("Special") || service.getAi()==1)) {
                 resp.put("suggest_type", "true");
             } else if (source_view.equals("search") && (service.getType().equals("Special") || service.getAi()==1)) {
-                resp.put("video_title", key.length() == 0 ?  StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),3+ran.nextInt(3)) : key);
+                resp.put("video_title", key.length() == 0 ?  StringUtils.splitRandomClean(StringUtils.cleanTitle(videos.get(0).getVideotitle()),5+ran.nextInt(3)) : key);
             } else if (source_view.equals("search_real")) {
                 resp.put("video_title",StringUtils.cleanTitle(videos.get(0).getVideotitle())+ " "+videos.get(0).getVideoid());
             }
