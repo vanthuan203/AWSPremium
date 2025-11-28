@@ -1639,7 +1639,7 @@ public class AccountViewController {
             }
 
             resp.put("status", "true");
-            resp.put("list", googleSuiteRepository.get_List_Google_Suite());
+            resp.put("list", googleSuiteRepository.get_List_Google_Suite_Geo_REG());
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         } catch (Exception e) {
             resp.put("status", "fail");
