@@ -48,6 +48,8 @@ public class HistoryViewController {
     @Autowired
     private YoutubeView24hRepository youtubeView24hRepository;
     @Autowired
+    private YoutubeViewHistoryRepository youtubeViewHistoryRepository;
+    @Autowired
     private HistoryCommentRepository historyCommentRepository;
     @Autowired
     private DataOrderRepository dataOrderRepository;
@@ -1446,8 +1448,8 @@ public class HistoryViewController {
 
 
 
-    @GetMapping(value = "getTaskNoAcc", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<Map<String, Object>> getTaskNoAcc( @RequestHeader(defaultValue = "") String Authorization) {
+    @GetMapping(value = "getTaskById", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<Map<String, Object>> getTaskById( @RequestHeader(defaultValue = "") String Authorization,@RequestParam(defaultValue = "") String id) {
         Map<String, Object> resp = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
         Integer checktoken = adminRepository.FindAdminByToken(Authorization);
@@ -1457,21 +1459,73 @@ public class HistoryViewController {
             resp.put("data", data);
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
+        if (id.length() == 0) {
+            resp.put("status", false);
+            data.put("message", "id không để trống!");
+            resp.put("data", data);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
         Random ran = new Random();
         try {
-            List<VideoView> videos = videoViewRepository.getvideoByGeoTraffic();
+            YoutubeViewHistory youtubeViewHistory=youtubeViewHistoryRepository.get_By_ProfileId(id.trim());
+            if(youtubeViewHistory==null){
+                youtubeViewHistory=new YoutubeViewHistory();
+                youtubeViewHistory.setList_id("");
+                youtubeViewHistory.setUpdate_time(0L);
+                youtubeViewHistory.setProfile_id(id.trim());
+                youtubeViewHistoryRepository.save(youtubeViewHistory);
+            }
+            List<VideoView> videos = videoViewRepository.getvideoByGeoTrD(youtubeViewHistory.getList_id());
             if(videos.size()==0) {
                 resp.put("status", false);
                 data.put("message", "không có nhiệm vụ!");
                 resp.put("data", data);
                 return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
             }
+
+            char target = '|';
+            long count = youtubeViewHistory.getList_id().trim().chars().filter(ch -> ch == target).count();
+            if(count>=4){
+                int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
+                YoutubeViewHistory finalYoutubeViewHistory = youtubeViewHistory;
+                OptionalInt position = IntStream.range(0, youtubeViewHistory.getList_id().trim().length())
+                        .filter(i -> finalYoutubeViewHistory.getList_id().trim().charAt(i) == target)
+                        .skip(occurrence - 1)
+                        .findFirst();
+                youtubeViewHistory.setList_id(youtubeViewHistory.getList_id().trim().substring(position.getAsInt()+1)+videos.get(0).getVideoid().trim()+"|");
+            }else{
+                youtubeViewHistory.setList_id(youtubeViewHistory.getList_id()+videos.get(0).getVideoid().trim()+"|");
+            }
+            youtubeViewHistory.setUpdate_time(System.currentTimeMillis());
+            youtubeViewHistoryRepository.save(youtubeViewHistory);
+
+            YoutubeView24h youtubeView24h = new YoutubeView24h();
+            youtubeView24h.setId(id+videos.get(0).getVideoid()+System.currentTimeMillis());
+            youtubeView24h.setUpdate_time(System.currentTimeMillis());
+            youtubeView24hRepository.save(youtubeView24h);
+
+
+
             Service service = serviceRepository.getInfoService(videos.get(0).getService());
             resp.put("status", true);
             data.put("video_id", videos.get(0).getVideoid());
             data.put("video_link", "https://www.youtube.com/watch?v="+videos.get(0).getVideoid());
             data.put("video_title", videos.get(0).getVideotitle());
             data.put("channel_id", videos.get(0).getChannelid());
+
+            if(service.getType().trim().equals("Special")){
+                String list_key = dataOrderRepository.getListKeyByOrderid(videos.get(0).getOrderid());
+                String key = "";
+                if (list_key != null && list_key.length() != 0) {
+                    String[] keyArr = list_key.split(",");
+                    key = keyArr[ran.nextInt(keyArr.length)];
+                }
+                data.put("keyword", key.length() == 0 ? videos.get(0).getVideotitle() : key);
+
+            }else{
+                data.put("keyword",videos.get(0).getVideotitle());
+            }
+
             List<String> arrSource = new ArrayList<>();
             for (int i = 0; i < service.getSuggest(); i++) {
                 arrSource.add("suggest");

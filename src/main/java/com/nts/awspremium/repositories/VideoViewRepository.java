@@ -48,8 +48,8 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
     @Query(value = "SELECT * FROM videoview where service in(select service from service where checktime=1 and live=0) and timestart>0 and INSTR(?1,videoid)=0 and orderid in (?2) order by rand() limit 1",nativeQuery = true)
     public List<VideoView> getvideoBuffHRand(String listvideo, List<String> orderid);
 
-    @Query(value = "SELECT * FROM videoview where service in(select service from service where geo=\"random\") order by rand() limit 1",nativeQuery = true)
-    public List<VideoView> getvideoByGeoTraffic();
+    @Query(value = "SELECT * FROM videoview where service in(select service from service where geo='testTRD') and INSTR(?1,videoid)=0 order by rand() limit 1",nativeQuery = true)
+    public List<VideoView> getvideoByGeoTrD(String listvideo);
 
 
     @Query(value = "SELECT * FROM videoview where service>600 and service in (select service from service where live=1) and  orderid in (?1) and round((UNIX_TIMESTAMP()-timestart/1000)/60) <=1.5*minstart order by rand() limit 1",nativeQuery = true)

@@ -14,6 +14,9 @@ public interface YoutubeViewHistoryRepository extends JpaRepository<YoutubeViewH
     @Query(value = "SELECT * FROM youtube_view_history where account_id=?1 limit 1",nativeQuery = true)
     public YoutubeViewHistory get_By_AccountId(String account_id);
 
+    @Query(value = "SELECT * FROM youtube_view_history where profile_id=?1 limit 1",nativeQuery = true)
+    public YoutubeViewHistory get_By_ProfileId(String profile_id);
+
     @Modifying
     @Transactional
     @Query(value = "update youtube_view_history set list_id=''",nativeQuery = true)

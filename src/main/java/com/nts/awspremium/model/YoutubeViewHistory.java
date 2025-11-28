@@ -16,6 +16,8 @@ public class YoutubeViewHistory {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id",referencedColumnName = "username",updatable = true,insertable = true)
     private Account account;
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String profile_id;
     @Column(columnDefinition = "MEDIUMTEXT")
     private String list_id;
     @Column(columnDefinition = "bigint default 0")

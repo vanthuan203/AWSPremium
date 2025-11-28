@@ -895,12 +895,6 @@ public class AccountViewController {
                                 resp.put("avatar", "fail");
                             }
                         }
-                        if(account.get(0).getGoogle_suite().length()!=0){
-                            YoutubeView24h youtubeView24h = new YoutubeView24h();
-                            youtubeView24h.setId(account.get(0).getGoogle_suite()+account.get(0).getUsername()+System.currentTimeMillis());
-                            youtubeView24h.setUpdate_time(System.currentTimeMillis());
-                            youtubeView24hRepository.save(youtubeView24h);
-                        }
                         resp.put("username", account.get(0).getUsername());
                         resp.put("geo", account.get(0).getGeo().replace("cmt-","").trim());
                         resp.put("password", account.get(0).getPassword());
@@ -1832,6 +1826,10 @@ public class AccountViewController {
                 resp.put("message", "Username không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }else{
+                if(account.getStatus()){
+                    resp.put("status", "true");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
                 GoogleSuite googleSuite=googleSuiteRepository.get_Google_Suite(account.getGoogle_suite());
                 if(googleSuite!=null){
                     if(googleSuite.getState()==true){
