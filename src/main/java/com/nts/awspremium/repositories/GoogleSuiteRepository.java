@@ -21,4 +21,7 @@ public interface GoogleSuiteRepository extends JpaRepository<GoogleSuite,Long> {
     @Query(value = "SELECT GROUP_CONCAT(id) FROM AccPremium.google_suite;",nativeQuery = true)
     public String get_List_Google_Suite();
 
+    @Query(value = "SELECT GROUP_CONCAT(google_suite) FROM (SELECT google_suite  FROM AccPremium.account where geo='reg' group by google_suite) as t",nativeQuery = true)
+    public String get_List_Google_Suite_Geo_REG();
+
 }
