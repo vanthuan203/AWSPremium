@@ -2433,12 +2433,10 @@ public class HistoryViewController {
                 historyViewRepository.deleteHistoryById(historieId);
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
-            /*
             if(histories.get(0).getFinger_id()>0){
                 fingerprintsPCRepository.update_Running_Finger_PC(histories.get(0).getFinger_id(),histories.get(0).getUsername().trim()+"%");
                 histories.get(0).setFinger_id(0L);
             }
-             */
             histories.get(0).setMax_task(1+ran.nextInt(5));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
@@ -2541,7 +2539,6 @@ public class HistoryViewController {
                 }
             }
 
-            /*
             Long finger_id=0L;
             try{
                 String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
@@ -2581,7 +2578,6 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
 
-             */
 
 
             String[] proxy = new String[0];
