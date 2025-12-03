@@ -111,7 +111,7 @@ public class YoutubeUpdate {
     public Boolean youtube_subscriber(String account_id,String order_Key,Boolean success){
         try{
             if(order_Key!=null){
-                if(success==null?true:success){
+                if(success){
                     YoutubeSubscriberHistory youtubeChannelHistory=youtubeChannelHistoryRepository.get_By_AccountId(account_id.trim());
                     if(youtubeChannelHistory!=null){
                         youtubeChannelHistory.setList_id(youtubeChannelHistory.getList_id()+order_Key.trim()+"|");
@@ -135,14 +135,14 @@ public class YoutubeUpdate {
                     AccountTask accountTask_New=new AccountTask();
                     accountTask_New.setPlatform("youtube");
                     accountTask_New.setAccount(accountRepository.findAccountByUsername(account_id.trim()));
-                    if(success==null?true:success){
+                    if(success){
                         accountTask_New.setSubscriber_time(System.currentTimeMillis());
                     }else{
                         accountTask_New.setSubscriber_time(System.currentTimeMillis()+(taskPriorityRepository.get_Wating_Time_By_Task("youtube_subscriber")) * 60 * 1000);
                     }
                     accountTaskRepository.save(accountTask_New);
                 }else{
-                    if(success==null?true:success){
+                    if(success){
                         accountTask.setSubscriber_time(System.currentTimeMillis());
                     }else{
                         accountTask.setSubscriber_time(System.currentTimeMillis()+(taskPriorityRepository.get_Wating_Time_By_Task("youtube_subscriber")) * 60 * 1000);

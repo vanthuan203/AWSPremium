@@ -4235,8 +4235,11 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
                 if(historyView.getGeo().trim().contains("smm")){
+                    if(success==null){
+                        success=false;
+                    }
                     ServiceSMM serviceSMM =serviceSMMRepository.get_Service_By_ServiceId(service_id);
-                    if(serviceSMM.getTask().equals("subscriber")) {
+                    if(serviceSMM.getTask().equals("subscriber")&&success) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
                         if (orderRunning != null) {
                             youtubeUpdate.youtube_subscriber(username.trim(), channelid.trim(),success);
@@ -4254,7 +4257,7 @@ public class HistoryViewController {
                                 }
                             }
                         }
-                    }else if(serviceSMM.getTask().equals("like")) {
+                    }else if(serviceSMM.getTask().equals("like")&&success) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(videoid.trim());
                         if (orderRunning != null) {
                             youtubeUpdate.youtube_like(username.trim(), videoid.trim(),success);
