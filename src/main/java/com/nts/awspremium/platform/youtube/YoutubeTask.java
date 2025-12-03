@@ -88,6 +88,7 @@ public class YoutubeTask {
                 data.put("service_id", service.getService_id());
                 data.put("device_type", service.getDevice_type());
                 data.put("ext", service.getExt());
+                data.put("type_view", service.getType_view());
                 data.put("geo", "smm");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
@@ -195,15 +196,10 @@ public class YoutubeTask {
                     return resp;
                 }
                 ServiceSMM service=orderRunning.getService();
-                if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
-                    data.put("bonus","");
+                if(ran.nextInt(100)<service.getBonus_list_percent()){
+                    data.put("sub","true");
                 }else{
-                    if(ran.nextInt(100)<service.getBonus_list_percent()){
-                        String [] bonus_list=service.getBonus_list().split(",");
-                        data.put("bonus",bonus_list[ran.nextInt(bonus_list.length)]);
-                    }else{
-                        data.put("bonus","");
-                    }
+                    data.put("sub","fail");
                 }
                 resp.put("status", true);
                 data.put("order_id", orderRunning.getOrder_id());
@@ -212,7 +208,8 @@ public class YoutubeTask {
                 data.put("service_id", service.getService_id());
                 data.put("device_type", service.getDevice_type());
                 data.put("ext", service.getExt());
-                data.put("geo", "sub");
+                data.put("type_view", service.getType_view());
+                data.put("geo", "smm");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
                 data.put("channel_title", orderRunning.getChannel_title());
@@ -224,7 +221,6 @@ public class YoutubeTask {
                 data.put("suggest_video", "");
                 data.put("suggest_type", "fail");
                 data.put("like","fail");
-                data.put("sub","true");
                 data.put("niche_key","");
 
                 List<String> arrSource = new ArrayList<>();
@@ -318,15 +314,10 @@ public class YoutubeTask {
                     return resp;
                 }
                 ServiceSMM service=orderRunning.getService();
-                if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
-                    data.put("bonus","");
+                if(ran.nextInt(100)<service.getBonus_list_percent()){
+                    data.put("like","true");
                 }else{
-                    if(ran.nextInt(100)<service.getBonus_list_percent()){
-                        String [] bonus_list=service.getBonus_list().split(",");
-                        data.put("bonus",bonus_list[ran.nextInt(bonus_list.length)]);
-                    }else{
-                        data.put("bonus","");
-                    }
+                    data.put("like","fail");
                 }
                 resp.put("status", true);
                 data.put("order_id", orderRunning.getOrder_id());
@@ -335,7 +326,8 @@ public class YoutubeTask {
                 data.put("service_id", service.getService_id());
                 data.put("device_type", service.getDevice_type());
                 data.put("ext", service.getExt());
-                data.put("geo", "like");
+                data.put("type_view", service.getType_view());
+                data.put("geo", "smm");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
                 data.put("channel_title", orderRunning.getChannel_title());
@@ -345,7 +337,6 @@ public class YoutubeTask {
                 data.put("keyword", orderRunning.getVideo_title());
                 data.put("suggest_video", "");
                 data.put("suggest_type", "fail");
-                data.put("like","true");
                 data.put("sub","fail");
                 data.put("niche_key","");
 
@@ -456,7 +447,8 @@ public class YoutubeTask {
                 data.put("service_id", service.getService_id());
                 data.put("device_type", service.getDevice_type());
                 data.put("ext", service.getExt());
-                data.put("geo", "like");
+                data.put("type_view", service.getType_view());
+                data.put("geo", "smm");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
                 data.put("channel_title", orderRunning.getChannel_title());

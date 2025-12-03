@@ -554,7 +554,7 @@ public class HistoryViewController {
 
                     resp.put("ext",Integer.parseInt(dataJson.get("ext").toString()));
                     resp.put("device_type", dataJson.get("suggest_video").toString());
-
+                    resp.put("type_view",Integer.parseInt(dataJson.get("type_view").toString()));
                     resp.put("channel_index", histories.get(0).getChannel_index());
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
@@ -2683,6 +2683,7 @@ public class HistoryViewController {
                 resp.put("suggest_video", dataJson.get("suggest_video").toString());
                 resp.put("video_duration",Integer.parseInt(dataJson.get("video_duration").toString()));
                 resp.put("ext",Integer.parseInt(dataJson.get("ext").toString()));
+                resp.put("type_view",Integer.parseInt(dataJson.get("type_view").toString()));
                 resp.put("device_type", dataJson.get("device_type").toString());
 
                 resp.put("channel_index", histories.get(0).getChannel_index());

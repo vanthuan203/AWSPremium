@@ -113,6 +113,8 @@ public class ServiceSMM implements Serializable {
     private String app;
     @Column(columnDefinition = "integer default 0")
     private Integer ext=0;
+    @Column(columnDefinition = "integer default 1")
+    private Integer type_view=1;
 
     public ServiceSMM() {
     }

@@ -263,7 +263,7 @@ public class VideoCommentController {
                     }
                 }
                 if(check_current){
-                    view24h=GoogleApi.checkCommentCount(videoViewList.get(i).getVideoid().trim());
+                    view24h=GoogleApi.getCountCommentCurrent(videoViewList.get(i).getVideoid().trim());
                     if(view24h==-1){
                         if(videoViewList.get(i).getComment24h()==0){
                             view24h=-1;

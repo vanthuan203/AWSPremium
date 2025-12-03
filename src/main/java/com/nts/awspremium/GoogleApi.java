@@ -220,14 +220,21 @@ public class GoogleApi {
             if(response.isSuccessful()){
                 String resultJson1 = response.body().string();
                 response.body().close();
-                Object obj1 = new JSONParser().parse(resultJson1);
-                JSONObject jsonObject1 = (JSONObject) obj1;
-                return Integer.parseInt(jsonObject1.get("est_sub").toString());
+
+                JsonObject jsonObject = JsonParser.parseString(resultJson1).getAsJsonObject();
+
+                // Lấy nhánh counters → estimation
+                JsonObject estimation = jsonObject
+                        .getAsJsonObject("counters")
+                        .getAsJsonObject("estimation");
+
+                // Trả về subscriberCount
+                return estimation.get("subscriberCount").getAsInt();
             }else{
                 response.body().close();
                 return -2;
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             return -2;
         }
 
@@ -369,28 +376,81 @@ public class GoogleApi {
             request = new Request.Builder().url("https://api.socialcounts.org/youtube-video-live-view-count/" + order_key).get().build();
             Response response = client.newCall(request).execute();
             if(response.isSuccessful()){
-                String resultJson = response.body().string();
+                String resultJson1 = response.body().string();
                 response.body().close();
-                Object obj = new JsonParser().parse(resultJson);
-                JsonObject jsonObject = (JsonObject) obj;
 
-                // Get the table array
-                JsonArray tableArray = jsonObject.getAsJsonArray("table");
+                JsonObject jsonObject = JsonParser.parseString(resultJson1).getAsJsonObject();
 
-                // Iterate through the table array to find the Like Count
-                for (JsonElement element : tableArray) {
-                    JsonObject tableItem = element.getAsJsonObject();
-                    if (tableItem.get("name").getAsString().equals("Like Count")) {
-                        return  tableItem.get("count").getAsInt();
-                    }
-                }
-                return -2;
+                // Lấy nhánh counters → estimation
+                JsonObject estimation = jsonObject
+                        .getAsJsonObject("counters")
+                        .getAsJsonObject("estimation");
+
+                // Trả về subscriberCount
+                return estimation.get("likeCount").getAsInt();
             }else{
                 response.body().close();
                 return -2;
             }
         } catch (Exception e) {
             return -2;
+        }
+    }
+
+
+    public static Integer getCountViewCurrent(String order_key){
+        try {
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+            Request request = null;
+            request = new Request.Builder().url("https://api.socialcounts.org/youtube-video-live-view-count/" + order_key).get().build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()){
+                String resultJson1 = response.body().string();
+                response.body().close();
+
+                JsonObject jsonObject = JsonParser.parseString(resultJson1).getAsJsonObject();
+
+                // Lấy nhánh counters → estimation
+                JsonObject estimation = jsonObject
+                        .getAsJsonObject("counters")
+                        .getAsJsonObject("estimation");
+
+                // Trả về subscriberCount
+                return estimation.get("viewCount").getAsInt();
+            }else{
+                response.body().close();
+                return -1;
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
+    public static Integer getCountCommentCurrent(String order_key){
+        try {
+            OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
+            Request request = null;
+            request = new Request.Builder().url("https://api.socialcounts.org/youtube-video-live-view-count/" + order_key).get().build();
+            Response response = client.newCall(request).execute();
+            if(response.isSuccessful()){
+                String resultJson1 = response.body().string();
+                response.body().close();
+
+                JsonObject jsonObject = JsonParser.parseString(resultJson1).getAsJsonObject();
+
+                // Lấy nhánh counters → estimation
+                JsonObject estimation = jsonObject
+                        .getAsJsonObject("counters")
+                        .getAsJsonObject("estimation");
+
+                // Trả về subscriberCount
+                return estimation.get("commentCount").getAsInt();
+            }else{
+                response.body().close();
+                return -1;
+            }
+        } catch (Exception e) {
+            return -1;
         }
     }
 
@@ -669,7 +729,6 @@ public class GoogleApi {
                     int startIndex = scriptContent.indexOf("{");
                     int endIndex = scriptContent.lastIndexOf("}") + 1;
                     String jsonString = scriptContent.substring(startIndex, endIndex);
-                    //System.out.println(jsonString);
                     JsonReader reader = new JsonReader(new StringReader(jsonString));
                     reader.setLenient(true);
                     JsonElement jsonElement = JsonParser.parseReader(reader);
