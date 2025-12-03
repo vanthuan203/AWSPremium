@@ -395,8 +395,6 @@ public class HistoryViewController {
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
                 else
-
-                 */
                  if(vps_check.getVpsoption().contains("smm")&&((System.currentTimeMillis()-histories.get(0).getTask_time())/1000<= (60+ran.nextInt(25)))){
                     Thread.sleep(ran.nextInt(1000));
                     resp.put("status", "fail");
@@ -405,7 +403,7 @@ public class HistoryViewController {
                     resp.put("message", "Không còn video để view!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
-
+                */
                 Map<String, Object> get_task =null;
                 if(histories.get(0).getGeo().contains("smm") && vps_check.getVpsoption().contains("smm")){
 
@@ -2430,6 +2428,7 @@ public class HistoryViewController {
         Random ran = new Random();
 
         try {
+            /*
             if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (30+ran.nextInt(5)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
@@ -2437,6 +2436,8 @@ public class HistoryViewController {
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+
+             */
             //Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
             Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
@@ -2682,7 +2683,7 @@ public class HistoryViewController {
                 resp.put("suggest_video", dataJson.get("suggest_video").toString());
                 resp.put("video_duration",Integer.parseInt(dataJson.get("video_duration").toString()));
                 resp.put("ext",Integer.parseInt(dataJson.get("ext").toString()));
-                resp.put("device_type", dataJson.get("suggest_video").toString());
+                resp.put("device_type", dataJson.get("device_type").toString());
 
                 resp.put("channel_index", histories.get(0).getChannel_index());
 
@@ -4232,9 +4233,7 @@ public class HistoryViewController {
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
-
-                Vps vps=vpsRepository.getVpsByName(historyView.getVps());
-                if(vps.getVpsoption().contains("smm")){
+                if(historyView.getGeo().trim().contains("smm")){
                     ServiceSMM serviceSMM =serviceSMMRepository.get_Service_By_ServiceId(service_id);
                     if(serviceSMM.getTask().equals("subscriber")) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
