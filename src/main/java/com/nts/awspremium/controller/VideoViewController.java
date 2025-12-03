@@ -1095,7 +1095,6 @@ public class VideoViewController {
             List<VideoView> videoViewList = videoViewRepository.getAllOrderView();
             viewBuff = videoViewRepository.getTotalViewBuff();
             Boolean check_current=false;
-            /*
             TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
             Calendar calendar = Calendar.getInstance(timeZone);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -1103,6 +1102,7 @@ public class VideoViewController {
             if(min%3==0){
                 check_current=true;
             }
+            /*
             if(hour>=0 && hour<12 && setting.getBonus()!=300) {
                 setting.setBonus(300);
                 settingRepository.save(setting);
@@ -1110,7 +1110,6 @@ public class VideoViewController {
                 setting.setBonus(200);
                 settingRepository.save(setting);
             }
-
              */
 
             for (int i = 0; i < videoViewList.size(); i++) {
