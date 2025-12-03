@@ -405,9 +405,25 @@ public class HistoryViewController {
                     resp.put("message", "Không còn video để view!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
+
                 Map<String, Object> get_task =null;
-                if(vps_check.getVpsoption().contains("smm")){
-                    List<TaskPriority> priorityTasks =taskPriorityRepository.get_Priority_Task_By_Platform("youtube");
+                if(histories.get(0).getGeo().contains("smm") && vps_check.getVpsoption().contains("smm")){
+
+                    if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
+                        resp.put("status", "fail");
+                        resp.put("message", "off_profile");
+                        //resp.put("message", "bỏ qua nhiệm vụ");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                    histories.get(0).setTask_index(histories.get(0).getTask_index()+1);
+                    String geo_rand=histories.get(0).getGeo().trim();
+                    if(histories.get(0).getGeo_rand()!=null){
+                        if(histories.get(0).getGeo_rand().length()!=0){
+                            geo_rand=histories.get(0).getGeo_rand().trim();
+                        }
+                    }
+
+                    List<ModeOption> priorityTasks =modeOptionRepository.get_Priority_Task_By_Platform_And_Mode("youtube",histories.get(0).getGeo().trim());
                     List<String> arrTask = new ArrayList<>();
 
                     for(int i=0;i<priorityTasks.size();i++){
@@ -418,7 +434,7 @@ public class HistoryViewController {
                     while (arrTask.size()>0){
                         String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
 
-                        ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim().split("_")[1]);
+                        ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim());
                         AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
                         Long get_time=0L;
                         if(accountTask!=null){
@@ -463,12 +479,14 @@ public class HistoryViewController {
 
 
                         while(arrTask.remove(task)) {}
-                        if(task.equals("youtube_view")){
-                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),vps_check.getVpsoption());
-                        }else if(task.equals("youtube_like")){
-                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),vps_check.getVpsoption());
-                        }else if(task.equals("youtube_subscriber")){
-                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),vps_check.getVpsoption());
+                        if(modeOption.getPlatform().equals("youtube")){
+                            if(task.equals("view")){
+                                get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),geo_rand);
+                            }else if(task.equals("like")){
+                                get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),geo_rand);
+                            }else if(task.equals("subscriber")){
+                                get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),geo_rand);
+                            }
                         }
                         if(get_task!=null?get_task.get("status").equals(true):false){
                             break;
@@ -535,6 +553,12 @@ public class HistoryViewController {
                     resp.put("source", dataJson.get("source").toString());
                     resp.put("suggest_video", dataJson.get("suggest_video").toString());
                     resp.put("video_duration",Integer.parseInt(dataJson.get("video_duration").toString()));
+
+                    resp.put("ext",Integer.parseInt(dataJson.get("ext").toString()));
+                    resp.put("device_type", dataJson.get("suggest_video").toString());
+
+                    resp.put("channel_index", histories.get(0).getChannel_index());
+
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
 
@@ -1690,7 +1714,7 @@ public class HistoryViewController {
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }else
-             */
+
             if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (30+ran.nextInt(5)))){
                 Thread.sleep(ran.nextInt(1000));
                 resp.put("status", "fail");
@@ -1698,6 +1722,7 @@ public class HistoryViewController {
                 resp.put("message", "Không còn user để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+             */
 
             //Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
@@ -2402,9 +2427,16 @@ public class HistoryViewController {
             resp.put("message", "Vps không chạy view!");
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
         }
-
         Random ran = new Random();
+
         try {
+            if(vps_check.getVpsoption().equals("smm")&&((System.currentTimeMillis()-vps_check.getTask_time())/1000< (30+ran.nextInt(5)))){
+                Thread.sleep(ran.nextInt(1000));
+                resp.put("status", "fail");
+                resp.put("fail", "user");
+                resp.put("message", "Không còn user để view!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
             //Thread.sleep(ran.nextInt(1000));
             //Long historieId = historyViewRepository.getAccToView(vps.trim());
             Long historieId = historyViewRepository.getAccToViewNoCheckProxy(vps.trim());
@@ -2433,10 +2465,12 @@ public class HistoryViewController {
                 historyViewRepository.deleteHistoryById(historieId);
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+            /*
             if(histories.get(0).getFinger_id()>0){
                 fingerprintsPCRepository.update_Running_Finger_PC(histories.get(0).getFinger_id(),histories.get(0).getUsername().trim()+"%");
                 histories.get(0).setFinger_id(0L);
             }
+             */
             histories.get(0).setMax_task(1+ran.nextInt(5));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
@@ -2444,62 +2478,80 @@ public class HistoryViewController {
             String geo_rand=histories.get(0).getGeo().trim();
 
             Map<String, Object> get_task =null;
+            if(histories.get(0).getGeo().contains("smm") && vps_check.getVpsoption().contains("smm")){
+                List<ModeOption> priorityTasks =modeOptionRepository.get_Priority_Task_By_Platform_And_Mode("youtube",histories.get(0).getGeo().trim());
+                List<String> arrTask = new ArrayList<>();
 
-            if(!histories.get(0).getGeo().contains("test")){
-                videos = videoViewRepository.getvideoLiveRand(orderTrue.getValue());
-                if(videos.size()==0){
-                    videos = videoViewRepository.getvideoViewRand( histories.get(0).getListvideo(), orderTrue.getValue());
-                }
-                if (videos.size() > 0) {
-                    geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
-                    histories.get(0).setGeo_rand(geo_rand);
-                    histories.get(0).setTimeget(System.currentTimeMillis());
-                    histories.get(0).setVideoid(videos.get(0).getVideoid());
-                    histories.get(0).setOrderid(videos.get(0).getOrderid());
-                    histories.get(0).setChannelid(videos.get(0).getChannelid());
-                } else{
-                    videos = videoViewRepository.getvideoViewRand( histories.get(0).getListvideo(),orderSpeedTrue.getValue());
-                    if (videos.size() >0) {
-                        geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
-                        histories.get(0).setGeo_rand(geo_rand);
-                        histories.get(0).setTimeget(System.currentTimeMillis());
-                        histories.get(0).setVideoid(videos.get(0).getVideoid());
-                        histories.get(0).setOrderid(videos.get(0).getOrderid());
-                        histories.get(0).setChannelid(videos.get(0).getChannelid());
-                    }else{
-                        videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTimeTrue.getValue());
-                        if (videos.size() > 0) {
-                            geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
-                            histories.get(0).setGeo_rand(geo_rand);
-                            histories.get(0).setTimeget(System.currentTimeMillis());
-                            histories.get(0).setVideoid(videos.get(0).getVideoid());
-                            histories.get(0).setOrderid(videos.get(0).getOrderid());
-                            histories.get(0).setChannelid(videos.get(0).getChannelid());
-                        } else {
-
-                            histories.get(0).setTimeget(System.currentTimeMillis());
-                            histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
-                            historyViewRepository.save(histories.get(0));
-
-                            vps_check.setTask_time(System.currentTimeMillis());
-                            vpsRepository.save(vps_check);
-
-                            resp.put("status", "fail");
-                            resp.put("fail", "video");
-                            resp.put("message", "Không còn video để view!");
-                            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
-                        }
+                for(int i=0;i<priorityTasks.size();i++){
+                    for (int j = 0; j < priorityTasks.get(i).getPriority(); j++) {
+                        arrTask.add(priorityTasks.get(i).getTask());
                     }
                 }
-            }else{
-                videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(),histories.get(0).getListvideo(),orderTrue.getValue());
-                if (videos.size() > 0) {
-                    histories.get(0).setTimeget(System.currentTimeMillis());
-                    histories.get(0).setVideoid(videos.get(0).getVideoid());
-                    histories.get(0).setOrderid(videos.get(0).getOrderid());
-                    histories.get(0).setChannelid(videos.get(0).getChannelid());
-                } else {
+                while (arrTask.size()>0){
+                    String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
 
+                    ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim());
+                    AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
+                    Long get_time=0L;
+                    if(accountTask!=null){
+                        if(task.trim().contains("follower")){
+                            get_time=accountTask.getFollower_time();
+                        }else if(task.trim().contains("subscriber")){
+                            get_time=accountTask.getSubscriber_time();
+                        }else if(task.trim().contains("view")){
+                            get_time=accountTask.getView_time();
+                        }else if(task.trim().contains("like")){
+                            get_time=accountTask.getLike_time();
+                        }else if(task.trim().contains("comment")){
+                            get_time=accountTask.getComment_time();
+                        }else if(task.trim().contains("repost")){
+                            get_time=accountTask.getRepost_time();
+                        }else if(task.trim().contains("member")){
+                            get_time=accountTask.getMember_time();
+                        }
+                    }
+                    if(modeOption==null){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
+
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "mode");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }else if((System.currentTimeMillis()-get_time)/1000/60<modeOption.getTime_get_task()){
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
+
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+
+                    while(arrTask.remove(task)) {}
+                    if(modeOption.getPlatform().equals("youtube")){
+                        if(task.equals("view")){
+                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),geo_rand);
+                        }else if(task.equals("like")){
+                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),geo_rand);
+                        }else if(task.equals("subscriber")){
+                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),geo_rand);
+                        }
+                    }
+
+                    if(get_task!=null?get_task.get("status").equals(true):false){
+                        break;
+                    }
+                }
+                if(get_task==null){
                     histories.get(0).setTimeget(System.currentTimeMillis());
                     histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
                     historyViewRepository.save(histories.get(0));
@@ -2511,6 +2563,199 @@ public class HistoryViewController {
                     resp.put("fail", "video");
                     resp.put("message", "Không còn video để view!");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }else if(get_task.get("status").equals(false)){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                String[] proxy = new String[0];
+                Random rand=new Random();
+
+                proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                if(proxy.length==0){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                /*
+                Long finger_id=0L;
+                try{
+                    String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
+                    String code="";
+                    for(int i=0;i<5;i++){
+                        Integer ranver=ran.nextInt(stringrand.length());
+                        code=code+stringrand.charAt(ranver);
+                    }
+                    code=histories.get(0).getUsername()+code;
+                    finger_id=fingerprintsPCRepository.get_Finger_PC(System.currentTimeMillis(),code);
+                    if(finger_id!=null){
+                        resp.put("finger_id", finger_id);
+                    }else {
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
+
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+                }catch (Exception e){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                 */
+                String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
+
+                Map<String, Object>  dataJson= (Map<String, Object>) get_task.get("data");
+
+                Thread.sleep(ran.nextInt(150));
+                if(!orderThreadCheck.getValue().contains(dataJson.get("order_id").toString())){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                    historyViewRepository.save(histories.get(0));
+
+                    vps_check.setTask_time(System.currentTimeMillis());
+                    vpsRepository.save(vps_check);
+
+                    resp.put("status", "fail");
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setVideoid( dataJson.get("video_id").toString());
+                histories.get(0).setOrderid(Long.parseLong(dataJson.get("order_id").toString()));
+                histories.get(0).setChannelid(dataJson.get("channel_id").toString());
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setRunning(1);
+                //histories.get(0).setFinger_id(finger_id);
+                historyViewRepository.save(histories.get(0));
+
+                resp.put("status","true");
+                resp.put("live",dataJson.get("live").toString());
+                resp.put("channel_id", dataJson.get("channel_id").toString());
+                resp.put("video_id", dataJson.get("video_id").toString());
+                resp.put("video_title", dataJson.get("video_title").toString());
+                resp.put("username", histories.get(0).getUsername());
+                resp.put("service_id", Integer.parseInt(dataJson.get("service_id").toString()));
+                resp.put("geo",dataJson.get("geo").toString());
+                resp.put("like", dataJson.get("like").toString());
+                resp.put("sub", dataJson.get("sub").toString());
+                resp.put("proxy",proxy[0]+":"+proxy[1]+":"+proxysetting[0]+":"+proxysetting[1]);
+                resp.put("niche_key",dataJson.get("niche_key").toString());
+
+                resp.put("suggest_type", dataJson.get("suggest_type").toString());
+                resp.put("suggest_key", dataJson.get("suggest_key").toString());
+                resp.put("suggest_video", dataJson.get("suggest_video").toString());
+                resp.put("suggest_type", dataJson.get("suggest_type").toString());
+
+                resp.put("source", dataJson.get("source").toString());
+                resp.put("suggest_video", dataJson.get("suggest_video").toString());
+                resp.put("video_duration",Integer.parseInt(dataJson.get("video_duration").toString()));
+                resp.put("ext",Integer.parseInt(dataJson.get("ext").toString()));
+                resp.put("device_type", dataJson.get("suggest_video").toString());
+
+                resp.put("channel_index", histories.get(0).getChannel_index());
+
+
+
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }else{
+                if(!histories.get(0).getGeo().contains("test")){
+                    videos = videoViewRepository.getvideoLiveRand(orderTrue.getValue());
+                    if(videos.size()==0){
+                        videos = videoViewRepository.getvideoViewRand( histories.get(0).getListvideo(), orderTrue.getValue());
+                    }
+                    if (videos.size() > 0) {
+                        geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
+                        histories.get(0).setGeo_rand(geo_rand);
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setVideoid(videos.get(0).getVideoid());
+                        histories.get(0).setOrderid(videos.get(0).getOrderid());
+                        histories.get(0).setChannelid(videos.get(0).getChannelid());
+                    } else{
+                        videos = videoViewRepository.getvideoViewRand( histories.get(0).getListvideo(),orderSpeedTrue.getValue());
+                        if (videos.size() >0) {
+                            geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
+                            histories.get(0).setGeo_rand(geo_rand);
+                            histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setVideoid(videos.get(0).getVideoid());
+                            histories.get(0).setOrderid(videos.get(0).getOrderid());
+                            histories.get(0).setChannelid(videos.get(0).getChannelid());
+                        }else{
+                            videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTimeTrue.getValue());
+                            if (videos.size() > 0) {
+                                geo_rand=serviceRepository.getGeoByService(videos.get(0).getService());
+                                histories.get(0).setGeo_rand(geo_rand);
+                                histories.get(0).setTimeget(System.currentTimeMillis());
+                                histories.get(0).setVideoid(videos.get(0).getVideoid());
+                                histories.get(0).setOrderid(videos.get(0).getOrderid());
+                                histories.get(0).setChannelid(videos.get(0).getChannelid());
+                            } else {
+
+                                histories.get(0).setTimeget(System.currentTimeMillis());
+                                histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                                historyViewRepository.save(histories.get(0));
+
+                                vps_check.setTask_time(System.currentTimeMillis());
+                                vpsRepository.save(vps_check);
+
+                                resp.put("status", "fail");
+                                resp.put("fail", "video");
+                                resp.put("message", "Không còn video để view!");
+                                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                            }
+                        }
+                    }
+                }else{
+                    videos = videoViewRepository.getvideoViewByGeo(histories.get(0).getGeo().trim(),histories.get(0).getListvideo(),orderTrue.getValue());
+                    if (videos.size() > 0) {
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setVideoid(videos.get(0).getVideoid());
+                        histories.get(0).setOrderid(videos.get(0).getOrderid());
+                        histories.get(0).setChannelid(videos.get(0).getChannelid());
+                    } else {
+
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_done(histories.get(0).getTask_done()+1);
+                        historyViewRepository.save(histories.get(0));
+
+                        vps_check.setTask_time(System.currentTimeMillis());
+                        vpsRepository.save(vps_check);
+
+                        resp.put("status", "fail");
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     /*
                     videos = videoViewRepository.getvideoViewRand(histories.get(0).getListvideo(),orderSpeedTrue.getValue());
                     if (videos.size() > 0) {
@@ -2536,6 +2781,7 @@ public class HistoryViewController {
                     }
                      */
 
+                    }
                 }
             }
 

@@ -63,6 +63,7 @@ public class YoutubeTask {
             }else{
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","view",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
             }
+            System.out.println(orderThreadCheck.getValue());
             if (orderRunning!=null) {
                 Thread.sleep(ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
@@ -85,7 +86,9 @@ public class YoutubeTask {
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
                 data.put("service_id", service.getService_id());
-                data.put("geo", "like");
+                data.put("device_type", service.getDevice_type());
+                data.put("ext", service.getExt());
+                data.put("geo", "smm");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
                 data.put("channel_title", orderRunning.getChannel_title());
@@ -207,6 +210,8 @@ public class YoutubeTask {
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
                 data.put("service_id", service.getService_id());
+                data.put("device_type", service.getDevice_type());
+                data.put("ext", service.getExt());
                 data.put("geo", "sub");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
@@ -328,6 +333,8 @@ public class YoutubeTask {
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
                 data.put("service_id", service.getService_id());
+                data.put("device_type", service.getDevice_type());
+                data.put("ext", service.getExt());
                 data.put("geo", "like");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());
@@ -447,6 +454,8 @@ public class YoutubeTask {
                 //resp.put("proxy", proxy);
                 data.put("username", account_id.trim());
                 data.put("service_id", service.getService_id());
+                data.put("device_type", service.getDevice_type());
+                data.put("ext", service.getExt());
                 data.put("geo", "like");
                 data.put("live", "fail");
                 data.put("channel_id", orderRunning.getChannel_id());

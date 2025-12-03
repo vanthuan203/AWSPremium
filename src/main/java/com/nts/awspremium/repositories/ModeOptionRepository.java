@@ -10,6 +10,9 @@ public interface ModeOptionRepository extends JpaRepository<ModeOption,Long> {
     @Query(value = "SELECT * FROM mode_option where mode=?1 and platform=?2 and task=?3 limit 1",nativeQuery = true)
     public ModeOption get_Mode_Option(String mode,String platform,String task);
 
+    @Query(value = "SELECT * FROM mode_option where priority>0 and platform=?1 and mode=?2 and state=1",nativeQuery = true)
+    public List<ModeOption> get_Priority_Task_By_Platform_And_Mode(String platform,String mode);
+
     @Query(value = "SELECT * FROM mode_option ",nativeQuery = true)
     public List<ModeOption> get_List_Mode_Option();
 

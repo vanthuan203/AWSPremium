@@ -111,6 +111,8 @@ public class ServiceSMM implements Serializable {
     private Integer bonus_list_percent=0;
     @Column(columnDefinition = "varchar(255) default ''")
     private String app;
+    @Column(columnDefinition = "integer default 0")
+    private Integer ext=0;
 
     public ServiceSMM() {
     }
