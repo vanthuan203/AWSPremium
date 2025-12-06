@@ -1163,6 +1163,8 @@ public class VideoViewController {
                          */
                     }else if(view24h==-1){
                         videoViewRepository.updateCheckCancel(videoViewList.get(i).getVideoid());
+                    }else if(view24h==-2){
+                        view24h=videoViewList.get(i).getView24h();
                     }
                 }else{
                     view24h=videoViewList.get(i).getView24h();
