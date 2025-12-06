@@ -842,7 +842,7 @@ public class HistoryViewController {
                         resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
                     }
                     int videoDuration = Integer.parseInt(resp.get("video_duration").toString());
-                    resp.put("video_duration", (int)(videoDuration / 2));
+                    resp.put("video_duration", (int)(videoDuration / 2.5));
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
@@ -2472,7 +2472,7 @@ public class HistoryViewController {
                 histories.get(0).setFinger_id(0L);
             }
              */
-            histories.get(0).setMax_task(1+ran.nextInt(5));
+            histories.get(0).setMax_task(10+ran.nextInt(11));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
@@ -3084,7 +3084,7 @@ public class HistoryViewController {
                 resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
             }
             int videoDuration = Integer.parseInt(resp.get("video_duration").toString());
-            resp.put("video_duration", (int)(videoDuration / 2));
+            resp.put("video_duration", (int)(videoDuration / 2.5));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
         } catch (InterruptedException ex) {
