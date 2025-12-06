@@ -539,14 +539,14 @@ public class GoogleApi {
                     if (videoDetails == null || videoDetails.isJsonNull()) {
                         JsonObject playabilityStatus = json.getAsJsonObject("playabilityStatus");
                         if (playabilityStatus == null || playabilityStatus.isJsonNull()) {
-                            return 0;
+                            return -2;
                         }
                         if (playabilityStatus.has("reason")) {
                             if(playabilityStatus.get("reason").getAsString().contains("removed") || playabilityStatus.get("reason").getAsString().contains("private")){
                                 return -1;
                             }
                         } else  {
-                            return 0;
+                            return -2;
                         }
                     }
 
@@ -554,16 +554,16 @@ public class GoogleApi {
                     if (videoDetails.has("viewCount")) {
                         return videoDetails.get("viewCount").getAsInt();
                     } else  {
-                        return 0;
+                        return -2;
                     }
                 } else {
-                    System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
-                    return 0;
+                    //System.err.println("Request failed. HTTP " + responseCode + " Response: " + responseText);
+                    return -2;
                 }
 
             } catch (Exception e) {
-                System.err.println("Error: " + e.getMessage());
-                return 0;
+                //System.err.println("Error: " + e.getMessage());
+                return -2;
             } finally {
                 try {
                     if (reader != null) reader.close();
@@ -571,7 +571,7 @@ public class GoogleApi {
                 } catch (IOException ignored) {}
             }
         } catch (Exception e) {
-            return 0;
+            return -2;
         }
     }
 
