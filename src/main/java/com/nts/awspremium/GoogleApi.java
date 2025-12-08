@@ -542,7 +542,8 @@ public class GoogleApi {
                             return -2;
                         }
                         if (playabilityStatus.has("reason")) {
-                            if(playabilityStatus.get("reason").getAsString().contains("removed") || playabilityStatus.get("reason").getAsString().contains("private")){
+                            if(playabilityStatus.get("reason").getAsString().contains("removed") || playabilityStatus.get("reason").getAsString().contains("private")
+                                    || playabilityStatus.get("reason").getAsString().contains("no longer available")){
                                 return -1;
                             }
                         } else  {
