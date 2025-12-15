@@ -4177,6 +4177,13 @@ public class HistoryViewController {
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
+                if(historyView.getListvideo().trim().length()<10){
+                    Account account =accountRepository.findAccountByUsername(username.trim());
+                    if(account!=null&&account.getStart_time()==0){
+                        account.setStart_time(System.currentTimeMillis());
+                        accountRepository.save(account);
+                    }
+                }
                 char target = ',';
                 long count = historyView.getListvideo().trim().chars().filter(ch -> ch == target).count();
                 if(count>=6){
