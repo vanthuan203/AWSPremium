@@ -94,9 +94,9 @@ public class AccountViewController {
                 }
             } else {
                 Account account = new Account();
-                account.setUsername(newaccount.getUsername().toLowerCase());
-                account.setPassword(newaccount.getPassword());
-                account.setRecover(newaccount.getRecover().toLowerCase());
+                account.setUsername(newaccount.getUsername().toLowerCase().trim());
+                account.setPassword(newaccount.getPassword().trim());
+                account.setRecover(newaccount.getRecover().toLowerCase().trim());
                 account.setLive(1);
                 account.setVps("");
                 account.setProxy("");
@@ -114,12 +114,12 @@ public class AccountViewController {
                 }
                 account.setStatus(false);
                 account.setReg(false);
-                account.setGroup_mail(newaccount.getGroup_mail()==null?"0":newaccount.getGroup_mail());
+                account.setGroup_mail(newaccount.getGroup_mail()==null?"0":newaccount.getGroup_mail().trim());
                 accountRepository.save(account);
 
                 if(newaccount.getCookie()!=null&&newaccount.getCookie().trim().length()>10){
                     if(cookieRepository.checkCookieByUsername(newaccount.getUsername().toLowerCase())>0){
-                        cookieRepository.updateCookieByUsername(newaccount.getCookie().trim(),newaccount.getUsername().toLowerCase());
+                        cookieRepository.updateCookieByUsername(newaccount.getCookie().trim(),newaccount.getUsername().toLowerCase().trim());
                     }else{
                         cookieRepository.insertCookie(newaccount.getUsername().toLowerCase(),newaccount.getCookie().trim());
                     }
@@ -774,7 +774,7 @@ public class AccountViewController {
                                     history.setFinger_id(0L);
                                     history.setTask_time(0L);
                                     history.setMax_time(0);
-                                    history.setChannel_index(2);
+                                    history.setChannel_index(1);
                                     history.setState(true);
                                     if(ran.nextInt(100)<=75){
                                         history.setDevice(true);
@@ -800,7 +800,7 @@ public class AccountViewController {
                                     history.setFinger_id(0L);
                                     history.setTask_time(0L);
                                     history.setMax_time(0);
-                                    history.setChannel_index(2);
+                                    history.setChannel_index(1);
                                     history.setState(true);
                                     if(ran.nextInt(100)<=75){
                                         history.setDevice(true);
@@ -826,7 +826,7 @@ public class AccountViewController {
                                 histories.get(0).setFinger_id(0L);
                                 histories.get(0).setTask_time(0L);
                                 histories.get(0).setMax_time(0);
-                                histories.get(0).setChannel_index(2);
+                                histories.get(0).setChannel_index(1);
                                 histories.get(0).setState(true);
                                 histories.get(0).setTimeget(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
