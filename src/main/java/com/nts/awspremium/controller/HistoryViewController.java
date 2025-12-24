@@ -842,7 +842,7 @@ public class HistoryViewController {
                         resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
                     }
                     int videoDuration = Integer.parseInt(resp.get("video_duration").toString());
-                    resp.put("video_duration", (int)(videoDuration / 2.5));
+                    resp.put("video_duration", (int)(videoDuration / 3));
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
@@ -3084,7 +3084,7 @@ public class HistoryViewController {
                 resp.put("video_duration",duration*60+(5+ran.nextInt(5))*60);
             }
             int videoDuration = Integer.parseInt(resp.get("video_duration").toString());
-            resp.put("video_duration", (int)(videoDuration / 2.5));
+            resp.put("video_duration", (int)(videoDuration / 3));
             return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
         } catch (InterruptedException ex) {
