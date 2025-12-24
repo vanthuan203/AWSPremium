@@ -2472,7 +2472,7 @@ public class HistoryViewController {
                 histories.get(0).setFinger_id(0L);
             }
              */
-            histories.get(0).setMax_task(5+ran.nextInt(16));
+            histories.get(0).setMax_task(3+ran.nextInt(8));
             histories.get(0).setTask_index(0);
             histories.get(0).setGeo_rand("");
             historyViewRepository.save(histories.get(0));
@@ -4186,11 +4186,11 @@ public class HistoryViewController {
                 }
                 char target = ',';
                 long count = historyView.getListvideo().trim().chars().filter(ch -> ch == target).count();
-                if(count>=6){
+                if(count>=10){
                     //int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
                     OptionalInt position = IntStream.range(0, historyView.getListvideo().trim().length())
                             .filter(i -> historyView.getListvideo().trim().charAt(i) == target)
-                            .skip(count-6)//occurrence-1
+                            .skip(count-10)//occurrence-1
                             .findFirst();
                     historyView.setListvideo(historyView.getListvideo().trim().substring(position.getAsInt()+1)+videoid.trim()+",");
                 }else{
