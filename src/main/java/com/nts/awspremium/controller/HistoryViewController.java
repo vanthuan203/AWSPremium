@@ -4185,17 +4185,26 @@ public class HistoryViewController {
                     }
                 }
                 char target = ',';
-                long count = historyView.getListvideo().trim().chars().filter(ch -> ch == target).count();
-                if(count>=10){
-                    //int occurrence = (int)count-2;  // Lần xuất hiện thứ n cần tìm
+                long count = historyView.getListvideo().trim()
+                        .chars()
+                        .filter(ch -> ch == target)
+                        .count();
+
+                if (count >= 10) {
                     OptionalInt position = IntStream.range(0, historyView.getListvideo().trim().length())
                             .filter(i -> historyView.getListvideo().trim().charAt(i) == target)
-                            .skip(count-10)//occurrence-1
-                            .findFirst();
-                    historyView.setListvideo(historyView.getListvideo().trim().substring(position.getAsInt()+1)+videoid.trim()+",");
-                }else{
-                    historyView.setListvideo(historyView.getListvideo()+videoid.trim()+",");
+                            .findFirst(); // ✅ LUÔN LẤY DẤU PHẨY ĐẦU TIÊN
+
+                    historyView.setListvideo(
+                            historyView.getListvideo().trim().substring(position.getAsInt() + 1)
+                                    + videoid.trim() + ","
+                    );
+                } else {
+                    historyView.setListvideo(
+                            historyView.getListvideo() + videoid.trim() + ","
+                    );
                 }
+
                 historyViewRepository.save(historyView);
 
                 /*
