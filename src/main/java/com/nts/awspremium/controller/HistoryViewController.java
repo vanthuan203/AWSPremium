@@ -4185,26 +4185,34 @@ public class HistoryViewController {
                     }
                 }
                 char target = ',';
-                long count = historyView.getListvideo().trim()
-                        .chars()
-                        .filter(ch -> ch == target)
-                        .count();
+                int MAX = 6;
 
-                if (count >= 10) {
-                    OptionalInt position = IntStream.range(0, historyView.getListvideo().trim().length())
-                            .filter(i -> historyView.getListvideo().trim().charAt(i) == target)
-                            .findFirst(); // ✅ LUÔN LẤY DẤU PHẨY ĐẦU TIÊN
+                String list = historyView.getListvideo().trim();
+                String newVideo = videoid.trim() + ",";
 
-                    historyView.setListvideo(
-                            historyView.getListvideo().trim().substring(position.getAsInt() + 1)
-                                    + videoid.trim() + ","
-                    );
-                } else {
-                    historyView.setListvideo(
-                            historyView.getListvideo() + videoid.trim() + ","
-                    );
+                long count = list.chars().filter(ch -> ch == target).count();
+
+                if (count >= MAX) {
+                    int needRemove = (int) (count - (MAX - 1)); // ⭐ mấu chốt
+
+                    int found = 0;
+                    int index = -1;
+
+                    for (int i = 0; i < list.length(); i++) {
+                        if (list.charAt(i) == target) {
+                            found++;
+                            if (found == needRemove) {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (index != -1) {
+                        list = list.substring(index + 1);
+                    }
                 }
-
+                historyView.setListvideo(list + newVideo);
                 historyViewRepository.save(historyView);
 
                 /*
