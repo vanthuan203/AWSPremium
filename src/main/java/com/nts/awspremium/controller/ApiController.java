@@ -249,6 +249,7 @@ public class ApiController {
                     resp.put("error", "Cant filter videoid from link");
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                 }
+                /*
                 Long last_order_done=videoViewHistoryRepository.checkOrderDoneThan48h(videolist.trim());
                 if(last_order_done!=null && service.getLive()==0){
                     if(System.currentTimeMillis()-last_order_done<0){
@@ -259,6 +260,7 @@ public class ApiController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
                 }
+                 */
                 //VIDEOOOOOOOOOOOOOOO
                 OkHttpClient client1 = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build();
                 Random ran = new Random();
