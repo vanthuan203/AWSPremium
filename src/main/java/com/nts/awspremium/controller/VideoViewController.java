@@ -1126,7 +1126,10 @@ public class VideoViewController {
                     String[] proxysetting=proxySettingRepository.getUserPassByHost(proxy[0]).split(",");
                     view24h=GoogleApi.getCountViewCurrent(videoViewList.get(i).getVideoid(), new String[]{proxy[0], proxy[1], proxysetting[0],proxysetting[1]});
                     if(view24h>=0){
-                        if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.3*videoViewList.get(i).getVieworder()){
+                        if((view24h-videoViewList.get(i).getViewstart()>=1.135*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.15*videoViewList.get(i).getVieworder()){
+                            delete("1",videoViewList.get(i).getVideoid(),0);
+                            continue;
+                        }else if((view24h-videoViewList.get(i).getViewstart()>=1.125*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.3*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }else if((view24h-videoViewList.get(i).getViewstart()>=1.115*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=1.5*videoViewList.get(i).getVieworder()){
@@ -1144,9 +1147,7 @@ public class VideoViewController {
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=1.025*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.5*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
-                        }
-                        /*
-                        else  if((view24h-videoViewList.get(i).getViewstart()>=0.895*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.75*videoViewList.get(i).getVieworder()){
+                        }else  if((view24h-videoViewList.get(i).getViewstart()>=0.895*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=2.75*videoViewList.get(i).getVieworder()){
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }else  if((view24h-videoViewList.get(i).getViewstart()>=0.835*videoViewList.get(i).getVieworder()) && videoViewList.get(i).getViewtotal()>=3*videoViewList.get(i).getVieworder()){
@@ -1159,8 +1160,6 @@ public class VideoViewController {
                             delete("1",videoViewList.get(i).getVideoid(),0);
                             continue;
                         }
-
-                         */
                     }else if(view24h==-1){
                         videoViewRepository.updateCheckCancel(videoViewList.get(i).getVideoid());
                     }else if(view24h==-2){
