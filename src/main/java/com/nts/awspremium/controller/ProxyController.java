@@ -300,6 +300,12 @@ public class ProxyController {
                 }else{
                     proxy= new String[]{};
                 }
+            }else if(geo_rand.contains("all")){
+                if(proxyVultrTrue.getValue().size()!=0){
+                    proxy=proxyVultrTrue.getValue().get(rand.nextInt(proxyVultrTrue.getValue().size())).split(":");
+                }else{
+                    proxy= new String[]{};
+                }
             }
             if(proxy.length==0){
                 resp.put("proxy","");
