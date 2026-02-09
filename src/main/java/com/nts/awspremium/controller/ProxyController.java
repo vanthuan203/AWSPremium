@@ -58,6 +58,8 @@ public class ProxyController {
     @Autowired
     private ProxyTestTrue proxyTestTrue;
     @Autowired
+    private ProxyVultrTrue proxyVultrTrue;
+    @Autowired
     private ProxyJPTrue proxyJPTrue;
 
     @Autowired
@@ -189,6 +191,12 @@ public class ProxyController {
             }else if(geo_rand.contains("test")){
                 if(proxyVNTrue.getValue().size()!=0){
                     proxy=proxyVNTrue.getValue().get(rand.nextInt(proxyVNTrue.getValue().size())).split(":");
+                }else{
+                    proxy= new String[]{};
+                }
+            }else if(geo_rand.contains("all")){
+                if(proxyVultrTrue.getValue().size()!=0){
+                    proxy=proxyVultrTrue.getValue().get(rand.nextInt(proxyVultrTrue.getValue().size())).split(":");
                 }else{
                     proxy= new String[]{};
                 }

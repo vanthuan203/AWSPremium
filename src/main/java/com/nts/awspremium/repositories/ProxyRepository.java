@@ -75,6 +75,8 @@ public interface ProxyRepository extends JpaRepository<Proxy, Integer> {
     @Query(value = "SELECT proxy FROM AccPremium.proxy where geo='test' and ipv4 in(select ipv4 from ipv4 where state=1);",nativeQuery = true)
     public List<String> getProxyVULTRTrue();
 
+    @Query(value = "SELECT proxy FROM AccPremium.proxy where ipv4 in(select ipv4 from ipv4 where state=1);",nativeQuery = true)
+    public List<String> getProxyALLRTrue();
 
 
     @Query(value = "SELECT count(*) FROM proxy where proxy=?1",nativeQuery = true)
