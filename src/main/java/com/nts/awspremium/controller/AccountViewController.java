@@ -1737,13 +1737,21 @@ public class AccountViewController {
                 }
             }
             if(live==1 && cmt==0){
-                accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
+                if(!account.getGeo().contains("test")){
+                    accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
+                }else{
+                    accountRepository.resetAccountGeoByUsername(1,account.getGeo().trim(),idUsername);
+                }
             }else if(live==-1 && cmt==0){
                 accountRepository.resetAccountGeoStartTimeByUsername(1,"duphong",idUsername);
             }else if(cmt==0){
                 accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongdone",idUsername);
             }if(live==1 && cmt==1){
-                accountRepository.resetAccountGeoByUsername(1,"duphongcmt",idUsername);
+                if(!account.getGeo().contains("test")){
+                    accountRepository.resetAccountGeoByUsername(1,"duphongcmt",idUsername);
+                }else{
+                    accountRepository.resetAccountGeoByUsername(1,account.getGeo().trim(),idUsername);
+                }
             }else if(live==-1 && cmt==1){
                 accountRepository.resetAccountGeoStartTimeByUsername(1,"duphongcmt",idUsername);
             }else if(cmt==1){
