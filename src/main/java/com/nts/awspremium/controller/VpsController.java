@@ -175,6 +175,7 @@ public class VpsController {
                 resp.put("get_account",vpscheck.get(0).getGet_account());
                 resp.put("proxy",vpscheck.get(0).getProxy());
                 resp.put("ext",vpscheck.get(0).getExt());
+                resp.put("name_tool","29");
                 if(vpscheck.get(0).getVpsreset()>0){
                     vpscheck.get(0).setVpsreset(0);
                 }

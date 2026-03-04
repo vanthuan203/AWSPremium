@@ -124,7 +124,7 @@ public interface VpsRepository extends JpaRepository<Vps,Integer> {
     public Integer changer_account_us(String geo);
     @Modifying
     @Transactional
-    @Query(value = "UPDATE vps set vpsreset=1,timeresettool=?1 where vps=?2",nativeQuery = true)
+    @Query(value = "UPDATE vps set vpsreset=2,timeresettool=?1 where vps=?2",nativeQuery = true)
     public void updateRestartVpsByName(Long timeresettool,String vps);
 
     @Modifying

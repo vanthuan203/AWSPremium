@@ -49,6 +49,8 @@ public class UpdateController {
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDisposition(ContentDisposition.attachment().filename(latestFile.getName()).build());
 
+
+
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(resource);

@@ -708,7 +708,7 @@ public class HistoryViewController {
                     resp.put("username", histories.get(0).getUsername());
                     resp.put("service_id", service.getService());
                     resp.put("type_view", service.getType_view());
-                    resp.put("geo", accountRepository.getGeoByUsername(username.trim()));
+                    resp.put("geo",geo_rand.trim());
 
                     resp.put("ext",service.getExt());
 
@@ -2936,7 +2936,7 @@ public class HistoryViewController {
             resp.put("username", histories.get(0).getUsername());
             resp.put("service_id", service.getService());
             resp.put("type_view", service.getType_view());
-            resp.put("geo", histories.get(0).getGeo());
+            resp.put("geo", geo_rand.trim());
             resp.put("channel_index", histories.get(0).getChannel_index());
             /*
             if(histories.get(0).getDevice()){
@@ -2956,6 +2956,9 @@ public class HistoryViewController {
                 resp.put("device_type",service.getDevice_type().trim());
             }
             resp.put("ext",service.getExt());
+
+            String[] keyFinger={"4WA7ZCnzK3h52CRwvAcu7I4N7xtW9PYpJrGgTX8TyuHpspbCBTxb37cpKQ0LtCbu","aOgiu0akSeqIQAsAfUjha1mGHjeEyiPEmqQkJYPmkQC3S7iQnXxyrVqZTdmXGNFB","lqWvrmMzWVpEHMwErhKgW0H2Tt22UFCymJ4Xa2FTqceJiveIvLtIJg3tiZAeZP2r"};
+            resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
 
 
             if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
