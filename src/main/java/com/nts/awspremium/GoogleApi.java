@@ -504,8 +504,8 @@ public class GoogleApi {
                 String jsonBody = "{\n" +
                         "  \"context\": {\n" +
                         "    \"client\": {\n" +
-                        "      \"clientName\": \"ANDROID\",\n" +
-                        "      \"clientVersion\": \"19.20.33\"\n" +
+                        "      \"clientName\": \"WEB\",\n" +
+                        "      \"clientVersion\": \"2.20250201.00.00\"\n" +
                         "    }\n" +
                         "  },\n" +
                         "  \"videoId\": \"" + videoid + "\"\n" +
