@@ -85,7 +85,7 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     @Query(value = "SELECT id  FROM account where (vps is null or vps='' or vps=' ') and running=0 and live=1 and geo=?1 order by rand()  limit 1",nativeQuery = true)
     public Long getAccountView(String geo);
 
-    @Query(value = "SELECT id  FROM account where  running=0 and live=1 and geo=?1 and (google_suite not in (select id from google_suite where state=0) or status=1) order by group_mail asc, rand()  limit 1",nativeQuery = true)
+    @Query(value = "SELECT id FROM account a WHERE running=0 AND live=1 AND geo=?1 AND get_time <= (UNIX_TIMESTAMP()-6*60*60)*1000 AND (NOT EXISTS (SELECT 1 FROM google_suite g WHERE g.id=a.google_suite AND g.state=0) OR status=1) ORDER BY group_mail ASC, RAND() LIMIT 1;",nativeQuery = true)
     public Long getAccountViewByGoogleSuite(String geo);
 
     @Query(value = "SELECT id  FROM account where  running=0 and live=1 and geo=?1 and (name_geo='none' or name_geo=?2) and google_suite not in (select id from google_suite where state=0) order by group_mail asc, rand()  limit 1",nativeQuery = true)
