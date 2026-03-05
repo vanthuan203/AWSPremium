@@ -2797,7 +2797,9 @@ public class HistoryViewController {
                 }
             }
 
-            Long finger_id=0L;
+            Long finger_id=-1L;
+            resp.put("finger_id", finger_id);
+            /*
             try{
                 String stringrand="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefhijkprstuvwx0123456789";
                 String code="";
@@ -2835,6 +2837,8 @@ public class HistoryViewController {
                 resp.put("message", "Không còn video để view!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
+
+             */
 
 
 
@@ -2957,7 +2961,7 @@ public class HistoryViewController {
             }
             resp.put("ext",service.getExt());
 
-            String[] keyFinger={"4WA7ZCnzK3h52CRwvAcu7I4N7xtW9PYpJrGgTX8TyuHpspbCBTxb37cpKQ0LtCbu","aOgiu0akSeqIQAsAfUjha1mGHjeEyiPEmqQkJYPmkQC3S7iQnXxyrVqZTdmXGNFB","lqWvrmMzWVpEHMwErhKgW0H2Tt22UFCymJ4Xa2FTqceJiveIvLtIJg3tiZAeZP2r"};
+            String[] keyFinger={"4WA7ZCnzK3h52CRwvAcu7I4N7xtW9PYpJrGgTX8TyuHpspbCBTxb37cpKQ0LtCbu","aOgiu0akSeqIQAsAfUjha1mGHjeEyiPEmqQkJYPmkQC3S7iQnXxyrVqZTdmXGNFB","lqWvrmMzWVpEHMwErhKgW0H2Tt22UFCymJ4Xa2FTqceJiveIvLtIJg3tiZAeZP2r","vGixgtrWfKWEM8FBhr7Qpf92fYIzVTLFNXmQOhgTsj4ftD2pPil8zdX0iYFIQS8E"};
             resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
 
 
