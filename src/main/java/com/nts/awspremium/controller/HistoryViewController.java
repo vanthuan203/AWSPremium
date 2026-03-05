@@ -595,34 +595,32 @@ public class HistoryViewController {
                         }
                     }
                     if (videos.size() > 0) {
-                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_time(System.currentTimeMillis());
                         histories.get(0).setVideoid(videos.get(0).getVideoid());
                         histories.get(0).setOrderid(videos.get(0).getOrderid());
                         histories.get(0).setChannelid(videos.get(0).getChannelid());
                     } else if (buffh == 0) {
                         videos = videoViewRepository.getvideoBuffHByGeo(geo_rand, histories.get(0).getListvideo(), orderTrue.getValue());
                         if (videos.size() > 0) {
-                            histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_time(System.currentTimeMillis());
                             histories.get(0).setVideoid(videos.get(0).getVideoid());
                             histories.get(0).setOrderid(videos.get(0).getOrderid());
                             histories.get(0).setChannelid(videos.get(0).getChannelid());
                         } else  if(!vps_check.getVpsoption().contains("live")){
                             videos = videoViewRepository.getvideoViewByGeo(geo_rand, histories.get(0).getListvideo(), orderSpeedTimeTrue.getValue());
                             if (videos.size() > 0) {
-                                histories.get(0).setTimeget(System.currentTimeMillis());
+                                histories.get(0).setTask_time(System.currentTimeMillis());
                                 histories.get(0).setVideoid(videos.get(0).getVideoid());
                                 histories.get(0).setOrderid(videos.get(0).getOrderid());
                                 histories.get(0).setChannelid(videos.get(0).getChannelid());
                             }else{
                                 videos = videoViewRepository.getvideoViewByGeo(geo_rand, histories.get(0).getListvideo(), orderSpeedTrue.getValue());
                                 if (videos.size() > 0) {
-                                    histories.get(0).setTimeget(System.currentTimeMillis());
+                                    histories.get(0).setTask_time(System.currentTimeMillis());
                                     histories.get(0).setVideoid(videos.get(0).getVideoid());
                                     histories.get(0).setOrderid(videos.get(0).getOrderid());
                                     histories.get(0).setChannelid(videos.get(0).getChannelid());
                                 }else{
-                                    histories.get(0).setTimeget(System.currentTimeMillis());
-                                    histories.get(0).setTask_time(System.currentTimeMillis());
                                     historyViewRepository.save(histories.get(0));
                                     resp.put("status", "fail");
                                     resp.put("username", histories.get(0).getUsername());
@@ -632,8 +630,6 @@ public class HistoryViewController {
                                 }
                             }
                         }else{
-                            histories.get(0).setTimeget(System.currentTimeMillis());
-                            histories.get(0).setTask_time(System.currentTimeMillis());
                             historyViewRepository.save(histories.get(0));
                             resp.put("status", "fail");
                             resp.put("username", histories.get(0).getUsername());
@@ -644,21 +640,19 @@ public class HistoryViewController {
                     } else if(!vps_check.getVpsoption().contains("live")) {
                         videos = videoViewRepository.getvideoViewByGeo(geo_rand, histories.get(0).getListvideo(), orderSpeedTimeTrue.getValue());
                         if (videos.size() > 0) {
-                            histories.get(0).setTimeget(System.currentTimeMillis());
+                            histories.get(0).setTask_time(System.currentTimeMillis());
                             histories.get(0).setVideoid(videos.get(0).getVideoid());
                             histories.get(0).setOrderid(videos.get(0).getOrderid());
                             histories.get(0).setChannelid(videos.get(0).getChannelid());
                         }else{
                             videos = videoViewRepository.getvideoViewByGeo(geo_rand, histories.get(0).getListvideo(), orderSpeedTrue.getValue());
                             if (videos.size() > 0) {
-                                histories.get(0).setTimeget(System.currentTimeMillis());
+                                histories.get(0).setTask_time(System.currentTimeMillis());
                                 histories.get(0).setVideoid(videos.get(0).getVideoid());
                                 histories.get(0).setOrderid(videos.get(0).getOrderid());
                                 histories.get(0).setChannelid(videos.get(0).getChannelid());
                             }else{
                                 //return get_ViewChannel(histories.get(0));
-                                histories.get(0).setTimeget(System.currentTimeMillis());
-                                histories.get(0).setTask_time(System.currentTimeMillis());
                                 historyViewRepository.save(histories.get(0));
                                 resp.put("status", "fail");
                                 resp.put("username", histories.get(0).getUsername());
@@ -668,8 +662,6 @@ public class HistoryViewController {
                             }
                         }
                     }else{
-                        histories.get(0).setTimeget(System.currentTimeMillis());
-                        histories.get(0).setTask_time(System.currentTimeMillis());
                         historyViewRepository.save(histories.get(0));
                         resp.put("status", "fail");
                         resp.put("username", histories.get(0).getUsername());
@@ -680,8 +672,6 @@ public class HistoryViewController {
                     if(settingRepository.getCheckThreads()==1){
                         Thread.sleep(150+ran.nextInt(200));
                         if(!orderSpeedTimeTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderTrue.getValue().contains(videos.get(0).getOrderid().toString()) && !orderSpeedTrue.getValue().contains(videos.get(0).getOrderid().toString())){
-                            histories.get(0).setTimeget(System.currentTimeMillis());
-                            histories.get(0).setTask_time(System.currentTimeMillis());
                             histories.get(0).setVideoid("");
                             histories.get(0).setOrderid(0L);
                             histories.get(0).setChannelid("");
@@ -696,7 +686,7 @@ public class HistoryViewController {
                     }
                     Service service = serviceRepository.getInfoService(videos.get(0).getService());
 
-                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_time(System.currentTimeMillis());
                     histories.get(0).setRunning(1);
                     histories.get(0).setMax_time(service.getMaxtime());
                     historyViewRepository.save(histories.get(0));
