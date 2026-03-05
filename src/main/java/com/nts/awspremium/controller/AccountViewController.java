@@ -1430,6 +1430,12 @@ public class AccountViewController {
         try {
             GoogleSuite googleSuite =googleSuiteRepository.get_Google_Suite(google_suite.trim());
             if(googleSuite==null){
+                GoogleSuite googleSuite1 =new GoogleSuite();
+                googleSuite1.setId(google_suite.trim());
+                googleSuite1.setUpdate_time(0L);
+                googleSuite1.setState(true);
+                googleSuite1.setStatus(true);
+                googleSuiteRepository.save(googleSuite1);
                 resp.put("status", "fail");
                 resp.put("message", "google_suite không tồn tại!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
