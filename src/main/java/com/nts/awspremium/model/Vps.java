@@ -33,6 +33,8 @@ public class Vps {
 
     private String device="mobile";
 
+    private String name_tool="29";
+
     public Vps() {
     }
 
@@ -61,6 +63,14 @@ public class Vps {
         this.proxy = proxy;
         this.live = live;
         this.device = device;
+    }
+
+    public String getName_tool() {
+        return name_tool;
+    }
+
+    public void setName_tool(String name_tool) {
+        this.name_tool = name_tool;
     }
 
     public Integer getDayreset() {
