@@ -1758,7 +1758,7 @@ public class AccountViewController {
                     }
                 }
             }
-            if(live==1 && cmt==0){
+            if((live==1 || live==0) && cmt==0){
                 if(!account.getGeo().contains("test")){
                     if(account.getUsername().contains("@gmail.com")){
                         accountRepository.resetAccountGeoByUsername(1,"gmail",idUsername);
@@ -1776,7 +1776,7 @@ public class AccountViewController {
                 }
             }else if(cmt==0){
                 accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongdone",idUsername);
-            }if(live==1 && cmt==1){
+            }if((live==1 || live==0) && cmt==1){
                 if(!account.getGeo().contains("test")){
                     if(account.getUsername().contains("@gmail.com")){
                         accountRepository.resetAccountGeoByUsername(1,"gmailcmt",idUsername);
