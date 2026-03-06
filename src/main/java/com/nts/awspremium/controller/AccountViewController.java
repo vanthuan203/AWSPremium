@@ -671,7 +671,11 @@ public class AccountViewController {
                     if(geo.contains("test")){
                         id = accountRepository.getAccountView(geo.trim());
                     }else{
-                        id = accountRepository.getAccountViewByGoogleSuite("duphong");
+                        if(vpsRepository.checkNameTool(vps.trim()).contains("29")){
+                            id = accountRepository.getAccountViewByGoogleSuite("gmail");
+                        }else{
+                            id = accountRepository.getAccountViewByGoogleSuite("duphong");
+                        }
                     }
                 }else{
                     /*
@@ -689,12 +693,24 @@ public class AccountViewController {
                         id = accountRepository.getAccountView("cmt-"+geo.trim());
                     }else if(geo.equals("vn")){
                         if(check_geo==1){
-                            id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt","vn");
+                            if(vpsRepository.checkNameTool(vps.trim()).contains("29")){
+                                id = accountRepository.getAccountCmtByGoogleSuite("gmailcmt","vn");
+                            }else{
+                                id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt","vn");
+                            }
                         }else if(check_geo==2){
-                            id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt","us");
+                            if(vpsRepository.checkNameTool(vps.trim()).contains("29")){
+                                id = accountRepository.getAccountCmtByGoogleSuite("gmailcmt","us");
+                            }else{
+                                id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt","us");
+                            }
                         }
                     }else{
-                        id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt",geo.trim());
+                        if(vpsRepository.checkNameTool(vps.trim()).contains("29")){
+                            id = accountRepository.getAccountCmtByGoogleSuite("gmailcmt",geo.trim());
+                        }else{
+                            id = accountRepository.getAccountCmtByGoogleSuite("duphongcmt",geo.trim());
+                        }
                     }
                 }
                 if (id == null) {
@@ -1744,22 +1760,38 @@ public class AccountViewController {
             }
             if(live==1 && cmt==0){
                 if(!account.getGeo().contains("test")){
-                    accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
+                    if(account.getUsername().contains("@gmail.com")){
+                        accountRepository.resetAccountGeoByUsername(1,"gmail",idUsername);
+                    }else{
+                        accountRepository.resetAccountGeoByUsername(1,"duphong",idUsername);
+                    }
                 }else{
                     accountRepository.resetAccountGeoByUsername(1,account.getGeo().trim(),idUsername);
                 }
             }else if(live==-1 && cmt==0){
-                accountRepository.resetAccountGeoStartTimeByUsername(1,"duphong",idUsername);
+                if(account.getUsername().contains("@gmail.com")){
+                    accountRepository.resetAccountGeoStartTimeByUsername(1,"gmail",idUsername);
+                }else{
+                    accountRepository.resetAccountGeoStartTimeByUsername(1,"duphong",idUsername);
+                }
             }else if(cmt==0){
                 accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongdone",idUsername);
             }if(live==1 && cmt==1){
                 if(!account.getGeo().contains("test")){
-                    accountRepository.resetAccountGeoByUsername(1,"duphongcmt",idUsername);
+                    if(account.getUsername().contains("@gmail.com")){
+                        accountRepository.resetAccountGeoByUsername(1,"gmailcmt",idUsername);
+                    }else{
+                        accountRepository.resetAccountGeoByUsername(1,"duphongcmt",idUsername);
+                    }
                 }else{
                     accountRepository.resetAccountGeoByUsername(1,account.getGeo().trim(),idUsername);
                 }
             }else if(live==-1 && cmt==1){
-                accountRepository.resetAccountGeoStartTimeByUsername(1,"duphongcmt",idUsername);
+                if(account.getUsername().contains("@gmail.com")){
+                    accountRepository.resetAccountGeoStartTimeByUsername(1,"gmailcmt",idUsername);
+                }else{
+                    accountRepository.resetAccountGeoStartTimeByUsername(1,"duphongcmt",idUsername);
+                }
             }else if(cmt==1){
                 accountRepository.resetAccountGeoStartTimeByUsername(live,"duphongcmtdone",idUsername);
             }

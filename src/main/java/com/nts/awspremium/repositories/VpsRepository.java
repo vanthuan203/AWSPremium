@@ -20,6 +20,9 @@ public interface VpsRepository extends JpaRepository<Vps,Integer> {
     @Query(value = "Select cmt from vps where vps=?1 limit 1",nativeQuery = true)
     public Integer checkVpsCmtTrue(String vps);
 
+    @Query(value = "Select name_tool from vps where vps=?1 limit 1",nativeQuery = true)
+    public String checkNameTool(String vps);
+
     @Query(value = "Select get_account from vps where vps=?1 limit 1",nativeQuery = true)
     public Integer checkVpsGetAccountTrue(String vps);
 
