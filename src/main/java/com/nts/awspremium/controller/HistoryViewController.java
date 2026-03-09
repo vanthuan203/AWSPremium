@@ -4462,7 +4462,7 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
                 Service service = serviceRepository.getInfoService(service_id);
-                if(service.getService()==0) {
+                if(historyView.getUsername().contains("@gmail.com")&&service.getService()==0) {
                     if (success == null) {
                         success = false;
                     }
