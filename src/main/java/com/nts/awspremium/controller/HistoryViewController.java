@@ -722,7 +722,7 @@ public class HistoryViewController {
                                     resp.put("sub", "fail");
                                 }else{
                                     String list_History=youtubeChannelHistoryRepository.get_List_ChannelId_By_AccountId(histories.get(0).getUsername().trim());
-                                    if(list_History.contains(videos.get(0).getChannelid().trim())){
+                                    if(list_History!=null?list_History.contains(videos.get(0).getChannelid().trim()):false){
                                         resp.put("like", "fail");
                                         resp.put("sub", "fail");
                                     }else{
@@ -3187,7 +3187,7 @@ public class HistoryViewController {
                             resp.put("sub", "fail");
                         }else{
                             String list_History=youtubeChannelHistoryRepository.get_List_ChannelId_By_AccountId(histories.get(0).getUsername().trim());
-                            if(list_History.contains(videos.get(0).getChannelid().trim())){
+                            if(list_History!=null?list_History.contains(videos.get(0).getChannelid().trim()):false){
                                 resp.put("like", "fail");
                                 resp.put("sub", "fail");
                             }else{
