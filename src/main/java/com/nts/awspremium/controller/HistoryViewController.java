@@ -702,7 +702,7 @@ public class HistoryViewController {
 
                     resp.put("ext",service.getExt());
 
-                    if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
+                    if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0 || !histories.get(0).getUsername().contains("@gmail.com")){
                         resp.put("like", "fail");
                         resp.put("sub", "fail");
                     }else{
@@ -2955,7 +2955,7 @@ public class HistoryViewController {
             resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
 
 
-            if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){
+            if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0 || !histories.get(0).getUsername().contains("@gmail.com")){
                 resp.put("like", "fail");
                 resp.put("sub", "fail");
             }else{
