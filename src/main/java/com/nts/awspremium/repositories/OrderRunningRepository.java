@@ -93,6 +93,10 @@ public interface OrderRunningRepository extends JpaRepository<OrderRunning,Long>
     @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)) order by o.start_time asc")
     public List<OrderRunning> get_Order_Running_Done(Integer check_done);
 
+
+    @Query(value = "select * from order_running where channel_id not in (select channelid from videoview where service=0 group by channelid) order by update_time asc",nativeQuery = true)
+    public List<OrderRunning> get_Order_Not_Running_Video();
+
     @Query(value = "select o from OrderRunning o JOIN FETCH o.service  where o.service.check_done=?1 and o.total>=(o.quantity+o.quantity*(o.service.bonus/100)+(case when o.total_check > o.quantity then o.quantity else o.total_check end)*(o.service.bonus_check/100)) order by o.start_time asc")
     public List<OrderRunning> get_Order_Running_Done_By_Total_Check(Integer check_done);
 

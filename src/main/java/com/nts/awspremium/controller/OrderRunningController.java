@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.nts.awspremium.GoogleApi;
 import com.nts.awspremium.TikTokApi;
 import com.nts.awspremium.model.*;
+import com.nts.awspremium.platform.youtube.YoutubeOrder;
 import com.nts.awspremium.repositories.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,11 +37,15 @@ public class OrderRunningController {
     @Autowired
     private ServiceSMMRepository serviceRepository;
     @Autowired
+    private VideoViewController videoViewController;
+    @Autowired
     private BalanceRepository balanceRepository;
     @Autowired
     private LogErrorRepository logErrorRepository;
     @Autowired
     private DataCommentRepository dataCommentRepository;
+    @Autowired
+    private DataSubscriberRepository dataSubscriberRepository;
 
     String get_key(){
         try{
@@ -738,6 +743,62 @@ public class OrderRunningController {
             return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    @GetMapping(value = "update_Video_Running_Subscriber", produces = "application/hal+json;charset=utf8")
+    public ResponseEntity<Map<String, Object>> update_Video_Running_Subscriber() throws InterruptedException {
+        Map<String, Object> resp = new LinkedHashMap<>();
+        Map<String, Object> data = new LinkedHashMap<>();
+        try{
+            List<OrderRunning> orderRunningList=orderRunningRepository.get_Order_Not_Running_Video();
+            for (int i=0;i<orderRunningList.size();i++){
+                try {
+                    DataSubscriber dataSubscriber_check=dataSubscriberRepository.get_Task_Time_Desc(orderRunningList.get(i).getOrder_id());
+                    if(dataSubscriber_check!=null &&(System.currentTimeMillis()-dataSubscriber_check.getTask_time())/1000/60/60<3){
+                        continue;
+                    }
+                    DataSubscriber dataSubscriber =dataSubscriberRepository.get_Data_Subscriber_By_State(orderRunningList.get(i).getOrder_id());
+                    if(dataSubscriber==null){
+                        continue;
+                    }
+                    VideoView videoView =new VideoView();
+                    videoView.setVideoid("https://www.youtube.com/watch?v="+dataSubscriber.getVideo_id().trim());
+                    videoView.setVieworder(3000);
+                    videoView.setService(0);
+                    videoView.setThreadset(21);
+                    videoView.setMaxthreads(21);
+                    videoView.setNote("SUB");
+                    videoViewController.orderview(videoView,"1");
+
+                } catch (Exception e) {
+                }
+            }
+            resp.put("status",true);
+            data.put("message", "update thành công");
+            resp.put("data",data);
+            return new ResponseEntity<>(resp, HttpStatus.OK);
+        }catch (Exception e){
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            LogError logError =new LogError();
+            logError.setMethod_name(stackTraceElement.getMethodName());
+            logError.setLine_number(stackTraceElement.getLineNumber());
+            logError.setClass_name(stackTraceElement.getClassName());
+            logError.setFile_name(stackTraceElement.getFileName());
+            logError.setMessage(e.getMessage());
+            logError.setAdd_time(System.currentTimeMillis());
+            Date date_time = new Date(System.currentTimeMillis());
+            // Tạo SimpleDateFormat với múi giờ GMT+7
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date_time);
+            logError.setDate_time(formattedDate);
+            logErrorRepository.save(logError);
+
+            resp.put("status", false);
+            return new ResponseEntity<>(resp, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @DeleteMapping(value = "delete_Order_Running", produces = "application/hal+json;charset=utf8")
     public ResponseEntity<Map<String, Object>> delete_Order_Running(@RequestHeader(defaultValue = "") String Authorization, @RequestParam(defaultValue = "") String order_id, @RequestParam(defaultValue = "1") Integer cancel,@RequestParam(defaultValue = "") String note) throws InterruptedException {

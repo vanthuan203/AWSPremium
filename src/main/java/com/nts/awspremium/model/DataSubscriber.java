@@ -25,6 +25,8 @@ public class DataSubscriber {
     private Integer state;
     @Column(columnDefinition = "bigint default 0")
     private Long add_time;
+    @Column(columnDefinition = "bigint default 0")
+    private Long task_time=0L;
     public DataSubscriber() {
     }
 }

@@ -42,6 +42,8 @@ public class VideoViewController {
     @Autowired
     private VideoViewRepository videoViewRepository;
     @Autowired
+    private DataSubscriberRepository dataSubscriberRepository;
+    @Autowired
     private ChannelViewRepository channelViewRepository;
     @Autowired
     private VideoViewRandRepository videoViewRandRepository;
@@ -72,7 +74,7 @@ public class VideoViewController {
     private ChannelYoutubeBlackListRepository channelYoutubeBlackListRepository;
 
     @PostMapping(value = "/orderview", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> orderview(@RequestBody VideoView videoView, @RequestHeader(defaultValue = "") String Authorization) throws IOException, ParseException {
+    public ResponseEntity<String> orderview(@RequestBody VideoView videoView, @RequestHeader(defaultValue = "") String Authorization) throws IOException, ParseException {
         JSONObject resp = new JSONObject();
         //System.out.println(videoView.getService());
         try {
@@ -3380,7 +3382,6 @@ public class VideoViewController {
             List<VideoView> videoBuffh = videoViewRepository.getOrderFullViewTEST();
             for (int i = 0; i < videoBuffh.size(); i++) {
                 Long enddate = System.currentTimeMillis();
-
                 VideoViewHistory videoBuffhnew = new VideoViewHistory();
                 videoBuffhnew.setOrderid(videoBuffh.get(i).getOrderid());
                 videoBuffhnew.setDuration(videoBuffh.get(i).getDuration());
@@ -3404,7 +3405,18 @@ public class VideoViewController {
                 videoBuffhnew.setTimetotal(videoBuffh.get(0).getTimetotal() == null ? 0 : videoBuffh.get(0).getTimetotal());
                 try {
                     videoViewHistoryRepository.save(videoBuffhnew);
+
+                    if(videoBuffh.get(i).getService()==0){
+                        DataSubscriber dataSubscriber =dataSubscriberRepository.get_Data_Subscriber_By_VideoId(videoBuffh.get(i).getVideoid());
+                        if(dataSubscriber!=null){
+                            dataSubscriber.setTask_time(System.currentTimeMillis());
+                            dataSubscriberRepository.save(dataSubscriber);
+                        }
+                    }
+
                     videoViewRepository.deletevideoByVideoId(videoBuffh.get(i).getVideoid().trim());
+
+
                 } catch (Exception e) {
 
                 }
