@@ -848,6 +848,202 @@ public class HistoryViewController {
         }
     }
 
+    @GetMapping(value = "getTask", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> getTask(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
+        JSONObject resp = new JSONObject();
+        if (username.length() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Username không để trống");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        Vps vps_check=vpsRepository.getVpsByName(vps.trim());
+        if(vps_check==null){
+            resp.put("status", "fail");
+            resp.put("message", "Vps không tồn tại");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+        }
+
+        Random ran = new Random();
+        try {
+            //Thread.sleep(ran.nextInt(1000));
+            /*
+            if(ran.nextInt(100)<30){
+                resp.put("status", "fail");
+                resp.put("message", "Bỏ qua nhiệm vụ");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
+             */
+
+            Long historieId = historyViewRepository.getId(username);
+            List<VideoView> videos = null;
+            if (historieId == null) {
+                resp.put("status", "fail");
+                resp.put("message", "Username không tồn tại!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+            } else {
+                List<HistoryView> histories = historyViewRepository.getHistoriesById(historieId);
+                Map<String, Object> get_task =null;
+                if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
+                    resp.put("status", "fail");
+                    resp.put("message", "off_profile");
+                    //resp.put("message", "bỏ qua nhiệm vụ");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                histories.get(0).setTask_index(histories.get(0).getTask_index()+1);
+                String geo_rand=histories.get(0).getGeo().trim();
+                if(histories.get(0).getGeo_rand()!=null){
+                    if(histories.get(0).getGeo_rand().length()!=0){
+                        geo_rand=histories.get(0).getGeo_rand().trim();
+                    }
+                }
+
+                List<ModeOption> priorityTasks =modeOptionRepository.get_Priority_Task_By_Platform_And_Mode("youtube",histories.get(0).getGeo().trim());
+                List<String> arrTask = new ArrayList<>();
+
+                for(int i=0;i<priorityTasks.size();i++){
+                    for (int j = 0; j < priorityTasks.get(i).getPriority(); j++) {
+                        arrTask.add(priorityTasks.get(i).getTask());
+                    }
+                }
+                while (arrTask.size()>0){
+                    String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
+
+                    ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim());
+                    AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
+                    Long get_time=0L;
+                    if(accountTask!=null){
+                        if(task.trim().contains("follower")){
+                            get_time=accountTask.getFollower_time();
+                        }else if(task.trim().contains("subscriber")){
+                            get_time=accountTask.getSubscriber_time();
+                        }else if(task.trim().contains("view")){
+                            get_time=accountTask.getView_time();
+                        }else if(task.trim().contains("like")){
+                            get_time=accountTask.getLike_time();
+                        }else if(task.trim().contains("comment")){
+                            get_time=accountTask.getComment_time();
+                        }else if(task.trim().contains("repost")){
+                            get_time=accountTask.getRepost_time();
+                        }else if(task.trim().contains("member")){
+                            get_time=accountTask.getMember_time();
+                        }
+                    }
+                    if(modeOption==null){
+
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_time(System.currentTimeMillis());
+                        historyViewRepository.save(histories.get(0));
+                        resp.put("status", "fail");
+                        resp.put("username", histories.get(0).getUsername());
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+
+                    }else if((System.currentTimeMillis()-get_time)/1000/60<modeOption.getTime_get_task()){
+
+                        histories.get(0).setTimeget(System.currentTimeMillis());
+                        histories.get(0).setTask_time(System.currentTimeMillis());
+                        historyViewRepository.save(histories.get(0));
+                        resp.put("status", "fail");
+                        resp.put("username", histories.get(0).getUsername());
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+
+
+                    while(arrTask.remove(task)) {}
+                    if(modeOption.getPlatform().equals("youtube")){
+                        if(task.equals("view")){
+                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),geo_rand);
+                        }else if(task.equals("like")){
+                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),geo_rand);
+                        }else if(task.equals("subscriber")){
+                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),geo_rand);
+                        }
+                    }
+                    if(get_task!=null?get_task.get("status").equals(true):false){
+                        break;
+                    }
+                }
+                if(get_task==null){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_time(System.currentTimeMillis());
+                    historyViewRepository.save(histories.get(0));
+                    resp.put("status", "fail");
+                    resp.put("username", histories.get(0).getUsername());
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }else if(get_task.get("status").equals(false)){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_time(System.currentTimeMillis());
+                    historyViewRepository.save(histories.get(0));
+                    resp.put("status", "fail");
+                    resp.put("username", histories.get(0).getUsername());
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+                Map<String, Object>  dataJson= (Map<String, Object>) get_task.get("data");
+
+                Thread.sleep(ran.nextInt(150));
+                if(!orderThreadCheck.getValue().contains(dataJson.get("order_id").toString())){
+                    histories.get(0).setTimeget(System.currentTimeMillis());
+                    histories.get(0).setTask_time(System.currentTimeMillis());
+                    historyViewRepository.save(histories.get(0));
+                    resp.put("status", "fail");
+                    resp.put("username", histories.get(0).getUsername());
+                    resp.put("fail", "video");
+                    resp.put("message", "Không còn video để view!");
+                    return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                }
+
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setVideoid( dataJson.get("video_id").toString());
+                histories.get(0).setOrderid(Long.parseLong(dataJson.get("order_id").toString()));
+                histories.get(0).setChannelid(dataJson.get("channel_id").toString());
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setRunning(1);
+                historyViewRepository.save(histories.get(0));
+
+                resp.put("status","true");
+                resp.put("live",dataJson.get("live").toString());
+                resp.put("channel_id", dataJson.get("channel_id").toString());
+                resp.put("video_id", dataJson.get("video_id").toString());
+                resp.put("video_title", dataJson.get("video_title").toString());
+                resp.put("username", histories.get(0).getUsername());
+                resp.put("service_id", Integer.parseInt(dataJson.get("service_id").toString()));
+                resp.put("geo",dataJson.get("geo").toString());
+                resp.put("like", dataJson.get("like").toString());
+                resp.put("sub", dataJson.get("sub").toString());
+                resp.put("niche_key",dataJson.get("niche_key").toString());
+
+                resp.put("suggest_type", dataJson.get("suggest_type").toString());
+                resp.put("suggest_key", dataJson.get("suggest_key").toString());
+                resp.put("suggest_video", dataJson.get("suggest_video").toString());
+                resp.put("suggest_type", dataJson.get("suggest_type").toString());
+
+                resp.put("source", dataJson.get("source").toString());
+                resp.put("suggest_video", dataJson.get("suggest_video").toString());
+                resp.put("video_duration",Integer.parseInt(dataJson.get("video_duration").toString()));
+
+                resp.put("ext",Integer.parseInt(dataJson.get("ext").toString()));
+                resp.put("device_type", dataJson.get("suggest_video").toString());
+                resp.put("type_view",Integer.parseInt(dataJson.get("type_view").toString()));
+                resp.put("channel_index", histories.get(0).getChannel_index());
+
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+
+            }
+
+        } catch (Exception e) {
+            resp.put("status", "fail");
+            resp.put("fail", "sum");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping(value = "getOFF", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> getOFF(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String vps, @RequestParam(defaultValue = "0") Integer buffh) {
@@ -4243,6 +4439,107 @@ public class HistoryViewController {
 
     @GetMapping(value = "/update", produces = "application/hal+json;charset=utf8")
     ResponseEntity<String> update(@RequestParam(defaultValue = "") String username,
+                                  @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id,
+                                  @RequestParam(required = false) Boolean success) {
+        JSONObject resp = new JSONObject();
+
+        if (username.length() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Username không để trống");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+        if (videoid.length() == 0) {
+            resp.put("status", "fail");
+            resp.put("message", "Videoid không để trống");
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            HistoryView historyView = historyViewRepository.getHistoryViewByUsername(username.trim());
+            if (historyView == null) {
+                resp.put("status", "fail");
+                resp.put("message", "Không tìm thấy username!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            } else {
+                Service service = serviceRepository.getInfoService(service_id);
+                if(service.getService()==0) {
+                    if (success == null) {
+                        success = false;
+                    }
+                    if (success) {
+                        OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
+                        if (orderRunning != null) {
+                            youtubeUpdate.youtube_subscriber(username.trim(), channelid.trim(), success);
+                            HistorySum historySum = new HistorySum();
+                            historySum.setOrderRunning(orderRunning);
+                            historySum.setAccount_id(username.trim());
+                            historySum.setViewing_time(duration);
+                            historySum.setAdd_time(System.currentTimeMillis());
+                            try {
+                                historySumRepository.save(historySum);
+                            } catch (Exception e) {
+                                try {
+                                    historySumRepository.save(historySum);
+                                } catch (Exception f) {
+                                }
+                            }
+                        }
+                    }
+
+                }
+                if (duration > 0) {
+                    HistoryViewSum historySum = new HistoryViewSum();
+                    historySum.setVideoid(videoid.trim());
+                    historySum.setUsername(username);
+                    historySum.setTime(System.currentTimeMillis());
+                    historySum.setChannelid(channelid);
+                    historySum.setDuration(duration);
+                    try {
+                        historyViewSumRepository.save(historySum);
+                    } catch (Exception e) {
+                        try {
+                            historyViewSumRepository.save(historySum);
+                        } catch (Exception f) {
+                        }
+                    }
+                    }else{
+                        //historyViewRepository.updateduration(duration,username,videoid);
+                        resp.put("status", "fail");
+                        resp.put("message", "Không update duration !");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+
+
+                historyViewRepository.update_Task_Done(username.trim());
+                resp.put("status", "true");
+                resp.put("message", "Update view thành công!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+
+            }
+        } catch (Exception e) {
+            StackTraceElement stackTraceElement = Arrays.stream(e.getStackTrace()).filter(ste -> ste.getClassName().equals(this.getClass().getName())).collect(Collectors.toList()).get(0);
+            LogError logError =new LogError();
+            logError.setMethod_name(stackTraceElement.getMethodName());
+            logError.setLine_number(stackTraceElement.getLineNumber());
+            logError.setClass_name(stackTraceElement.getClassName());
+            logError.setFile_name(stackTraceElement.getFileName());
+            logError.setMessage(e.getMessage());
+            logError.setAdd_time(System.currentTimeMillis());
+            Date date_time = new Date(System.currentTimeMillis());
+            // Tạo SimpleDateFormat với múi giờ GMT+7
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+            String formattedDate = sdf.format(date_time);
+            logError.setDate_time(formattedDate);
+            logErrorRepository.save(logError);
+            resp.put("status", "fail");
+            resp.put("message", e.getMessage());
+            return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/updateOFF", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> updateOFF(@RequestParam(defaultValue = "") String username,
                                   @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id,
                                   @RequestParam(required = false) Boolean success) {
         JSONObject resp = new JSONObject();
