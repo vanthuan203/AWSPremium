@@ -24,7 +24,10 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping(path = "/historyview")
 public class HistoryViewController {
-
+    @Autowired
+    private YoutubeSubscriberHistoryRepository youtubeChannelHistoryRepository;
+    @Autowired
+    private YoutubeSubscriber24hRepository youtubeSubscribe24hRepository;
     @Autowired
     private YoutubeUpdate youtubeUpdate;
     @Autowired
@@ -711,8 +714,22 @@ public class HistoryViewController {
                             String [] bonus_list=service.getBonus_list().split(",");
                             String bonus=bonus_list[ran.nextInt(bonus_list.length)];
                             if(bonus.equals("sub")){
-                                resp.put("like", "fail");
-                                resp.put("sub", "true");
+                                SettingYoutube setting=settingYoutubeRepository.get_Setting();
+                                Integer count_Sub_24h=youtubeSubscribe24hRepository.count_Subscribe_24h_By_Username( histories.get(0).getUsername().trim()  +"%");
+                                if(count_Sub_24h>=setting.getMax_subscriber()){
+                                    accountTaskRepository.update_Total_Success_24h(count_Sub_24h, histories.get(0).getUsername().trim());
+                                    resp.put("like", "fail");
+                                    resp.put("sub", "fail");
+                                }else{
+                                    String list_History=youtubeChannelHistoryRepository.get_List_ChannelId_By_AccountId(histories.get(0).getUsername().trim());
+                                    if(list_History.contains(videos.get(0).getChannelid().trim())){
+                                        resp.put("like", "fail");
+                                        resp.put("sub", "fail");
+                                    }else{
+                                        resp.put("like", "fail");
+                                        resp.put("sub", "true");
+                                    }
+                                }
                             }else if(bonus.equals("like")){
                                 resp.put("like", "true");
                                 resp.put("sub", "fail");
@@ -3155,13 +3172,29 @@ public class HistoryViewController {
                 resp.put("like", "fail");
                 resp.put("sub", "fail");
             }else{
+
+
                 float ran_SL=ran.nextFloat()*100F;
                 if(ran_SL<service.getBonus_list_percent()){
                     String [] bonus_list=service.getBonus_list().split(",");
                     String bonus=bonus_list[ran.nextInt(bonus_list.length)];
                     if(bonus.equals("sub")){
-                        resp.put("like", "fail");
-                        resp.put("sub", "true");
+                        SettingYoutube setting=settingYoutubeRepository.get_Setting();
+                        Integer count_Sub_24h=youtubeSubscribe24hRepository.count_Subscribe_24h_By_Username( histories.get(0).getUsername().trim()  +"%");
+                        if(count_Sub_24h>=setting.getMax_subscriber()){
+                            accountTaskRepository.update_Total_Success_24h(count_Sub_24h, histories.get(0).getUsername().trim());
+                            resp.put("like", "fail");
+                            resp.put("sub", "fail");
+                        }else{
+                            String list_History=youtubeChannelHistoryRepository.get_List_ChannelId_By_AccountId(histories.get(0).getUsername().trim());
+                            if(list_History.contains(videos.get(0).getChannelid().trim())){
+                                resp.put("like", "fail");
+                                resp.put("sub", "fail");
+                            }else{
+                                resp.put("like", "fail");
+                                resp.put("sub", "true");
+                            }
+                        }
                     }else if(bonus.equals("like")){
                         resp.put("like", "true");
                         resp.put("sub", "fail");
