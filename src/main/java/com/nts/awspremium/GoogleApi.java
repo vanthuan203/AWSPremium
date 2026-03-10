@@ -909,7 +909,7 @@ public class GoogleApi {
                                     continue;
                                 }
                                 videoList.add(video_id+"~#"+video_title+"~#"+duration) ;
-                                if(videoList.size()>=5){
+                                if(videoList.size()>=20){
                                     break;
                                 }
                             }catch (Exception e){
