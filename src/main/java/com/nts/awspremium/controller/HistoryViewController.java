@@ -4449,7 +4449,7 @@ public class HistoryViewController {
                     }
                 }
                 char target = ',';
-                int MAX = 6;
+                int MAX = 3;
 
                 String list = historyView.getListvideo().trim();
                 String newVideo = videoid.trim() + ",";
