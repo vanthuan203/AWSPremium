@@ -1228,6 +1228,9 @@ public class HistoryCommentController {
             resp.put("geo", histories.get(0).getGeo().trim());
             resp.put("channel_index", histories.get(0).getChannel_index());
 
+            String[] keyFinger={"4WA7ZCnzK3h52CRwvAcu7I4N7xtW9PYpJrGgTX8TyuHpspbCBTxb37cpKQ0LtCbu","aOgiu0akSeqIQAsAfUjha1mGHjeEyiPEmqQkJYPmkQC3S7iQnXxyrVqZTdmXGNFB","lqWvrmMzWVpEHMwErhKgW0H2Tt22UFCymJ4Xa2FTqceJiveIvLtIJg3tiZAeZP2r","vGixgtrWfKWEM8FBhr7Qpf92fYIzVTLFNXmQOhgTsj4ftD2pPil8zdX0iYFIQS8E"};
+            resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
+
             /*
             String proxy_ha= proxyRepository.get_Proxy_HA(proxy[0].trim());
             if(proxy_ha!=null &&!videos.get(0).getBlocked_list().contains("vn")){
