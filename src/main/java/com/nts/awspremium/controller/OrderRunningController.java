@@ -754,7 +754,7 @@ public class OrderRunningController {
             for (int i=0;i<orderRunningList.size();i++){
                 try {
                     DataSubscriber dataSubscriber_check=dataSubscriberRepository.get_Task_Time_Desc(orderRunningList.get(i).getOrder_id());
-                    if(dataSubscriber_check!=null &&(System.currentTimeMillis()-dataSubscriber_check.getTask_time())/1000/60/60<3){
+                    if(dataSubscriber_check!=null &&(System.currentTimeMillis()-dataSubscriber_check.getTask_time())/1000/60/60<1){
                         continue;
                     }
                     DataSubscriber dataSubscriber =dataSubscriberRepository.get_Data_Subscriber_By_State(orderRunningList.get(i).getOrder_id());
