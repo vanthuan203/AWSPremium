@@ -689,6 +689,19 @@ public class HistoryViewController {
                     }
                     Service service = serviceRepository.getInfoService(videos.get(0).getService());
 
+                    if(service.getService()==0 && !histories.get(0).getUsername().contains("@gmail.com")){
+                        histories.get(0).setVideoid("");
+                        histories.get(0).setOrderid(0L);
+                        histories.get(0).setChannelid("");
+                        histories.get(0).setRunning(0);
+                        historyViewRepository.save(histories.get(0));
+                        resp.put("status", "fail");
+                        resp.put("username", histories.get(0).getUsername());
+                        resp.put("fail", "video");
+                        resp.put("message", "Không còn video để view!");
+                        return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+                    }
+
                     histories.get(0).setTask_time(System.currentTimeMillis());
                     histories.get(0).setRunning(1);
                     histories.get(0).setMax_time(service.getMaxtime());
@@ -3109,6 +3122,21 @@ public class HistoryViewController {
 
 
             Service service = serviceRepository.getInfoService(videos.get(0).getService());
+
+            if(service.getService()==0 && !histories.get(0).getUsername().contains("@gmail.com")){
+                histories.get(0).setTimeget(System.currentTimeMillis());
+                histories.get(0).setTask_time(System.currentTimeMillis());
+                histories.get(0).setVideoid("");
+                histories.get(0).setOrderid(0L);
+                histories.get(0).setChannelid("");
+                histories.get(0).setRunning(0);
+                historyViewRepository.save(histories.get(0));
+                resp.put("status", "fail");
+                resp.put("username", histories.get(0).getUsername());
+                resp.put("fail", "video");
+                resp.put("message", "Không còn video để view!");
+                return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
+            }
 
             if(service.getLive()==1){
                 Thread.sleep(150+ran.nextInt(200));
