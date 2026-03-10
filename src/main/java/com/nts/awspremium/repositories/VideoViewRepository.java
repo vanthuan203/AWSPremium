@@ -283,7 +283,7 @@ public interface VideoViewRepository extends JpaRepository<VideoView,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update videoview set maxthreads=if(maxthreads+cast(threadset*(1/minstart) as UNSIGNED)>threadset,threadset,maxthreads+cast(threadset*(1/minstart) as UNSIGNED)) where service in (select service from service where task='view') and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
+    @Query(value = "update videoview set maxthreads = LEAST(threadset, maxthreads + GREATEST(1, CEIL(threadset / minstart))) where service in (select service from service where task='view') and maxthreads<threadset and maxthreads>0 and timestart>0;",nativeQuery = true)
     public void updateThreadByThreadSet();
 
     @Modifying
