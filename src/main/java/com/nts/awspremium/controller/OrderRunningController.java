@@ -763,7 +763,7 @@ public class OrderRunningController {
                     }
                     VideoView videoView =new VideoView();
                     videoView.setVideoid("https://www.youtube.com/watch?v="+dataSubscriber.getVideo_id().trim());
-                    videoView.setVieworder(1000);
+                    videoView.setVieworder(300);
                     videoView.setService(0);
                     videoView.setThreadset(7);
                     videoView.setMaxthreads(7);
