@@ -12,6 +12,9 @@ public interface AccountTaskRepository extends JpaRepository<AccountTask,Long> {
     @Query(value = "Select * from account_task  where account_id=?1 limit 1",nativeQuery = true)
     public AccountTask get_Acount_Task_By_AccountId(String  account_id);
 
+    @Query(value = "Select subscriber_time from account_task  where account_id=?1 and  limit 1",nativeQuery = true)
+    public Long get_Subscriber_time_By_AccountId(String  account_id);
+
     @Modifying
     @Transactional
     @Query(value = "update account_task set task_success_24h=?1 where account_id=?2",nativeQuery = true)

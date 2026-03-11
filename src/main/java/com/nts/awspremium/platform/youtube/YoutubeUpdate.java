@@ -128,6 +128,7 @@ public class YoutubeUpdate {
                 YoutubeSubscriber24h youtubeSubscribe24h =new YoutubeSubscriber24h();
                 youtubeSubscribe24h.setId(account_id.trim()+order_Key.trim());
                 youtubeSubscribe24h.setUpdate_time(System.currentTimeMillis());
+                youtubeSubscribe24h.setOrder_key(order_Key);
                 youtubeSubscribe24hRepository.save(youtubeSubscribe24h);
 
                 AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(account_id.trim());

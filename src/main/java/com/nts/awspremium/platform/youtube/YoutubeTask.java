@@ -190,6 +190,11 @@ public class YoutubeTask {
                 orderRunning = orderRunningRepository.get_Order_Running_By_Task("youtube","subscriber",mode,list_History==null?"":list_History,orderThreadCheck.getValue());
             }
             if (orderRunning!=null) {
+                SettingYoutube settingYoutube=settingYoutubeRepository.get_Setting();
+                if(settingYoutube.getMax_subscriber_1h()<=youtubeSubscribe24hRepository.count_Subscribe_OrderKey_And_Time(account_id.trim(),1)){
+                    resp.put("status", false);
+                    return resp;
+                }
                 Thread.sleep(300+ran.nextInt(150));
                 if(!orderThreadCheck.getValue().contains(orderRunning.getOrder_id().toString())){
                     resp.put("status", false);

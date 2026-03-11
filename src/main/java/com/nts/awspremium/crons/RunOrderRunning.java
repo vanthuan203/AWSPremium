@@ -47,7 +47,7 @@ public class RunOrderRunning {
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
-                            orderRunningController.update_Video_Running_Subscriber();
+                            //orderRunningController.update_Video_Running_Subscriber();
                         } catch (Exception e) {
                             continue;
                         }

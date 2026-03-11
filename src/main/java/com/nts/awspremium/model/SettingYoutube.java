@@ -15,6 +15,8 @@ public class SettingYoutube {
     private Long id;
     @Column(columnDefinition = "integer default 0")
     private Integer max_subscriber;
+    @Column(columnDefinition = "integer default 50")
+    private Integer max_subscriber_1h=50;
     @Column(columnDefinition = "integer default 0")
     private Integer max_like;
     @Column(columnDefinition = "integer default 0")

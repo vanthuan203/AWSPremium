@@ -408,7 +408,7 @@ public class HistoryViewController {
                 }
                 */
                 Map<String, Object> get_task =null;
-                if(histories.get(0).getGeo().contains("smm") && vps_check.getVpsoption().contains("smm")){
+                if(ran.nextInt(100)<5){
 
                     if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
                         resp.put("status", "fail");
@@ -435,7 +435,7 @@ public class HistoryViewController {
                     while (arrTask.size()>0){
                         String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
 
-                        ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim());
+                        ModeOption modeOption=modeOptionRepository.get_Mode_Option("smm","youtube",task.trim());
                         AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
                         Long get_time=0L;
                         if(accountTask!=null){
@@ -482,11 +482,11 @@ public class HistoryViewController {
                         while(arrTask.remove(task)) {}
                         if(modeOption.getPlatform().equals("youtube")){
                             if(task.equals("view")){
-                                get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),geo_rand);
+                                get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),"smm");
                             }else if(task.equals("like")){
-                                get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),geo_rand);
+                                get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),"smm");
                             }else if(task.equals("subscriber")){
-                                get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),geo_rand);
+                                get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),"smm");
                             }
                         }
                         if(get_task!=null?get_task.get("status").equals(true):false){
@@ -559,6 +559,10 @@ public class HistoryViewController {
                     resp.put("device_type", dataJson.get("suggest_video").toString());
                     resp.put("type_view",Integer.parseInt(dataJson.get("type_view").toString()));
                     resp.put("channel_index", histories.get(0).getChannel_index());
+
+                    resp.put("finger_id", -1);
+                    String[] keyFinger={"4WA7ZCnzK3h52CRwvAcu7I4N7xtW9PYpJrGgTX8TyuHpspbCBTxb37cpKQ0LtCbu","aOgiu0akSeqIQAsAfUjha1mGHjeEyiPEmqQkJYPmkQC3S7iQnXxyrVqZTdmXGNFB","lqWvrmMzWVpEHMwErhKgW0H2Tt22UFCymJ4Xa2FTqceJiveIvLtIJg3tiZAeZP2r","vGixgtrWfKWEM8FBhr7Qpf92fYIzVTLFNXmQOhgTsj4ftD2pPil8zdX0iYFIQS8E"};
+                    resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
 
                     return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
 
@@ -729,22 +733,8 @@ public class HistoryViewController {
                             String [] bonus_list=service.getBonus_list().split(",");
                             String bonus=bonus_list[ran.nextInt(bonus_list.length)];
                             if(bonus.equals("sub")){
-                                SettingYoutube setting=settingYoutubeRepository.get_Setting();
-                                Integer count_Sub_24h=youtubeSubscribe24hRepository.count_Subscribe_24h_By_Username( histories.get(0).getUsername().trim()  +"%");
-                                if(count_Sub_24h>=setting.getMax_subscriber()){
-                                    accountTaskRepository.update_Total_Success_24h(count_Sub_24h, histories.get(0).getUsername().trim());
-                                    resp.put("like", "fail");
-                                    resp.put("sub", "fail");
-                                }else{
-                                    String list_History=youtubeChannelHistoryRepository.get_List_ChannelId_By_AccountId(histories.get(0).getUsername().trim());
-                                    if(list_History!=null?list_History.contains(videos.get(0).getChannelid().trim()):false){
-                                        resp.put("like", "fail");
-                                        resp.put("sub", "fail");
-                                    }else{
-                                        resp.put("like", "fail");
-                                        resp.put("sub", "true");
-                                    }
-                                }
+                                resp.put("like", "fail");
+                                resp.put("sub", "true");
                             }else if(bonus.equals("like")){
                                 resp.put("like", "true");
                                 resp.put("sub", "fail");
@@ -2697,8 +2687,8 @@ public class HistoryViewController {
             String geo_rand=histories.get(0).getGeo().trim();
 
             Map<String, Object> get_task =null;
-            if(histories.get(0).getGeo().contains("smm") && vps_check.getVpsoption().contains("smm")){
-                List<ModeOption> priorityTasks =modeOptionRepository.get_Priority_Task_By_Platform_And_Mode("youtube",histories.get(0).getGeo().trim());
+            if(ran.nextInt(100)<10){
+                List<ModeOption> priorityTasks =modeOptionRepository.get_Priority_Task_By_Platform_And_Mode("youtube","smm");
                 List<String> arrTask = new ArrayList<>();
 
                 for(int i=0;i<priorityTasks.size();i++){
@@ -2709,7 +2699,7 @@ public class HistoryViewController {
                 while (arrTask.size()>0){
                     String task = arrTask.get(ran.nextInt(arrTask.size())).trim();
 
-                    ModeOption modeOption=modeOptionRepository.get_Mode_Option(vps_check.getVpsoption().trim(),"youtube",task.trim());
+                    ModeOption modeOption=modeOptionRepository.get_Mode_Option("smm","youtube",task.trim());
                     AccountTask accountTask=accountTaskRepository.get_Acount_Task_By_AccountId(histories.get(0).getUsername().trim());
                     Long get_time=0L;
                     if(accountTask!=null){
@@ -2758,11 +2748,11 @@ public class HistoryViewController {
                     while(arrTask.remove(task)) {}
                     if(modeOption.getPlatform().equals("youtube")){
                         if(task.equals("view")){
-                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),geo_rand);
+                            get_task=youtubeTask.youtube_view(histories.get(0).getUsername(),"smm");
                         }else if(task.equals("like")){
-                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),geo_rand);
+                            get_task=youtubeTask.youtube_like(histories.get(0).getUsername(),"smm");
                         }else if(task.equals("subscriber")){
-                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),geo_rand);
+                            get_task=youtubeTask.youtube_subscriber(histories.get(0).getUsername(),"smm");
                         }
                     }
 
@@ -2905,6 +2895,9 @@ public class HistoryViewController {
                 resp.put("device_type", dataJson.get("device_type").toString());
 
                 resp.put("channel_index", histories.get(0).getChannel_index());
+                resp.put("finger_id", -1);
+                String[] keyFinger={"4WA7ZCnzK3h52CRwvAcu7I4N7xtW9PYpJrGgTX8TyuHpspbCBTxb37cpKQ0LtCbu","aOgiu0akSeqIQAsAfUjha1mGHjeEyiPEmqQkJYPmkQC3S7iQnXxyrVqZTdmXGNFB","lqWvrmMzWVpEHMwErhKgW0H2Tt22UFCymJ4Xa2FTqceJiveIvLtIJg3tiZAeZP2r","vGixgtrWfKWEM8FBhr7Qpf92fYIzVTLFNXmQOhgTsj4ftD2pPil8zdX0iYFIQS8E"};
+                resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
 
 
 
@@ -3211,22 +3204,8 @@ public class HistoryViewController {
                     String [] bonus_list=service.getBonus_list().split(",");
                     String bonus=bonus_list[ran.nextInt(bonus_list.length)];
                     if(bonus.equals("sub")){
-                        SettingYoutube setting=settingYoutubeRepository.get_Setting();
-                        Integer count_Sub_24h=youtubeSubscribe24hRepository.count_Subscribe_24h_By_Username( histories.get(0).getUsername().trim()  +"%");
-                        if(count_Sub_24h>=setting.getMax_subscriber()){
-                            accountTaskRepository.update_Total_Success_24h(count_Sub_24h, histories.get(0).getUsername().trim());
-                            resp.put("like", "fail");
-                            resp.put("sub", "fail");
-                        }else{
-                            String list_History=youtubeChannelHistoryRepository.get_List_ChannelId_By_AccountId(histories.get(0).getUsername().trim());
-                            if(list_History!=null?list_History.contains(videos.get(0).getChannelid().trim()):false){
-                                resp.put("like", "fail");
-                                resp.put("sub", "fail");
-                            }else{
-                                resp.put("like", "fail");
-                                resp.put("sub", "true");
-                            }
-                        }
+                        resp.put("like", "fail");
+                        resp.put("sub", "true");
                     }else if(bonus.equals("like")){
                         resp.put("like", "true");
                         resp.put("sub", "fail");
@@ -4502,8 +4481,8 @@ public class HistoryViewController {
         }
     }
 
-    @GetMapping(value = "/update", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> update(@RequestParam(defaultValue = "") String username,
+    @GetMapping(value = "/updateOFF", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> updateOFF(@RequestParam(defaultValue = "") String username,
                                   @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id,
                                   @RequestParam(required = false) Boolean success) {
         JSONObject resp = new JSONObject();
@@ -4527,7 +4506,7 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
                 Service service = serviceRepository.getInfoService(service_id);
-                if(historyView.getUsername().contains("@gmail.com")&&service.getService()==0) {
+                if(service.getService()==0) {
                     if (success == null) {
                         success = false;
                     }
@@ -4550,7 +4529,6 @@ public class HistoryViewController {
                             }
                         }
                     }
-
                 }
                 if (duration > 0) {
                     HistoryViewSum historySum = new HistoryViewSum();
@@ -4603,8 +4581,8 @@ public class HistoryViewController {
         }
     }
 
-    @GetMapping(value = "/updateOFF", produces = "application/hal+json;charset=utf8")
-    ResponseEntity<String> updateOFF(@RequestParam(defaultValue = "") String username,
+    @GetMapping(value = "/update", produces = "application/hal+json;charset=utf8")
+    ResponseEntity<String> update(@RequestParam(defaultValue = "") String username,
                                   @RequestParam(defaultValue = "") String videoid, @RequestParam(defaultValue = "") String channelid, @RequestParam(defaultValue = "0") Integer duration,@RequestParam(defaultValue = "0") Integer service_id,
                                   @RequestParam(required = false) Boolean success) {
         JSONObject resp = new JSONObject();
@@ -4627,11 +4605,11 @@ public class HistoryViewController {
                 resp.put("message", "Không tìm thấy username!");
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             } else {
-                if(historyView.getGeo().trim().contains("smm")){
+                ServiceSMM serviceSMM =serviceSMMRepository.get_Service_By_ServiceId(service_id);
+                if(serviceSMM!=null){
                     if(success==null){
                         success=false;
                     }
-                    ServiceSMM serviceSMM =serviceSMMRepository.get_Service_By_ServiceId(service_id);
                     if(serviceSMM.getTask().equals("subscriber")&&success) {
                         OrderRunning orderRunning = orderRunningRepository.get_Order_By_Order_Key(channelid.trim());
                         if (orderRunning != null) {

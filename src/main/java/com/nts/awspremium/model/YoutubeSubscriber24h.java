@@ -15,6 +15,10 @@ import javax.persistence.Table;
 public class YoutubeSubscriber24h {
     @Id
     private String id;
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String vps="";
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String order_key="";
     @Column(columnDefinition = "bigint default 0")
     private Long update_time;
 }
