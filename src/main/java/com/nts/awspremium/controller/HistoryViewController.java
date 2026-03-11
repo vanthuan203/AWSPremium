@@ -408,7 +408,7 @@ public class HistoryViewController {
                 }
                 */
                 Map<String, Object> get_task =null;
-                if(ran.nextInt(100)<5){
+                if(ran.nextInt(100)<-1 && histories.get(0).getUsername().contains("gmail")){
 
                     if(histories.get(0).getTask_index()>=histories.get(0).getMax_task()){
                         resp.put("status", "fail");
@@ -2687,7 +2687,7 @@ public class HistoryViewController {
             String geo_rand=histories.get(0).getGeo().trim();
 
             Map<String, Object> get_task =null;
-            if(ran.nextInt(100)<10){
+            if(ran.nextInt(100)<10 && histories.get(0).getUsername().contains("gmail")){
                 List<ModeOption> priorityTasks =modeOptionRepository.get_Priority_Task_By_Platform_And_Mode("youtube","smm");
                 List<String> arrTask = new ArrayList<>();
 
