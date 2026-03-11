@@ -688,7 +688,7 @@ public class HistoryViewController {
                         }
                     }
                     Service service = serviceRepository.getInfoService(videos.get(0).getService());
-
+                    /*
                     if(service.getService()==0 && !histories.get(0).getUsername().contains("@gmail.com")){
                         histories.get(0).setVideoid("");
                         histories.get(0).setOrderid(0L);
@@ -702,6 +702,8 @@ public class HistoryViewController {
                         return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
                     }
 
+
+                     */
                     histories.get(0).setTask_time(System.currentTimeMillis());
                     histories.get(0).setRunning(1);
                     histories.get(0).setMax_time(service.getMaxtime());
@@ -718,7 +720,7 @@ public class HistoryViewController {
 
                     resp.put("ext",service.getExt());
 
-                    if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0 || !histories.get(0).getUsername().contains("@gmail.com")){
+                    if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0){ // !histories.get(0).getUsername().contains("@gmail.com"
                         resp.put("like", "fail");
                         resp.put("sub", "fail");
                     }else{
@@ -3122,7 +3124,7 @@ public class HistoryViewController {
 
 
             Service service = serviceRepository.getInfoService(videos.get(0).getService());
-
+            /*
             if(service.getService()==0 && !histories.get(0).getUsername().contains("@gmail.com")){
                 histories.get(0).setTimeget(System.currentTimeMillis());
                 histories.get(0).setTask_time(System.currentTimeMillis());
@@ -3138,6 +3140,8 @@ public class HistoryViewController {
                 return new ResponseEntity<String>(resp.toJSONString(), HttpStatus.OK);
             }
 
+
+             */
             if(service.getLive()==1){
                 Thread.sleep(150+ran.nextInt(200));
                 if(!orderTrue.getValue().contains(videos.get(0).getOrderid().toString())){
@@ -3196,7 +3200,7 @@ public class HistoryViewController {
             resp.put("finger_key",keyFinger[ran.nextInt(keyFinger.length)]);
 
 
-            if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0 || !histories.get(0).getUsername().contains("@gmail.com")){
+            if(service.getBonus_type()==0 || service.getBonus_list().length()==0 || service.getBonus_list_percent()==0 ){ //|| !histories.get(0).getUsername().contains("@gmail.com")
                 resp.put("like", "fail");
                 resp.put("sub", "fail");
             }else{
