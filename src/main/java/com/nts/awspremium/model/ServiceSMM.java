@@ -115,6 +115,8 @@ public class ServiceSMM implements Serializable {
     private Integer ext=0;
     @Column(columnDefinition = "integer default 1")
     private Integer type_view=1;
+    @Column(columnDefinition = "integer default 10")
+    private Integer limit_task_time=10;
 
     public ServiceSMM() {
     }

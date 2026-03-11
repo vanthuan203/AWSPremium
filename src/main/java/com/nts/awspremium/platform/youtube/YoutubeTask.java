@@ -191,7 +191,8 @@ public class YoutubeTask {
             }
             if (orderRunning!=null) {
                 SettingYoutube settingYoutube=settingYoutubeRepository.get_Setting();
-                if(settingYoutube.getMax_subscriber_1h()<=youtubeSubscribe24hRepository.count_Subscribe_OrderKey_And_Time(orderRunning.getChannel_id().trim(),1)){
+                ServiceSMM service=orderRunning.getService();
+                if(service.getLimit_task_time()<=youtubeSubscribe24hRepository.count_Subscribe_OrderKey_And_Time(orderRunning.getChannel_id().trim(),service.getLimit_time())){
                     resp.put("status", false);
                     return resp;
                 }
@@ -200,7 +201,6 @@ public class YoutubeTask {
                     resp.put("status", false);
                     return resp;
                 }
-                ServiceSMM service=orderRunning.getService();
                 if(ran.nextInt(100)<service.getBonus_list_percent()){
                     data.put("sub","true");
                 }else{
