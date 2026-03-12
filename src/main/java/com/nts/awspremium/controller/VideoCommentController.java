@@ -832,7 +832,7 @@ public class VideoCommentController {
                     }
                 }
                 if(service.getExpired()==0){
-                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 300)<1?0:(int)(videoComments.get(i).getCommentorder() / 300));
+                    int max_thread = service.getThread() + ((int)(videoComments.get(i).getCommentorder() / 50)<1?0:(int)(videoComments.get(i).getCommentorder() / 50));
                     if (max_thread <= 50) {
                         videoComments.get(i).setMaxthreads(max_thread);
                     } else {
@@ -1832,6 +1832,15 @@ public class VideoCommentController {
                 obj.put("commenttotal", orderRunnings.get(0).getCommentTotal());
                 obj.put("price", orderRunnings.get(0).getPrice());
                 obj.put("commentorder", orderRunnings.get(0).getCommentOrder());
+                obj.put("comment24h", orderRunnings.get(0).getComment24h());
+                obj.put("comment_risk", orderRunnings.get(0).getComment_risk().intValue());
+                obj.put("price", orderRunnings.get(0).getPrice());
+                obj.put("geo",  orderRunnings.get(0).getGeo());
+                obj.put("ai",  orderRunnings.get(0).getAi());
+                obj.put("live",  orderRunnings.get(0).getLive());
+                obj.put("lc_code",  orderRunnings.get(0).getLc_code());
+
+
 
 
                 jsonArray.add(obj);
